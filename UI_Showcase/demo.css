@@ -1,0 +1,145 @@
+body { font-size: 62.5%; font-family:Arial, Helvetica, sans-serif }
+
+#toolbar {
+    padding: 10px 4px;
+}
+
+.noCloseBtn .ui-dialog-titlebar-close{
+    display: none;
+}
+
+.sliderValue {
+    position: absolute;
+    color:#f6931f;
+    font-weight:bold;
+}
+
+#tabs-1 {
+    padding: 30px;
+}
+
+.dialogSubGroup {
+    border: 1px solid #BBB;
+    padding: 5px;
+ }
+
+.viewer {
+   padding: 5px 35px;
+   width: 300px;
+   height: 270px;
+}
+
+.viewer img {
+   border: 1px solid #BBB;
+   padding: 1px;
+}
+
+/* Experimental: Global focus styles */
+
+.ui-state-focus, .ui-state-focus .ui-button-icon-primary, a.ui-global-focus, input.ui-global-focus, div.ui-global-focus, select.ui-global-focus, button.ui-global-focus {
+	outline: 2px solid #412C84 !important;
+    outline-offset: 0;
+    -moz-outline-radius: 5px;
+}
+
+.ui-state-focus .ui-button-icon-primary {
+	outline-offset: .4em;
+}
+
+.ui-button-icon-only.ui-state-focus, .ui-tabs-nav a.ui-global-focus {
+	outline: none !important;
+}
+
+/* End global focus styles */
+
+
+ .ui-widget-content h3 a {
+    color: navy;
+ }
+
+
+
+ .logoList {
+	list-style: none;
+ }
+
+ .logoList li {
+	display: inline;
+ }
+
+ .logoList img	{
+	border: none;
+ }
+
+ .leftColumn, .rightColumn {
+	float: left;
+	width: 35em;
+	margin-right: 50px;
+ }
+
+ .clear {
+ 	clear:both;
+ }
+
+ .tpgLogo {
+	padding: 23px 0;
+ }
+
+#tabs-11 label { display: inline-block; width: 5em; }
+#tabs-11 .ui-icon { display: inline-block; }
+#tabs-11 fieldset div {
+	margin-bottom: 2em;
+}
+#tabs-11 .ui-tooltip { width: 210px; }
+
+.toggleTooltips img {
+	margin-bottom: 10px;
+}
+
+.toggleTooltips blockquote {
+	width: 200px;
+}
+
+#panel1 {
+    width: 50%;
+}
+
+.hiddenFieldset {
+    padding: 0;
+    border: 0;
+    border: none;
+    display: inline;
+}
+
+.hiddenFieldset legend{
+    position: absolute;
+    top: -10000px;
+    left: -10000px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+ }
+
+ a {
+    color: #000;
+ }
+
+ .widgetControls {
+ 	margin: 20px 0 0 0;
+ }
+
+ .widgetControls button {
+ 	margin-right: 10px;
+ }
+
+ .ui-helper-highcontrast .ui-state-focus a {
+ 	outline: 2px dashed white !important;
+ }
+
+.ui-datepicker-calendar a.ui-state-focus {
+	text-decoration: underline;
+}
+
+.ui-popup { position: absolute; z-index: 5000; }
+
+
