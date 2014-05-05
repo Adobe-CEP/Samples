@@ -1,0 +1,4 @@
+mosaicfornode
+=============
+
+Photoshop extension
