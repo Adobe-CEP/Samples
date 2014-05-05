@@ -1,0 +1,4 @@
+{
+  "original": "<<<form></form>form></form>form method=\"POST\" action=\"/delete\" id=\"bad\"><<input>input type=\"hidden\" name=\"id\" value=\"100\"><<script></script>script>document.getElementById(\"bad\").submit();</script></</form>form>",
+  "expected": ""
+}

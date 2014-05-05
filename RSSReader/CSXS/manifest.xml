@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<ExtensionManifest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ExtensionBundleId="com.adobe.htmlsample.rssreader" ExtensionBundleVersion="1.0" Version="5.0">
+    <ExtensionList>
+        <Extension Id="com.adobe.htmlsample.rssreader.panel" Version="1.0"/>
+    </ExtensionList>
+    <ExecutionEnvironment>
+        <HostList>
+            <Host Name="IDSN" Version="[10.0,10.9]"/>
+            <Host Name="AICY" Version="[10.0,10.9]"/>
+            <Host Name="ILST" Version="[18.0,18.9]"/>
+            <Host Name="PHSP" Version="15.0"/>
+            <Host Name="PHXS" Version="15.0"/>
+        </HostList>
+        <LocaleList>
+            <Locale Code="All"/>
+        </LocaleList>
+        <RequiredRuntimeList>
+            <RequiredRuntime Name="CSXS" Version="5.0"/>
+        </RequiredRuntimeList>
+    </ExecutionEnvironment>
+    <DispatchInfoList>
+        <Extension Id="com.adobe.htmlsample.rssreader.panel">
+            <DispatchInfo>
+                <Resources>
+                    <MainPath>./html/index.html</MainPath>
+                    <CEFCommandLine/>
+                </Resources>
+                <Lifecycle>
+                    <AutoVisible>true</AutoVisible>
+                </Lifecycle>
+                <UI>
+                    <Type>Panel</Type>
+                    <Menu>RSS Reader</Menu>
+                    <Geometry>
+                        <Size>
+                            <Height>550</Height>
+                            <Width>400</Width>
+                        </Size>
+                        <MinSize>
+                            <Height>550</Height>
+                            <Width>400</Width>
+                        </MinSize>
+                    </Geometry>
+                    <Icons />					
+                </UI>
+            </DispatchInfo>
+        </Extension>
+    </DispatchInfoList>
+</ExtensionManifest>
