@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<ExtensionManifest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ExtensionBundleId="com.adobe.flickr" ExtensionBundleName="Flickr" ExtensionBundleVersion="1.0.0" Version="4.0">
+	<ExtensionList>
+		<Extension Id="com.adobe.flickr.extension" Version="1.0"/>
+	</ExtensionList>
+	<ExecutionEnvironment>
+		<HostList>
+			<Host Name="PHSP" Version="[14.0,14.9]"/>
+			<Host Name="PHXS" Version="[14.0,14.9]"/>
+		</HostList>
+		<LocaleList>
+			<Locale Code="All"/>
+		</LocaleList>
+		<RequiredRuntimeList>
+			<RequiredRuntime Name="CSXS" Version="4.0"/>
+		</RequiredRuntimeList>
+	</ExecutionEnvironment>
+	<DispatchInfoList>
+		<Extension Id="com.adobe.flickr.extension">
+			<DispatchInfo>
+				<Resources>
+					<MainPath>./index.html</MainPath>
+					<ScriptPath>./host/ps.js</ScriptPath>
+				</Resources>
+				<Lifecycle>
+					<AutoVisible>true</AutoVisible>
+				</Lifecycle>
+				<UI>
+					<Type>Panel</Type>
+					<Menu>Flickr</Menu>
+					<Geometry>
+						<Size>
+							<Height>600</Height>
+							<Width>400</Width>
+						</Size>
+					</Geometry>
+				</UI>
+			</DispatchInfo>
+		</Extension>
+	</DispatchInfoList>
+</ExtensionManifest>
