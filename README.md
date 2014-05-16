@@ -6,7 +6,7 @@ Sample extensions for Adobe Common Extensibility Platform (CEP)
 This page contains HTML5 sample for Adobe CEP, versions 4.0 to 5.0. 
 
 [CEP HTML Test Extension](https://github.com/Adobe-CEP/Samples/tree/master/CEP_HTML_Test_Extension_5.0)
-Showcases most features and capabilities of CEP 5, including Events, video, database interaction via Node, native APIs, ExternalObject, HTML FlyOut menus and lots of other good stuff! Requires CEP 5 and Dreamweaver, Flash Pro, InDesign, Illustrator, InCopy, Photoshop, Premiere Pro, Prelude or After Effects (CC.Next)
+Showcases most features and capabilities of CEP 5, including events, video, database interaction via Node, native APIs, ExternalObject, HTML FlyOut menus and lots of other good stuff! Requires CEP 5 and Dreamweaver, Flash Pro, InDesign, Illustrator, InCopy, Photoshop, Premiere Pro, Prelude or After Effects (CC.Next)
 
 [Collage](https://github.com/Adobe-CEP/Samples/tree/master/Collage) demonstrates the following: Node.js file I/O, CEP file I/O, Progress Meter, keeping UI responsive. Requires CEP 5 and Photoshop CC.Next
 
