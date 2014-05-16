@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<ExtensionManifest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ExtensionBundleId="com.adobe.CEPHTMLTEST" ExtensionBundleVersion="1.0" Version="5.0">
+    <ExtensionList>
+        <Extension Id="com.adobe.CEPHTMLTEST.Panel1" Version="1.0"/>
+        <Extension Id="com.adobe.CEPHTMLTEST.Panel2" Version="1.0"/>
+        <Extension Id="com.adobe.CEPHTMLTEST.ModalDialog" Version="1.0"/>
+        <Extension Id="com.adobe.CEPHTMLTEST.Modeless" Version="1.0"/>
+    </ExtensionList>
+    <ExecutionEnvironment>
+        <HostList>
+            <Host Name="DRWV" Version="12.0"/>
+            <Host Name="FLPR" Version="12.0"/>
+            <Host Name="FWKS" Version="12.0"/>
+            <Host Name="IDSN" Version="8.0"/>
+            <Host Name="AICY" Version="8.0"/>
+            <Host Name="ILST" Version="16.0"/>
+            <Host Name="PHSP" Version="13.0"/>
+            <Host Name="PHXS" Version="13.0"/>
+            <Host Name="PPRO" Version="6.0"/>
+            <Host Name="CNTB" Version="6.1"/>
+            <Host Name="CPTV" Version="6.0"/>
+            <Host Name="AUDT" Version="5.0"/>
+            <Host Name="PRLD" Version="2.0"/>
+            <Host Name="AEFT" Version="13.0"/>
+        </HostList>
+        <LocaleList>
+            <Locale Code="All"/>
+        </LocaleList>
+        <RequiredRuntimeList>
+            <RequiredRuntime Name="CSXS" Version="5.0"/>
+        </RequiredRuntimeList>
+    </ExecutionEnvironment>
+    <DispatchInfoList>
+        <Extension Id="com.adobe.CEPHTMLTEST.Panel1">
+            <DispatchInfo>
+                <Resources>
+                    <MainPath>./html/index.html</MainPath>
+                    <CEFCommandLine>
+                        <Parameter>--enable-speech-input</Parameter>
+						<Parameter>--enable-media-stream</Parameter>
+                    </CEFCommandLine>
+                </Resources>
+                <Lifecycle>
+                    <AutoVisible>true</AutoVisible>
+                </Lifecycle>
+                <UI>
+                    <Type>Panel</Type>
+                    <Menu>CEP HTML Test Panel 1</Menu>
+                    <Geometry>
+                        <Size>
+                            <Height>580</Height>
+                            <Width>1000</Width>
+                        </Size>
+                        <MaxSize>
+                            <Height>800</Height>
+                            <Width>1200</Width>
+                        </MaxSize>
+                        <MinSize>
+                            <Height>400</Height>
+                            <Width>600</Width>
+                        </MinSize>
+                    </Geometry>
+                    <Icons>
+                        <Icon Type="Normal">./TeEx_HTML_TEST_23x23_N.png</Icon>
+                        <Icon Type="RollOver">./TeEx_HTML_TEST_23x23_R.png</Icon>
+                        <Icon Type="DarkNormal">./TeEx_HTML_TEST_23x23_DN.png</Icon>
+                        <Icon Type="DarkRollOver">./TeEx_HTML_TEST_23x23_DR.png</Icon>
+                    </Icons>					
+                </UI>
+            </DispatchInfo>
+        </Extension>
+        <Extension Id="com.adobe.CEPHTMLTEST.Panel2">
+            <DispatchInfo>
+                <Resources>
+                    <MainPath>./html/index.html</MainPath>
+					<CEFCommandLine>
+                        <Parameter>--enable-speech-input</Parameter>
+						<Parameter>--enable-media-stream</Parameter>
+                    </CEFCommandLine>
+                </Resources>
+                <Lifecycle>
+                    <AutoVisible>true</AutoVisible>
+                </Lifecycle>
+                <UI>
+                    <Type>Panel</Type>
+                    <Menu>CEP HTML Test Panel 2</Menu>
+                    <Geometry>
+                        <Size>
+                            <Height>580</Height>
+                            <Width>1000</Width>
+                        </Size>
+                        <MaxSize>
+                            <Height>800</Height>
+                            <Width>1200</Width>
+                        </MaxSize>
+                        <MinSize>
+                            <Height>400</Height>
+                            <Width>600</Width>
+                        </MinSize>
+                    </Geometry>
+                </UI>
+            </DispatchInfo>
+        </Extension>
+        <Extension Id="com.adobe.CEPHTMLTEST.ModalDialog">
+            <DispatchInfo>
+                <Resources>
+                    <MainPath>./html/index.html</MainPath>
+					<CEFCommandLine>
+                        <Parameter>--enable-speech-input</Parameter>
+						<Parameter>--enable-media-stream</Parameter>
+                    </CEFCommandLine>
+                </Resources>
+                <Lifecycle>
+                    <AutoVisible>true</AutoVisible>
+                </Lifecycle>
+                <UI>
+                    <Type>ModalDialog</Type>
+                    <Menu>CEP HTML Test Modal Dialog</Menu>
+                    <Geometry>
+                        <Size>
+                            <Height>580</Height>
+                            <Width>1000</Width>
+                        </Size>
+                        <MaxSize>
+                            <Height>800</Height>
+                            <Width>1200</Width>
+                        </MaxSize>
+                        <MinSize>
+                            <Height>400</Height>
+                            <Width>600</Width>
+                        </MinSize>
+                    </Geometry>
+                </UI>
+            </DispatchInfo>
+        </Extension>
+        <Extension Id="com.adobe.CEPHTMLTEST.Modeless">
+            <DispatchInfo>
+                <Resources>
+                    <MainPath>./html/index.html</MainPath>
+					<CEFCommandLine>
+                        <Parameter>--enable-speech-input</Parameter>
+						<Parameter>--enable-media-stream</Parameter>
+                    </CEFCommandLine>
+                </Resources>
+                <Lifecycle>
+                    <AutoVisible>true</AutoVisible>
+                </Lifecycle>
+                <UI>
+                    <Type>Modeless</Type>
+                    <Menu>CEP HTML Test Modeless Dialog</Menu>
+                    <Geometry>
+                        <Size>
+                            <Height>580</Height>
+                            <Width>1000</Width>
+                        </Size>
+                        <MaxSize>
+                            <Height>800</Height>
+                            <Width>1200</Width>
+                        </MaxSize>
+                        <MinSize>
+                            <Height>400</Height>
+                            <Width>600</Width>
+                        </MinSize>
+                    </Geometry>
+                </UI>
+            </DispatchInfo>
+        </Extension>
+    </DispatchInfoList>
+</ExtensionManifest>

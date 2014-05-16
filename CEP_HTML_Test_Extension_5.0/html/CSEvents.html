@@ -1,0 +1,705 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--
+/*************************************************************************
+*
+* ADOBE CONFIDENTIAL
+* ___________________
+*
+*  Copyright 2012, Adobe Systems Incorporated
+*  All Rights Reserved.
+*
+* NOTICE:  All information contained herein is, and remains
+* the property of Adobe Systems Incorporated and its suppliers,
+* if any.  The intellectual and technical concepts contained
+* herein are proprietary to Adobe Systems Incorporated and its
+* suppliers and are protected by trade secret or copyright law.
+* Dissemination of this information or reproduction of this material
+* is strictly forbidden unless prior written permission is obtained
+* from Adobe Systems Incorporated.
+**************************************************************************/
+-->
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<script type="text/javascript" src="../js/JQuery/jquery.js"></script>
+<script type="text/javascript" src="../js/CSInterface.js"></script>
+<script type="text/javascript" src="../js/JQuery/jquery-ui-1.9.1.custom.min.js"></script>
+<link type="text/css" href="../css/jquery-ui-1.9.1.custom.css/ui-darkness/jquery-ui-1.9.1.custom.css" rel="stylesheet"/>
+<script type="text/javascript">
+    function eventObj() {
+        this.eventScope = "";
+        this.eventType = "";
+        this.registered = false;
+		this.eventListener = null;
+		this.data = null;
+    };
+    
+    var eventArr = new Array();
+    var CSLibrary = new CSInterface();
+    var characters = "!\"#$%&()*+,-./0123456789:=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~";
+    characters += "\"\\\b\f\n\r\t";
+    
+    $(document).ready(function() {
+        // adjust layout on Windows
+        if ((CSLibrary.getOSInformation()).indexOf("Windows") > -1) {
+            $("#apDiv5").attr("style", "top:415px");
+        }
+		
+        // test events
+        eventArr[0] = new eventObj();
+        eventArr[0].eventScope = "APPLICATION";
+        eventArr[0].eventType = "com.adobe.csxs.events.AppOffline";
+		eventArr[0].eventListener = function (event) {$("#EventsGreenLightImg0").show();};
+        $("#EventsScope0").text(eventArr[0].eventScope);
+        $("#EventsType0").text(eventArr[0].eventType);
+        
+        eventArr[1] = new eventObj();
+        eventArr[1].eventScope = "APPLICATION";
+        eventArr[1].eventType = "com.adobe.csxs.events.AppOnline";
+		eventArr[1].eventListener = function (event) {$("#EventsGreenLightImg1").show();};
+        $("#EventsScope1").text(eventArr[1].eventScope);
+        $("#EventsType1").text(eventArr[1].eventType);
+        
+        eventArr[2] = new eventObj();
+        eventArr[2].eventScope = "APPLICATION";
+        eventArr[2].eventType = "com.adobe.csxs.events.CustomApplicationEventWithoutPayload";
+		eventArr[2].eventListener =  function (event) {$("#EventsGreenLightImg2").show();};
+		$("#EventsScope2").text(eventArr[2].eventScope);
+        $("#EventsType2").text(eventArr[2].eventType);
+        
+        eventArr[3] = new eventObj();
+        eventArr[3].eventScope = "APPLICATION";
+        eventArr[3].eventType = "com.adobe.csxs.events.CustomApplicationEventWithPayload";
+		eventArr[3].eventListener = function (event) {$("#EventsGreenLightImg3").show();};
+        $("#EventsScope3").text(eventArr[3].eventScope);
+        $("#EventsType3").text(eventArr[3].eventType);
+        
+        eventArr[4] = new eventObj();
+        eventArr[4].eventScope = "GLOBAL";
+        eventArr[4].eventType = "com.adobe.csxs.events.CustomGlobalEventWithoutPayload";
+		eventArr[4].eventListener = function (event) {$("#EventsGreenLightImg4").show();};
+        $("#EventsScope4").text(eventArr[4].eventScope);
+        $("#EventsType4").text(eventArr[4].eventType);
+        
+        eventArr[5] = new eventObj();
+        eventArr[5].eventScope = "GLOBAL";
+        eventArr[5].eventType = "com.adobe.csxs.events.CustomGlobalEventWithPayload";
+		eventArr[5].eventListener = function (event) {$("#EventsGreenLightImg5").show();};
+        $("#EventsScope5").text(eventArr[5].eventScope);
+        $("#EventsType5").text(eventArr[5].eventType);
+        
+        eventArr[6] = new eventObj();
+        eventArr[6].eventScope = "APPLICATION";
+        eventArr[6].eventType = "com.adobe.csxs.events.DocumentAfterActivate";
+		eventArr[6].eventListener = function (event) {$("#EventsGreenLightImg6").show();};
+        $("#EventsScope6").text(eventArr[6].eventScope);
+        $("#EventsType6").text(eventArr[6].eventType);
+        
+        eventArr[7] = new eventObj();
+        eventArr[7].eventScope = "APPLICATION";
+        eventArr[7].eventType = "com.adobe.csxs.events.DocumentAfterDeactivate";
+		eventArr[7].eventListener = function (event) {$("#EventsGreenLightImg7").show();};
+        $("#EventsScope7").text(eventArr[7].eventScope);
+        $("#EventsType7").text(eventArr[7].eventType);
+        
+        eventArr[8] = new eventObj();
+        eventArr[8].eventScope = "APPLICATION";
+        eventArr[8].eventType = "com.adobe.csxs.events.ApplicationActivate";
+		eventArr[8].eventListener = function (event) {$("#EventsGreenLightImg8").show();};
+        $("#EventsScope8").text(eventArr[8].eventScope);
+        $("#EventsType8").text(eventArr[8].eventType);
+        
+        eventArr[9] = new eventObj();
+        eventArr[9].eventScope = "APPLICATION";
+        eventArr[9].eventType = "com.adobe.csxs.events.ApplicationBeforeQuit";
+		eventArr[9].eventListener = function (event) {$("#EventsGreenLightImg9").show();};
+        $("#EventsScope9").text(eventArr[9].eventScope);
+        $("#EventsType9").text(eventArr[9].eventType);
+        
+        var dataEvent = null;
+        eventArr[10] = new eventObj();
+        eventArr[10].eventScope = "APPLICATION";
+        eventArr[10].eventType = "com.adobe.csxs.events.DocumentEdited";
+		eventArr[10].eventListener = function (event) {$("#EventsGreenLightImg10").show(); dataEvent = event; };
+		eventArr[10].data = new Object();
+		eventArr[10].data.attr1 = "first";
+		eventArr[10].data.attr2 = "second";
+		$("#EventsGreenLightImg10").on("mouseover", function(){ alert("event.attr1 = "+ dataEvent.data.attr1 + "\n" + "event.attr2 = "+ dataEvent.data.attr2);});
+
+        $("#EventsScope10").text(eventArr[10].eventScope);
+        $("#EventsType10").text(eventArr[10].eventType);                                                        
+        
+        $("#EventsGreenLightImg0").hide();
+        $("#EventsGreenLightImg1").hide();
+        $("#EventsGreenLightImg2").hide();
+        $("#EventsGreenLightImg3").hide();
+        $("#EventsGreenLightImg4").hide();
+        $("#EventsGreenLightImg5").hide();
+        $("#EventsGreenLightImg6").hide();
+        $("#EventsGreenLightImg7").hide();
+        $("#EventsGreenLightImg8").hide();
+        $("#EventsGreenLightImg9").hide();
+        $("#EventsGreenLightImg10").hide();
+        $("#OMEventGreenLight").hide();
+		
+        function addEventListener(index) {
+            eventArr[index].registered = true;
+            CSLibrary.addEventListener(eventArr[index].eventType, eventArr[index].eventListener);			
+        }
+
+        function removeEventListener(index) {
+            eventArr[index].registered = false;
+            CSLibrary.removeEventListener(eventArr[index].eventType, eventArr[index].eventListener);
+        }
+
+        function dispatchEvent(index) {
+            var event = new CSEvent(eventArr[index].eventType, eventArr[index].eventScope);
+            event.data = eventArr[index].data;
+            CSLibrary.dispatchEvent(event);  
+        }
+
+        $("#EventsCheckBox0").change(function() {
+            if ($("#EventsCheckBox0").attr("checked")) {    
+                addEventListener(0);
+            } else {
+                removeEventListener(0);
+            }
+        });
+        
+        $("#EventsDispatch0").click(function() {
+            dispatchEvent(0);
+        });
+        
+        $("#EventsCheckBox1").change(function() {
+            if ($("#EventsCheckBox1").attr("checked")) {
+                addEventListener(1);
+            } else {
+                removeEventListener(1);
+            }
+        });
+        
+        $("#EventsDispatch1").click(function() {
+            dispatchEvent(1);
+        });
+        
+        $("#EventsCheckBox2").change(function() {
+            if ($("#EventsCheckBox2").attr("checked")) {
+                addEventListener(2);
+            } else {
+                removeEventListener(2);
+            }
+        });
+        
+        $("#EventsDispatch2").click(function() {
+            dispatchEvent(2);
+        });        
+        
+        $("#EventsCheckBox3").change(function() {
+            if ($("#EventsCheckBox3").attr("checked")) {
+                addEventListener(3);
+            } else {
+                removeEventListener(3);
+            }
+        });
+        
+        $("#EventsDispatch3").click(function() {
+            dispatchEvent(3);
+        });        
+        
+        $("#EventsCheckBox4").change(function() {
+            if ($("#EventsCheckBox4").attr("checked")) {
+                addEventListener(4);
+            } else {
+                removeEventListener(4);
+            }
+        });
+        
+        $("#EventsDispatch4").click(function() {
+            dispatchEvent(4);
+        });        
+        
+        $("#EventsCheckBox5").change(function() {
+            if ($("#EventsCheckBox5").attr("checked")) {
+                addEventListener(5);
+            } else {
+                removeEventListener(5);
+            }
+        });
+        
+        $("#EventsDispatch5").click(function() {
+            dispatchEvent(5);
+        });        
+        
+        $("#EventsCheckBox6").change(function() {
+            if ($("#EventsCheckBox6").attr("checked")) {
+                addEventListener(6);
+            } else {
+                removeEventListener(6);
+            }
+        });
+        
+        $("#EventsDispatch6").click(function() {
+            dispatchEvent(6);
+        });        
+        
+        $("#EventsCheckBox7").change(function() {
+            if ($("#EventsCheckBox7").attr("checked")) {
+                addEventListener(7);
+            } else {
+                removeEventListener(7);
+            }
+        });
+        
+        $("#EventsDispatch7").click(function() {
+            dispatchEvent(7);
+        });        
+        
+        $("#EventsCheckBox8").change(function() {
+            if ($("#EventsCheckBox8").attr("checked")) {
+                addEventListener(8);
+            } else {
+                removeEventListener(8);
+            }
+        });
+        
+        $("#EventsDispatch8").click(function() {
+            dispatchEvent(8);
+        });
+
+        $("#EventsCheckBox9").change(function() {
+            if ($("#EventsCheckBox9").attr("checked")) {
+                addEventListener(9);
+            } else {
+                removeEventListener(9);
+            }
+        });
+        
+        $("#EventsDispatch9").click(function() {
+            dispatchEvent(9);
+        });
+        
+        $("#EventsCheckBox10").change(function() {
+            if ($("#EventsCheckBox10").attr("checked")) {
+                addEventListener(10);
+            } else {
+                removeEventListener(10);
+            }
+        });
+        
+        $("#EventsDispatch10").click(function() {
+            dispatchEvent(10);
+        });
+        
+        $("#EventsRegisterforAll").click(function() {
+            for (var i = 0; i < eventArr.length; i++) {
+                CSLibrary.addEventListener(eventArr[i].eventType, eventArr[i].eventListener);
+                $("#EventsCheckBox" + i).attr("checked", i);
+                eventArr[i].registered = true;
+            }
+        });            
+        
+        $("#EventsUnregisterforAll").click(function() {
+            for (var i = 0; i < eventArr.length; i++) {
+                CSLibrary.removeEventListener(eventArr[i].eventType, eventArr[i].eventListener);
+                $("#EventsCheckBox" + i).removeAttr("checked");
+                eventArr[i].registered = false;
+            }
+        });        
+        
+        $("#EventsDispatchAll").click(function() {
+            for (var i = 0; i < eventArr.length; i++) {
+                var event = new CSEvent(eventArr[i].eventType, eventArr[i].eventScope);
+	            event.data = eventArr[i].data;
+                CSLibrary.dispatchEvent(event);                
+            }
+        });        
+        
+        $("#EventsDispatchRegistered").click(function() {
+            for (var i = 0; i < eventArr.length; i++) {
+                if (eventArr[i].registered) {
+                    var event = new CSEvent(eventArr[i].eventType, eventArr[i].eventScope);
+                    CSLibrary.dispatchEvent(event);    
+                }
+            }
+        });    
+        
+        $("#EventsClearReceivedEvents").click(function() {
+            for (var i = 0; i < eventArr.length; i++) {
+                document.getElementById("EventsGreenLightImg" + i).style.display = "none";
+            }
+            dataEvent = null;
+        });        
+        
+        // OMEvent dialog
+        $("#OMEventDiv").hide();
+        var eventType;
+        var eventScope = "GLOBAL";
+        var addPayload = false;
+        var eventPayload;
+        
+        function OMEventListener() {
+            $("#OMEventReceivedLabel").show(); $("#OMEventGreenLight").show();	
+            CSLibrary.removeEventListener(eventType, OMEventListener);
+        }
+		
+        function OMEventDivDispatch() {
+            eventType = $("#EventType").val();
+            if(addPayload) {
+                eventPayload = $("#AddpayloadTextArea").val();    
+            } else
+            {
+                eventPayload = "";
+            }
+            
+            CSLibrary.addEventListener(eventType, OMEventListener);
+            var event = new CSEvent(eventType, eventScope);
+            event.data = eventPayload;
+            CSLibrary.dispatchEvent(event);
+        }
+        
+        $("#RadioGroupGlobal").change(function(){
+            eventScope = "GLOBAL";
+        });
+        
+        $("#RadioGroupApplication").change(function(){
+            eventScope = "APPLICATION";
+        });
+        
+        $("#Addpayload").change(function(){
+            if( "checked" == $("#Addpayload").attr("checked")) {
+                addPayload = true;
+            } else {
+                addPayload = false;
+            }
+        });
+        
+        $("#EventsAddCustomEvent").click(function() {
+            $("#OMEventGreenLight").hide();
+            
+            // create OMEvent dialog
+            $("#OMEventDiv").dialog({
+                autoOpen: true,
+                bgiframe: true,
+                width: 420,
+                modal:true,  
+                title: "Operational Messages Event",
+                
+                buttons: {
+                      "Close": function() {
+                        $(this).dialog("close");},
+                      "Dispatch": function() {
+                        OMEventDivDispatch();
+                        $(this).dialog("close");}
+                }
+            });
+            $("#AddpayloadTextArea").html(characters);
+            
+            // display
+            $("#OMEventDiv").dialog("open");
+        });
+    }); 
+</script>
+
+<style type="text/css">
+#apDiv1 {
+    position: absolute;
+    width: 619px;
+    height: 48px;
+    z-index: 1;
+}
+
+#apDiv2 {
+    position: absolute;
+    width: 755px;
+    height: 47px;
+    z-index: 1;
+    left: 16px;
+}
+
+#apDiv3 {
+    position: absolute;
+    width: 361px;
+    height: 23px;
+    z-index: 2;
+    left: 19px;
+    top: 42px;
+}
+
+#apDiv4 {
+    position: absolute;
+    width: 756px;
+    height: 473px;
+    z-index: 3;
+    left: 20px;
+    top: 71px;
+    color:#FFF;
+}
+
+#apDiv5 {
+    position: absolute;
+    width: 749px;
+    height: 34px;
+    z-index: 4;
+    left: 20px;
+    top: 405px;
+}
+</style>
+</head>
+
+<body>
+<!-- Buttons div begin -->  
+<div id="apDiv2">
+  <table width="751" border="0">
+    <tr>
+      <td width="74" valign="bottom"><label style="color: #FFF"><strong>Operations:</strong></label>&nbsp;</td>
+      <td width="101"><form id="form1" name="form1" method="post" action="">
+        <input type="button" name="EventsRegisterforAll" id="EventsRegisterforAll" value="Register for All"/>
+      </form></td>
+      
+      <td width="113"><form id="form2" name="form2" method="post" action="">
+        <input type="button" name="EventsUnregisterforAll" id="EventsUnregisterforAll" value="Unregister for All"/>
+      </form></td>
+      
+      <td width="82"><form id="form3" name="form3" method="post" action="">
+        <input type="button" name="EventsDispatchAll" id="EventsDispatchAll" value="Dispatch All" />
+      </form></td>
+      
+      <td width="129"><form id="form4" name="form4" method="post" action="">
+        <input type="button" name="EventsDispatchRegistered" id="EventsDispatchRegistered" value="Dispatch Registered"/>
+      </form></td>
+      
+      <td width="142"><form id="form5" name="form5" method="post" action="">
+        <input type="button" name="EventsClearReceivedEvents" id="EventsClearReceivedEvents" value="Clear Received Events"/>
+      </form></td>
+    </tr>
+  </table>
+<!-- Buttons div end -->  
+
+<!-- Events div begin -->
+</div>
+<div id="apDiv3"><label style="color: #FFF"><strong>Events:</strong></label>
+</div>
+
+<div id="apDiv4" style="overflow:auto; height:350px; width:auto">
+  <table width="752" border="1" id="eventsTable">
+    <tr>
+      <th width="42" scope="col">Scope</th>
+      <th width="34" scope="col">Type</th>
+      <th width="76" scope="col">Registered</th>
+      <th width="61" scope="col">Dispatch</th>
+      <th width="455" scope="col">Received Events*</th>
+    </tr>
+    
+    <tr>
+      <td><label id="EventsScope0"></label></td>
+      <td><label id="EventsType0"></label></td>
+      <td align="center"><form id="form7" name="form7" method="post" action="">
+        <input type="checkbox" name="EventsCheckBox0" id="EventsCheckBox0"/>
+        <label for="EventsCheckBox0"></label>
+      </form></td>
+      <td><form id="form23" name="form23" method="post" action="">
+        <input type="button" name="EventsDispatch0" id="EventsDispatch0" value="Dispatch" />
+      </form></td>
+      <td align="center"><form id="form24" name="form24" method="post" action="">
+        <input type="image" name="EventsGreenLightImg0" id="EventsGreenLightImg0" src="../img/greenLED.png"/>
+      </form></td>
+    </tr>
+    
+    <tr>
+      <td><label id="EventsScope1"></label></td>
+      <td><label id="EventsType1"></label></td>
+      <td align="center"><form id="form8" name="form8" method="post" action="">
+        <input type="checkbox" name="EventsCheckBox1" id="EventsCheckBox1" />
+        <label for="EventsCheckBox1"></label>
+      </form></td>
+      <td><input type="button" name="EventsDispatch1" id="EventsDispatch1" value="Dispatch" /></td>
+      <td align="center"><input type="image" name="EventsGreenLightImg1" id="EventsGreenLightImg1" src="../img/greenLED.png" /></td>
+    </tr>
+    
+    <tr>
+      <td><label id="EventsScope2"></label></td>
+      <td><label id="EventsType2"></label></td>
+      <td align="center"><form id="form9" name="form9" method="post" action="">
+        <input type="checkbox" name="EventsCheckBox2" id="EventsCheckBox2" />
+        <label for="EventsCheckBox2"></label>
+      </form></td>
+      <td><input type="button" name="EventsDispatch2" id="EventsDispatch2" value="Dispatch" /></td>
+      <td align="center"><input type="image" name="EventsGreenLightImg2" id="EventsGreenLightImg2" src="../img/greenLED.png" /></td>
+    </tr>
+    
+    <tr>
+      <td><label id="EventsScope3"></label></td>
+      <td><label id="EventsType3"></label></td>
+      <td align="center"><form id="form10" name="form10" method="post" action="">
+        <input type="checkbox" name="EventsCheckBox3" id="EventsCheckBox3" />
+        <label for="EventsCheckBox3"></label>
+      </form></td>
+      <td><input type="button" name="EventsDispatch3" id="EventsDispatch3" value="Dispatch" /></td>
+      <td align="center"><input type="image" name="EventsGreenLightImg3" id="EventsGreenLightImg3" src="../img/greenLED.png" /></td>
+    </tr>
+    
+    <tr>
+      <td><label id="EventsScope4"></label></td>
+      <td><label id="EventsType4"></label></td>
+      <td align="center"><form id="form11" name="form11" method="post" action="">
+        <input type="checkbox" name="EventsCheckBox4" id="EventsCheckBox4" />
+        <label for="EventsCheckBox4"></label>
+      </form></td>
+      <td><input type="button" name="EventsDispatch4" id="EventsDispatch4" value="Dispatch" /></td>
+      <td align="center"><input type="image" name="EventsGreenLightImg4" id="EventsGreenLightImg4" src="../img/greenLED.png" /></td>
+    </tr>
+    
+    <tr>
+      <td><label id="EventsScope5"></label></td>
+      <td><label id="EventsType5"></label></td>
+      <td align="center"><form id="form12" name="form12" method="post" action="">
+        <input type="checkbox" name="EventsCheckBox5" id="EventsCheckBox5" />
+        <label for="EventsCheckBox5"></label>
+      </form></td>
+      <td><input type="button" name="EventsDispatch5" id="EventsDispatch5" value="Dispatch" /></td>
+      <td align="center"><input type="image" name="EventsGreenLightImg5" id="EventsGreenLightImg5" src="../img/greenLED.png" /></td>
+    </tr>
+    
+    <tr>
+      <td><label id="EventsScope6"></label></td>
+      <td><label id="EventsType6"></label></td>
+      <td align="center"><form id="form13" name="form13" method="post" action="">
+        <input type="checkbox" name="EventsCheckBox6" id="EventsCheckBox6" />
+        <label for="EventsCheckBox6"></label>
+      </form></td>
+      <td><input type="button" name="EventsDispatch6" id="EventsDispatch6" value="Dispatch" /></td>
+      <td align="center"><input type="image" name="EventsGreenLightImg6" id="EventsGreenLightImg6" src="../img/greenLED.png" /></td>
+    </tr>
+    
+    <tr>
+      <td><label id="EventsScope7"></label></td>
+      <td><label id="EventsType7"></label></td>
+      <td align="center"><form id="form14" name="form14" method="post" action="">
+        <input type="checkbox" name="EventsCheckBox7" id="EventsCheckBox7" />
+        <label for="EventsCheckBox7"></label>
+      </form></td>
+      <td><input type="button" name="EventsDispatch7" id="EventsDispatch7" value="Dispatch" /></td>
+      <td align="center"><input type="image" name="EventsGreenLightImg7" id="EventsGreenLightImg7" src="../img/greenLED.png" /></td>
+    </tr>
+    
+    <tr>
+      <td><label id="EventsScope8"></label></td>
+      <td><label id="EventsType8"></label></td>
+      <td align="center"><form id="form15" name="form15" method="post" action="">
+        <input type="checkbox" name="EventsCheckBox8" id="EventsCheckBox8" />
+        <label for="EventsCheckBox8"></label>
+      </form></td>
+      <td><input type="button" name="EventsDispatch8" id="EventsDispatch8" value="Dispatch" /></td>
+      <td align="center"><input type="image" name="EventsGreenLightImg8" id="EventsGreenLightImg8" src="../img/greenLED.png" /></td>
+    </tr>
+    
+    <tr>
+      <td><label id="EventsScope9"></label></td>
+      <td><label id="EventsType9"></label></td>
+      <td align="center"><form id="form16" name="form16" method="post" action="">
+        <input type="checkbox" name="EventsCheckBox9" id="EventsCheckBox9" />
+        <label for="EventsCheckBox9"></label>
+      </form></td>
+      <td><input type="button" name="EventsDispatch9" id="EventsDispatch9" value="Dispatch" /></td>
+      <td align="center"><input type="image" name="EventsGreenLightImg9" id="EventsGreenLightImg9" src="../img/greenLED.png" /></td>
+    </tr>
+    
+    <tr>
+      <td><label id="EventsScope10"></label></td>
+      <td><label id="EventsType10"></label></td>
+      <td align="center"><form id="form17" name="form17" method="post" action="">
+        <input type="checkbox" name="EventsCheckBox10" id="EventsCheckBox10" />
+        <label for="EventsCheckBox10"></label>
+      </form></td>
+      <td><input type="button" name="EventsDispatch10" id="EventsDispatch10" value="Dispatch" /></td>
+      <td align="center"><input type="image" name="EventsGreenLightImg10" id="EventsGreenLightImg10" src="../img/greenLED.png" /></td>
+    </tr>
+  </table>
+</div>
+<!-- Events div end -->
+
+<!-- Add Custom Event div begin -->
+<div id="apDiv5">
+  <hr />
+  <table width="737" border="0">
+    <tr>
+      <th width="146" scope="col"><form id="form25" name="form25" method="post" action="">
+        <input type="button" name="EventsAddCustomEvent" id="EventsAddCustomEvent" value="Dispatch Custom Event"/>
+      </form></th>
+      <th width="355" scope="col" style="color: #FFF">*Developers can also dispatch a custom event with specified scope and type.</th>
+      <th width="99" scope="col" style="color: #FFF"><label id="OMEventReceivedLabel">Received:  </label>&nbsp;</th>
+      <th width="119" scope="col" style="color: #FFF"><form id="form6" name="form6" method="post" action="">
+        <input type="image" name="OMEventGreenLight" id="OMEventGreenLight" src="../img/greenLED.png" />
+      </form></th>
+    </tr>
+  </table>
+  <hr />
+</div>
+<!-- Add Custom Event div end -->
+
+<!-- Add Custom Event dialog div begin -->
+<div id="OMEventDiv" style="font-size:14px;">
+  <label><table width="380" border="0">
+    <tr>
+      <td width="380">This dialog enables developers to add a custom event to the list.</td>
+    </tr>
+  </table>
+  
+  <table width="200" border="0">
+    <tr>
+      <td><label></label>
+      &nbsp;Scope:</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td><form id="form1" name="form1" method="post" action="">
+        <table width="200">
+          <tr>
+            <td><label>
+              <input type="radio" name="RadioGroup1" value="radio" id="RadioGroupGlobal" checked="checked"/>
+              global
+            </label></td>
+            <td><input type="radio" name="RadioGroup1" value="radio" id="RadioGroupApplication" />
+            application</td>
+          </tr>
+        </table>
+      </form></td>
+      <td>&nbsp;</td>
+    </tr>
+  </table>
+  
+  <table width="380" border="0">
+    <tr>
+      <td width="82"><label>Event Type:</label>&nbsp;</td>
+      <td width="288"><form id="form2" name="form2" method="post" action="">
+        <label for="EventType"></label>
+        <textarea name="EventType" id="EventType" cols="40" rows="1">com.adobe.csxs.events.MyCustomEvent</textarea>
+      </form></td>
+    </tr>
+  </table>
+  
+  <table width="200" border="0">
+    <tr>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td><form id="form3" name="form3" method="post" action="">
+        <input type="checkbox" name="Addpayload" id="Addpayload" />
+        <label for="Addpayload"></label>
+      Add payload:
+      </form></td>
+    </tr>
+    <tr>
+      <td><form id="form4" name="form4" method="post" action="">
+        <label for="AddpayloadTextArea"></label>
+        <textarea name="AddpayloadTextArea" id="AddpayloadTextArea" cols="45" rows="3"></textarea>
+      </form></td>
+    </tr>
+  </table>
+</div>
+<!-- Add Custom Event dialog div begin -->
+</body>
+</html>
