@@ -24,3 +24,5 @@ Showcases most features and capabilities of CEP 5, including events, video, data
 [Websockets](https://github.com/Adobe-CEP/Samples/tree/master/Websocket) demonstrates using Websockets in an extension. Requires CEP 4 and Photoshop CC, Illustrator CC or Premiere Pro CC.
 
 [XMP Sample Panel](https://github.com/Adobe-CEP/Samples/tree/master/XmpSamplePanel) demonstrates manipulating XMP metadata in CC.Next products. Requires CEP 5 and Premiere Pro.Next, InDesign CC.Next, Photoshop CC.Next or Illustrator CC.Next
+
+[WebGL with three.js (Contributed by Davide Deraedt)](https://github.com/Adobe-CEP/Samples/tree/master/webgl_threejs)
