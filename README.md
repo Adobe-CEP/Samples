@@ -3,7 +3,7 @@ Sample extensions
 
 These samples demonstrate techniques for building an extension with an HTML5 UI and behavior implemented in JavaScript.
 
-You must use CEP 5.0 for extensions that target the CC2014 version of the host application. You must have the host application installed to run the extension. Supported host apps include the CC2014 versions of: Dreamweaver, Flash Pro, InDesign, Illustrator, InCopy, Photoshop, Premiere Pro, Prelude or After Effects
+You must use CEP 5.0 for extensions that target the CC2014 version of the host application. You must have the host application installed to run the extension. Supported host apps include the CC2014 versions of: Dreamweaver, Flash Pro, InDesign, Illustrator, InCopy, Photoshop, Premiere Pro, Prelude, and After Effects
 
 (These samples are being developed. Some of them use CEP 4 and the CC version of the host app. Requirements are listed.)
 
@@ -27,19 +27,19 @@ Showcases most features and capabilities of CEP 5, including events, video, data
 
 * [Trello](https://github.com/Adobe-CEP/Samples/tree/master/Trello) : Demonstrates loading an external website in an iFrame.
 
-		Requires CEP 4 and Illustrator CC, Photoshop CC or Premiere Pro CC
+		Requires CEP 4 and CC version of Photoshop, Illustrator, or Premiere Pro
 
 * [Twitter](https://github.com/Adobe-CEP/Samples/tree/master/Twitter) : Demonstrates how to connect to Twitter and read data that manipulates an Illustrator document. 
 
-		Requires CEP 4 and Illustrator CC.
+		Requires CEP 4 and Illustrator CC
 
 * [UI Showcase](https://github.com/Adobe-CEP/Samples/tree/master/UI_Showcase) : Demonstrates using common JavaScript UI frameworks in CEP extensions. 
 
-		Requires CEP 4 and Photoshop CC, Illustrator CC or Premiere Pro CC.
+		Requires CEP 4 and CC version of Photoshop, Illustrator, or Premiere Pro
 
 * [Websockets](https://github.com/Adobe-CEP/Samples/tree/master/Websocket) : Demonstrates using web sockets in an extension. 
 
-		Requires CEP 4 and Photoshop CC, Illustrator CC or Premiere Pro CC.
+		Requires CEP 4 and CC version of Photoshop, Illustrator, or Premiere Pro
 
 * [XMP Sample Panel](https://github.com/Adobe-CEP/Samples/tree/master/XmpSamplePanel) : Demonstrates manipulating XMP metadata in CC2014 hosts. 
 
