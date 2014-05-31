@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ExtensionManifest Version="4.0" ExtensionBundleId="com.adobe.persistent" ExtensionBundleVersion="0.0.1"
+                   ExtensionBundleName="PersistentPanel">
+    <ExtensionList>
+        <Extension Id="com.adobe.persistent" Version="0.0.1" />
+    </ExtensionList>
+    <ExecutionEnvironment>
+        <HostList>
+            <Host Name="PHXS" Version="[14.2,14.9]" />
+            <Host Name="PHSP" Version="[14.2,14.9]" />
+
+        </HostList>
+        <LocaleList>
+            <Locale Code="All" />
+        </LocaleList>
+        <RequiredRuntimeList>
+            <RequiredRuntime Name="CSXS" Version="4.0" />
+        </RequiredRuntimeList>
+    </ExecutionEnvironment>
+    <DispatchInfoList>
+        <Extension Id="com.adobe.persistent">
+            <DispatchInfo >
+                <Resources>
+                    <MainPath>./index.html</MainPath>
+                </Resources>
+                <Lifecycle>
+                    <AutoVisible>true</AutoVisible>
+                </Lifecycle>
+                <UI>
+                    <Type>Panel</Type>
+                    <Menu>PersistentPanel</Menu>
+                    <Geometry>
+                        <Size>
+                            <Height>500</Height>
+                            <Width>300</Width>
+                        </Size>
+                        <MinSize>
+                            <Height>250</Height>
+                            <Width>250</Width>
+                        </MinSize>
+                    </Geometry>
+                </UI>
+            </DispatchInfo>
+        </Extension>
+    </DispatchInfoList>
+</ExtensionManifest>
