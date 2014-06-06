@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ExtensionManifest Version="4.0" ExtensionBundleId="com.example.XmpSamplePanel" ExtensionBundleVersion="1.0.0"
+		ExtensionBundleName="XmpSamplePanel" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<ExtensionList>
+		<Extension Id="com.example.XmpSamplePanel.extension" Version="1.0" />
+	</ExtensionList>
+	<ExecutionEnvironment>
+		<HostList>
+			<Host Name="ILST" Version="[17.0,17.9]" />
+			<Host Name="PHXS" Version="[14.0,14.9]" />
+			<Host Name="PHSP" Version="[14.0,14.9]" />
+			<Host Name="IDSN" Version="[9.1,10.0]" />
+			<Host Name="PPRO" Version="[8.0,9.0]" />
+		</HostList>
+		<LocaleList>
+			<Locale Code="All" />
+		</LocaleList>
+		<RequiredRuntimeList>
+			<RequiredRuntime Name="CSXS" Version="4.0" />
+
+		</RequiredRuntimeList>
+	</ExecutionEnvironment>
+	<DispatchInfoList>
+		<Extension Id="com.example.XmpSamplePanel.extension">
+			<DispatchInfo >
+				<Resources>
+				<MainPath>./index.html</MainPath>
+				<ScriptPath>./jsx/XmpSamplePanel.jsx</ScriptPath>
+				</Resources>
+				<Lifecycle>
+					<AutoVisible>true</AutoVisible>
+				</Lifecycle>
+				<UI>
+					<Type>ModalDialog</Type>
+					<Menu>XmpSamplePanel</Menu>
+					<Geometry>
+						<Size>
+							<Height>540</Height>
+							<Width>600</Width>
+						</Size>
+					</Geometry>
+				</UI>
+			</DispatchInfo>
+		</Extension>
+	</DispatchInfoList>
+</ExtensionManifest>
