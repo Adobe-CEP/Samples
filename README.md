@@ -1,11 +1,12 @@
 Sample extensions
 =======
 
-These samples demonstrate techniques for building an extension with an HTML5 UI and behavior implemented in JavaScript. Y
+These samples demonstrate techniques for building an extension with an HTML5 UI and behavior implemented in JavaScript. 
 
-These samples are being developed. Some of them use CEP 4 and the CC version of the host app, and others are for CEP 5 and the upcoming  CC2014 version of the host application. ou must have the host application installed to run an extension.  Requirements are listed.
+These samples are still in development. Some of them use CEP 4 and the CC2013 version of the host app, and others are for CEP 5 and the new CC2014 version of the host application. You must have the host application installed to run an extension. Requirements for each sample are listed.
 
-The CC2014 release is not yet publicly available.  Supported host apps for CEP 5 include the CC2014 versions of: Dreamweaver, Flash Pro, InDesign, Illustrator, InCopy, Photoshop, Premiere Pro, Prelude, and After Effects. 
+* Supported host apps for CEP 5 include the CC2014 versions of: Dreamweaver, Flash Pro, InDesign, Illustrator, InCopy, Photoshop, Premiere Pro, Prelude, and After Effects. 
+* Support for the Flash/ActionScript extension model is deprecated in all apps, and has been removed from Photoshop CC2014.
 
 ----
 
