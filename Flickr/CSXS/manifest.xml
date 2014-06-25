@@ -5,8 +5,8 @@
 	</ExtensionList>
 	<ExecutionEnvironment>
 		<HostList>
-			<Host Name="PHSP" Version="[14.0,14.9]"/>
-			<Host Name="PHXS" Version="[14.0,14.9]"/>
+			<Host Name="PHSP" Version="[14.0,15.9]"/>
+			<Host Name="PHXS" Version="[14.0,15.9]"/>
 		</HostList>
 		<LocaleList>
 			<Locale Code="All"/>
