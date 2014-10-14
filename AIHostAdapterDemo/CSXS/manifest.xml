@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<ExtensionManifest 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ExtensionBundleId="com.adobe.cep.aihostadapterdemo" ExtensionBundleVersion="1.0.0" Version="5.0">
+  <Author>Timothy Brand-Spencer</Author>
+  <ExtensionList>
+    <Extension Id="com.adobe.cep.aihostadapterdemo.panel" Version="1.0.0"/>
+  </ExtensionList>
+  <ExecutionEnvironment>
+    <HostList>
+      <Host Name="ILST" Version="[18.0,18.9]"/>
+    </HostList>
+    <LocaleList>
+      <Locale Code="All"/>
+    </LocaleList>
+    <RequiredRuntimeList>
+      <RequiredRuntime Name="CSXS" Version="5.0"/>
+    </RequiredRuntimeList>
+  </ExecutionEnvironment>
+  <DispatchInfoList>
+    <Extension Id="com.adobe.cep.aihostadapterdemo.panel">
+      <DispatchInfo>
+        <Resources>
+          <MainPath>./html/index.html</MainPath>
+          <ScriptPath/>
+          <CEFCommandLine/>
+        </Resources>
+        <Lifecycle>
+          <AutoVisible>true</AutoVisible>
+        </Lifecycle>
+        <UI>
+          <Type>Panel</Type>
+          <Menu>AI Host Adapter Demo</Menu>
+          <Geometry>
+            <Size>
+              <Height>400</Height>
+              <Width>350</Width>
+            </Size>
+            <MinSize>
+              <Height>400</Height>
+              <Width>350</Width>
+            </MinSize>
+          </Geometry>
+          <Icons/>
+        </UI>
+      </DispatchInfo>
+    </Extension>
+  </DispatchInfoList>
+</ExtensionManifest>
