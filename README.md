@@ -52,3 +52,8 @@ Showcases most features and capabilities of CEP 5, including events, video, data
 * [WebGL with three.js (Contributed by Davide Deraedt)](https://github.com/Adobe-CEP/Samples/tree/master/webgl_threejs) : (description TBD)
 
 		Requires (TBD)
+
+* [AIHostAdapterDemo](https://github.com/Adobe-CEP/Samples/tree/master/AIHostAdapterDemo) : 
+Demonstrates how to use the host adapter for Illustrator, to enable your HTML extension to listen for native events. The sample shows how to add an event listener for a new document event, which gets triggered upon a user creating a new document.
+
+		Requires native HostAdapter plug-ins, included in the sample.

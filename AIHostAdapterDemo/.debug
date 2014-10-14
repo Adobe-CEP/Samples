@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<ExtensionList>
+  <Extension Id="com.adobe.cep.aihostadapterdemo.panel">
+    <HostList>
+      <Host Name="ILST" Port="8020"/>
+    </HostList>
+  </Extension>
+</ExtensionList>
