@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<ExtensionManifest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ExtensionBundleId="ExchangeExample" ExtensionBundleVersion="1.0" Version="5.0">
+    <ExtensionList>
+        <Extension Id="ExchangeExample.panel" Version="1.0"/>
+    </ExtensionList>
+    <ExecutionEnvironment>
+        <HostList>
+            <Host Name="DRWV" Version="12.0"/>
+            <Host Name="FLPR" Version="12.0"/>
+            <Host Name="FWKS" Version="12.0"/>
+            <Host Name="IDSN" Version="8.0"/>
+            <Host Name="AICY" Version="8.0"/>
+            <Host Name="ILST" Version="16.0"/>
+            <Host Name="PHSP" Version="13.0"/>
+            <Host Name="PHXS" Version="13.0"/>
+            <Host Name="PPRO" Version="6.0"/>
+            <Host Name="CNTB" Version="6.1"/>
+            <Host Name="CPTV" Version="6.0"/>
+            <Host Name="AUDT" Version="5.0"/>
+            <Host Name="PRLD" Version="2.0"/>
+            <Host Name="AEFT" Version="13.0"/>
+        </HostList>
+        <LocaleList>
+            <Locale Code="All"/>
+        </LocaleList>
+        <RequiredRuntimeList>
+            <RequiredRuntime Name="CSXS" Version="5.0"/>
+        </RequiredRuntimeList>
+    </ExecutionEnvironment>
+    <DispatchInfoList>
+        <Extension Id="ExchangeExample.panel">
+            <DispatchInfo>
+                <Resources>
+                    <MainPath>./index.html</MainPath>
+                </Resources>
+                <Lifecycle>
+                    <AutoVisible>true</AutoVisible>
+                </Lifecycle>
+                <UI>
+                    <Type>Panel</Type>
+                    <Menu>Exchange Example</Menu>
+                    <Geometry>
+                        <Size>
+                            <Height>300</Height>
+                            <Width>300</Width>
+                        </Size>
+                        <MaxSize>
+                            <Height>300</Height>
+                            <Width>300</Width>
+                        </MaxSize>
+                        <MinSize>
+                            <Height>300</Height>
+                            <Width>300</Width>
+                        </MinSize>
+                    </Geometry>					
+                </UI>
+            </DispatchInfo>
+        </Extension>
+    </DispatchInfoList>
+</ExtensionManifest>

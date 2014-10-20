@@ -39,10 +39,10 @@ Win: regedit > HKEY_CURRENT_USER/Software/Adobe/CSXS.5
 
 ----
 
-* [CEP HTML Test Extension](https://github.com/Adobe-CEP/Samples/tree/master/CEP_HTML_Test_Extension_5.0) : 
+* [CEP HTML Test Extension](https://github.com/Adobe-CEP/Samples/tree/master/CEP_HTML_Test_Extension) : 
 Showcases most features and capabilities of CEP 5, including events, video, database interaction via Node, native APIs, ExternalObject, HTML FlyOut menus and lots of other good stuff!
 
-		Requires CEP 5 and a supported CC2014 host app
+		Requires CEP 5.2 and a supported CC2014 host app
 
 * [Collage](https://github.com/Adobe-CEP/Samples/tree/master/Collage) : Demonstrates the use of Node.js file I/O, CEP file I/O, Progress Meter, keeping UI responsive. 
 
@@ -59,3 +59,7 @@ Showcases most features and capabilities of CEP 5, including events, video, data
 * [WebGL with three.js (Contributed by Davide Deraedt)](https://github.com/Adobe-CEP/Samples/tree/master/webgl_threejs) : (description TBD)
 
 		Requires (TBD)
+
+*  [ExchangeExample](https://github.com/Adobe-CEP/Samples/tree/master/ExchangeExample) : Demonstrates using the new Exchange APIs in a CEP 5 extension. Please refer to the exchangeWorkflows.js file for an example on how to interact with the Exchange APIs.
+
+		Requires CEP 5.2, CC2014 product version and Creative Cloud Desktop client to be installed.
