@@ -14,12 +14,38 @@ The samples provided are unsigned so this will cause the the signature check (bu
 Mac: /Users/<username>/Library/Preferences/com.adobe.CSXS.5.plist
 Win: regedit > HKEY_CURRENT_USER/Software/Adobe/CSXS.5
 ```
-
 ----
+## Requirements
+
+### CEP 5 extensions
+
+* [WebGL with three.js (Contributed by Davide Deraedt)](https://github.com/Adobe-CEP/Samples/tree/master/webgl_threejs) : (description TBD)
+
+		Requires CEP 5 and Photoshop CC2014
+
+*  [RSSReader](https://github.com/Adobe-CEP/Samples/tree/master/RSSReader) : Demonstrates using 3rd party NPM modules in a CEP 5 extension.
+
+		Requires CEP 5 and CC2014 version of InDesign/InCopy, Illustrator, or Photoshop
+
+*  [ExchangeExample](https://github.com/Adobe-CEP/Samples/tree/master/ExchangeExample) : Demonstrates using the new Exchange APIs in a CEP 5 extension. Please refer to the exchangeWorkflows.js file for an example on how to interact with the Exchange APIs.
+
+		Requires CEP 5.2, CC2014 product version and Creative Cloud Desktop client installed.
+
+* [Collage](https://github.com/Adobe-CEP/Samples/tree/master/Collage) : Demonstrates the use of Node.js file I/O, CEP file I/O, Progress Meter, keeping UI responsive. 
+
+		Requires CEP 5 and Photoshop CC2014
+
+* [CEP HTML Test Extension](https://github.com/Adobe-CEP/Samples/tree/master/CEP_HTML_Test_Extension) : 
+Showcases most features and capabilities of CEP 5, including events, video, database interaction via Node, native APIs, ExternalObject, HTML FlyOut menus and lots of other good stuff!
+
+		Requires CEP 5.2 and a supported CC2014 host app
+
+### CEP 4 extensions
+Although these extensions are initially setup for CEP 4, you can adjust the product version targeted by modifying the range inside the `HostList` element of the `CSXS/manifest.xml` file.
 
 * [Flickr](https://github.com/Adobe-CEP/Samples/tree/master/Flickr) : Demonstrates connecting and retrieving assets from a Cloud service (Flickr in this case). 
 
-		Requires CEP 4 and Photoshop CC
+		Requires a minimum version of CEP 4 and Photoshop CC
 
 * [Trello](https://github.com/Adobe-CEP/Samples/tree/master/Trello) : Demonstrates loading an external website in an iFrame.
 
@@ -37,29 +63,6 @@ Win: regedit > HKEY_CURRENT_USER/Software/Adobe/CSXS.5
 
 		Requires CEP 4 and CC version of Photoshop, Illustrator, or Premiere Pro
 
-----
-
-* [CEP HTML Test Extension](https://github.com/Adobe-CEP/Samples/tree/master/CEP_HTML_Test_Extension) : 
-Showcases most features and capabilities of CEP 5, including events, video, database interaction via Node, native APIs, ExternalObject, HTML FlyOut menus and lots of other good stuff!
-
-		Requires CEP 5.2 and a supported CC2014 host app
-
-* [Collage](https://github.com/Adobe-CEP/Samples/tree/master/Collage) : Demonstrates the use of Node.js file I/O, CEP file I/O, Progress Meter, keeping UI responsive. 
-
-		Requires CEP 5 and Photoshop CC2014
-
 * [XMP Sample Panel](https://github.com/Adobe-CEP/Samples/tree/master/XmpSamplePanel) : Demonstrates manipulating XMP metadata in CC2014 hosts. 
 
-		Requires CEP 5 and CC2014 version of Premiere Pro, InDesign, Photoshop, or Illustrator
-		
-*  [RSSReader](https://github.com/Adobe-CEP/Samples/tree/master/RSSReader) : Demonstrates using 3rd party NPM modules in a CEP 5 extension.
-
-		Requires CEP 5 and CC2014 version of InDesign/InCopy, Illustrator, or Photoshop
-
-* [WebGL with three.js (Contributed by Davide Deraedt)](https://github.com/Adobe-CEP/Samples/tree/master/webgl_threejs) : (description TBD)
-
-		Requires (TBD)
-
-*  [ExchangeExample](https://github.com/Adobe-CEP/Samples/tree/master/ExchangeExample) : Demonstrates using the new Exchange APIs in a CEP 5 extension. Please refer to the exchangeWorkflows.js file for an example on how to interact with the Exchange APIs.
-
-		Requires CEP 5.2, CC2014 product version and Creative Cloud Desktop client to be installed.
+		Requires CEP 4 and CC version of Premiere Pro, InDesign, Photoshop, or Illustrator
