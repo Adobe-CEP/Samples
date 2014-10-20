@@ -8,6 +8,13 @@ These samples are still in development. Some of them use CEP 4 and the CC2013 ve
 * Supported host apps for CEP 5 include the CC2014 versions of: Dreamweaver, Flash Pro, InDesign, Illustrator, InCopy, Photoshop, Premiere Pro, Prelude, and After Effects. 
 * Support for the Flash/ActionScript extension model is deprecated in all apps, and has been removed from Photoshop CC2014.
 
+##Before running the samples
+The samples are unsigned so will fail the signature check so to bypass this check, edit the CSXS preference properties file and add a new entry `PlayerDebugMode` of type "string" with the value of "1". This enables debug extensions to be displayed in the host applications. The CSXS preferences properties file is located at
+```
+Mac: /Users/<username>/Library/Preferences/com.adobe.CSXS.5.plist
+Win: regedit > HKEY_CURRENT_USER/Software/Adobe/CSXS.5
+```
+
 ----
 
 * [Flickr](https://github.com/Adobe-CEP/Samples/tree/master/Flickr) : Demonstrates connecting and retrieving assets from a Cloud service (Flickr in this case). 
