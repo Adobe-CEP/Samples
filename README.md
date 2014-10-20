@@ -9,7 +9,7 @@ These samples are still in development. Some of them use CEP 4 and the CC2013 ve
 * Support for the Flash/ActionScript extension model is deprecated in all apps, and has been removed from Photoshop CC2014.
 
 ##Before running the samples
-The samples are unsigned so will fail the signature check that is built into CEP when running an extension. To bypass this check, edit the CSXS preference properties file and add a new entry `PlayerDebugMode` of type "string" with the value of "1". This enables debug extensions to be displayed in the host applications. The CSXS preferences properties file is located at:
+The samples provided are unsigned so this will cause the the signature check (built into CEP when first running an extension) to fail. To bypass the signature check, edit the CSXS preference properties file and add a new entry `PlayerDebugMode` of type "string" with the value of "1". This enables debug extensions to be displayed in the host applications. The CSXS preferences properties file is located at:
 ```
 Mac: /Users/<username>/Library/Preferences/com.adobe.CSXS.5.plist
 Win: regedit > HKEY_CURRENT_USER/Software/Adobe/CSXS.5
