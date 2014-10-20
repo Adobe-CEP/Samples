@@ -8,12 +8,35 @@
 <link href="../js/SpryAssets/SpryTabbedPanels.css" rel="stylesheet" type="text/css"/>
 
 <script type="text/javascript">
+    // Initialization
+    // File open EX dialog
+    var SODEXTitleVal = "TestTitle";
+    var SODEXInitialPathVal;
+    var SODEXFileTypesVal = new Array();
+    SODEXFileTypesVal[0] = "*.*";
+    var SODEXFriendlyFilePrefixVal = "All files";
+    var SODEXAllowMultipleSelectionVal = true;
+    var SODEXChooseDirectoryVal = false;
+    var SODEXPromptVal = "OK";
+    
+    // File save EX dialog
+    var SSDEXTitleVal = "TestTitle";
+    var SSDEXInitialPathVal;
+    var SSDEXFileTypesVal = new Array();
+    SSDEXFileTypesVal[0] = "*.*";
+    var SSDEXDefaultNameVal = "test.txt"
+    var SSDEXFriendlyFilePrefixVal = "All files";
+    var SSDEXPromptVal = "Save";
+    var SSDEXNameFieldLabelVal = "File name:";
+	
     $(document).ready(function() {
 	
 	    var gPID = -1;
 		var CSLibrary = new CSInterface();
 	
         $("#ShowOpenDialogDiv").show();
+        $("#ShowOpenDialogEXDiv").hide();
+        $("#ShowSaveDialogEXDiv").hide();
         $("#ReadDirectoryDiv").hide();
         $("#MakeDirDiv").hide();
         $("#MakeDirSuccessLabel").hide();
@@ -69,6 +92,29 @@
 			
 			document.getElementById("SetStdErrInput").value = "aaaaa\r\n";
 			document.getElementById("StdInInput").value = "quit\r\n";
+			
+            SODEXInitialPathVal = "C:\\";
+            SSDEXInitialPathVal = "C:\\";
+            document.getElementById("SODEXAllowMultipleSelection").checked = SODEXAllowMultipleSelectionVal;
+            document.getElementById("SODEXChooseDirectory").checked = SODEXChooseDirectoryVal;                
+            document.getElementById("SODEXTitle").value = SODEXTitleVal;
+            document.getElementById("SODEXInitialPath").value = SODEXInitialPathVal;
+            document.getElementById("SODEXFileTypes").value = SODEXFileTypesVal;
+            document.getElementById("SODEXFileTypes").disabled = document.getElementById("SODEXChooseDirectory").checked;    
+            document.getElementById("SODEXFriendlyFilePrefix").value = SODEXFriendlyFilePrefixVal;
+            document.getElementById("SODEXFriendlyFilePrefix").disabled = document.getElementById("SODEXChooseDirectory").checked;    
+            document.getElementById("SODEXPrompt").value = "Only available on Mac";    
+            document.getElementById("SODEXPrompt").disabled = true;            
+            
+            document.getElementById("SSDEXTitle").value = SSDEXTitleVal;
+            document.getElementById("SSDEXInitialPath").value = SSDEXInitialPathVal;
+            document.getElementById("SSDEXFileTypes").value = SSDEXFileTypesVal;
+            document.getElementById("SSDEXDefaultName").value = SSDEXDefaultNameVal;
+            document.getElementById("SSDEXFriendlyFilePrefix").value = SSDEXFriendlyFilePrefixVal;
+            document.getElementById("SSDEXPrompt").value = "Only available on Mac";    
+            document.getElementById("SSDEXPrompt").disabled = true;    
+            document.getElementById("SSDEXNameFieldLabel").value = "Only available on Mac";    
+            document.getElementById("SSDEXNameFieldLabel").disabled = true;    
         } else if ((navigator.platform == "MacIntel") || (navigator.platform == "Macintosh")){
             document.getElementById("DeleteFilePath").value = "/tmp/test.rtf";
             document.getElementById("ReadDirPath").value = "/tmp";
@@ -101,6 +147,27 @@
 			document.getElementById("OnQuitProArgument2").value = "";
 			
 			document.getElementById("StdInInput").value = "quit\r";
+
+            SODEXInitialPathVal = "~/Documents";
+            SSDEXInitialPathVal = "~/Documents";            
+            document.getElementById("SODEXAllowMultipleSelection").checked = SODEXAllowMultipleSelectionVal;
+            document.getElementById("SODEXChooseDirectory").checked = SODEXChooseDirectoryVal;                
+            document.getElementById("SODEXTitle").value = SODEXTitleVal;
+            document.getElementById("SODEXInitialPath").value = SODEXInitialPathVal;
+            document.getElementById("SODEXFileTypes").value = SODEXFileTypesVal;
+            document.getElementById("SODEXFileTypes").disabled = document.getElementById("SODEXChooseDirectory").checked;
+            document.getElementById("SODEXFriendlyFilePrefix").value = "Only available on Windows";    
+            document.getElementById("SODEXFriendlyFilePrefix").disabled = true;    
+            document.getElementById("SODEXPrompt").value = SODEXPromptVal;            
+
+            document.getElementById("SSDEXTitle").value = SSDEXTitleVal;
+            document.getElementById("SSDEXInitialPath").value = SSDEXInitialPathVal;
+            document.getElementById("SSDEXFileTypes").value = SSDEXFileTypesVal;
+            document.getElementById("SSDEXDefaultName").value = SSDEXDefaultNameVal;
+            document.getElementById("SSDEXFriendlyFilePrefix").value = "Only available on Windows";    
+            document.getElementById("SSDEXFriendlyFilePrefix").disabled = true;    
+            document.getElementById("SSDEXPrompt").value = SSDEXPromptVal;    
+            document.getElementById("SSDEXNameFieldLabel").value = SSDEXNameFieldLabelVal;				
         }
         
         // invoke API ShowOpenDialog
@@ -111,7 +178,84 @@
         $("#SODClearArea").click(function () {
             document.getElementById("ShowOpenDialogOutput").innerHTML = "";
         })
+
+        function getValidFileSuffix (inputStr) {
+            var outputArr = new Array();
+     
+            if (0 == inputStr.length || -1 != inputStr.indexOf(".*")) {
+                outputArr[0] = "*";
+            } else {
+                inputStr = " " + inputStr + " ";
+                inputStr = inputStr.replace(/\*/g, " ");
+                inputStr = inputStr.replace(/,/g, " ");
+                inputStr = inputStr.replace(/;/g, " ");
+                inputStr = inputStr.replace(/\./g, " ");
+     
+                outputArr = inputStr.match(/\s\b\w*\b\s/g);
+                outputArr.forEach(function(val, i, arr){
+                    arr[i] = val.replace(/\s/g, "");     
+                });         
+            }
+            
+            return outputArr;
+        }
         
+    	// invoke API ShowOpenDialogEx
+        $("#SODShowOpenDialogEX").click(function () {        
+            SODEXAllowMultipleSelectionVal = document.getElementById("SODEXAllowMultipleSelection").checked;
+            SODEXChooseDirectoryVal = document.getElementById("SODEXChooseDirectory").checked;                    
+            SODEXTitleVal = document.getElementById("SODEXTitle").value;
+            SODEXInitialPathVal = document.getElementById("SODEXInitialPath").value;
+            if (!document.getElementById("SODEXFileTypes").disabled) {
+                SODEXFileTypesVal = getValidFileSuffix(document.getElementById("SODEXFileTypes").value);
+            }
+            SODEXFriendlyFilePrefixVal = document.getElementById("SODEXFriendlyFilePrefix").value;
+            if (!document.getElementById("SODEXPrompt").disabled) {
+                SODEXPromptVal = document.getElementById("SODEXPrompt").value;
+            }
+
+            var result = window.cep.fs.showOpenDialogEx(SODEXAllowMultipleSelectionVal,
+                                                        SODEXChooseDirectoryVal,
+                                                        SODEXTitleVal,
+                                                        SODEXInitialPathVal,
+                                                        SODEXFileTypesVal,
+                                                        SODEXFriendlyFilePrefixVal,
+                                                        SODEXPromptVal);
+            document.getElementById("ShowOpenDialogOutputEX").innerHTML = "The file you selected is: " + "\n" + result.data;
+        })
+        $("#SODClearAreaEX").click(function () {
+            document.getElementById("ShowOpenDialogOutputEX").innerHTML = "";
+        })
+
+        // invoke API ShowSaveDialogEx
+        $("#SSDShowSaveDialogEX").click(function () {
+            SSDEXTitleVal = document.getElementById("SSDEXTitle").value;
+            SSDEXInitialPathVal = document.getElementById("SSDEXInitialPath").value;
+            SSDEXFileTypesVal = getValidFileSuffix(document.getElementById("SSDEXFileTypes").value);
+            SSDEXDefaultNameVal = document.getElementById("SSDEXDefaultName").value;            
+            if (!document.getElementById("SSDEXFriendlyFilePrefix").disabled) {
+                SSDEXFriendlyFilePrefixVal = document.getElementById("SSDEXFriendlyFilePrefix").value;    
+            }        
+            if (!document.getElementById("SSDEXPrompt").disabled) {
+                SSDEXPromptVal = document.getElementById("SSDEXPrompt").value;
+            }
+            if (!document.getElementById("SSDEXNameFieldLabel").disabled) {
+                SSDEXNameFieldLabelVal = document.getElementById("SSDEXNameFieldLabel").value;                
+            }            
+
+            var result = window.cep.fs.showSaveDialogEx(SSDEXTitleVal,
+                                                        SSDEXInitialPathVal,
+                                                        SSDEXFileTypesVal,
+                                                        SSDEXDefaultNameVal,
+                                                        SSDEXFriendlyFilePrefixVal,
+                                                        SSDEXPromptVal,
+                                                        SSDEXNameFieldLabelVal);
+            document.getElementById("ShowSaveDialogOutputEX").innerHTML = "The file is: " + "\n" + result.data;        
+        })
+        $("#SSDClearAreaEX").click(function () {
+            document.getElementById("ShowSaveDialogOutputEX").innerHTML = "";
+        })        
+
         // invoke API ReadDir        
         $("#ReadDirectoryBtn").click(function () {
             var path = document.getElementById("ReadDirPath").value;
@@ -412,6 +556,36 @@
     
     function onclickSODBtn() {
         $("#ShowOpenDialogDiv").show();
+        $("#ShowOpenDialogEXDiv").hide();        
+        $("#ShowSaveDialogEXDiv").hide();				
+        $("#ReadDirectoryDiv").hide();
+        $("#MakeDirDiv").hide();
+        $("#RenamePathDiv").hide();
+        $("#GetFileInfoDiv").hide();
+        $("#ReadFileDiv").hide();
+        $("#WriteFileDiv").hide();        
+        $("#DeleteFileDiv").hide();
+        $("#DelFileSuccessLabel").hide();
+    }
+	
+    function onclickSODBEXtn() {
+        $("#ShowOpenDialogDiv").hide();
+        $("#ShowOpenDialogEXDiv").show();        
+        $("#ShowSaveDialogEXDiv").hide();                
+        $("#ReadDirectoryDiv").hide();
+        $("#MakeDirDiv").hide();
+        $("#RenamePathDiv").hide();
+        $("#GetFileInfoDiv").hide();
+        $("#ReadFileDiv").hide();
+        $("#WriteFileDiv").hide();        
+        $("#DeleteFileDiv").hide();
+        $("#DelFileSuccessLabel").hide();
+    }    
+	
+    function onclickSSDBEXtn() {
+        $("#ShowOpenDialogDiv").hide();
+        $("#ShowOpenDialogEXDiv").hide();		
+        $("#ShowSaveDialogEXDiv").show();				
         $("#ReadDirectoryDiv").hide();
         $("#MakeDirDiv").hide();
         $("#RenamePathDiv").hide();
@@ -424,6 +598,8 @@
     
     function onclickReadDirBtn() {
         $("#ShowOpenDialogDiv").hide();
+        $("#ShowOpenDialogEXDiv").hide();
+        $("#ShowSaveDialogEXDiv").hide();		
         $("#ReadDirectoryDiv").show();
         $("#MakeDirDiv").hide();
         $("#RenamePathDiv").hide();
@@ -437,6 +613,8 @@
     
     function onclickMakeDirBtn() {
         $("#ShowOpenDialogDiv").hide();
+        $("#ShowOpenDialogEXDiv").hide();	
+        $("#ShowSaveDialogEXDiv").hide();			
         $("#ReadDirectoryDiv").hide();
         $("#MakeDirDiv").show();
         $("#MakeDirSuccessLabel").hide();
@@ -451,6 +629,8 @@
     
     function onclickRenamePathBtn() {
         $("#ShowOpenDialogDiv").hide();
+        $("#ShowOpenDialogEXDiv").hide();	
+        $("#ShowSaveDialogEXDiv").hide();			
         $("#ReadDirectoryDiv").hide();
         $("#MakeDirDiv").hide();
         $("#RenamePathDiv").show();
@@ -465,6 +645,8 @@
     
     function onclickGetFileInfoBtn() {
         $("#ShowOpenDialogDiv").hide();
+        $("#ShowOpenDialogEXDiv").hide();
+        $("#ShowSaveDialogEXDiv").hide();		
         $("#ReadDirectoryDiv").hide();
         $("#MakeDirDiv").hide();
         $("#RenamePathDiv").hide();
@@ -480,6 +662,8 @@
     
     function onclickReadFileBtn() {
         $("#ShowOpenDialogDiv").hide();
+        $("#ShowOpenDialogEXDiv").hide();	
+        $("#ShowSaveDialogEXDiv").hide();			
         $("#ReadDirectoryDiv").hide();
         $("#MakeDirDiv").hide();
         $("#RenamePathDiv").hide();
@@ -495,6 +679,8 @@
     
     function onclickWriteFileBtn() {
         $("#ShowOpenDialogDiv").hide();
+        $("#ShowOpenDialogEXDiv").hide();		
+        $("#ShowSaveDialogEXDiv").hide();				
         $("#ReadDirectoryDiv").hide();
         $("#MakeDirDiv").hide();
         $("#RenamePathDiv").hide();
@@ -511,6 +697,8 @@
     
     function onclickSetPermissinBtn() {
         $("#ShowOpenDialogDiv").hide();
+        $("#ShowOpenDialogEXDiv").hide();		
+        $("#ShowSaveDialogEXDiv").hide();				
         $("#ReadDirectoryDiv").hide();
         $("#MakeDirDiv").hide();
         $("#RenamePathDiv").hide();
@@ -527,6 +715,8 @@
     
     function onclickDeleteFileBtn() {
         $("#ShowOpenDialogDiv").hide();
+        $("#ShowOpenDialogEXDiv").hide();		
+        $("#ShowSaveDialogEXDiv").hide();				
         $("#ReadDirectoryDiv").hide();
         $("#MakeDirDiv").hide();
         $("#RenamePathDiv").hide();
@@ -597,6 +787,13 @@
 		$("#OnQuitProcessDiv").show();
 		$("#OnQuitProcessSuccessLabel").hide();
     }
+
+    function onclickSODEXChooseDirectory() {
+        document.getElementById("SODEXFileTypes").disabled = document.getElementById("SODEXChooseDirectory").checked;    
+        if ((navigator.platform == "Win32") || (navigator.platform == "Windows")){
+            document.getElementById("SODEXFriendlyFilePrefix").disabled = document.getElementById("SODEXChooseDirectory").checked;                	
+        }
+    }
 </script>
 
 <style type="text/css">
@@ -615,6 +812,8 @@
 }
 
 #ShowOpenDialogDiv,
+#ShowOpenDialogEXDiv,
+#ShowSaveDialogEXDiv,
 #MakeDirDiv,
 #ReadDirectoryDiv,
 #RenamePathDiv,
@@ -636,8 +835,7 @@
 #SetStdOutHandlerDiv,
 #SetStdErrHandlerDiv,
 #WriteStdInDiv,
-#WaitForProcessDiv
- {
+#WaitForProcessDiv {
     position: absolute;
     width: 435px;
     height: 229px;
@@ -646,8 +844,7 @@
     top: 50px;
     color: #FFF;
 }  
-#OnQuitProcessDiv
- {
+#OnQuitProcessDiv {
     position: absolute;
     width: 435px;
     height: 229px;
@@ -656,10 +853,14 @@
     top: 50px;
     color: #FFF;
 }  
-.NavigationDiv li:hover{
-    width:130px;
-    background-color:#333;
-    color:#46afa0;
+.NavigationDiv li:hover {
+    width: 130px;
+    background-color: #333;
+    color: #46afa0;
+}
+
+.SODEXDlgEdit {
+    width: 260px;
 }
 <!-- style end -->
 </style>
@@ -680,6 +881,8 @@
         <div class="NavigationDiv">
           <ul class="ul1">
             <li><button id="SODBtn" onclick="onclickSODBtn()" style="background-color:#333; border:none; color:#FFF;">File Open Dialog </button></li>    
+            <li><button id="SODBEXtn" onclick="onclickSODBEXtn()" style="background-color:#333; border:none; color:#FFF;">File Open Dialog EX</button></li>    
+            <li><button id="SSDBEXtn" onclick="onclickSSDBEXtn()" style="background-color:#333; border:none; color:#FFF;">File Save Dialog EX</button></li>                
             <li><button id="ReadDirBtn" onclick="onclickReadDirBtn()" style="background-color:#333; border:none; color:#FFF;">Read Directory</button></li>    
             <li><button id="MakeDirBtn" onclick="onclickMakeDirBtn()" style="background-color:#333; border:none; color:#FFF;" >Make Directory</button></li>
             <li><button id="RenamePathBtn" onclick="onclickRenamePathBtn()" style="background-color:#333; border:none; color:#FFF;" >Rename Path</button></li>
@@ -742,7 +945,130 @@
          </table>
        </div>
        <!-- Show Open dialog di end -->
-      
+       
+        <!-- Show Open dialog EX div begin -->
+        <div id="ShowOpenDialogEXDiv">
+          <table width="200" border="0" cellspacing="0" cellpadding="0">
+            <tr><td>
+               <table width="474" border="0">
+                <tr>
+                  <td>
+                    <form id="form2" name="form2" method="post" action="">
+                      <input type="button" name="SODShowOpenDialogEX" id="SODShowOpenDialogEX" value="Show File Open dialog EX" />
+                    </form>
+                  </td>
+                  <td>&nbsp;</td>
+                  <td>&nbsp;</td>
+                  <td>&nbsp;</td>
+                  <td>&nbsp;</td>
+                </tr>
+                <tr>
+                  <td width="297"><input type="checkbox" name="SODEXAllowMultipleSelection" id="SODEXAllowMultipleSelection">AllowMultipleSelection
+                    <input type="checkbox" name="SODEXChooseDirectory" id="SODEXChooseDirectory" onclick="onclickSODEXChooseDirectory()">
+                    <label for="SODEXChooseDirectory">ChooseDirectory </label></td>
+                </tr>
+                <tr>
+                  <td><table width="200" border="0">
+                    <tr>
+                      <td>Title:</td>
+                      <td><input class="SODEXDlgEdit" name="SODEXTitle" type="text" id="SODEXTitle"></td>
+                    </tr>
+                    <tr>
+                      <td>InitialPath:</td>
+                      <td><input class="SODEXDlgEdit" name="SODEXInitialPath" type="text" id="SODEXInitialPath"></td>
+                    </tr>
+                    <tr>
+                      <td>FileTypes:</td>
+                      <td><input class="SODEXDlgEdit" name="SODEXFileTypes" type="text" id="SODEXFileTypes"></td>
+                    </tr>
+                    <tr>
+                      <td>FriendlyFilePrefix:</td>
+                      <td><input class="SODEXDlgEdit" name="SODEXFriendlyFilePrefix" type="text" id="SODEXFriendlyFilePrefix"></td>
+                    </tr>
+                    <tr>
+                      <td>Prompt:</td>
+                      <td><input class="SODEXDlgEdit" name="SODEXPrompt" type="text" id="SODEXPrompt"></td>
+                    </tr>
+                    <tr>
+                      <td>Selected file: </td>
+                      <td><textarea class="SODEXDlgEdit" name="ShowOpenDialogOutputEX" rows="3" readonly="readonly" id="ShowOpenDialogOutputEX"></textarea></td>
+                    </tr>					
+                  </table></td>
+                </tr>
+              </table></td>
+           </tr>
+           <tr> 
+              <td>
+                <input type="button" name="SODClearAreaEX" id="SODClearAreaEX" value="Clear Result" />
+              </td>
+           </tr>
+         </table>
+        </div>
+        <!-- Show Open dialog EX div end -->
+
+        <!-- Show Save dialog EX div begin -->
+        <div id="ShowSaveDialogEXDiv">
+          <table width="200" border="0" cellspacing="0" cellpadding="0">
+            <tr><td>
+               <table width="474" border="0">
+                <tr>
+                  <td>
+                    <form id="form2" name="form2" method="post" action="">
+                      <input type="button" name="SSDShowSaveDialogEX" id="SSDShowSaveDialogEX" value="Show File Save dialog EX" />
+                    </form>
+                  </td>
+                  <td>&nbsp;</td>
+                  <td>&nbsp;</td>
+                  <td>&nbsp;</td>
+                  <td>&nbsp;</td>
+                </tr>
+                <tr>
+                  <td><table width="200" border="0">
+                    <tr>
+                      <td>Title:</td>
+                      <td><input class="SODEXDlgEdit" name="SSDEXTitle" type="text" id="SSDEXTitle"></td>
+                    </tr>
+                    <tr>
+                      <td>InitialPath:</td>
+                      <td><input class="SODEXDlgEdit" name="SSDEXInitialPath" type="text" id="SSDEXInitialPath"></td>
+                    </tr>
+                    <tr>
+                      <td>FileTypes:</td>
+                      <td><input class="SODEXDlgEdit" name="SSDEXFileTypes" type="text" id="SSDEXFileTypes"></td>
+                    </tr>
+                    <tr>
+                      <td>defaultName:</td>
+                      <td><input class="SODEXDlgEdit" name="SSDEXDefaultName" type="text" id="SSDEXDefaultName"></td>
+                    </tr>                    
+                    <tr>
+                      <td>FriendlyFilePrefix:</td>
+                      <td><input class="SODEXDlgEdit" name="SSDEXFriendlyFilePrefix" type="text" id="SSDEXFriendlyFilePrefix"></td>
+                    </tr>                    
+                    <tr>
+                      <td>Prompt:</td>
+                      <td><input class="SODEXDlgEdit" name="SSDEXPrompt" type="text" id="SSDEXPrompt"></td>
+                    </tr>
+                    <tr>
+                      <td>NameFieldLabel:</td>
+                      <td><input class="SODEXDlgEdit" name="SSDEXNameFieldLabel" type="text" id="SSDEXNameFieldLabel"></td>
+                    </tr>
+                    <tr>
+                        <td>Selected file: </td>
+                        <td><textarea class="SODEXDlgEdit" name="ShowSaveDialogOutputEX" rows="3" readonly="readonly" id="ShowSaveDialogOutputEX"></textarea></td>
+                    </tr>                    
+    	          </table></td>
+                </tr>
+              </table></td>
+           </tr>
+           <tr>
+              <td>
+                <input type="button" name="SSDClearAreaEX" id="SSDClearAreaEX" value="Clear Result" />
+              </td>
+           </tr>
+         </table>
+       </div>
+       <!-- Show Save dialog EX div end -->
+
        <!-- Read directory div begin -->
        <div id="ReadDirectoryDiv">
          <table width="200" border="0" cellspacing="0" cellpadding="0">

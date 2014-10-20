@@ -41,9 +41,10 @@
 			checkboxChanged();
 		});
 		
-		function eventCallback() {
-			$("#EventsGreenLightImg").show();
-		}
+        function eventCallback(event) {
+            $("#EvalScriptResult").val("Received event: " + JSON.stringify(event));			
+            $("#EventsGreenLightImg").show();
+        }
 		
         function checkboxChanged() {
 			if ($("#EventsCheckBox").attr("checked")) {    
@@ -65,14 +66,12 @@
         });  
     }); 
 	
-	function onclickInvokeEvalScript() {
-			var exeTimes = parseInt(document.getElementById("ExecutionTimes").value);
-			for (i = 0; i < exeTimes; i++) {
-				CSLibrary.evalScript(document.getElementById("EvalScriptPara").value, function(result) {
-				$("#EvalScriptResult").val(result);
-				});
-			}
-		}		
+    function onclickInvokeEvalScript() {
+            var exeTimes = parseInt(document.getElementById("ExecutionTimes").value);
+            for (i = 0; i < exeTimes; i++) {
+                CSLibrary.evalScript(document.getElementById("EvalScriptPara").value);            
+            }
+        }        
 </script>
 
 

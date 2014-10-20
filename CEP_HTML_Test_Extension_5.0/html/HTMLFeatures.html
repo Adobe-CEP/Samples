@@ -108,6 +108,11 @@
             $("#DisplayArea").attr("src", "http://www.behance.net");
             $("#OpenURLInput").attr("value", "http://www.behance.net");
         });
+
+        $("#adobeTV").click(function() {
+            $("#DisplayArea").attr("src", "http://tv.adobe.com");
+            $("#OpenURLInput").attr("value", "http://tv.adobe.com");
+        });		
 		
 		$("#btnRunScript").click(function() {
 		    var scriptText = $("#JavaScriptCode").val();
@@ -355,6 +360,9 @@
                   <td>
                     <input type="button" name="behance" id="behance" value="behance"/>
                   </td>
+                  <td>
+                    <input type="button" name="adobeTV" id="adobeTV" value="adobe TV"/>
+                  </td>				  
                 </tr>
               </table>
             </tr>
@@ -362,7 +370,7 @@
         </tr>
         <tr>
           <td>
-            <iframe width="660" height="380" name="DisplayArea" id="DisplayArea" src="http://www.adobe.com"  frameborder="1" nodejs-disabled="true">
+            <iframe width="700" height="380" name="DisplayArea" id="DisplayArea" src="http://www.adobe.com"  frameborder="1" nodejs-disabled="true">
             </iframe>
           </td>
         </tr>
