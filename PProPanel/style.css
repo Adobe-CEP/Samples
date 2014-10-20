@@ -1,0 +1,33 @@
+
+body {
+font-family: "Adobe Clean", Arial, Helvetica, sans-serif;
+text-align:center;
+}
+
+button, select, input
+{
+font-family: "Adobe Clean", Arial, Helvetica, sans-serif;
+border:1px solid;
+height:19px;
+color:white;
+}
+
+input[type=text]
+{
+height:16px;
+}
+
+#content {
+margin-right:auto;
+margin-left:auto;
+vertical-align:middle;
+width:100%;
+}
+
+#content ul {
+padding:0px;
+}
+
+#content ul li {
+margin:3px 0px 3px 0px;
+}
