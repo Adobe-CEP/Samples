@@ -11,7 +11,7 @@
 			<Host Name="PHXS" Version="[14.0,14.9]" />
 			<Host Name="PHSP" Version="[14.0,14.9]" />
 			<Host Name="IDSN" Version="[9.1,10.0]" />
-			<Host Name="PPRO" Version="[8.0,9.0]" />
+			<Host Name="PPRO" Version="[7.0,8.0]" />
 		</HostList>
 		<LocaleList>
 			<Locale Code="All" />
