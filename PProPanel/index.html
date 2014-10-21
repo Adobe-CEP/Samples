@@ -1,0 +1,77 @@
+<!doctype html>
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <link id="ppstyle" rel="stylesheet" type="text/css" href="./style.css">
+    <title>PProPanel</title>
+
+    <script src="./ext.js"></script>
+    <script src="./lib/CSInterface.js"></script>
+    <script src="./lib/jquery-1.9.1.js"></script>
+
+
+
+    <script type="text/javascript">
+
+    $( document ).ready(function() {
+    	  
+      $("#getseqname").on("click", function(e){
+         	e.preventDefault(); 
+         	var csInterface = new CSInterface();
+         	csInterface.evalScript('$._ext_PPRO.getActiveSequenceName()', myCallBackFunction);  
+      });
+
+      $("#newseqfrompreset").on("click", function(e){
+         	e.preventDefault(); 
+         	var csInterface = new CSInterface();
+
+         	var path = csInterface.getSystemPath(SystemPath.EXTENSION);
+
+         	if (path != null)
+         	{
+         		path = path + '/payloads/PProPanel.sqpreset';
+         	}
+
+         	var pre       = '$._ext_PPRO.createSequenceFromPreset(\'';
+         	var post      = '\'';
+         	var postpost  = ')';
+
+         	var whole_megillah =  pre + path + post + postpost;
+         	
+         	csInterface.evalScript(whole_megillah);
+      });
+    });
+
+    </script>
+  </head>
+
+  <body onLoad="onLoaded()">
+    <p id="version_string">[uninitialized]</p>
+  	<p id="active_seq">[uninitialized]</p>
+  	
+      <!-- // These have JavaScript handlers... --> 
+
+      <button id="getseqname">Get active sequence</button>
+      <button id="newseqfrompreset">Create sequence from preset</button>
+  		
+      <!-- ...the rest call directly into ExtendScript. -->
+
+      <button class="controlBg textStyle" id="btn_PPRO1"	onClick="evalScript('$._ext_PPRO.render()')">Render active sequence using AME</button>
+  		<button class="controlBg textStyle" id="btn_PPRO2"	onClick="evalScript('$._ext_PPRO.createSequence()')">Create sequence</button>
+  		<button class="controlBg textStyle" id="btn_PPRO3"  onClick="evalScript('$._ext_PPRO.openProject()')">Open different project</button>
+  		<button class="controlBg textStyle" id="btn_PPRO4"	onClick="evalScript('$._ext_PPRO.saveProjectAs()')">Save project as...</button>
+  		<button class="controlBg textStyle" id="btn_PPRO5"	onClick="evalScript('$._ext_PPRO.importFiles()')">Import files...</button>
+  		<button class="controlBg textStyle" id="btn_PPRO6"  onClick="evalScript('$._ext_PPRO.exportFCPXML()')">Export FCP XML...</button>
+  		<button class="controlBg textStyle" id="btn_PPRO7"  onClick="evalScript('$._ext_PPRO.pokeAnywhere()')">Poke Anywhere...</button>
+  		<button class="controlBg textStyle" id="btn_PPRO8"  onClick="evalScript('$._ext_PPRO.openInSource()')">Open in source monitor...</button>
+  		<button class="controlBg textStyle" id="btn_PPRO9"  onClick="evalScript('$._ext_PPRO.replaceMedia()')">Replace media...</button>
+  		<button class="controlBg textStyle" id="btn_PPRO10" onClick="evalScript('$._ext_PPRO.createSequenceMarkers()')">Add sequence markers</button>
+  		<button class="controlBg textStyle" id="btn_PPRO11" onClick="evalScript('$._ext_PPRO.mungeXMP()')">Manipulate XMP</button>
+      <button class="controlBg textStyle" id="btn_PPRO12" onClick="evalScript('$._ext_PPRO.exportSequenceAsPrProj()')">New project from sequence</button>
+      <button class="controlBg textStyle" id="btn_PPRO13" onClick="evalScript('$._ext_PPRO.exportCurrentFrameAsPNG()')">Export sequence frame</button>
+      <button class="controlBg textStyle" id="btn_PPRO14" onClick="evalScript('$._ext_PPRO.updateGrowingFile()')">Update growing file</button>
+      <button class="controlBg textStyle" id="btn_PPRO15" onClick="evalScript('$._ext_PPRO.modifyProjectMetadata()')">Modify project metadata</button>
+      <button class="controlBg textStyle" id="btn_PPRO16" onClick="evalScript('$._ext_PPRO.addClipMarkers()')">Add clip markers</button>
+  </body>
+</html>

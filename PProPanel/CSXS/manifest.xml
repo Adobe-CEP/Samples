@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ExtensionManifest Version="4.0" ExtensionBundleId="com.example.PProPanel" ExtensionBundleVersion="1.0.0"
+ExtensionBundleName="PProPanel" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<ExtensionList>
+		<Extension Id="com.example.PProPanel" Version="1.0" />
+	</ExtensionList>
+	<ExecutionEnvironment>
+		<HostList>
+			<Host Name="PPRO" Version="[8.0,9.9]" />
+		</HostList>
+		<CEFCommandLine>
+		    <Parameter>--nodejs-disabled</Parameter>
+		</CEFCommandLine>
+		<LocaleList>
+			<Locale Code="All" />
+		</LocaleList>
+		<RequiredRuntimeList>
+			<RequiredRuntime Name="CSXS" Version="5.0" />
+		</RequiredRuntimeList>
+	</ExecutionEnvironment>
+
+	<DispatchInfoList>
+		<Extension Id="com.example.PProPanel">
+			<DispatchInfo >
+				<Resources>
+					<MainPath>./index.html</MainPath>
+					<ScriptPath>./PProPanel.jsx</ScriptPath>
+				</Resources>
+				<Lifecycle>
+					<AutoVisible>true</AutoVisible>
+				</Lifecycle>
+				<UI>
+					<Type>Panel</Type>
+					<Menu>PProPanel</Menu>
+					<Geometry>
+						<Size>
+							<Height>400</Height>
+							<Width>200</Width>
+						</Size>
+					</Geometry>
+				</UI>
+			</DispatchInfo>
+		</Extension>
+	</DispatchInfoList>
+</ExtensionManifest>
