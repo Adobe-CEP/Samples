@@ -7,13 +7,15 @@ $._ext_PPRO={
 
 	updateGrowingFile : function()
 	{
-		// Assumes first item in project is growing.
+		var numItems = app.project.rootItem.children.numItems;
 
-		var item = app.project.rootItem.children[0]; 
-		
-		if (item != null)
-		{
-			item.refreshMedia(); // This is how you refresh a growing file, using the API.
+		var currentItem = 0;
+
+		for (var i = 0; i < numItems; i++){
+		    currentItem = app.project.rootItem.children[i];
+		    if (currentItem != null){
+		        currentItem.refreshMedia();
+		    }
 		}
 	},
 
@@ -188,10 +190,18 @@ $._ext_PPRO={
 				 }
 			}
 	
-			var new_marker  		= markers.createMarker(12.345);
-			new_marker.name 		= 'Marker created by PProPanel.';
-			new_marker.comments 	= 'Here are some comments, inserted by PProPanel.';
-			new_marker.end.seconds 	= 15.6789;
+			var new_comment_marker  		= markers.createMarker(12.345);
+			new_comment_marker.name 		= 'Marker created by PProPanel.';
+			new_comment_marker.comments 	= 'Here are some comments, inserted by PProPanel.';
+			new_comment_marker.end.seconds 	= 15.6789;
+
+
+			var new_web_marker  		= markers.createMarker(14.345);
+			new_web_marker.name 		= 'Web marker created by PProPanel.';
+			new_web_marker.comments 	= 'Here are some comments, inserted by PProPanel.';
+			new_web_marker.end.seconds 	= 18.6789;
+			new_web_marker.setTypeAsWebLink("http://www.adobe.com", "frame target");
+
 	    }
 	},
 	
