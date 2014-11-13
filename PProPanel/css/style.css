@@ -1,20 +1,20 @@
 
-body {
-font-family: "Adobe Clean", Arial, Helvetica, sans-serif;
+p {
+	font-family: "LucidaGrande", sans-serif;
 text-align:center;
 }
 
-button, select, input
+button
 {
-font-family: "Adobe Clean", Arial, Helvetica, sans-serif;
+	font-family: "LucidaGrande", sans-serif;
+	font-size:20px;
 border:1px solid;
-height:19px;
-color:white;
+	height:12px;
 }
 
 input[type=text]
 {
-height:16px;
+	height:12px;
 }
 
 #content {
