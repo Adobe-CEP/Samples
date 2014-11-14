@@ -4,6 +4,7 @@ function onLoaded() {
 	
     
     var appName = csInterface.hostEnvironment.appName;
+    document.getElementById("dragthing").style.backgroundColor = "lightblue";
     
     if(appName != "FLPR"){
     	loadJSX();
@@ -18,27 +19,47 @@ function onLoaded() {
                 btn.disabled = false;
         }
     }
+    
 
     updateThemeWithAppSkinInfo(csInterface.hostEnvironment.appSkinInfo);
-
     // Update the color of the panel when the theme color of the product changed.
     csInterface.addEventListener(CSInterface.THEME_COLOR_CHANGED_EVENT, onAppThemeColorChanged);
-
-    // Listener for a custom event.
 
     csInterface.addEventListener("com.adobe.csxs.events.PProPanelRenderEvent", function(event){
         alert(event.data);
     });
 
-    // Update the panel with current PPro version and active sequence name.
-
     csInterface.evalScript('$._ext_PPRO.getVersionInfo()', myVersionInfoFunction);  
     csInterface.evalScript('$._ext_PPRO.getActiveSequenceName()', myCallBackFunction);  	
 }
 
+function dragHandler(event){
+
+    var dt = event.dataTransfer;
+    dt.setData("text", "demo text");
+    
+    var currentPageUrl;
+    if (typeof this.href != "undefined")
+    {
+       currentPageUrl = this.href.toString().toLowerCase(); 
+    }
+    else
+    { 
+        currentPageUrl = document.location.toString().toLowerCase();
+    }
+    
+    dt.setData("url", currentPageUrl);
+    dt.setData("text/html", '<p>A link to a local file: <a href="../img/red.png">red.png</a></p>');
+    dt.setData("com.adobe.cep.dnd.file.0", 'file:///Library/Application Support/Adobe/CEP/extensions/PProPanel/payloads/test.jpg');
+}
+
+
 function myCallBackFunction (data)
 {
+     // Updates seq_display with whatever ExtendScript function returns.
+
      var boilerPlate = "Active Sequence: ";
+
      var seq_display = document.getElementById("active_seq");
      
      seq_display.innerHTML = boilerPlate + data;
@@ -47,6 +68,7 @@ function myCallBackFunction (data)
 function myVersionInfoFunction (data)
 {
      var boilerPlate = "PPro Version: ";
+
      var v_string = document.getElementById("version_string");
      
      v_string.innerHTML = boilerPlate + data;
@@ -56,7 +78,6 @@ function myVersionInfoFunction (data)
 /**
  * Update the theme with the AppSkinInfo retrieved from the host product.
  */
-
 function updateThemeWithAppSkinInfo(appSkinInfo) {
 	
     //Update the background color of the panel
@@ -83,7 +104,7 @@ function updateThemeWithAppSkinInfo(appSkinInfo) {
 	    var boxShadow = "-webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 1px 1px rgba(0, 0, 0, 0.2);";
 	    var boxActiveShadow = "-webkit-box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.6);";
 	    
-	    var isPanelThemeLight = panelBackgroundColor.red > 127;
+	    var isPanelThemeLight = panelBackgroundColor.red > 73;
 	    var fontColor, disabledFontColor;
 	    var borderColor;
 	    var inputBackgroundColor;
@@ -107,6 +128,10 @@ function updateThemeWithAppSkinInfo(appSkinInfo) {
 	    
 	    addRule(styleId, ".default", "font-size:" + appSkinInfo.baseFontSize + "px" + "; color:" + fontColor + "; background-color:" + toHex(panelBackgroundColor) + ";");
 	    addRule(styleId, "button, select, input[type=text], input[type=button], input[type=submit]", borderColor);    
+        addRule(styleId, "p", "color:" + fontColor + ";");    
+        addRule(styleId, "button", "font-family: " + appSkinInfo.baseFontFamily + ", Arial, sans-serif;");    
+        addRule(styleId, "button", "color:" + fontColor + ";");    
+        addRule(styleId, "button", "font-size:" + (1.2 * appSkinInfo.baseFontSize) + "px;");    
 	    addRule(styleId, "button, select, input[type=button], input[type=submit]", gradientBg);    
 	    addRule(styleId, "button, select, input[type=button], input[type=submit]", boxShadow);
 	    addRule(styleId, "button:enabled:active, input[type=button]:enabled:active, input[type=submit]:enabled:active", gradientHighlightBg);
@@ -138,6 +163,7 @@ function addRule(stylesheetId, selector, rule) {
     }
 }
 
+
 function reverseColor(color, delta) {
     return toHex({red:Math.abs(255-color.red), green:Math.abs(255-color.green), blue:Math.abs(255-color.blue)}, delta);
 }
@@ -145,7 +171,6 @@ function reverseColor(color, delta) {
 /**
  * Convert the Color object to string in hexadecimal format;
  */
-
 function toHex(color, delta) {
     function computeValue(value, delta) {
         var computedValue = !isNaN(delta) ? value + delta : value;
@@ -175,12 +200,14 @@ function onAppThemeColorChanged(event) {
     // and redraw all UI controls of your extension according to the style info.
     updateThemeWithAppSkinInfo(skinInfo);
 } 
+
+
+
     
 /**
  * Load JSX file into the scripting context of the product. All the jsx files in 
  * folder [ExtensionRoot]/jsx will be loaded. 
  */
-
 function loadJSX() {
     var csInterface = new CSInterface();
     var extensionRoot = csInterface.getSystemPath(SystemPath.EXTENSION) + "/jsx/";

@@ -1,62 +1,57 @@
 $._ext_PPRO={
 
-	getVersionInfo : function ()
-	{
+	getVersionInfo : function () {
 		return 'PPro ' + app.version + 'x' + app.build;
 	},
 
-	updateGrowingFile : function()
-	{
-		// Assumes first item in project is growing.
+	updateGrowingFile : function() {
+		var numItems = app.project.rootItem.children.numItems;
 
-		var item = app.project.rootItem.children[0]; 
-		
-		if (item != null)
-		{
-			item.refreshMedia(); // This is how you refresh a growing file, using the API.
+		var currentItem = 0;
+
+		for (var i = 0; i < numItems; i++){
+		    currentItem = app.project.rootItem.children[i];
+		    if (currentItem != null){
+		        currentItem.refreshMedia();
+		    }
 		}
 	},
 
-    exportCurrentFrameAsPNG : function()
-    {
+	saveProject : function () {
+		app.project.save();
+	},
+
+    exportCurrentFrameAsPNG : function() {
         app.enableQE();	 									// enables QE DOM, including sequence objects with super powers
 
         var seq 		= qe.project.getActiveSequence(); 	// note: make sure a sequence is active in PPro UI
 
-        if (seq != null)
-        {
+        if (seq != null) {
 	        var time 		= seq.CTI.timecode; 			// CTI = Current Time Indicator.
 	        var out_path   	= new File("~/Desktop");
 
 			var sep         = '\\';
 			         
-			if (qe.platform == 'Macintosh')
-			{
+			if (qe.platform == 'Macintosh') {
 			    sep = '/';
 			}
 
 			var output_filename = out_path.fsName + sep + seq.name;
-			        
 			seq.exportFramePNG(time, output_filename);    
-		}
-		else
-		{
+		} else {
 			alert("Active sequence required.");
 		}
 	},
 
-    renameFootage : function()
-	{
+    renameFootage : function() {
+		
 		// Warning: Currently, sample code assumes the zero-th item in the project is footage.
 
 		var item = app.project.rootItem.children[0]; 
 		
-		if (item == null)
-		{
+		if (item == null) {
 			alert("The first item in the project needs to be footage.")
-		}
-		else 
-		{
+		} else {
 			alert("Changing name of " + item.name + ".");
 
 			item.name = "PPro Panel sample touched " + item.name;
@@ -65,28 +60,24 @@ $._ext_PPRO={
 		}
 	},
 
-	getActiveSequenceName : function() 
-    {
+	getActiveSequenceName : function() {
     	var return_msg = "No active sequence."
 
     	var active_seq = app.project.activeSequence;
 
-    	if (active_seq != null)
-	    {
+    	if (active_seq != null) {
 		    return_msg = active_seq.name;
 		}
 		
 		return return_msg;
     },
     
-    exportSequenceAsPrProj : function()
-	{
+    exportSequenceAsPrProj : function() {
 		app.enableQE();
 		
 		var project = app.project;
 	
-		if (project.activeSequence != null)
-		{
+		if (project.activeSequence != null) {
 		    
 			// Here's how to get the start time offset to a sequence.
 
@@ -97,15 +88,13 @@ $._ext_PPRO={
 		    
 			var sep         = '\\';
             
-            if (qe.platform == 'Macintosh')
-            {
+            if (qe.platform == 'Macintosh') {
                 sep = '/';
             }
 		    
 			var outFolder = Folder.selectDialog();
 		
-		    if (outFolder != null)
-			{
+		    if (outFolder != null) {
                 var entire_out_path =	outFolder.fsName + 
                                       	sep +
                                       	out_name +
@@ -118,60 +107,52 @@ $._ext_PPRO={
 			    alert(info);
 			}
 			// Here's how to import JUST that sequence from a project.
-
-			//app.project.importSequences(entire_out_path, origID);
-		} 
-		else
-		{
+			//
+			// var seqIDsToBeImported = new Array;
+			// seqIDsToBeImported[0] = ID1;
+			// ...
+			// seqIDsToBeImported[N] = IDN;
+			//
+			//app.project.importSequences(pathToPrProj, seqIDsToBeImported);
+		} else {
 		    alert("No active sequence.");
 		}
 	},
 
-	createSequenceMarkers : function()
-    {
+	createSequenceMarkers : function() {
 	    var active_seq = app.project.activeSequence;
 	    
-	    if (active_seq != null)
-	    {
+	    if (active_seq != null) {
 		    var markers		= active_seq.markers; 
 	
-		    if (markers != null)
-		    {
+		    if (markers != null) {
 			    var numMarkers	= markers.numMarkers;
 
-                if (numMarkers > 0)
-			    {
+                if (numMarkers > 0) {
                     var marker_index = 1;
                     
                     for(var current_marker = 	markers.getFirstMarker(); 
                     		current_marker !=	undefined; 
-							current_marker =	markers.getNextMarker(current_marker))
-				   {
-                        if (current_marker.name != "")
-                        {
+							current_marker =	markers.getNextMarker(current_marker)){
+                        if (current_marker.name != "") {
                             alert(	'Marker ' + 
                             		marker_index + 
                             		' name = ' +
                             		current_marker.name + 
                             		'.');
-                        } 
-                        else
-                        {
+                        } else {
                             alert(	'Marker ' + 
                             		marker_index + 
                             		' has no name.');
                         }
                     
-                        if (current_marker.end.seconds > 0)
-                        {
+                        if (current_marker.end.seconds > 0) {
                             alert(	'Marker ' + 
                             		marker_index + 
                             		' duration = ' +
                             		(current_marker.end.seconds - current_marker.start.seconds) + 
                             		' seconds.');
-                        }
-                        else
-                        {
+                        } else {
                             alert(	'Marker ' + 
                             		marker_index + 
                             		' has no duration.');
@@ -188,40 +169,43 @@ $._ext_PPRO={
 				 }
 			}
 	
-			var new_marker  		= markers.createMarker(12.345);
-			new_marker.name 		= 'Marker created by PProPanel.';
-			new_marker.comments 	= 'Here are some comments, inserted by PProPanel.';
-			new_marker.end.seconds 	= 15.6789;
+			var new_comment_marker  		= markers.createMarker(12.345);
+			new_comment_marker.name 		= 'Marker created by PProPanel.';
+			new_comment_marker.comments 	= 'Here are some comments, inserted by PProPanel.';
+			new_comment_marker.end.seconds 	= 15.6789;
+
+
+			var new_web_marker  		= markers.createMarker(14.345);
+			new_web_marker.name 		= 'Web marker created by PProPanel.';
+			new_web_marker.comments 	= 'Here are some comments, inserted by PProPanel.';
+			new_web_marker.end.seconds 	= 15.6789;
+			new_web_marker.setTypeAsWebLink("http://www.adobe.com", "frame target");
 	    }
 	},
 	
-    exportFCPXML : function() 
-    {
+    exportFCPXML : function() {
         app.enableQE();
         
         var project = app.project;
         
-        if (project.activeSequence != null)
-        {
+        if (project.activeSequence != null) {
             var proj_path   = new File(project.path);
             var parent_dir  = proj_path.parent;
             var out_name    = project.activeSequence.name;
         	var extension   = '.xml';
             var sep         = '\\';
 
-            if (qe.platform == 'Macintosh')
-            {
+            if (qe.platform == 'Macintosh') {
                 sep = '/';
             }
             
             var output_path = Folder.selectDialog("Choose the output directory");
 		
-			if (output_path != null)
-			{
+			if (output_path != null) {
 
 	            var entire_out_path = output_path.fsName + sep + out_name + extension;
 	        	
-	        	project.activeSequence.exportAsFinalCutProXML(entire_out_path, true);
+	        	project.activeSequence.exportAsFinalCutProXML(entire_out_path, 1); // 1 == suppress UI
 	        	
 	            var info = 	"Exported FCP XML for " + 
 	            			project.activeSequence.name + 
@@ -230,118 +214,120 @@ $._ext_PPRO={
 	            			", next to the project.";
 
 	            alert(info);
-	        }
-	        else
-	        {
+	        } else {
 	        	alert("No output path chosen.")
 	        }
-        } 
-        else
-        {
+        } else {
         	alert("No active sequence.");
         }
     },
 	
-	openInSource : function()
-	{
+	openInSource : function() {
         app.enableQE();
 		
 		var file_to_open = File.openDialog ("Choose file to open.", 0, false);
 
-		if (file_to_open != null)
-		{
+		if (file_to_open != null) {
 			qe.source.openFilePath(file_to_open.fsName);
-
 			qe.source.player.play(); 
 		}
 	},
 
-	importFiles : function() 
-	{
+	importFiles : function() {
+
+		function searchForBinWithName(name) {
+            var numItemsAtRoot = app.project.rootItem.children.numItems;
+            var foundBin = 0;
+          
+            for (var i = 0; i < numItemsAtRoot && foundBin == 0; i++) {
+                var currentItem = app.project.rootItem.children[i];
+          
+                if (currentItem != null && currentItem.name == nameToFind) {
+                    foundBin = currentItem;
+                }
+            }
+            return foundBin;
+        }
+
 		var proj = app.project;
+        
+        // Find or create a target bin.
+
+        var nameToFind = 'Targeted by PProPanel import';
+
+        var targetBin = searchForBinWithName(nameToFind);
+
+        if (targetBin == 0) {
+            app.project.rootItem.createBin(nameToFind);
+        }
 		
-		if (proj != null)
-		{
+        if (proj != null) {
+            targetBin = searchForBinWithName(nameToFind);
+            targetBin.select();
+            
 			var file_or_files_to_import = File.openDialog ("Choose files to import", 0, true);
 			
-			if (file_or_files_to_import != null)
-			{
+            if (file_or_files_to_import != null) {
 				// We have an array of File objects; importFiles() takes an array of paths.
 						
 				var import_these = new Array;
 				
-				for (var i = 0; i < file_or_files_to_import.length; i++)
-				{
+                for (var i = 0; i < file_or_files_to_import.length; i++) {
 					import_these[i] = file_or_files_to_import[i].fsName;
 				}
-
 				proj.importFiles(import_these);	
 			}	
 		}	
 	},
 	
-	replaceMedia : function()
-	{
+	replaceMedia : function() {
 		// Warning: Currently, sample code assumes the zero-th item in the project is footage.
 
 		var item = app.project.rootItem.children[0]; 
 		
-		if (item.canChangeMediaPath())
-		{
+		if (item.canChangeMediaPath()) {
 			var replacement_media = File.openDialog(	"Choose new media file, for project item " + 
 														item.name, 
 														0, 
 														false);
 			
-			if (replacement_media != null)
-			{
+			if (replacement_media != null) {
 				item.name = replacement_media.name + ", formerly known as " + item.name;
 
 				item.changeMediaPath(replacement_media.fsName);
 
 				replacement_media.close(); 
 			}
-		}
-		else
-		{
+		} else {
 			alert("Couldn't change path. replaceMedia() can't act on merged clips, or maybe the zero-th item isn't footage.");
 		}
 	},
 	
-	openProject : function() 
-	{
+	openProject : function() {
 		var proj_to_open = File.openDialog ("Choose project:", null, false);
 
-		if (proj_to_open != null && proj_to_open.exists)
-		{
+		if (proj_to_open != null && proj_to_open.exists) {
 			app.openDocument(proj_to_open.fsName);
-
 			proj_to_open.close();
 		}	
 	},
 
-	createSequence : function(name) 
-	{
+	createSequence : function(name) {
 		var some_arbitrary_id_value = "xyz123";
-
 		app.project.createNewSequence("Some Sequence Name", some_arbitrary_id_value);
 	},
 
-	createSequenceFromPreset : function(preset_path) 
-	{
+	createSequenceFromPreset : function(preset_path) {
 		app.enableQE();
-
 		qe.project.newSequence("Some Sequence Name", preset_path);
 	},
 
-	render : function() 
-	{
+	render : function() {
 		app.enableQE();
 		
 		var active_seq = qe.project.getActiveSequence();
 		
-		if (active_seq != null)
-		{
+		if (active_seq != null)	{
 			// Just for reference, here's how to access the CTI 
 			// position, for the active sequence. 
 
@@ -353,20 +339,15 @@ $._ext_PPRO={
 
 			// Define a couple of callback functions, for AME to use during render.
 			
-			function message(msg)
-			{
+			function message(msg) {
 				// $.writeln(msg);	 uncomment, to invoke ESTK!
 			}
 			
-			function onEncoderJobComplete(jobID, outputFilePath)
-			{
+			function onEncoderJobComplete(jobID, outputFilePath) {
 				app.enableQE();
-				if (qe.platform == 'Macintosh')
-				{
+				if (qe.platform == 'Macintosh') {
 					var eoName = "PlugPlugExternalObject";							
-				} 
-				else
-				{
+				} else {
 					var eoName = "PlugPlugExternalObject.dll";
 				}
 						
@@ -378,8 +359,7 @@ $._ext_PPRO={
 	        	eventObj.dispatch();
 			}
 			
-			function onEncoderJobError(jobID)
-			{
+			function onEncoderJobError(jobID) {
 				app.enableQE();
 				if (qe.platform == 'Macintosh')
 				{
@@ -398,8 +378,7 @@ $._ext_PPRO={
 	        	eventObj.dispatch();
 			}
 			
-			function onEncoderJobProgress(jobID, progress)
-			{
+			function onEncoderJobProgress(jobID, progress) {
 				var msg = 	'onEncoderJobProgress called' +
 							'. jobID = ' + 
 							jobID +
@@ -409,8 +388,7 @@ $._ext_PPRO={
 				message(msg);
 			}
 
-			function onEncoderJobQueued(jobID)
-			{
+			function onEncoderJobQueued(jobID) {
 			    app.encoder.startBatch();
 			}
 
@@ -419,8 +397,7 @@ $._ext_PPRO={
 			var sep         	= '\\';
 			var out_preset_path	= "C:\Program Files\Adobe\Adobe Media Encoder CC 2014\MediaIO\systempresets\58444341_4d584658\XDCAMHD 50 NTSC 60i.epr";
 			
-			if (qe.platform == 'Macintosh')
-			{
+			if (qe.platform == 'Macintosh') {
 				var out_preset_path = "/Applications/Adobe Premiere Pro CC 2014/Adobe Premiere Pro CC 2014.app/MediaIO/systempresets/58444341_4d584658/XDCAMHD 50 NTSC 60i.epr";
 				sep = '/';
 			}
@@ -451,40 +428,32 @@ $._ext_PPRO={
 			proj_path.close();
 			output_dir.close();
 			out_preset.close();
-		}
-		else
-		{
+		} else {
 			alert("No active sequence.");
 		}
 	},
 
-    saveProjectAs : function() 
-    {
+    saveProjectAs : function() {
 		app.enableQE();
 			
 		var session_counter = 1;
 		var output_path 	= Folder.selectDialog("Choose the output directory");
 		var sep         	= '\\';
         
-        if (qe.platform == 'Macintosh')
-        {
+        if (qe.platform == 'Macintosh') {
             sep = '/';
         }
 		    
-		if (output_path != null)
-		{
+		if (output_path != null) {
 			var abs_path 	= output_path.fsName;
 		    var outname 	= new String(app.project.name);
 		    var array 		= outname.split('.', 2);
 
 		    outname = array[0]+ session_counter + '.' + array[1]; 
-
 		    session_counter++;
 			
 		    var full_out_path = abs_path + sep + outname;
-		    
 		    app.project.saveAs(full_out_path);
-
 		    app.openDocument(full_out_path);
 		}
 	},
@@ -493,25 +462,18 @@ $._ext_PPRO={
 	{
 		var proj_item = app.project.rootItem.children[0]; // assumes first item is footage.
 
-		if (proj_item != null)
-		{
-			if (ExternalObject.AdobeXMPScript == undefined) 
-			{
+		if (proj_item != null) {
+			if (ExternalObject.AdobeXMPScript == undefined) {
 				ExternalObject.AdobeXMPScript = new ExternalObject('lib:AdobeXMPScript'); 
 			}
 	
-			if(ExternalObject.AdobeXMPScript != undefined) // safety-conscious!
-			{
+			if(ExternalObject.AdobeXMPScript != undefined) { 	// safety-conscious!
 				var xmp_blob = proj_item.getXMPMetadata();
-		
 				var xmp = new XMPMeta(xmp_blob);
-				
 				var have_a_scene = xmp.doesPropertyExist(XMPConst.NS_DM, "scene");
-				
 				var oldVal = "";
 				
-				if (have_a_scene == true)
-				{
+				if (have_a_scene == true){
 					var myScene = xmp.getProperty(XMPConst.NS_DM, "scene");
 					oldVal 		= myScene.value;
 				}
@@ -527,8 +489,7 @@ $._ext_PPRO={
 				var firstDescription 			= "PProPanel wrote the first value into description.";
 				var numDescriptionValuesPresent = xmp.countArrayItems(XMPConst.NS_DC, descriptionProp);
 			
-    			if( numDescriptionValuesPresent == 0)
-    			{
+    			if( numDescriptionValuesPresent == 0) {
     				xmp.appendArrayItem(XMPConst.NS_DC, 
     									descriptionProp, 
     									null, 
@@ -539,9 +500,7 @@ $._ext_PPRO={
     									descriptionProp, 
     									1, 
     									firstDescription);
-    			} 
-    			else 
-    			{
+    			} else {
     				var appendedText 	= '...blahblahblah added by PProPanel.';
 
     				oldDescriptionValue = xmp.getArrayItem(XMPConst.NS_DC, descriptionProp, 1);
@@ -552,25 +511,18 @@ $._ext_PPRO={
     									(oldDescriptionValue.value + appendedText));
     			}
 
-				// either way, serialize and write XMP.
-
-				var xmp_as_str = xmp.serialize();
-
+				var xmp_as_str = xmp.serialize();		// either way, serialize and write XMP.
 				proj_item.setXMPMetadata(xmp_as_str);
 			}
 		}
 	},
 	
-	pokeAnywhere : function()
-	{
-		function getProductionByName(nameToGet)
-		{
-			for (var i = 0; i < prod_list.numProductions; i++)
-			{
+	pokeAnywhere : function() {
+		function getProductionByName(nameToGet) {
+			for (var i = 0; i < prod_list.numProductions; i++) {
 				this_prod = prod_list[i];
 
-				if (this_prod.name == nameToGet)
-				{
+				if (this_prod.name == nameToGet) {
 					return this_prod;
 				}
 			}
@@ -581,66 +533,54 @@ $._ext_PPRO={
 		var prod_list 			= app.anywhere.listProductions();
 		var isProductionOpen	= app.anywhere.isProductionOpen();
 		
-		if (isProductionOpen == true) 
-		{
+		if (isProductionOpen == true) {
 			var sessionURL		= app.anywhere.getCurrentEditingSessionURL();
 			var selectionURL	= app.anywhere.getCurrentEditingSessionSelectionURL();
 			var active_seqURL	= app.anywhere.getCurrentEditingSessionActiveSequenceURL();
 			
 			var theOneIAskedFor = getProductionByName("test");
 		
-			if (theOneIAskedFor != null)
-			{
+			if (theOneIAskedFor != null) {
 				var out = theOneIAskedFor.name + ", " + theOneIAskedFor.description;
 
 				alert(out);	// todo: put useful code here.
-			}
 		}
-		else
-		{
+		} else {
 			alert("No Production open.");
 		}
 	},
 
-	getMethods: function(obj) 
-	{
+	getMethods: function(obj) {
 		var ps = "Methods: ";
-		for (var ii=0; ii < obj.reflect.methods.length; ii++) 
-		{
+		for (var ii=0; ii < obj.reflect.methods.length; ii++) {
 			ps +=  obj.reflect.methods[ii].name + "; ";
 		}
 		return ps;
 	},
 
-	getProps: function(obj) 
-	{
+	getProps: function(obj) {
 		var ps = "Properties: ";
-		for (var ii=0; ii < obj.reflect.properties.length; ii++) 
-		{
+		for (var ii=0; ii < obj.reflect.properties.length; ii++) {
 			ps +=  obj.reflect.properties[ii].name + "; ";
 		}
 		return ps;
 	},
 
-	dumpOMF : function()
-	{
+	dumpOMF : function() {
 		app.enableQE();
 		
 		var active_seq = qe.project.getActiveSequence();
 		
-		if (active_seq != null)
-		{
+		if (active_seq != null) {
 			var output_path = Folder.selectDialog("Choose the output directory");
 		
-			if (output_path != null)
-			{
+			if (output_path != null){
 				var abs_path = output_path.fsName;
 			    var outname  = new String(active_seq.name) + '.omf';
 
                 var sep         = '\\';
 
-                if (qe.platform == 'Macintosh')
-                {
+                if (qe.platform == 'Macintosh') {
                 	sep = '/';
                 }
                 
@@ -657,30 +597,24 @@ $._ext_PPRO={
 										0,                        // handle frames (if trim is 1, handle frames from 0 to 1000)
 										0);                        // include pan flag (0 : no or 1 : yes)
 			}
-		}
-		else
-		{
+		} else {
 			alert("No active sequence.");
 		}
 	},
 	
-	renderForiPad : function ()
-	{
+	renderForiPad : function () {
 		app.enableQE();
 
 		var active_seq = qe.project.getActiveSequence();
 		
-		if (active_seq != null)
-		{
+		if (active_seq != null)	{
 			// Define some callback functions, for AME to use during render.
 			
-			function message(msg)
-			{
+			function message(msg) {
 				// $.writeln(msg);	If you'd like to launch ESTK, uncomment this.
 			}
 			
-			function onEncoderJobComplete(jobID, outputFilePath)
-			{
+			function onEncoderJobComplete(jobID, outputFilePath) {
 				var msg = 	'onEncoderJobComplete called' +
 							'. jobID = ' + 
 							jobID +
@@ -690,8 +624,7 @@ $._ext_PPRO={
 				message(msg);
 			}
 			
-			function onEncoderJobError(jobID)
-			{
+			function onEncoderJobError(jobID) {
 				var msg = 	'onEncoderJobError called' +
 							'. jobID = ' + 
 							jobID;
@@ -699,8 +632,7 @@ $._ext_PPRO={
 				message(msg);
 			}
 			
-			function onEncoderJobProgress(jobID, progress)
-			{
+			function onEncoderJobProgress(jobID, progress) {
 				var msg = 	'onEncoderJobProgress called' +
 							'. jobID = ' + 
 							jobID +
@@ -710,24 +642,19 @@ $._ext_PPRO={
 				message(msg);
 			}
 			
-			function onEncoderJobQueued(jobID)
-			{
+			function onEncoderJobQueued(jobID) {
 			    app.encoder.startBatch();
 			}
 
 			var output_path = Folder.selectDialog("Choose the output directory");
 		
-			if (output_path != null && output_path.exists)
-			{
+			if (output_path != null && output_path.exists) {
 			    var sep = '\\';
 			     
-				if (qe.platform == 'Macintosh')
-				{
+				if (qe.platform == 'Macintosh') {
 					var out_preset_path = "Applications/Adobe Premiere Pro CC 2014/Adobe Premiere Pro CC 2014.app/MediaIO/systempresets/4E49434B_48323634/Apple TV, iPad, iPhone 4 and newer - 960x540 29.97.epr";
 					sep = '/';
-				}
-				else
-				{
+				} else {
 					var out_preset_path  = "C:\Program Files\Adobe\Adobe Media Encoder CC 2014\MediaIO\systempresets\4E49434B_48323634\Apple TV, iPad, iPhone 4 and newer - 960x540 29.97.epr";
 				}
 				
@@ -753,62 +680,59 @@ $._ext_PPRO={
 				message('jobID = ' + jobID);
 			
 				out_preset.close();
-			}
 		}
-		else
-		{
+		} else {
 			alert("No active sequence.");
 		}
 	},
 	
-	addClipMarkers : function ()
-	{
+	addClipMarkers : function () {
 		var proj_item = app.project.rootItem.children[0]; // assumes first item is footage.
 
-		if (proj_item != null)
-		{
+		if (proj_item != null) {
+            if (proj_item.type == ProjectItemType.CLIP ||
+                proj_item.type == ProjectItemType.FILE) {
+                
 			markers = proj_item.getMarkers();
 
-			if (markers != null)
-			{
-				var num_markers = markers.numMarkers;
+				if (markers != null) {
+					var num_markers 	= markers.numMarkers;
 
-				var new_marker  		= markers.createMarker(12.345);
-				new_marker.name 		= 'Marker created by PProPanel.';
-				new_marker.comments 	= 'Here are some comments, inserted by PProPanel.';
-				new_marker.end 			= 15.6789;
+					var new_marker  	= markers.createMarker(12.345);
+					new_marker.name 	= 'Marker created by PProPanel.';
+					new_marker.comments = 'Here are some comments, inserted by PProPanel.';
+					new_marker.end 		= 15.6789;
 
-				//default marker type == comment. To change, call one of these:
+					//default marker type == comment. To change marker type, call one of these:
 
 				// new_marker.setTypeAsChapter();
 				// new_marker.setTypeAsWebLink();
 				// new_marker.setTypeAsSegmentation();
 				// new_marker.setTypeAsComment();
+				}
+			} else {
+           		alert("Can only add markers to clips or files.");
 			}
 		}    
 	},
 
-	modifyProjectMetadata : function ()
-	{
+	modifyProjectMetadata : function () {
+		
 		var kPProPrivateProjectMetadataURI = "http://ns.adobe.com/premierePrivateProjectMetaData/1.0/";
 
 		var namefield = "Column.Intrinsic.Name";
 		var tapename  = "Column.Intrinsic.TapeName";
 		var desc      = "Column.PropertyText.Description";
 
-		if (app.isDocumentOpen())
-		{
+		if (app.isDocumentOpen()) {
 			var projectItem = app.project.rootItem.children[0];
 
-			if (projectItem != null)
-			{
-				if (ExternalObject.AdobeXMPScript == undefined)
-				{
+			if (projectItem != null) {
+				if (ExternalObject.AdobeXMPScript == undefined) {
 					ExternalObject.AdobeXMPScript = new ExternalObject('lib:AdobeXMPScript');
 				}
 
-				if (ExternalObject.AdobeXMPScript != undefined) // safety-conscious!
-				{
+				if (ExternalObject.AdobeXMPScript != undefined) {	// safety-conscious!
 					var projectMetadata = projectItem.getProjectMetadata();
 
 					var xmp = new XMPMeta(projectMetadata);

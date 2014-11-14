@@ -10,7 +10,8 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 			<Host Name="PPRO" Version="[8.0,9.9]" />
 		</HostList>
 		<CEFCommandLine>
-		    <Parameter>--nodejs-disabled</Parameter>
+		    <Parameter>--allow-file-access</Parameter>
+		    <Parameter>--allow-file-access-from-files</Parameter>
 		</CEFCommandLine>
 		<LocaleList>
 			<Locale Code="All" />
