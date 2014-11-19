@@ -35,42 +35,28 @@ function onLoaded() {
 
 function dragHandler(event){
 
-    var dt = event.dataTransfer;
-    dt.setData("text", "demo text");
+    var csInterface = new CSInterface();
+    var path = csInterface.getSystemPath(SystemPath.EXTENSION);
     
-    var currentPageUrl;
-    if (typeof this.href != "undefined")
-    {
-       currentPageUrl = this.href.toString().toLowerCase(); 
-    }
-    else
-    { 
-        currentPageUrl = document.location.toString().toLowerCase();
-    }
+    if (path != null){
+        path = path + '/payloads/test.jpg';
+        event.dataTransfer.setData("com.adobe.cep.dnd.file.0", path);
+    //  event.dataTransfer.setData("com.adobe.cep.dnd.file.N", path);  N = (items to import - 1)
     
-    dt.setData("url", currentPageUrl);
-    dt.setData("text/html", '<p>A link to a local file: <a href="../img/red.png">red.png</a></p>');
-    dt.setData("com.adobe.cep.dnd.file.0", 'file:///Library/Application Support/Adobe/CEP/extensions/PProPanel/payloads/test.jpg');
+    }
 }
 
-
-function myCallBackFunction (data)
-{
+function myCallBackFunction (data) {
      // Updates seq_display with whatever ExtendScript function returns.
 
-     var boilerPlate = "Active Sequence: ";
-
-     var seq_display = document.getElementById("active_seq");
-     
-     seq_display.innerHTML = boilerPlate + data;
+     var boilerPlate        = "Active Sequence: ";
+     var seq_display        = document.getElementById("active_seq");
+     seq_display.innerHTML  = boilerPlate + data;
 }
-
-function myVersionInfoFunction (data)
-{
-     var boilerPlate = "PPro Version: ";
-
-     var v_string = document.getElementById("version_string");
      
+function myVersionInfoFunction (data) {
+     var boilerPlate    = "PPro Version: ";
+     var v_string       = document.getElementById("version_string");
      v_string.innerHTML = boilerPlate + data;
 }
 
@@ -81,34 +67,24 @@ function myVersionInfoFunction (data)
 function updateThemeWithAppSkinInfo(appSkinInfo) {
 	
     //Update the background color of the panel
+
     var panelBackgroundColor = appSkinInfo.panelBackgroundColor.color;
     document.body.bgColor = toHex(panelBackgroundColor);
         
     var styleId = "ppstyle";
     
-    var csInterface = new CSInterface();
-	var appName = csInterface.hostEnvironment.appName;
-    
-    if(appName == "PHXS"){
-	    addRule(styleId, "button, select, input[type=button], input[type=submit]", "border-radius:3px;");
-	}
-	if(appName == "PHXS" || appName == "PPRO" || appName == "PRLD") {
-		////////////////////////////////////////////////////////////////////////////////////////////////
-		// NOTE: Below theme related code are only suitable for Photoshop.                            //
-		// If you want to achieve same effect on other products please make your own changes here.    //
-		////////////////////////////////////////////////////////////////////////////////////////////////
-		
+    var gradientBg          = "background-image: -webkit-linear-gradient(top, " + toHex(panelBackgroundColor, 40) + " , " + toHex(panelBackgroundColor, 10) + ");";
+    var gradientDisabledBg  = "background-image: -webkit-linear-gradient(top, " + toHex(panelBackgroundColor, 15) + " , " + toHex(panelBackgroundColor, 5) + ");";
+    var boxShadow           = "-webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 1px 1px rgba(0, 0, 0, 0.2);";
+    var boxActiveShadow     = "-webkit-box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.6);";
 	    
-	    var gradientBg = "background-image: -webkit-linear-gradient(top, " + toHex(panelBackgroundColor, 40) + " , " + toHex(panelBackgroundColor, 10) + ");";
-	    var gradientDisabledBg = "background-image: -webkit-linear-gradient(top, " + toHex(panelBackgroundColor, 15) + " , " + toHex(panelBackgroundColor, 5) + ");";
-	    var boxShadow = "-webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 1px 1px rgba(0, 0, 0, 0.2);";
-	    var boxActiveShadow = "-webkit-box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.6);";
+    var isPanelThemeLight   = panelBackgroundColor.red > 73; // choose your own sweet spot
 	    
-	    var isPanelThemeLight = panelBackgroundColor.red > 73;
 	    var fontColor, disabledFontColor;
 	    var borderColor;
 	    var inputBackgroundColor;
 	    var gradientHighlightBg;
+
 	    if(isPanelThemeLight) {
 	    	fontColor = "#000000;";
 	    	disabledFontColor = "color:" + toHex(panelBackgroundColor, -70) + ";";
@@ -122,7 +98,6 @@ function updateThemeWithAppSkinInfo(appSkinInfo) {
 	    	inputBackgroundColor = toHex(panelBackgroundColor, -20) + ";";
 	    	gradientHighlightBg = "background-image: -webkit-linear-gradient(top, " + toHex(panelBackgroundColor, -20) + " , " + toHex(panelBackgroundColor, -30) + ");";
 	    }
-	    
 	
 	    //Update the default text style with pp values
 	    
@@ -143,11 +118,6 @@ function updateThemeWithAppSkinInfo(appSkinInfo) {
 	    addRule(styleId, "input[type=text]:focus", "background-color: #ffffff;");
 	    addRule(styleId, "input[type=text]:focus", "color: #000000;");
 	    
-	} else {
-		// For AI, ID and FL use old implementation	
-		addRule(styleId, ".default", "font-size:" + appSkinInfo.baseFontSize + "px" + "; color:" + reverseColor(panelBackgroundColor) + "; background-color:" + toHex(panelBackgroundColor, 20));
-	    addRule(styleId, "button", "border-color: " + toHex(panelBgColor, -50));
-	}
 }
 
 function addRule(stylesheetId, selector, rule) {

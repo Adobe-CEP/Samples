@@ -419,6 +419,11 @@ $._ext_PPRO={
 
 			var output_dir = new File('~/Desktop');
 
+			// use these 0 or 1 settings to disable some/all metadata creation.
+
+			app.encoder.setSideCarXMPEnabled(0);
+			app.encoder.setEmbeddedXMPEnabled(0);
+
 			var jobID = app.encoder.encodeSequence(	app.project.activeSequence,
 													full_path_to_file,
 													out_preset.fsName,
@@ -672,6 +677,11 @@ $._ext_PPRO={
 				app.encoder.bind('onEncoderJobError', onEncoderJobError);
 				app.encoder.bind('onEncoderJobProgress', onEncoderJobProgress);
 				app.encoder.bind('onEncoderJobQueued', onEncoderJobQueued);
+
+				// use these 0 or 1 settings to disable some/all metadata creation.
+
+				app.encoder.setSideCarXMPEnabled(0);
+				app.encoder.setEmbeddedXMPEnabled(0);
 
 				var jobID = app.encoder.encodeSequence(	app.project.activeSequence,
 														full_path_to_file,
