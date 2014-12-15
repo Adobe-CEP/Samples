@@ -1,6 +1,6 @@
 $._ext_PPRO={
 
-	getVersionInfo : function () {
+	getVersionInfo : function() {
 		return 'PPro ' + app.version + 'x' + app.build;
 	},
 
@@ -17,7 +17,7 @@ $._ext_PPRO={
 		}
 	},
 
-	saveProject : function () {
+	saveProject : function() {
 		app.project.save();
 	},
 
@@ -304,7 +304,15 @@ $._ext_PPRO={
 	},
 	
 	openProject : function() {
-		var proj_to_open = File.openDialog ("Choose project:", null, false);
+		app.enableQE();
+
+		if (qe.platform == 'Macintosh'){
+			var filterString = "";
+		} else {
+			var filterString = "All files:*.*";
+		}
+
+		var proj_to_open = File.openDialog ("Choose project:", filterString, false);
 
 		if (proj_to_open != null && proj_to_open.exists) {
 			app.openDocument(proj_to_open.fsName);
@@ -421,7 +429,7 @@ $._ext_PPRO={
 
 			// use these 0 or 1 settings to disable some/all metadata creation.
 
-			app.encoder.setSideCarXMPEnabled(0);
+			app.encoder.setSidecarXMPEnabled(0);
 			app.encoder.setEmbeddedXMPEnabled(0);
 
 			var jobID = app.encoder.encodeSequence(	app.project.activeSequence,
@@ -773,5 +781,35 @@ $._ext_PPRO={
 				}
 			}
 		}
-	}
+	},
+
+	updatePAR : function() {
+		alert('in updatePAR');
+		var item = app.project.rootItem.children[0]; 
+		if (item != null){
+
+		/* 	
+
+			0 = Use the value from the actual clip
+
+			1 = kPixelAspectRatio_Square
+			2 = kPixelAspectRatio_DVNTSC
+			3 = kPixelAspectRatio_DVNTSCWide
+			4 = dvamediatypes::kPixelAspectRatio_DVPAL
+			5 = kPixelAspectRatio_DVPALWide
+			6 = kPixelAspectRatio_Anamorphic
+			7 = kPixelAspectRatio_HDAnamorphic1080
+			8 = kPixelAspectRatio_DVCProHD	
+
+		*/
+			item.setOverridePixelAspectRatio(6);
+		}
+	},
+
+	getnumAEProjectItems : function() {
+		var bt = new BridgeTalk;
+		bt.target = 'aftereffects';
+		bt.body =	'alert(app.project.rootFolder.numItems);'
+		bt.send();
+	},
 };
