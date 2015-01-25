@@ -124,7 +124,7 @@ var XMPBridge = (function(exports) {
 			}
 		};
 		
-	})(),
+	})();
 
 	/**
 	 * @see $.XMP#toNamespaceURI()
