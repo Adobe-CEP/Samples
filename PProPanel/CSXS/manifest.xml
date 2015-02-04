@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ExtensionManifest Version="4.0" ExtensionBundleId="com.example.PProPanel" ExtensionBundleVersion="1.0.0"
-ExtensionBundleName="PProPanel" 
+<ExtensionManifest Version="4.0" ExtensionBundleId="Premiere Pro sample panel" ExtensionBundleVersion="1.0.0"
+ExtensionBundleName="Premiere Pro sample panel" 
 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<ExtensionList>
-		<Extension Id="com.example.PProPanel" Version="1.0" />
+		<Extension Id="Premiere Pro sample panel" Version="1.0" />
 	</ExtensionList>
 	<ExecutionEnvironment>
 		<HostList>
@@ -22,7 +22,7 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	</ExecutionEnvironment>
 
 	<DispatchInfoList>
-		<Extension Id="com.example.PProPanel">
+		<Extension Id="Premiere Pro sample panel">
 			<DispatchInfo >
 				<Resources>
 					<MainPath>./index.html</MainPath>
@@ -33,7 +33,7 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 				</Lifecycle>
 				<UI>
 					<Type>Panel</Type>
-					<Menu>PProPanel</Menu>
+					<Menu>PProPanel (SDK)</Menu>
 					<Geometry>
 						<Size>
 							<Height>400</Height>

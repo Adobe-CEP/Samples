@@ -171,9 +171,6 @@ function onAppThemeColorChanged(event) {
     updateThemeWithAppSkinInfo(skinInfo);
 } 
 
-
-
-    
 /**
  * Load JSX file into the scripting context of the product. All the jsx files in 
  * folder [ExtensionRoot]/jsx will be loaded. 
