@@ -1,0 +1,101 @@
+<!doctype html>
+
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" type="text/css" href="./style.css">
+<link rel="stylesheet" type="text/css" href="../../lib/jquery-ui.css">
+<script src="../../lib/CSInterface-4.0.0.js"></script>
+<script src="../../lib/jquery-1.9.1.js"></script>
+<script src="../../lib/jquery-ui-1.10.3.js"></script>
+<script src="./ext.js"></script>
+<title>StandAlonePanel</title>
+</head>
+
+<body onLoad="onLoaded();">
+
+<fieldset>
+	<legend>Concatenation</legend>
+	<div id="concat" width="100%">
+		<div id="setting">
+				<ol>
+                    <li>
+                        -Asset1
+                    </li>
+					<li>
+						<label for="sourcePath1">Src. Path</label>
+						<input id="sourcePath1" alt="You can select asset from project panel" name="sourcePath1" type="text" placeholder="required" required autofocus>
+					</li>
+					<li>
+						<label for="startTime1">Start Time</label>
+						<input id="startTime1" name="startTime1" type="text" placeholder="required" required>
+					</li>
+					<li>
+						<label for="duration1">Duration</label>
+						<input id="duration1" name="duration1" type="text" placeholder="required" required>
+					</li>
+					<li>
+						<label for="frameRate1">Frame Rate</label>
+						<input id="frameRate1" name="frameRate1" type="text" placeholder="required" required>
+					</li>
+                    <li>
+                        -Asset2
+                    </li>
+					<li>
+						<label for="sourcePath2">Src. Path</label>
+						<input id="sourcePath2" alt="You can select asset from project panel" name="sourcePath2" type="text" placeholder="required" required>
+					</li>
+					<li>
+						<label for="startTime2">Start Time</label>
+						<input id="startTime2" name="startTime2" type="text" placeholder="required" required>
+					</li>
+					<li>
+						<label for="duration2">Duration</label>
+						<input id="duration2" name="duration2" type="text" placeholder="required" required>
+					</li>
+					<li>
+						<label for="frameRate2">Frame Rate</label>
+						<input id="frameRate2" name="frameRate2" type="text" placeholder="required" required>                       
+					</li>
+                    <li>
+                        <hr />
+                    </li>
+					<li>
+						<label for="outputDirectory">Output Dir.</label>
+						<input id="outputDirectory" name="outputDirectory" type="text" placeholder="not required">
+					</li>
+					<li>
+						<label for="outputFilename">Output Filename</label>
+						<input id="outputFilename" name="outputFilename" type="text" placeholder="not required">
+					</li>
+					<li>
+						<label for="presetPath">Preset</label>
+						<input id="presetPath" name="presetPath" type="text" placeholder="not required">
+					</li>
+					<li>
+						<p>Do you want to output XMP?</p>
+						<input type="radio" name="outputXMP" value="true" checked="checked">Yes 		<input type="radio" name="outputXMP" value="false">No
+					</li>
+				</ol>
+		</div>
+		<div id="concatButton">
+			<input type="button" id="startConcat" onclick="javascript:concatToDst();" value="  go  "/>&nbsp;&nbsp;
+			<input type="button" id="cancelConcat" onclick="javascript:cancelConcat();" value="cancel"/>
+		</div>
+	</div>
+	<div id="progressbar">
+		<div class="progress-label"></div>
+	</div>
+	<div id="result"></div>
+</fieldset>
+
+<fieldset>
+	<legend>API Calls</legend>
+	<div class="textwrapper">
+		<p>Refer to API messages as follows:<br><textarea id="apimessage" rows="8" cols="*" readonly></textarea></p>
+		<p><button onclick="clearTextArea()">Clear</button></p>
+	</div>
+</fieldset>
+
+</body>
+</html>

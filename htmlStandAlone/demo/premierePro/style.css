@@ -1,0 +1,44 @@
+html {height: 100%;}
+
+body {
+	position: relative;
+}
+
+fieldset {
+	min-width: 460px;
+}
+
+output
+{
+	font-weight: bold;
+	color: #174867;
+}
+
+button
+{
+	-webkit-transition: all 0.3s ease-out;
+	border-radius: 10px;
+	background: #cbcbcb;
+	color: #174867;
+	padding: 7px 15px 7px 15px;
+	display: block;
+	text-decoration: none;
+}
+
+button:hover {
+	background: #ebebeb;
+	color: #67a5cd;
+}
+
+textarea
+{
+    width: 100%;
+	resize: none;
+}
+
+.textwrapper
+{
+	border: 0px;
+	margin: 2px 2px 2px 2px;
+	padding: 0px;
+}

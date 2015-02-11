@@ -1,0 +1,43 @@
+html {height: 100%;}
+
+body {
+	position: relative;
+}
+
+fieldset {
+	min-width: 460px;
+}
+
+#saveAsset { 
+	width: 98%; 
+	min-height: 18em; 
+	padding: 1%; 
+}
+
+#saveAsset h4 {
+	line-height: 16px;
+	margin: 0 0 0.4em; 
+}
+
+#saveAsset h4 .ui-icon { 
+	float: left; 
+}
+
+#saveAssetResult {
+	text-align: left;
+    color: red;
+    margin: 20px 20px 0px 20px;
+}
+
+textarea
+{
+    width: 100%;
+	resize: none;
+}
+
+.textwrapper
+{
+	border: 0px;
+	margin: 2px 2px 2px 2px;
+	padding: 0px;
+}

@@ -1,0 +1,43 @@
+html {height: 100%;}
+
+body {
+	position: relative;
+}
+
+fieldset {
+	min-width: 460px;
+}
+
+#export { 
+	width: 98%; 
+	min-height: 18em; 
+	padding: 1%; 
+}
+
+#export h4 {
+	line-height: 16px;
+	margin: 0 0 0.4em; 
+}
+
+#export h4 .ui-icon { 
+	float: left; 
+}
+
+#exportResult {
+	text-align: left;
+    color: red;
+    margin: 20px 20px 0px 20px;
+}
+
+textarea
+{
+    width: 100%;
+	resize: none;
+}
+
+.textwrapper
+{
+	border: 0px;
+	margin: 2px 2px 2px 2px;
+	padding: 0px;
+}

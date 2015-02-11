@@ -1,0 +1,39 @@
+<!doctype html>
+
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" type="text/css" href="./style.css">
+<link rel="stylesheet" type="text/css" href="../../lib/jquery-ui.css">
+<script src="../../lib/CSInterface-4.0.0.js"></script>
+<script src="../../lib/utility.js"></script>
+<script src="../../lib/jquery-1.9.1.js"></script>
+<script src="../../lib/jquery-ui-1.10.3.js"></script>
+<script src="./ext.js"></script>
+<title>StandAlonePanel</title>
+</head>
+
+<body onLoad="onLoaded();">
+
+<fieldset>
+	<legend>Selected Assets</legend>
+	<div id="content"><h3>No Selection</h3></div>
+</fieldset>
+<fieldset>
+	<legend>Export Asset</legend>
+	<div>
+		<p>Result: <output name="result" id="result"></output></p>
+		<p><button onclick="submitExportAsset()">Export</button></p>
+	</div>
+</fieldset>
+
+<fieldset>
+	<legend>API Calls</legend>
+	<div class="textwrapper">
+		<p>Refer to API messages as follows:<br><textarea id="apimessage" rows="8" cols="*" readonly></textarea></p>
+		<p><button onclick="clearTextArea()">Clear</button></p>
+	</div>
+</fieldset>
+
+</body>
+</html>

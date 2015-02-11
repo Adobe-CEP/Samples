@@ -1,0 +1,25 @@
+html {height: 100%;}
+
+body {
+	position: relative;
+	height: 100%
+	background: -webkit-gradient(linear, left top, left bottom, from(#ccc), to(#fff));
+	padding: 0px 0px 0px 0px;
+}
+
+label {
+	float: left;
+	font-size: 13px;
+	width: 110px;
+}
+
+input[type="text"]
+{
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	-khtml-border-radius: 3px;
+	border-radius: 3px;
+	outline: none;
+	padding: 5px;
+	width: 70%;
+}

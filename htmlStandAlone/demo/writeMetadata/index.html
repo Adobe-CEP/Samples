@@ -1,0 +1,30 @@
+<!doctype html>
+
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" type="text/css" href="./style.css">
+<link rel="stylesheet" type="text/css" href="../../lib/jquery-ui.css">
+<script src="../../lib/CSInterface-4.0.0.js"></script>
+<script src="../../lib/jquery-1.9.1.js"></script>
+<script src="../../lib/jquery-ui-1.10.3.js"></script>
+<script src="./ext.js"></script>
+<title>StandAlonePanel</title>
+</head>
+
+<body onLoad="onLoaded();">
+
+<fieldset>
+	<legend>Write Metadata</legend>
+	<div id = "un">
+			<label for="Namespace">Namespace:</label>
+			<input id="Namespace" name="Namespace" type="text" value="http://ns.adobe.com/xmp/1.0/DynamicMedia/"><br/>
+			<label for="Property">Property:</label>
+			<input id="Property" name="Property" type="text" value="shotName"><br/>
+			<label for="Value">Value:</label>
+			<input id="Value" name="Value" type="text"><br/>
+			<input type="button" id="update" onclick="javascript:updateMetadata();" value="Update"/>
+	</div>
+</fieldset>
+</body>
+</html>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ExtensionList>
+    <Extension Id="HTML_StandAlonePanel">
+        <HostList>
+            <Host Name="PRLD" Port="8005"/>
+        </HostList>
+    </Extension>
+</ExtensionList>
