@@ -1,6 +1,6 @@
 $._ext_PPRO={
 
-	getVersionInfo : function() {
+	getVersionInfo : function () {
 		return 'PPro ' + app.version + 'x' + app.build;
 	},
 
@@ -17,7 +17,7 @@ $._ext_PPRO={
 		}
 	},
 
-	saveProject : function() {
+	saveProject : function () {
 		app.project.save();
 	},
 
@@ -172,12 +172,13 @@ $._ext_PPRO={
 			var new_comment_marker  		= markers.createMarker(12.345);
 			new_comment_marker.name 		= 'Marker created by PProPanel.';
 			new_comment_marker.comments 	= 'Here are some comments, inserted by PProPanel.';
-			new_comment_marker.end 			= 15.6789;
+			new_comment_marker.end.seconds 	= 15.6789;
+
 
 			var new_web_marker  		= markers.createMarker(14.345);
 			new_web_marker.name 		= 'Web marker created by PProPanel.';
 			new_web_marker.comments 	= 'Here are some comments, inserted by PProPanel.';
-			new_web_marker.end			= 15.6789;
+			new_web_marker.end.seconds 	= 15.6789;
 			new_web_marker.setTypeAsWebLink("http://www.adobe.com", "frame target");
 	    }
 	},
@@ -303,15 +304,7 @@ $._ext_PPRO={
 	},
 	
 	openProject : function() {
-		app.enableQE();
-
-		if (qe.platform == 'Macintosh'){
-			var filterString = "";
-		} else {
-			var filterString = "All files:*.*";
-		}
-
-		var proj_to_open = File.openDialog ("Choose project:", filterString, false);
+		var proj_to_open = File.openDialog ("Choose project:", null, false);
 
 		if (proj_to_open != null && proj_to_open.exists) {
 			app.openDocument(proj_to_open.fsName);
@@ -321,8 +314,7 @@ $._ext_PPRO={
 
 	createSequence : function(name) {
 		var some_arbitrary_id_value = "xyz123";
-		var seqName = prompt('Name of sequence?',  '<<<default>>>', 'Sequence Naming Prompt');
-		app.project.createNewSequence(seqName, some_arbitrary_id_value);
+		app.project.createNewSequence("Some Sequence Name", some_arbitrary_id_value);
 	},
 
 	createSequenceFromPreset : function(preset_path) {
@@ -367,7 +359,7 @@ $._ext_PPRO={
 	        	eventObj.dispatch();
 			}
 			
-			function onEncoderJobError(jobID, errorMessage) {
+			function onEncoderJobError(jobID) {
 				app.enableQE();
 				if (qe.platform == 'Macintosh')
 				{
@@ -382,7 +374,7 @@ $._ext_PPRO={
 				var eventObj = new CSXSEvent();
 
 				eventObj.type = "com.adobe.csxs.events.PProPanelRenderEvent";
-				eventObj.data = "Job " + jobID + "failed, due to " + errorMessage + ". :(";
+				eventObj.data = "Job " + jobID + ", to " + outputFilePath + ", FAILED. :(";
 	        	eventObj.dispatch();
 			}
 			
@@ -403,7 +395,7 @@ $._ext_PPRO={
 			var proj_path   	= new File(app.project.path);
 			var out_path    	= new File("~/Desktop");
 			var sep         	= '\\';
-			var out_preset_path	= "C:\\Program Files\\Adobe\\Adobe Media Encoder CC 2014\\MediaIO\\systempresets\\58444341_4d584658\\XDCAMHD 50 NTSC 60i.epr";
+			var out_preset_path	= "C:\Program Files\Adobe\Adobe Media Encoder CC 2014\MediaIO\systempresets\58444341_4d584658\XDCAMHD 50 NTSC 60i.epr";
 			
 			if (qe.platform == 'Macintosh') {
 				var out_preset_path = "/Applications/Adobe Premiere Pro CC 2014/Adobe Premiere Pro CC 2014.app/MediaIO/systempresets/58444341_4d584658/XDCAMHD 50 NTSC 60i.epr";
@@ -429,7 +421,7 @@ $._ext_PPRO={
 
 			// use these 0 or 1 settings to disable some/all metadata creation.
 
-			app.encoder.setSidecarXMPEnabled(0);
+			app.encoder.setSideCarXMPEnabled(0);
 			app.encoder.setEmbeddedXMPEnabled(0);
 
 			var jobID = app.encoder.encodeSequence(	app.project.activeSequence,
@@ -760,6 +752,8 @@ $._ext_PPRO={
 
 					var namespaces = XMPMeta.dumpNamespaces();
 
+					 // if these contain data, they're all found, in 7.2.3 and 8.0.1 (not 8.0.0)
+
 					var found_name      = xmp.doesPropertyExist(kPProPrivateProjectMetadataURI, namefield);
 					var found_tapename  = xmp.doesPropertyExist(kPProPrivateProjectMetadataURI, tapename);
 					var found_desc      = xmp.doesPropertyExist(kPProPrivateProjectMetadataURI, desc);
@@ -779,29 +773,5 @@ $._ext_PPRO={
 				}
 			}
 		}
-	},
-
-	updatePAR : function() {
-		var item = app.project.rootItem.children[0]; 
-
-		// If there is an item, and it's either a clip or file...
-		if(	(item != null) && ((item.type == ProjectItemType.FILE) || (item.type == ProjectItemType.CLIP))){
-				item.setOverridePixelAspectRatio(185,  100); // anamorphic is BACK!   :)
-			} else {
-				alert('You cannot override the PAR of bins or sequences.')
-		}
-	},
-
-	getnumAEProjectItems : function() {
-		var bt = new BridgeTalk;
-		bt.target = 'aftereffects';
-		bt.body =	'alert(app.project.rootFolder.numItems);'
-		bt.send();
-	},
-
-	updateEventPanel : function() {
-		app.setSDKEventMessage('Here is some information.', 'info');
-		app.setSDKEventMessage('Here is a warning.', 'warning');
-		app.setSDKEventMessage('Here is an error.', 'error');
-	},
+	}
 };
