@@ -1,0 +1,85 @@
+<!doctype html>
+
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" type="text/css" href="./style.css">
+<link rel="stylesheet" type="text/css" href="../../lib/jquery-ui.css">
+<script src="../../lib/CSInterface-4.0.0.js"></script>
+<script src="../../lib/jquery-1.9.1.js"></script>
+<script src="../../lib/jquery-ui-1.10.3.js"></script>
+<script src="./ext.js"></script>
+<title>StandAlonePanel</title>
+</head>
+
+<body onLoad="onLoaded();">
+
+<fieldset>
+	<legend>Selected Assets</legend>
+	<div id="content" width="100%"><h3>No Selection</h3></div>
+</fieldset>
+	<hr />
+<fieldset>
+	<legend>Transfer To</legend>
+
+	<div id="transfer" width="100%">
+		<div id="destination">
+			<ul>
+				<li><a href="#local">To Local</a></li>
+				<li><a href="#ftp">To FTP Server</a></li>
+			</ul>
+			<div id="local">
+				<ol>
+					<li>
+						<label for="dest">Local Dest.</label>
+						<input id="dest" name="dest" type="text" placeholder="required" required autofocus/>
+					</li>
+				</ol>
+			</div>
+			<div id="ftp">
+				<ol>
+					<li>
+						<label for="serverDest">Server Dest.</label>
+						<input id="serverDest" name="serverDest" type="text" placeholder="required" required>
+					</li>
+					<li>
+						<label for="serverName">Server Name</label>
+						<input id="serverName" name="serverName" type="text" placeholder="required" required autofocus>
+					</li>
+					<li>
+						<label for="port">Port</label>
+						<input id="port" name="port" type="text" placeholder="Required" required>
+					</li>
+					<li>
+						<label for="user">UserName</label>
+						<input id="userName" name="userName" type="text" placeholder="Required" required>
+					</li>
+					<li>
+						<label for="password">Password</label>
+						<input id="password" name="password" type="text" placeholder="Required" required>
+					</li>
+				</ol>
+			</div>
+		</div>
+		<div id="trasferbutton">
+			<input type="hidden" id="transferType" value="local"/>&nbsp;&nbsp;
+			<input type="button" id="startTransfer" onclick="javascript:TransferFilesToDst();" value="  go  "/>&nbsp;&nbsp;
+			<input type="button" id="cancelTransfer" onclick="javascript:CancelTransferFiles();" value="cancel"/>
+		</div>
+	</div>
+	<div id="progressbar">
+		<div class="progress-label"></div>
+	</div>
+	<div id="result"></div>
+</fieldset>
+
+<fieldset>
+	<legend>API Calls</legend>
+	<div class="textwrapper">
+		<p>Refer to API messages as follows:<br><textarea id="apimessage" rows="8" cols="*" readonly></textarea></p>
+		<p><button onclick="clearTextArea()">Clear</button></p>
+	</div>
+</fieldset>
+
+</body>
+</html>

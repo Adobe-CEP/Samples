@@ -1,0 +1,68 @@
+html {height: 100%;}
+
+body {
+	position: relative;
+}
+
+fieldset {
+	min-width: 460px;
+}
+
+ol li {
+	background: #b9cf6a;
+	background: rgba(255,255,255,.3);
+	border-color: #e3ebc3;
+	border-color: rgba(255,255,255,.6);
+	border-style: solid;
+	border-width: 2px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+	line-height: 30px;
+	list-style: none;
+	padding: 5px 10px 0px 0px;
+	margin-bottom: 2px;
+}
+
+label {
+	padding-left: 5px;
+	width: 80px;
+	display: inline-block;
+}
+
+input[type="text"]
+{
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	-khtml-border-radius: 3px;
+	border-radius: 3px;
+	outline: none;
+	min-width: 300px;
+	width: 75%;
+	padding: 5px 5px 5px 5px;
+}
+
+#content {
+	margin-right:auto;
+	margin-left:auto;
+	vertical-align:middle;
+	text-align:left;
+	width:100%;
+}
+
+#result {
+	text-align: center;
+}
+
+textarea
+{
+    width: 100%;
+	resize: none;
+}
+
+.textwrapper
+{
+	border: 0px;
+	margin: 2px 2px 2px 2px;
+	padding: 0px;
+}

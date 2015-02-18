@@ -1,0 +1,55 @@
+<!doctype html>
+
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" type="text/css" href="./style.css">
+<link rel="stylesheet" type="text/css" href="../../lib/jquery-ui.css">
+<script src="../../lib/CSInterface-4.0.0.js"></script>
+<script src="../../lib/utility.js"></script>
+<script src="../../lib/jquery-1.9.1.js"></script>
+<script src="../../lib/jquery-ui-1.10.3.js"></script>
+<script src="./ext.js"></script>
+<title>StandAlonePanel</title>
+</head>
+
+<body onLoad="onLoaded();">
+
+<fieldset>
+	<legend>unassociatedMetadata</legend>
+	<div id="un" width="100%">
+		<div id="setting">
+				<ol>
+					<li>
+						<label for="metadataID">MetadataID</label>
+						<input id="metadataID" name="metadataID" type="text" placeholder="required" required>
+                        <div>
+                            <div class="fileImport">
+                                <input type="file" id="import" value="Import" alt="Import a Unassociated Metadata File from Local Disk" /> 
+                            </div>
+                            <textarea id="unassociatedMetadata"></textarea>
+                        </div>
+					</li>
+				</ol>
+		</div>
+		<div id="transcodeButton">
+			<input type="button" id="apply" onclick="javascript:applyMetadata();" value="Apply"/>&nbsp;
+            <select id="position">
+                <option value="Player">Player</option>
+                <option value="Marker">Marker</option>
+            </select>&nbsp;
+			<input type="button" id="send" onclick="javascript:sendMetadata();" value="Send"/>
+		</div>
+	</div>
+</fieldset>
+
+<fieldset>
+	<legend>API Calls</legend>
+	<div class="textwrapper">
+		<p>Refer to API messages as follows:<br><textarea id="apimessage" rows="8" cols="*" readonly></textarea></p>
+		<p><button onclick="clearTextArea()">Clear</button></p>
+	</div>
+</fieldset>
+
+</body>
+</html>

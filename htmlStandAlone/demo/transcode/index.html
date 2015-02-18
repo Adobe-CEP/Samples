@@ -1,0 +1,76 @@
+<!doctype html>
+
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" type="text/css" href="./style.css">
+<link rel="stylesheet" type="text/css" href="../../lib/jquery-ui.css">
+<script src="../../lib/CSInterface-4.0.0.js"></script>
+<script src="../../lib/jquery-1.9.1.js"></script>
+<script src="../../lib/jquery-ui-1.10.3.js"></script>
+<script src="./ext.js"></script>
+<title>StandAlonePanel</title>
+</head>
+
+<body onLoad="onLoaded();">
+
+<fieldset>
+	<legend>Transcode</legend>
+	<div id="transcode" width="100%">
+		<div id="setting">
+				<ol>
+					<li>
+						<label for="sourcePath">Src. Path</label>
+						<input id="sourcePath" name="sourcePath" type="text" placeholder="required" required autofocus>
+					</li>
+					<li>
+						<label for="outputFileName">Output Filename</label>
+						<input id="outputFileName" name="outputFileName" type="text" placeholder="not required">
+					</li>
+					<li>
+						<label for="startTime">Start Time</label>
+						<input id="startTime" name="startTime" type="text" placeholder="required" required>
+					</li>
+					<li>
+						<label for="duration">Duration</label>
+						<input id="duration" name="duration" type="text" placeholder="required" required>
+					</li>
+					<li>
+						<label for="frameRate">Frame Rate</label>
+						<input id="frameRate" name="frameRate" type="text" placeholder="required" required>
+					</li>
+					<li>
+						<label for="outputDirectory">Output Dir.</label>
+						<input id="outputDirectory" name="outputDirectory" type="text" placeholder="not required">
+					</li>
+					<li>
+						<label for="presetPath">Preset</label>
+						<input id="presetPath" name="presetPath" type="text" placeholder="not required">
+					</li>
+					<li>
+						<p>Do you want to output XMP?</p>
+						<input type="radio" name="outputXMP" value="true" checked="checked">Yes 		<input type="radio" name="outputXMP" value="false">No
+					</li>
+				</ol>
+		</div>
+		<div id="transcodeButton">
+			<input type="button" id="startTranscode" onclick="javascript:transcodeToDst();" value="  go  "/>&nbsp;&nbsp;
+			<input type="button" id="cancelTranscode" onclick="javascript:cancelTranscode();" value="cancel"/>
+		</div>
+	</div>
+	<div id="progressbar">
+		<div class="progress-label"></div>
+	</div>
+	<div id="result"></div>
+</fieldset>
+
+<fieldset>
+	<legend>API Calls</legend>
+	<div class="textwrapper">
+		<p>Refer to API messages as follows:<br><textarea id="apimessage" rows="8" cols="*" readonly></textarea></p>
+		<p><button onclick="clearTextArea()">Clear</button></p>
+	</div>
+</fieldset>
+
+</body>
+</html>

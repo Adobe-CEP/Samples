@@ -1,0 +1,55 @@
+<!doctype html>
+
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" type="text/css" href="./style.css">
+<link rel="stylesheet" type="text/css" href="../../lib/jquery-ui.css">
+<script src="../../lib/CSInterface-4.0.0.js"></script>
+<script src="../../lib/jquery-1.9.1.js"></script>
+<script src="../../lib/jquery-ui-1.10.3.js"></script>
+<script src="../../lib/utility.js"></script>
+<script src="./ext.js"></script>
+<title>StandAlonePanel</title>
+</head>
+
+<body onLoad="onLoaded();">
+
+<fieldset>
+	<legend>Selected Assets</legend>
+	<div id="content" width="100%"><h3>No Selection</h3></div>
+</fieldset>
+	<hr />
+<fieldset>
+<div>
+	<input type="button" onclick="javascript:InsertColumns('col_A');" value="Insert col_A"/>
+	<input type="button" onclick="javascript:InsertColumns('col_B');" value="Insert col_B"/>
+	<input type="button" onclick="javascript:InsertColumns('col_C');" value="Insert col_C"/>
+</div>
+<div>
+	<input type="button" onclick="javascript:DeleteColumns('col_A');" value="Delete col_A"/>
+	<input type="button" onclick="javascript:DeleteColumns('col_B');" value="Delete col_B"/>
+	<input type="button" onclick="javascript:DeleteColumns('col_C');" value="Delete col_C"/>
+</div>
+<div>
+	<li>
+		<label for="fieldValue">Field Value</label>
+		<input id="fieldValue" name="fieldValue" type="text" placeholder="required" required>
+	</li>
+	<input type="button" onclick="javascript:UpdateFieldValues('col_A');" value="UpdateFieldValues for col_A"/>
+	<input type="button" onclick="javascript:UpdateFieldValues('col_B');" value="UpdateFieldValues for col_B"/>
+	<input type="button" onclick="javascript:UpdateFieldValues('col_C');" value="UpdateFieldValues for col_C"/>
+	<p>Result: <output name="result" id="result"></output></p>
+</div>
+</fieldset>
+
+<fieldset>
+	<legend>API Calls</legend>
+	<div class="textwrapper">
+		<p>Refer to API messages as follows:<br><textarea id="apimessage" rows="8" cols="*" readonly></textarea></p>
+		<p><button onclick="clearTextArea()">Clear</button></p>
+	</div>
+</fieldset>
+
+</body>
+</html>

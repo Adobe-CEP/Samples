@@ -1,0 +1,116 @@
+html {height: 100%;}
+
+body {
+	position: relative;
+}
+
+fieldset {
+	min-width: 460px;
+}
+
+ol li {
+	background: #b9cf6a;
+	background: rgba(255,255,255,.3);
+	border-color: #e3ebc3;
+	border-color: rgba(255,255,255,.6);
+	border-style: solid;
+	border-width: 2px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+	line-height: 24px;
+	list-style: none;
+	padding: 0px 5px 0px 5px;
+	margin-bottom: 2px;
+}
+
+label {
+	float: left;
+	font-size: 12px;
+	width: 100px;
+}
+
+input[type="text"]
+{
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	-khtml-border-radius: 3px;
+	border-radius: 3px;
+	outline: none;
+	padding: 5px;
+	min-width: 300px;
+	width: 70%;
+}
+
+#startTransfer
+{
+	border:1px solid;
+	border-radius:3px;
+	height:30px;
+	margin:5px;
+}
+
+#startTransfer:hover {
+	background: #d1c7b7;
+	cursor: pointer;
+}
+
+#cancelTransfer
+{
+	border:1px solid;
+	border-radius:3px;
+	height:30px;
+	margin:5px;
+}
+
+#cancelTransfer:hover
+{
+	background: #d1c7b7;
+	cursor: pointer;
+}
+
+#content {
+	margin-right:auto;
+	margin-left:auto;
+	vertical-align:middle;
+	text-align:left;
+	width:100%;
+}
+
+.ui-progressbar {
+	position: relative;
+}
+
+.progress-label {
+	position: absolute;
+	left: 50%;
+	top: 4px;
+	font-weight: bold;
+	text-shadow: 1px 1px 0 #fff;
+}
+
+#transfer {
+	text-align:left;	
+}
+
+#trasferbutton {
+	width:100%;
+	text-align: right;
+}
+
+#result {
+	text-align: center;
+}
+
+textarea
+{
+    width: 100%;
+	resize: none;
+}
+
+.textwrapper
+{
+	border: 0px;
+	margin: 2px 2px 2px 2px;
+	padding: 0px;
+}

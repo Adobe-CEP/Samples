@@ -1,6 +1,3 @@
-if(typeof($)=='undefined')
-	$={};
-
 $._ext = {
     //Evaluate a file and catch the exception.
     evalFile : function(path) {

@@ -1,0 +1,62 @@
+<!doctype html>
+
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" type="text/css" href="./style.css">
+<link rel="stylesheet" type="text/css" href="../../lib/jquery-ui.css">
+<script src="../../lib/CSInterface-4.0.0.js"></script>
+<script src="../../lib/jquery-1.9.1.js"></script>
+<script src="../../lib/jquery-ui-1.10.3.js"></script>
+<script src="./ext.js"></script>
+<title>StandAlonePanel</title>
+</head>
+
+<body onLoad="onLoaded();">
+
+<fieldset>
+	<legend>Selected Markers</legend>
+	<div id = "markerList">
+	</div>
+	<div id = "un">
+			<label for="Type">Type:</label>
+			<select id="Type" name="Type" type="text">
+				<option value="InOut">Subclip</option>
+				<option value="Comment">Comment</option>
+				<option value="FLVCuePoint">Flash Cue Point</option>
+				<option value="WebLink">Web Link</option>
+				<option value="Chapter">Chapter</option>
+				<option value="Speech">Speech Transcription</option>
+				<option value="Custom">Custom</option>
+			</select><br/>
+			<label for="InPoint">InPoint:</label>
+			<input id="InPoint" name="InPoint" type="text"><br/>
+			<label for="Duration">Duration:</label>
+			<input id="Duration" name="Duration" type="text"><br/>
+			<label for="Name">Name:</label>
+			<input id="Name" name="Name" type="text"><br/>
+			<label for="Comment">Comment:</label>
+			<input id="Comment" name="Comment" type="text"><br/>
+			<label for="CuePointParam">Custom CuePoint Param:</label>
+			<input id="CuePointParam" name="CuePointParam" type="text"><br/>
+			<input type="button" id="add" onclick="javascript:addMarkerForPartParam();" value="Add"/>
+			<input type="button" id="update" onclick="javascript:updateMarkerForPartParam();" value="Update"/>
+			<input type="button" id="delete" onclick="javascript:deleteMarkerForPartParam();" value="Delete"/>
+	</div>
+	<div id="un2" width="100%">
+		<textarea id="changedMarkerContent"></textarea>
+		<input type="button" id="add" onclick="javascript:addMarker();" value="Add"/>
+		<input type="button" id="update" onclick="javascript:updateMarker();" value="Update"/>
+	</div>
+</fieldset>
+
+<fieldset>
+	<legend>API Calls</legend>
+	<div class="textwrapper">
+		<p>Refer to API messages as follows:<br><textarea id="apimessage" rows="8" cols="*" readonly></textarea></p>
+		<p><button onclick="clearTextArea()">Clear</button></p>
+	</div>
+</fieldset>
+
+</body>
+</html>

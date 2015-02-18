@@ -1,0 +1,84 @@
+<!doctype html>
+
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" type="text/css" href="./style.css">
+<link rel="stylesheet" type="text/css" href="../../lib/jquery-ui.css">
+<script src="../../lib/CSInterface-4.0.0.js"></script>
+<script src="../../lib/jquery-1.9.1.js"></script>
+<script src="../../lib/jquery-ui-1.10.3.js"></script>
+<script src="./ext.js"></script>
+<title>StandAlonePanel</title>
+</head>
+
+<body onLoad="onLoaded();">
+
+<fieldset>
+	<legend>Selected Markers</legend>
+	<div id = "markerList">
+
+		<!--
+		<ol>
+			<li>
+				<ul>
+					<li class="markerColor markerColor_green"></li>
+					<li class="markerTime">
+						<ul>
+							<li>
+								<label>In: </label>
+							</li>
+							<li>
+								<label>Out:</label>
+							</li>
+							<li>
+								<label>Dur:</label>
+							</li>
+						</ul>
+					</li>
+					<li class="description">
+						<div>Marker Name</div>
+						<textarea></textarea>
+					</li>					
+				</ul>
+			</li>
+			<li>
+				<ul>
+					<li class="markerColor markerColor_blue"></li>
+					<li class="markerTime">
+						<ul>
+							<li>
+								<label>In: </label>
+							</li>
+							<li>
+								<label>Out:</label>
+							</li>
+							<li>
+								<label>Dur:</label>
+							</li>
+						</ul>
+					</li>
+					<li class="description">
+						<div>Marker Name</div>
+						<textarea></textarea>
+					</li>					
+				</ul>
+			</li>
+		</ol>
+		-->
+	</div>
+	<div id="un1" width="100%">
+	<textarea id="markerContent" disabled="disabled"></textarea>
+	</div>
+</fieldset>
+
+<fieldset>
+	<legend>API Calls</legend>
+	<div class="textwrapper">
+		<p>Refer to API messages as follows:<br><textarea id="apimessage" rows="8" cols="*" readonly></textarea></p>
+		<p><button onclick="clearTextArea()">Clear</button></p>
+	</div>
+</fieldset>
+
+</body>
+</html>

@@ -1,0 +1,154 @@
+html {height: 100%;}
+
+body {
+	position: relative;
+}
+
+fieldset {
+	min-width: 460px;
+}
+
+#markerList {
+	width: 450px;
+}
+
+#markerList > ol {
+	padding: 0px 0px 0px 0px;
+	width: 100%;
+}
+
+#markerList > ol > li {
+	background: #464547;
+	border-color: #e3ebc3;
+	border-color: rgba(255,255,255,.6);
+	border-style: solid;
+	border-width: 2px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+	line-height: 30px;
+	list-style: none;
+	padding: 5px 10px 5px 0px;
+	margin-bottom: 2px;
+	height: 65px;
+	color: white;
+}
+
+#markerList li {
+	list-style: none;
+}
+
+#markerList ul {
+	padding: 0px 0px 0px 10px;
+}
+
+.markerColor {
+	float:left;
+	width: 8px;
+	height: 58px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+	margin: 2px 8px 2px 0px;
+}
+	
+.markerColor_subclip {
+	background: #009ad6;
+}
+
+.markerColor_comment {
+	background: #78a355;
+}
+
+.markerColor_flashCuePoint {
+	background: #fdb933;
+}
+
+.markerColor_webLink {
+	background: #f58220;
+}
+
+.markerColor_chapter {
+	background: #d93a49;
+}
+
+.markerColor_speechTranscription {
+	background: #FFC0CB;
+}
+
+.markerColor_customer {
+	background: #6f60aa;
+}
+
+
+.markerTime {
+	float:left;
+	width: 120px;
+	height: 60px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+	margin-right:10px;
+	text-align:left;
+}
+
+.description {
+	float:left;
+	height: 60px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+	width: 300px;
+}
+
+.markerTime ul{
+	text-align: left;
+	padding: 0px 0px 0px 3px;
+}
+
+.markerTime li{
+	height: 18px;	
+	vertical-align: middle;
+	font-size: 12px;
+}
+
+.markerTime label {
+	width: 30px;
+	text-align:right;
+}
+
+.description p {
+	height: 20px;
+	display: block;
+	font-size: 12px;
+	width:100%;
+	margin:0px 0px 5px 0px;
+	vertical-align: text-top;
+}
+
+.description textarea {
+	height: 38px;
+	font-size: 12px;
+	padding: 0px 0px 0px 0px;
+	width: 100%;
+}
+
+#markerContent {
+	height: 80px;
+	font-size: 12px;
+	padding: 0px 0px 0px 0px;
+	width: 100%;
+}
+
+textarea
+{
+    width: 100%;
+	resize: none;
+}
+
+.textwrapper
+{
+	border: 0px;
+	margin: 2px 2px 2px 2px;
+	padding: 0px;
+}
