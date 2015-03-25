@@ -19,6 +19,10 @@ Win: regedit > HKEY_CURRENT_USER/Software/Adobe/CSXS.5
 
 ### CEP 5 extensions
 
+* [SimpleDissolve] (https://github.com/Adobe-CEP/Samples/tree/master/simpledissolve)
+	
+		Requires CEP 5 and Photoshop CC2014
+
 * [WebGL with three.js (Contributed by Davide Deraedt)](https://github.com/Adobe-CEP/Samples/tree/master/webgl_threejs) : (description TBD)
 
 		Requires CEP 5 and Photoshop CC2014
