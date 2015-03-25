@@ -1,0 +1,25 @@
+
+
+#content {
+    margin-right:auto;
+    margin-left:auto;
+    vertical-align:middle;
+    width:100%;
+}
+
+.debugtools{
+    background-color:#000;
+    position:absolute;
+    top:0px;
+    right:0px;
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    text-align: center;
+}
+
+.debugtools li {
+    display:inline;
+    margin:3px 0px 3px 0px;
+}
+

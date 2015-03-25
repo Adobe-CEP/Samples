@@ -1,0 +1,88 @@
+html, body {
+	float:left;
+	height: 100%;
+	margin: 0;
+	overflow: hidden;
+	width: 100%;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+}
+
+.divMain {
+	height: 100%;
+	width: 100%;
+	overflow: hidden;
+	padding-top: 5px;
+}
+
+.divPreview {
+	float: left;
+	height: 100%;
+	width: 190px;
+	vertical-align: middle;
+}
+
+.divControls {
+	float: left;
+	margin: 0px;
+	height: 100%;
+	width: 150px;
+	margin-top: 10px;
+}
+
+.divBtnBar {
+	float:left;
+	height: 100%;
+	width: 105px;
+}
+
+.cnvsPreview {
+	position:relative;
+	left:0px;
+	top:0px;
+	background-color:transparent;
+}
+
+#iDissolvePc {
+	width:50px;
+	height: 20px;
+}
+
+button {
+	float: right;
+	border-radius: 2px;
+	line-height: 0px;
+	height: 22px;
+	width: 74px;
+	margin: 5px;
+	background: #f0f0f0;
+	border: 1px solid #7d7c7d;
+}
+
+button:active {
+	background: #9b9b9b;
+}
+
+.okBtn {
+	height: 23px;
+	width: 75px;
+	margin: 5px;
+	border: 2px solid #7d7c7d;
+}
+
+.olclass{
+	list-style: none;
+	padding: 0px;
+	margin-left: 0px;
+	margin-top: 5px;
+	margin-bottom: 0px;
+	width: 100%;
+}
+li {
+	padding-bottom: 10px;
+}
+
+#fsDisposition {
+	margin: 0px;
+	margin-top: 10px;
+}
