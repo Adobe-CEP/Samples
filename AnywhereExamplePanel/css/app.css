@@ -1,0 +1,78 @@
+body
+{
+    font-family: "LucidaGrande", sans-serif;
+    background-color:#282828;
+}
+
+p {
+	font-family: "LucidaGrande", sans-serif;
+    text-align:center;
+}
+
+.error
+{
+    font-size: 1.5em;
+    color: red;
+    text-align: center;
+}
+
+.ui-widget
+{
+    font: "LucidaGrande", sans-serif;
+    font-size: 0.8em;
+}
+
+.header
+{
+    height: 60px;
+    line-height: 60px;
+    vertical-align:middle;
+}
+.header p
+{
+    float:left;
+    font-size: 1.6em;
+    margin: 0 0 0 30px;
+    padding-left: 1;
+    color: white;
+}
+
+.header img 
+{
+    float:left;
+    height: 50px;
+    margin-left: 20px;
+}
+
+.main
+{
+    float: left;
+    color: white;
+    margin-left: 30px;
+}
+
+.ui-icon {
+	display: block;
+	text-indent: -99999px;
+	overflow: hidden;
+	background-repeat: no-repeat;
+    zoom: 2;
+}
+.myButton {
+    width:42px;
+    padding-left: 4px;
+}
+
+.pathInput{
+    height:30px;
+    font-size:12pt;
+    vertical-align: top;
+    margin-top:4px;
+}
+.mainTble {
+    width:470px;
+}
+
+.firstTD {
+    width:20%;
+}
