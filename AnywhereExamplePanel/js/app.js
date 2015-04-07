@@ -53,15 +53,11 @@ $(document).ready(function() {
     * function that checks if the path is valid and displays error if not.
     * More checks might be added here.
     */
-    function validPath(path)
-    {
-        if (!(path && path.length !== 0))
-        {
+    function validPath(path) {
+        if (!(path && path.length !== 0)) {
             alert("Please enter a valid path");
             return false;
-        }
-        else
-        {
+        } else {
             return true;
         }
     }
@@ -70,7 +66,8 @@ $(document).ready(function() {
     /**
     * triggers an server side Ingest Job
     * Parameters:
-    * intoSession - bool - if true, ingests into the user session instead of the main line
+    * isTargetUserSession - bool - if true, ingests into the user session instead of the main line
+    * token - string - the auth token used to authenticate the http call
     * paths - array - array of eamedia:// paths to the media to ingest
     * comment - string - some comments for the job
     * see AnywhereHTTPApi#ingest

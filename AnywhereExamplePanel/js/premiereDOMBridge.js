@@ -22,7 +22,7 @@
  * plain JavaScript proxy to the $.PREMIERE utility that lives inside the ExtendScript 
  * environment.
  * 
- * Add more Premiere DOM functionaly here.
+ * Add more Premiere DOM functionality here.
  * 
  **************************************************************************************/
 var PremiereDOMBridge = (function(exports) {

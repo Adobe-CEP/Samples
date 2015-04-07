@@ -34,7 +34,7 @@ $.PREMIERE  = (function(exports) {
     var ANYWHERE = {}
     
     /**
-    * returns the corrent authentication token in the form key=value
+    * returns the correct authentication token in the form key=value
     * so it can stored in a cookie as it is
     */
     ANYWHERE.getAuthenticationToken = function() {

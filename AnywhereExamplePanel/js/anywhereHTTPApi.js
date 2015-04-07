@@ -18,9 +18,9 @@
 var AnywhereHTTPApi = (function(exports) {
     
     /**
-    * This is a helper to step through the discoverable API. All entitiy pages have a 
+    * This is a helper to step through the discoverable API. All entity pages have a 
     * link section with functionality or further resources to discover.
-    * This functions returns the 'href' of a link basen on the 'rel' string.
+    * This function returns the 'href' of a link basend on the 'rel' string.
     * Authentication is done by sending the cookie string (token) directly. (This could 
     * also be done by storing the cookie)
     */
@@ -76,7 +76,7 @@ var AnywhereHTTPApi = (function(exports) {
 
         data.append(':parameters', JSON.stringify(parameters));
 
-        // create the POST call to create the job. The url of the successfull job will be
+        // create the POST call to create the job. The url of the successful job will be
         // displayed in the alert. You could add more code to get the status and progress of the job.
         // see the Anywhere documentation for more details:
         // <anywhereRoot>/docs/documentation/api/jobs/IngestJobCreate.html
@@ -84,7 +84,7 @@ var AnywhereHTTPApi = (function(exports) {
             url: ingestJobURL,
             data: data,
             cache: false,
-            contentType: false ,
+            contentType: false,
             processData: false,
             crossDomain: true,
             type: 'POST',
@@ -92,7 +92,7 @@ var AnywhereHTTPApi = (function(exports) {
                 xhr.setRequestHeader("Cookie", sessionToken);
             },
             success: function(data, textStatus, request){
-                // the data object has the current json responce of the job
+                // the data object has the current json response of the job
                 // the location stores the job URL
                 alert("Ingest Job created: \n\n "+ request.getResponseHeader('Location'));
             },

@@ -1,18 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ExtensionManifest Version="4.0" ExtensionBundleId="com.example.AnywherePanel" ExtensionBundleVersion="1.0.0"
+<ExtensionManifest Version="5.0" ExtensionBundleId="com.example.AnywherePanel" ExtensionBundleVersion="1.0.0"
 ExtensionBundleName="AnywherePanel" 
 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<ExtensionList>
-		<Extension Id="com.example.AnywherePanel" Version="1.0" />
+		<Extension Id="com.example.AnywherePanel.extension" Version="1.0" />
 	</ExtensionList>
 	<ExecutionEnvironment>
 		<HostList>
 			<Host Name="PPRO" Version="[8.0,9.9]" />
 		</HostList>
-		<CEFCommandLine>
-		    <Parameter>--allow-file-access</Parameter>
-		    <Parameter>--allow-file-access-from-files</Parameter>
-		</CEFCommandLine>
 		<LocaleList>
 			<Locale Code="All" />
 		</LocaleList>
@@ -22,7 +18,7 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	</ExecutionEnvironment>
 
 	<DispatchInfoList>
-		<Extension Id="com.example.AnywherePanel">
+		<Extension Id="com.example.AnywherePanel.extension">
 			<DispatchInfo >
 				<Resources>
 					<MainPath>./index.html</MainPath>
