@@ -44,6 +44,14 @@ Showcases most features and capabilities of CEP 5, including events, video, data
 
 		Requires CEP 5.2 and a supported CC2014 host app
 
+* [Premiere Pro Panel](https://github.com/Adobe-CEP/Samples/tree/master/PProPanel) : Demonstrates a Premiere Pro panel.
+
+		Requires CEP 5 and Premiere Pro CC2014
+		
+* [Anywhere Example Panel](https://github.com/Adobe-CEP/Samples/tree/master/AnywhereExamplePanel) : Demonstrates a Premiere Pro panel integration with Adobe Anywhere (through DOM and http).
+
+		Requires CEP 5, Premiere Pro CC2014 and Anywhere 2.2
+
 ### CEP 4 extensions
 Although these extensions are initially setup for CEP 4, you can adjust the product version targeted by modifying the range inside the `HostList` element of the `CSXS/manifest.xml` file.
 
