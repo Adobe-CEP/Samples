@@ -35,7 +35,9 @@
  * 		if(!readyState.isError) {
  * 		
  * 			// now we're ready to go.
- * 			XMPBridge.read('NS_DC', 'title');
+ * 			XMPBridge.toNamespaceURI('NS_DC', function(namespaceUri) {
+ * 				XMPBridge.read(namespaceUri, 'title');
+ * 			});
  * 		
  * 		} else {
  * 			// error handling.
