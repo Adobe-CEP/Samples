@@ -1,6 +1,6 @@
 $._ext_PPRO={
 
-	getVersionInfo : function () {
+	getVersionInfo : function() {
 		return 'PPro ' + app.version + 'x' + app.build;
 	},
 
@@ -17,7 +17,7 @@ $._ext_PPRO={
 		}
 	},
 
-	saveProject : function () {
+	saveProject : function() {
 		app.project.save();
 	},
 
@@ -29,15 +29,16 @@ $._ext_PPRO={
         if (seq != null) {
 	        var time 		= seq.CTI.timecode; 			// CTI = Current Time Indicator.
 	        var out_path   	= new File("~/Desktop");
-
-			var sep         = '\\';
 			         
-			if (qe.platform == 'Macintosh') {
-			    sep = '/';
+			if (Folder.fs == 'Macintosh') {
+			    var sep = '/';
+			} else {
+				var sep         = '\\';
 			}
 
-			var output_filename = out_path.fsName + sep + seq.name;
-			seq.exportFramePNG(time, output_filename);    
+			var outputFileName = out_path.fsName + sep + seq.name;
+			seq.exportFramePNG(time, outputFileName);
+			app.project.importFiles([outputFileName]);    
 		} else {
 			alert("Active sequence required.");
 		}
@@ -54,9 +55,7 @@ $._ext_PPRO={
 		} else {
 			alert("Changing name of " + item.name + ".");
 
-			item.name = "PPro Panel sample touched " + item.name;
-
-			item.refreshMedia(); // This is how you refresh a growing file, using the API.
+			item.name = item.name + ", updated by PProPanel.";
 		}
 	},
 
@@ -73,8 +72,7 @@ $._ext_PPRO={
     },
     
     exportSequenceAsPrProj : function() {
-		app.enableQE();
-		
+
 		var project = app.project;
 	
 		if (project.activeSequence != null) {
@@ -82,31 +80,34 @@ $._ext_PPRO={
 			// Here's how to get the start time offset to a sequence.
 
 			var start_time_offset = project.activeSequence.zeroPoint;
-
-			var out_name    = project.activeSequence.name;
 		    var extension   = '.prproj';
-		    
-			var sep         = '\\';
-            
-            if (qe.platform == 'Macintosh') {
-                sep = '/';
+
+			var out_name 		  = project.activeSequence.name;
+
+            if (Folder.fs == 'Macintosh') {
+                var sep = '/';
+            } else {
+            	var sep         = '\\';
             }
 		    
 			var outFolder = Folder.selectDialog();
 		
 		    if (outFolder != null) {
-                var entire_out_path =	outFolder.fsName + 
+                var completeOutputPath =	outFolder.fsName + 
                                       	sep +
                                       	out_name +
                                       	extension;
 
-				project.activeSequence.exportAsProject(entire_out_path);
+				project.activeSequence.exportAsProject(completeOutputPath);
 		
-			    var info = "Exported " + project.activeSequence.name + " to " + entire_out_path + ".";
+			    var info = "Exported " + project.activeSequence.name + " to " + completeOutputPath + ".";
 			
 			    alert(info);
+			} else {
+				alert("Could not find/create output folder.");
 			}
-			// Here's how to import JUST that sequence from a project.
+
+			// Here's how to import N sequences from a project.
 			//
 			// var seqIDsToBeImported = new Array;
 			// seqIDsToBeImported[0] = ID1;
@@ -166,69 +167,65 @@ $._ext_PPRO={
                         
                         marker_index = marker_index + 1;
 				    }
-				 }
+				}
 			}
 	
 			var new_comment_marker  		= markers.createMarker(12.345);
 			new_comment_marker.name 		= 'Marker created by PProPanel.';
 			new_comment_marker.comments 	= 'Here are some comments, inserted by PProPanel.';
-			new_comment_marker.end.seconds 	= 15.6789;
-
+			new_comment_marker.end 			= 15.6789;
 
 			var new_web_marker  		= markers.createMarker(14.345);
 			new_web_marker.name 		= 'Web marker created by PProPanel.';
 			new_web_marker.comments 	= 'Here are some comments, inserted by PProPanel.';
-			new_web_marker.end.seconds 	= 15.6789;
+			new_web_marker.end			= 15.6789;
 			new_web_marker.setTypeAsWebLink("http://www.adobe.com", "frame target");
 	    }
 	},
 	
     exportFCPXML : function() {
-        app.enableQE();
+		var project = app.project;
         
-        var project = app.project;
-        
-        if (project.activeSequence != null) {
-            var proj_path   = new File(project.path);
-            var parent_dir  = proj_path.parent;
-            var out_name    = project.activeSequence.name;
-        	var extension   = '.xml';
-            var sep         = '\\';
+		if (project.activeSequence != null) {
+			var proj_path   = new File(project.path);
+			var parent_dir  = proj_path.parent;
+			var out_name    = project.activeSequence.name;
+			var extension   = '.xml';
+			var sep         = '\\';
 
-            if (qe.platform == 'Macintosh') {
-                sep = '/';
-            }
-            
-            var output_path = Folder.selectDialog("Choose the output directory");
-		
+			if (Folder.fs == 'Macintosh') {
+				sep = '/';
+			}
+
+			var output_path = Folder.selectDialog("Choose the output directory");
+
 			if (output_path != null) {
 
-	            var entire_out_path = output_path.fsName + sep + out_name + extension;
-	        	
-	        	project.activeSequence.exportAsFinalCutProXML(entire_out_path, 1); // 1 == suppress UI
-	        	
-	            var info = 	"Exported FCP XML for " + 
-	            			project.activeSequence.name + 
-	            			" to " + 
-	            			entire_out_path + 
-	            			", next to the project.";
-
-	            alert(info);
-	        } else {
-	        	alert("No output path chosen.")
-	        }
-        } else {
-        	alert("No active sequence.");
-        }
+				var completeOutputPath = output_path.fsName + sep + out_name + extension;
+				
+				project.activeSequence.exportAsFinalCutProXML(completeOutputPath, 1); // 1 == suppress UI
+				
+				var info = 	"Exported FCP XML for " + 
+							project.activeSequence.name + 
+							" to " + 
+							completeOutputPath + 
+							".";
+				alert(info);
+			} else {
+				alert("No output path chosen.")
+			}
+		} else {
+			alert("No active sequence.");
+		}
     },
 	
 	openInSource : function() {
         app.enableQE();
 		
-		var file_to_open = File.openDialog ("Choose file to open.", 0, false);
+		var fileToOpen = File.openDialog ("Choose file to open.", 0, false);
 
-		if (file_to_open != null) {
-			qe.source.openFilePath(file_to_open.fsName);
+		if (fileToOpen != null) {
+			qe.source.openFilePath(fileToOpen.fsName);
 			qe.source.player.play(); 
 		}
 	},
@@ -250,33 +247,35 @@ $._ext_PPRO={
         }
 
 		var proj = app.project;
-        
-        // Find or create a target bin.
-
-        var nameToFind = 'Targeted by PProPanel import';
-
-        var targetBin = searchForBinWithName(nameToFind);
-
-        if (targetBin == 0) {
-            app.project.rootItem.createBin(nameToFind);
-        }
 		
         if (proj != null) {
-            targetBin = searchForBinWithName(nameToFind);
-            targetBin.select();
-            
+
+	        // Find or create a target bin.
+
+	        var nameToFind = 'Targeted by PProPanel import';
+
+	        var targetBin = searchForBinWithName(nameToFind);
+
+	        if (targetBin == 0) {
+	            app.project.rootItem.createBin(nameToFind);
+	        }
+		
+	        targetBin = searchForBinWithName(nameToFind);
+	        targetBin.select();
+	        
 			var file_or_files_to_import = File.openDialog ("Choose files to import", 0, true);
 			
-            if (file_or_files_to_import != null) {
+	        if (file_or_files_to_import != null) {
+				
 				// We have an array of File objects; importFiles() takes an array of paths.
 						
 				var import_these = new Array;
 				
-                for (var i = 0; i < file_or_files_to_import.length; i++) {
+	            for (var i = 0; i < file_or_files_to_import.length; i++) {
 					import_these[i] = file_or_files_to_import[i].fsName;
 				}
 				proj.importFiles(import_these);	
-			}	
+			}
 		}	
 	},
 	
@@ -286,45 +285,60 @@ $._ext_PPRO={
 		var item = app.project.rootItem.children[0]; 
 		
 		if (item.canChangeMediaPath()) {
-			var replacement_media = File.openDialog(	"Choose new media file, for project item " + 
+			
+			/* 	setScaleToFrameSize() ensures that for all clips created from this footage, 
+				auto scale to frame size will be ON, regardless of the current user preference. 
+				This is	important for proxy workflows, to avoid mis-scaling upon replacement. */
+			
+			item.setScaleToFrameSize();
+			
+			var replacementMedia = File.openDialog(	"Choose new media file, for project item " + 
 														item.name, 
 														0, 
 														false);
 			
-			if (replacement_media != null) {
-				item.name = replacement_media.name + ", formerly known as " + item.name;
+			if (replacementMedia != null) {
+				item.name = replacementMedia.name + ", formerly known as " + item.name;
 
-				item.changeMediaPath(replacement_media.fsName);
+				item.changeMediaPath(replacementMedia.fsName);
 
-				replacement_media.close(); 
+				replacementMedia.close(); 
 			}
 		} else {
-			alert("Couldn't change path. replaceMedia() can't act on merged clips, or maybe the zero-th item isn't footage.");
+			alert("Couldn't change path of " + item.name + ".");
 		}
 	},
 	
 	openProject : function() {
-		var proj_to_open = File.openDialog ("Choose project:", null, false);
 
-		if (proj_to_open != null && proj_to_open.exists) {
-			app.openDocument(proj_to_open.fsName);
-			proj_to_open.close();
+		if (Folder.fs == 'Macintosh'){
+			var filterString = "";
+		} else {
+			var filterString = "All files:*.*";
+		}
+
+		var projToOpen = File.openDialog ("Choose project:", filterString, false);
+
+		if (projToOpen != null && projToOpen.exists) {
+			app.openDocument(projToOpen.fsName);
+			projToOpen.close();
 		}	
 	},
 
 	createSequence : function(name) {
-		var some_arbitrary_id_value = "xyz123";
-		app.project.createNewSequence("Some Sequence Name", some_arbitrary_id_value);
+		var someID = "xyz123";
+		var seqName = prompt('Name of sequence?',  '<<<default>>>', 'Sequence Naming Prompt');
+		app.project.createNewSequence(name, someID);
 	},
 
 	createSequenceFromPreset : function(preset_path) {
 		app.enableQE();
+		qe.project.init();
 		qe.project.newSequence("Some Sequence Name", preset_path);
 	},
 
 	render : function() {
-		app.enableQE();
-		
+
 		var active_seq = qe.project.getActiveSequence();
 		
 		if (active_seq != null)	{
@@ -336,16 +350,20 @@ $._ext_PPRO={
 			var time_in_ticks               = active_seq.CTI.ticks;
 			var time_as_formatted_string    = active_seq.CTI.timecode;
 
+			// new in 9.0
+
+			var seqInPoint	= app.project.activeSequence.getInPoint();
+			var seqOutPoint	= app.project.activeSequence.getOutPoint();
 
 			// Define a couple of callback functions, for AME to use during render.
 			
 			function message(msg) {
-				// $.writeln(msg);	 uncomment, to invoke ESTK!
+				// $.writeln(msg);	 // Using '$' object will invoke ExtendScript Toolkit, if installed.
 			}
 			
 			function onEncoderJobComplete(jobID, outputFilePath) {
-				app.enableQE();
-				if (qe.platform == 'Macintosh') {
+
+				if (Folder.fs == 'Macintosh') {
 					var eoName = "PlugPlugExternalObject";							
 				} else {
 					var eoName = "PlugPlugExternalObject.dll";
@@ -359,14 +377,11 @@ $._ext_PPRO={
 	        	eventObj.dispatch();
 			}
 			
-			function onEncoderJobError(jobID) {
-				app.enableQE();
-				if (qe.platform == 'Macintosh')
-				{
+			function onEncoderJobError(jobID, errorMessage) {
+
+				if (Folder.fs == 'Macintosh') {
 					var eoName = "PlugPlugExternalObject";							
-				} 
-				else
-				{
+				} else {
 					var eoName = "PlugPlugExternalObject.dll";
 				}
 						
@@ -374,7 +389,7 @@ $._ext_PPRO={
 				var eventObj = new CSXSEvent();
 
 				eventObj.type = "com.adobe.csxs.events.PProPanelRenderEvent";
-				eventObj.data = "Job " + jobID + ", to " + outputFilePath + ", FAILED. :(";
+				eventObj.data = "Job " + jobID + "failed, due to " + errorMessage + ". :(";
 	        	eventObj.dispatch();
 			}
 			
@@ -395,10 +410,10 @@ $._ext_PPRO={
 			var proj_path   	= new File(app.project.path);
 			var out_path    	= new File("~/Desktop");
 			var sep         	= '\\';
-			var out_preset_path	= "C:\Program Files\Adobe\Adobe Media Encoder CC 2014\MediaIO\systempresets\58444341_4d584658\XDCAMHD 50 NTSC 60i.epr";
+			var out_preset_path	= "C:\\Program Files\\Adobe\\Adobe Media Encoder CC 2015\\MediaIO\\systempresets\\58444341_4d584658\\XDCAMHD 50 NTSC 60i.epr";
 			
 			if (qe.platform == 'Macintosh') {
-				var out_preset_path = "/Applications/Adobe Premiere Pro CC 2014/Adobe Premiere Pro CC 2014.app/MediaIO/systempresets/58444341_4d584658/XDCAMHD 50 NTSC 60i.epr";
+				var out_preset_path = "/Applications/Adobe Premiere Pro CC 2015/Adobe Premiere Pro CC 2015.app/MediaIO/systempresets/58444341_4d584658/XDCAMHD 50 NTSC 60i.epr";
 				sep = '/';
 			}
 			
@@ -421,7 +436,7 @@ $._ext_PPRO={
 
 			// use these 0 or 1 settings to disable some/all metadata creation.
 
-			app.encoder.setSideCarXMPEnabled(0);
+			app.encoder.setSidecarXMPEnabled(0);
 			app.encoder.setEmbeddedXMPEnabled(0);
 
 			var jobID = app.encoder.encodeSequence(	app.project.activeSequence,
@@ -439,27 +454,27 @@ $._ext_PPRO={
 	},
 
     saveProjectAs : function() {
-		app.enableQE();
-			
-		var session_counter = 1;
+
+		var sessionCounter = 1;
 		var output_path 	= Folder.selectDialog("Choose the output directory");
-		var sep         	= '\\';
         
-        if (qe.platform == 'Macintosh') {
-            sep = '/';
-        }
+        if (Folder.fs == 'Macintosh') {
+            var sep = '/';
+        } else {
+   			var sep	= '\\';
+        };
 		    
 		if (output_path != null) {
-			var abs_path 	= output_path.fsName;
+			var absPath 	= output_path.fsName;
 		    var outname 	= new String(app.project.name);
 		    var array 		= outname.split('.', 2);
 
-		    outname = array[0]+ session_counter + '.' + array[1]; 
-		    session_counter++;
+		    outname = array[0]+ sessionCounter + '.' + array[1]; 
+		    sessionCounter++;
 			
-		    var full_out_path = abs_path + sep + outname;
-		    app.project.saveAs(full_out_path);
-		    app.openDocument(full_out_path);
+		    var fullOutPath = absPath + sep + outname;
+		    app.project.saveAs(fullOutPath);
+		    app.openDocument(fullOutPath);
 		}
 	},
 		
@@ -555,52 +570,35 @@ $._ext_PPRO={
 		}
 	},
 
-	getMethods: function(obj) {
-		var ps = "Methods: ";
-		for (var ii=0; ii < obj.reflect.methods.length; ii++) {
-			ps +=  obj.reflect.methods[ii].name + "; ";
-		}
-		return ps;
-	},
-
-	getProps: function(obj) {
-		var ps = "Properties: ";
-		for (var ii=0; ii < obj.reflect.properties.length; ii++) {
-			ps +=  obj.reflect.properties[ii].name + "; ";
-		}
-		return ps;
-	},
-
 	dumpOMF : function() {
-		app.enableQE();
-		
+
 		var active_seq = qe.project.getActiveSequence();
 		
 		if (active_seq != null) {
 			var output_path = Folder.selectDialog("Choose the output directory");
 		
 			if (output_path != null){
-				var abs_path = output_path.fsName;
+				var absPath = output_path.fsName;
 			    var outname  = new String(active_seq.name) + '.omf';
 
                 var sep         = '\\';
 
-                if (qe.platform == 'Macintosh') {
+                if (Folder.fs == 'Macintosh') {
                 	sep = '/';
                 }
                 
-                var full_out_path_with_name = abs_path + sep + outname;
+                var fullOutPath_with_name = absPath + sep + outname;
 
-				app.project.exportOMF(	app.project.activeSequence,            // sequence
-										full_out_path_with_name, 						// output file path
-										'OMFTitle',                    // OMF title
-										48000,                    // sample rate (48000 or 96000)
-										16,                        // bits per sample (16 or 24)
-										1,                        // audio encapsulated flag (1 : yes or 0 : no)
-										0,                        // audio file format (0 : AIFF or 1 : WAV)
-										0,                        // trim audio files (0 : no or 1 : yes)
-										0,                        // handle frames (if trim is 1, handle frames from 0 to 1000)
-										0);                        // include pan flag (0 : no or 1 : yes)
+				app.project.exportOMF(	app.project.activeSequence,		// sequence
+										fullOutPath_with_name, 		// output file path
+										'OMFTitle',						// OMF title
+										48000,							// sample rate (48000 or 96000)
+										16,								// bits per sample (16 or 24)
+										1,								// audio encapsulated flag (1 : yes or 0 : no)
+										0,								// audio file format (0 : AIFF or 1 : WAV)
+										0,								// trim audio files (0 : no or 1 : yes)
+										0,								// handle frames (if trim is 1, handle frames from 0 to 1000)
+										0);								// include pan flag (0 : no or 1 : yes)
 			}
 		} else {
 			alert("No active sequence.");
@@ -608,9 +606,8 @@ $._ext_PPRO={
 	},
 	
 	renderForiPad : function () {
-		app.enableQE();
 
-		var active_seq = qe.project.getActiveSequence();
+		var active_seq = app.project.activeSequence;
 		
 		if (active_seq != null)	{
 			// Define some callback functions, for AME to use during render.
@@ -656,11 +653,11 @@ $._ext_PPRO={
 			if (output_path != null && output_path.exists) {
 			    var sep = '\\';
 			     
-				if (qe.platform == 'Macintosh') {
-					var out_preset_path = "Applications/Adobe Premiere Pro CC 2014/Adobe Premiere Pro CC 2014.app/MediaIO/systempresets/4E49434B_48323634/Apple TV, iPad, iPhone 4 and newer - 960x540 29.97.epr";
+				if (Folder.fs == 'Macintosh') {
+					var out_preset_path = "Applications/Adobe Premiere Pro CC 2015/Adobe Premiere Pro CC 2015.app/MediaIO/systempresets/4E49434B_48323634/Apple TV, iPad, iPhone 4 and newer - 960x540 29.97.epr";
 					sep = '/';
 				} else {
-					var out_preset_path  = "C:\Program Files\Adobe\Adobe Media Encoder CC 2014\MediaIO\systempresets\4E49434B_48323634\Apple TV, iPad, iPhone 4 and newer - 960x540 29.97.epr";
+					var out_preset_path  = "C:\Program Files\Adobe\Adobe Media Encoder CC 2015\MediaIO\systempresets\4E49434B_48323634\Apple TV, iPad, iPhone 4 and newer - 960x540 29.97.epr";
 				}
 				
 				var out_preset  = new File(out_preset_path);
@@ -686,7 +683,8 @@ $._ext_PPRO={
 				var jobID = app.encoder.encodeSequence(	app.project.activeSequence,
 														full_path_to_file,
 														out_preset.fsName,
-														app.encoder.ENCODE_WORKAREA); // app.encoder.ENCODE_ENTIRE, app.encoder.ENCODE_IN_TO_OUT
+														app.encoder.ENCODE_WORKAREA, // app.encoder.ENCODE_ENTIRE, app.encoder.ENCODE_IN_TO_OUT
+														true); 						// remove job from queue upon completion? 
 				message('jobID = ' + jobID);
 			
 				out_preset.close();
@@ -752,8 +750,6 @@ $._ext_PPRO={
 
 					var namespaces = XMPMeta.dumpNamespaces();
 
-					 // if these contain data, they're all found, in 7.2.3 and 8.0.1 (not 8.0.0)
-
 					var found_name      = xmp.doesPropertyExist(kPProPrivateProjectMetadataURI, namefield);
 					var found_tapename  = xmp.doesPropertyExist(kPProPrivateProjectMetadataURI, tapename);
 					var found_desc      = xmp.doesPropertyExist(kPProPrivateProjectMetadataURI, desc);
@@ -773,5 +769,155 @@ $._ext_PPRO={
 				}
 			}
 		}
-	}
+	},
+
+	updatePAR : function() {
+		var item = app.project.rootItem.children[0]; 
+
+		// If there is an item, and it's either a clip or file...
+
+		if(	(item != null) && ((item.type == ProjectItemType.FILE) || (item.type == ProjectItemType.CLIP))){
+				item.setOverridePixelAspectRatio(185,  100); // anamorphic is BACK!   :)
+			} else {
+				alert('You cannot override the PAR of bins or sequences.')
+			}
+	},
+	
+	getnumAEProjectItems : function() {
+		var bt 	  = new BridgeTalk;
+		bt.target = 'aftereffects';
+		bt.body   = 'alert("Items in project: " + app.project.rootFolder.numItems);app.quit();';
+		bt.send();
+	},
+
+	updateEventPanel : function() {
+		app.setSDKEventMessage('Here is some information.', 'info');
+		app.setSDKEventMessage('Here is a warning.', 'warning');
+		app.setSDKEventMessage('Here is an error.', 'error');
+	},
+
+	walkAllBinsForFootage : function(parentItem){
+		for (var j = 0; j < parentItem.children.numItems; j++){
+			var currentChild = parentItem.children[j];
+			if (currentChild != null){
+				if (currentChild.type == ProjectItemType.BIN){
+					walkAllBinsForFootage(currentChild);
+				} else {
+					$._ext_PPRO.dumpProjectItemXMP(currentChild);
+				}
+			}
+		}
+	},
+
+	dumpProjectItemXMP : function(outPath, projectItem, sep) {
+		var xmpBlob = projectItem.getXMPMetadata();
+
+		var outFileName 		= projectItem.name + '.xmp';
+        var completeOutputPath 	= outPath.fsName + sep + outFileName;
+
+		var outFile 			= new File(completeOutputPath);
+
+		if (outFile != null){
+			outFile.encoding = "UTF8";
+			outFile.open("w", "TEXT", "????");
+			outFile.write(xmpBlob.toString());
+			outFile.close();
+		}
+	},
+
+	addSubClip : function() {
+
+		var startTimeSeconds 	= 1.23743;
+		var endTimeSeconds 		= 3.5235;
+		var hasHardBoundaries 	= 0;
+		
+		var sessionCounter 		= 1;
+		var takeVideo 			= 1;  // optional, defaulting to 1
+		var takeAudio 			= 1; //  optional, defaulting to 1
+
+		var projectItem = app.project.rootItem.children[0]; // just grabs the first item
+
+		if ( projectItem != null && 
+             (projectItem.type == ProjectItemType.FILE || projectItem.type == ProjectItemType.CLIP)){
+
+			var newSubClipName = prompt('Name of subclip?',  projectItem.name + '_' + sessionCounter, 'Name your subclip');
+			
+			var newSubClip 	= projectItem.createSubClip(newSubClipName, 
+													   	startTimeSeconds, 
+								   						endTimeSeconds, 
+													  	hasHardBoundaries,
+								   						takeVideo,
+							     	   					takeAudio);
+		} else {
+			alert("Couldn't sub-clip " + projectItem.name);
+		}
+	},
+
+	dumpXMPFromAllProjectItems : function() {
+
+        var outPath = Folder.selectDialog("Choose the output directory");
+		var sep 	= '\\';
+		         
+		if (Folder.fs == 'Macintosh') {
+		    sep = '/';
+		}
+
+		if (outPath != null) {
+			var	numItemsInRoot = app.project.rootItem.children.numItems;
+
+			for (var i = 0; i < numItemsInRoot; i++){
+				var currentItem = app.project.rootItem.children[i];
+				if (currentItem != null){
+			        if (currentItem.type == ProjectItemType.BIN){
+				        $._ext_PPRO.walkAllBinsForFootage(currentItem);
+					} else {
+							$._ext_PPRO.dumpProjectItemXMP(outPath, currentItem, sep);
+					}
+				}
+			}
+		}
+	},
+
+	exportAAF : function() {
+
+		var sessionCounter = 1;
+		var output_path 	= Folder.selectDialog("Choose the output directory");
+        
+        if (Folder.fs == 'Macintosh') {
+            var sep = '/';
+        } else {
+   			var sep	= '\\';
+        };
+		    
+		if (output_path != null) {
+
+			var activeSequence = app.project.activeSequence;
+			
+			if (activeSequence != null) {
+				var absPath 	= output_path.fsName;
+			    var outname 	= new String(app.project.name);
+			    var array 		= outname.split('.', 2);
+
+			    outname = array[0]+ sessionCounter + '.' + array[1]; 
+			    sessionCounter++;
+				
+			    var fullOutPath = absPath + sep + outname + '.aaf';
+
+				app.project.exportAAF(  app.project.activeSequence,       	// which sequence
+										fullOutPath,						// output path
+										1,                                 	// mix down video?
+										0,                                 	// explode to mono?
+							            96000,                             	// sample rate
+										16,                                	// bits per sample
+										0,                                 	// embed audio? 
+										0,                                 	// audio file format? 0 = aiff, 1 = wav
+										0,                                 	// trim sources? 
+				                        0);                                	// number of 'handle' frames
+			} else {
+				alert("No active sequence.");
+			}
+		} else {
+			alert("Couldn't create AAF output.");
+		}
+	},
 };

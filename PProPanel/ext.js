@@ -2,7 +2,6 @@
 function onLoaded() {
     var csInterface = new CSInterface();
 	
-    
     var appName = csInterface.hostEnvironment.appName;
     document.getElementById("dragthing").style.backgroundColor = "lightblue";
     
@@ -11,6 +10,7 @@ function onLoaded() {
     }    
     
     var appNames = ["PPRO"];
+
     for (var i = 0; i < appNames.length; i++) {
         var name = appNames[i];
         if (appName.indexOf(name) >= 0) {
@@ -22,6 +22,7 @@ function onLoaded() {
     
 
     updateThemeWithAppSkinInfo(csInterface.hostEnvironment.appSkinInfo);
+
     // Update the color of the panel when the theme color of the product changed.
     csInterface.addEventListener(CSInterface.THEME_COLOR_CHANGED_EVENT, onAppThemeColorChanged);
 
@@ -60,10 +61,10 @@ function myVersionInfoFunction (data) {
      v_string.innerHTML = boilerPlate + data;
 }
 
-
 /**
  * Update the theme with the AppSkinInfo retrieved from the host product.
  */
+
 function updateThemeWithAppSkinInfo(appSkinInfo) {
 	
     //Update the background color of the panel
@@ -133,7 +134,6 @@ function addRule(stylesheetId, selector, rule) {
     }
 }
 
-
 function reverseColor(color, delta) {
     return toHex({red:Math.abs(255-color.red), green:Math.abs(255-color.green), blue:Math.abs(255-color.blue)}, delta);
 }
@@ -141,6 +141,7 @@ function reverseColor(color, delta) {
 /**
  * Convert the Color object to string in hexadecimal format;
  */
+
 function toHex(color, delta) {
     function computeValue(value, delta) {
         var computedValue = !isNaN(delta) ? value + delta : value;
@@ -171,9 +172,6 @@ function onAppThemeColorChanged(event) {
     updateThemeWithAppSkinInfo(skinInfo);
 } 
 
-
-
-    
 /**
  * Load JSX file into the scripting context of the product. All the jsx files in 
  * folder [ExtensionRoot]/jsx will be loaded. 

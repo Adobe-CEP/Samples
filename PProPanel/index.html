@@ -11,7 +11,6 @@
 
 <title>PProPanel</title>
 
-
     <script type="text/javascript">
 
       $( document ).ready(function() {
@@ -20,6 +19,12 @@
            	e.preventDefault(); 
            	var csInterface = new CSInterface();
            	csInterface.evalScript('$._ext_PPRO.getActiveSequenceName()', myCallBackFunction);  
+        });
+
+        $("#checkforums").on("click", function(e){
+            e.preventDefault(); 
+            var csInterface = new CSInterface();
+            csInterface.openURLInDefaultBrowser("https://forums.adobe.com/community/premiere/sdk");
         });
 
         $("#newseqfrompreset").on("click", function(e){
@@ -53,6 +58,7 @@
 
     <button id="getseqname">Get active sequence</button>
     <button id="newseqfrompreset">Create Sequence From Preset</button>
+    <button id="checkforums">Check SDK Forums</button>
     
       <!-- ...the rest call directly into ExtendScript. -->
 
@@ -73,6 +79,12 @@
     <button class="controlBg textStyle" id="btn_PPRO14" onClick="evalScript('$._ext_PPRO.updateGrowingFile()')">Update growing file</button>
     <button class="controlBg textStyle" id="btn_PPRO15" onClick="evalScript('$._ext_PPRO.modifyProjectMetadata()')">Modify project metadata</button>
     <button class="controlBg textStyle" id="btn_PPRO16" onClick="evalScript('$._ext_PPRO.addClipMarkers()')">Add clip markers</button>
+    <button class="controlBg textStyle" id="btn_PPRO17" onClick="evalScript('$._ext_PPRO.updatePAR()')">Update PAR</button>
+    <button class="controlBg textStyle" id="btn_PPRO18" onClick="evalScript('$._ext_PPRO.getnumAEProjectItems()')">AE project item count</button>
+    <button class="controlBg textStyle" id="btn_PPRO19" onClick="evalScript('$._ext_PPRO.updateEventPanel()')">Update event panel</button>
+    <button class="controlBg textStyle" id="btn_PPRO20" onClick="evalScript('$._ext_PPRO.dumpXMPFromAllProjectItems()')">Dump XMP from all items</button>
+    <button class="controlBg textStyle" id="btn_PPRO21" onClick="evalScript('$._ext_PPRO.addSubClip()')">Create subclip</button>
+    <button class="controlBg textStyle" id="btn_PPRO22" onClick="evalScript('$._ext_PPRO.exportAAF()')">Export sequence to AAF</button>
 
     <div id="dragthing" draggable="true" ondragstart="dragHandler(event)">drag me</div>
   </body>

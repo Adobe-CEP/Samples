@@ -1,18 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ExtensionManifest Version="4.0" ExtensionBundleId="com.example.PProPanel" ExtensionBundleVersion="1.0.0"
-ExtensionBundleName="PProPanel" 
+<ExtensionManifest Version="4.0" ExtensionBundleId="com.adobe.PProPanel" ExtensionBundleVersion="1.0.1"
+ExtensionBundleName="Premiere Pro sample panel" 
 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<ExtensionList>
-		<Extension Id="com.example.PProPanel" Version="1.0" />
+		<Extension Id="com.adobe.PProPanel" Version="9.0.0" />
 	</ExtensionList>
 	<ExecutionEnvironment>
 		<HostList>
 			<Host Name="PPRO" Version="[8.0,9.9]" />
 		</HostList>
-		<CEFCommandLine>
-		    <Parameter>--allow-file-access</Parameter>
-		    <Parameter>--allow-file-access-from-files</Parameter>
-		</CEFCommandLine>
 		<LocaleList>
 			<Locale Code="All" />
 		</LocaleList>
@@ -22,7 +18,7 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	</ExecutionEnvironment>
 
 	<DispatchInfoList>
-		<Extension Id="com.example.PProPanel">
+		<Extension Id="com.adobe.PProPanel">
 			<DispatchInfo >
 				<Resources>
 					<MainPath>./index.html</MainPath>
@@ -31,13 +27,17 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 				<Lifecycle>
 					<AutoVisible>true</AutoVisible>
 				</Lifecycle>
+				<CEFCommandLine>
+				    <Parameter>--allow-file-access</Parameter>
+				    <Parameter>--allow-file-access-from-files</Parameter>
+				</CEFCommandLine>
 				<UI>
 					<Type>Panel</Type>
-					<Menu>PProPanel</Menu>
+					<Menu>PProPanel (SDK sample panel)</Menu>
 					<Geometry>
 						<Size>
-							<Height>400</Height>
-							<Width>200</Width>
+							<Height>300</Height>
+							<Width>550</Width>
 						</Size>
 					</Geometry>
 				</UI>
