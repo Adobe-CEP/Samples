@@ -20,7 +20,7 @@ var AnywhereHTTPApi = (function(exports) {
     /**
     * This is a helper to step through the discoverable API. All entity pages have a 
     * link section with functionality or further resources to discover.
-    * This function returns the 'href' of a link basend on the 'rel' string.
+    * This function returns the 'href' of a link based on the 'rel' string.
     * Authentication is done by sending the cookie string (token) directly. (This could 
     * also be done by storing the cookie)
     */
