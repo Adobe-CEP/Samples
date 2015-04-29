@@ -33,7 +33,6 @@ p {
     float:left;
     font-size: 1.6em;
     margin: 0 0 0 30px;
-    padding-left: 1;
     color: white;
 }
 
@@ -48,7 +47,8 @@ p {
 {
     float: left;
     color: white;
-    margin-left: 30px;
+    margin-left: 20px;
+    width:550px;
 }
 
 .ui-icon {
@@ -70,7 +70,7 @@ p {
     margin-top:4px;
 }
 .mainTble {
-    width:470px;
+    width:100%;
 }
 
 .firstTD {

@@ -59,7 +59,7 @@ that triggers Anywhere functionality through the DOM and by calling the Anywhere
 <div class="main" id="main">
         <table class="mainTble">
             <tr>
-                <td colspan="2"><input class="pathInput" size="67" type="text" id="ingestPath" placeholder="Local or eamedia:// path"></td>
+                <td colspan="2"><input class="pathInput" size="85" type="text" id="ingestPath" placeholder="Local or eamedia:// path"></td>
             </tr>
             <tr>
                 <td class="firstTD">
@@ -70,18 +70,8 @@ that triggers Anywhere functionality through the DOM and by calling the Anywhere
                 <td>Play in Source Monitor</td>
             </tr>
             <tr>
-            
-            <tr>
                 <td><button id="btn_ingestDOMUser" class="myButton">GO</button></td>
                 <td>Ingest through Premiere DOM (user sandbox)</td>
-            </tr>
-            <tr>
-                <td><button id="btn_ingestHTTPUser" class="myButton">GO</button></td>
-                <td>Ingest through HTTP call (user sandbox)</td>
-            </tr>
-            <tr>
-                <td><button id="btn_ingestHTTPProd" class="myButton">GO</button></td>
-                <td>Ingest through HTTP call (Production)</td>
             </tr>
             <tr>
                 <td>
@@ -92,6 +82,23 @@ that triggers Anywhere functionality through the DOM and by calling the Anywhere
                 <td>Drag Me (into the production panel, source monitor or timeline) </td>
             </tr>
         </table>
+    
+        <br />
+    
+        <fieldset>
+            <legend>Adobe Anywhere with Mercury Streaming Engines</legend>
+            <table class="mainTble">
+                <tr>
+                    <td><button id="btn_ingestHTTPUser" class="myButton">GO</button></td>
+                    <td>Ingest through HTTP call (user sandbox)</td>
+                </tr>
+                <tr>
+                    <td><button id="btn_ingestHTTPProd" class="myButton">GO</button></td>
+                    <td>Ingest through HTTP call (Production)</td>
+                </tr>
+            </table>
+        </fieldset>
+        <br />
 </div>
 </body>
 </html>
