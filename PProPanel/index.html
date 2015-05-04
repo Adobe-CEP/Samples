@@ -30,12 +30,17 @@
         $("#newseqfrompreset").on("click", function(e){
            	e.preventDefault(); 
            	var csInterface = new CSInterface();
-           	var path = csInterface.getSystemPath(SystemPath.EXTENSION);
+			var OSVersion   = csInterface.getOSInformation();
+            var path    	= csInterface.getSystemPath(SystemPath.EXTENSION);
 
-           	if (path != null)
-           	{
-           		path = path + '/payloads/PProPanel.sqpreset';
-           	}
+			if (OSVersion != null){
+				if (OSVersion.indexOf("Windows") >=0){
+					var sep = '\\\\';
+					path = path.replace(/\//g, sep);
+            } else {
+              var sep = '/';
+            }
+           		path = path + sep + 'payloads' + sep + 'PProPanel.sqpreset';
 
            	var pre       = '$._ext_PPRO.createSequenceFromPreset(\'';
            	var post      = '\'';
@@ -44,6 +49,7 @@
            	var whole_megillah =  pre + path + post + postpost;
            	
            	csInterface.evalScript(whole_megillah);
+            }
         });
       });
 
@@ -85,8 +91,7 @@
     <button class="controlBg textStyle" id="btn_PPRO20" onClick="evalScript('$._ext_PPRO.dumpXMPFromAllProjectItems()')">Dump XMP from all items</button>
     <button class="controlBg textStyle" id="btn_PPRO21" onClick="evalScript('$._ext_PPRO.addSubClip()')">Create subclip</button>
     <button class="controlBg textStyle" id="btn_PPRO22" onClick="evalScript('$._ext_PPRO.exportAAF()')">Export sequence to AAF</button>
-
+    <button class="controlBg textStyle" id="btn_PPRO23" onClick="evalScript('$._ext_PPRO.setScratchDisk()')">Set scratch disk path</button>
     <div id="dragthing" draggable="true" ondragstart="dragHandler(event)">drag me</div>
   </body>
-
 </html>
