@@ -87,8 +87,8 @@ var PremiereDOMBridge = (function(exports) {
     /**
 	 * @see $.PREMIERE#openInSource
 	 */
-    exports.openInSource = function(path, callback) {
-        callExtendScript('$.PREMIERE.openInSource', path, callback);
+    exports.openInSourceAndPlay = function(path, callback) {
+        callExtendScript('$.PREMIERE.openInSourceAndPlay', path, callback);
     };
     
     /**
