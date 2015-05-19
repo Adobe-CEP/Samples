@@ -88,9 +88,13 @@ $.PREMIERE  = (function(exports) {
     * opens a path in the source monitor and plays it
     * can be a local path or a eamedia:// path
     */
-    exports.openInSource = function(mediaUrl) {
-    	qe.source.openFilePath(mediaUrl);
-    	qe.source.player.play();
+    exports.openInSourceAndPlay = function(mediaUrl) {
+    	if (qe.source.openFilePath(mediaUrl)) {
+            qe.source.player.play();
+        } else {
+            alert("Error resolving filepath!")
+        };
+    	
     };
     
     return exports;

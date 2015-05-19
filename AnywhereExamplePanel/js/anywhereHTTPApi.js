@@ -25,26 +25,34 @@ var AnywhereHTTPApi = (function(exports) {
     * also be done by storing the cookie)
     */
     exports.getLink = function(token, url, rel ) {
-        // using sync for simplicity in this example. Please consider to use async calls instead.
-        var response = $.ajax({
-                                type: "GET",
-                                url: url,
-                                async: false,
-                                beforeSend: function(xhr) {
-                                    xhr.setRequestHeader("Cookie", sessionToken);
-                                },
-                            });
-        
-        session = JSON.parse( response.responseText );
-        
         href = "";
-        // go through all the links and find the one requested
-        $.each(session.links, function(index, link) {
-            if (link.rel == rel) {
-                href = link.href;
-                return;
+        
+        if (url && url.length !== 0 && rel && rel.length !== 0){
+            // using sync for simplicity in this example. Please consider to use async calls instead.
+            var response = $.ajax({
+                                    type: "GET",
+                                    url: url,
+                                    async: false,
+                                    beforeSend: function(xhr) {
+                                        xhr.setRequestHeader("Cookie", sessionToken);
+                                    },
+                                    success: function(session){
+                                        // go through all the links and find the one requested
+                                        $.each(session.links, function(index, link) {
+                                            if (link.rel == rel) {
+                                                href = link.href;
+                                                return;
+                                            }
+                                        });
+                                    },
+                                    error : function(xhr, statusText, err) {
+                                        alert("ERROR while creating an Ingest Job. Error " + xhr.status + " "+ err);
+                                    }
+                                });
+            if (href=="") {
+                alert("Error: Could not find the link:  \n" + rel + "\n on the page: \n" + url);
             }
-        });
+        }
         return href;
     }
     
@@ -68,38 +76,40 @@ var AnywhereHTTPApi = (function(exports) {
             destination = productionURL
         }
 
-        // create the form data.
-        var data = new FormData();
-        var parameters = {'destination' : destination,
-                          'mediaPaths' : mediaPaths,
-                          'comment' : comment}
+        if (destination  && destination.length !== 0 && ingestJobURL && ingestJobURL.length !== 0) {
+            // create the form data.
+            var data = new FormData();
+            var parameters = {'destination' : destination,
+                              'mediaPaths' : mediaPaths,
+                              'comment' : comment}
 
-        data.append(':parameters', JSON.stringify(parameters));
+            data.append(':parameters', JSON.stringify(parameters));
 
-        // create the POST call to create the job. The url of the successful job will be
-        // displayed in the alert. You could add more code to get the status and progress of the job.
-        // see the Anywhere documentation for more details:
-        // <anywhereRoot>/docs/documentation/api/jobs/IngestJobCreate.html
-        $.ajax({
-            url: ingestJobURL,
-            data: data,
-            cache: false,
-            contentType: false,
-            processData: false,
-            crossDomain: true,
-            type: 'POST',
-            beforeSend: function(xhr) {
-                xhr.setRequestHeader("Cookie", sessionToken);
-            },
-            success: function(data, textStatus, request){
-                // the data object has the current json response of the job
-                // the location stores the job URL
-                alert("Ingest Job created: \n\n "+ request.getResponseHeader('Location'));
-            },
-            error : function(xhr, statusText, err) {
-                alert("ERROR while creating an Ingest Job. Error " + xhr.status + " "+ err);
-            }
-        });
+            // create the POST call to create the job. The url of the successful job will be
+            // displayed in the alert. You could add more code to get the status and progress of the job.
+            // see the Anywhere documentation for more details:
+            // <anywhereRoot>/docs/documentation/api/jobs/IngestJobCreate.html
+            $.ajax({
+                url: ingestJobURL,
+                data: data,
+                cache: false,
+                contentType: false,
+                processData: false,
+                crossDomain: true,
+                type: 'POST',
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader("Cookie", sessionToken);
+                },
+                success: function(data, textStatus, request){
+                    // the data object has the current json response of the job
+                    // the location stores the job URL
+                    alert("Ingest Job created: \n\n "+ request.getResponseHeader('Location'));
+                },
+                error : function(xhr, statusText, err) {
+                    alert("ERROR while creating an Ingest Job. Error " + xhr.status + " "+ err);
+                }
+            });
+        }
     }
     
     return exports;

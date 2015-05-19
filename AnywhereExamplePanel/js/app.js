@@ -83,7 +83,7 @@ $(document).ready(function() {
         $('#btn_openInSource').click(function() {
             var path = $('#ingestPath').val();
             if ( validPath(path) ) {
-                PremiereDOMBridge.openInSource( path );
+                PremiereDOMBridge.openInSourceAndPlay( path );
             }
          });
 
