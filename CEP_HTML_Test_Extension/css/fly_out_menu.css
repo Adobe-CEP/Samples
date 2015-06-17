@@ -73,3 +73,15 @@
 #fly_out_menu ul ul li:hover { 
     background: #A2A2A2; 
 }
+
+.flyoutMenuDescription {
+    color:#EBEBEB;
+    font-size: 16px;
+}
+
+#flyoutMenuResult {
+    color:#EBEBEB;
+    font-size:16px;
+	background-color:transparent; 
+	border-color:transparent;
+}

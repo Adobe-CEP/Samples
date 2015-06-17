@@ -1,38 +1,95 @@
 // JavaScript Document
 var agoraLib = new AgoraLib();
 var successfulEntitlements = [AgoraLib.status.perpetualPurchase.code, AgoraLib.status.trialPurchase.code, AgoraLib.status.subscriptionPurchase.code, AgoraLib.status.free.code];
+var API_TIMEOUT = 60000;
+var isEntitledSuccess = false;
+var createEntitlementSuccess = false;
+var getPurchaseUrlSuccess = false;
+var purchaseBtnURL = "";
+
+function launchBrowser() {
+    var library = new CSInterface();
+    library.openURLInDefaultBrowser(purchaseBtnURL);   
+}
+
+function showError(message, timeout, status, statusCode, response) {
+    // something has gone wrong
+    var messageObj = document.getElementById("message");
+    var message = "<p>" + message + "</p>";
+    if (!timeout) {
+        message += "<p>From Adobe Exchange we have received:<br />";
+        message += "Status message: " + status;
+        message += "<br />Status code: " + statusCode;
+        message += "<br />Response: " + response;
+        message += "</p><p>Please check that you have Adobe Creative Cloud Desktop application installed and that you are logged in.</p>"
+    }
+    messageObj.innerHTML = message;
+}
+
+function showSuccess() {
+    document.getElementById("loading").style.display = "none";
+    document.getElementById("welcome").style.display = "block";
+}
+
+function showUpdateMessage() {
+    document.getElementById("loading").style.display = "none";
+    document.getElementById("welcome_update").style.display = "block";
+}
 
 function getPurchaseUrlResponseCallback(result) {
   console.log("getPurchaseUrlResponseCallback received with result " + result.statusCode + ", " + result.status + ", " + result.response);
+  getPurchaseUrlSuccess = true;
   if (result.statusCode === AgoraLib.status.success.code) {
     // retrieval of URL was successful
     document.getElementById("loading").style.display = "none";
     document.getElementById("purchase").style.display = "block";
-    var purchaseBtnObj = document.getElementById("purchaseBtn");
-    purchaseBtnObj.href = result.response; 
+    purchaseBtnURL = result.response;
   } else {
     // something has gone wrong
-    var messageObj = document.getElementById("message");
-    var message = "<p>Sorry but something has gone wrong when attempting to setup an entitlement for your user account.</p>";
-    message += "<p>From Adobe Exchange we have received:<br />";
-    message += "Status message: " + result.status;
-    message += "<br />Status code: " + result.statusCode;
-    message += "<br />Response: " + result.response;
-    message += "</p><p>Please check that you have Adobe Creative Cloud Desktop application installed and that you are logged in.</p>"
-    messageObj.innerHTML = message;
-  }        
+    showError("Sorry but something has gone wrong when attempting to setup an entitlement for your user account.", false, result.status, result.statusCode, result.response);
+  }      
+}
+
+function createEntitlementResponseCallback(result) {
+    console.log("createEntitlementResponseCallback received with result " + result.statusCode + ", " + result.status + ", " + result.response);
+    createEntitlementSuccess = true;
+    if (result.statusCode === AgoraLib.status.success.code || result.statusCode === AgoraLib.status.entitlementAlreadyCreated.code) {
+        // entitlement creation was successful
+        console.log("entitlement creation was successful");
+        showSuccess();
+    } else if (result.statusCode === AgoraLib.status.updateAvailable.code) {
+        // entitlement created but an update is available
+        console.log("entitlement created but an update is available");
+        showUpdateMessage();
+    } else {
+        // something has gone wrong so retrieve purchase URL
+        console.log("something has gone wrong so retrieve purchase URL");
+        agoraLib.getPurchaseUrl(getPurchaseUrlResponseCallback);
+        setTimeout(function () {
+            if (!getPurchaseUrlSuccess) {
+                console.log("getPurchaseUrlResponseCallback request timed out");
+                showError("getPurchaseUrl request timed out", true);
+            }
+        }, API_TIMEOUT); // 1 min timeout
+    }
 }
 
 /** Handles response from isEntitled API */
 function isEntitledResponseCallback(result) {
   console.log("isEntitledResponseCallback received with result " + result.statusCode + ", " + result.status + ", " + result.response);
+  isEntitledSuccess = true;
   if (successfulEntitlements.indexOf(result.statusCode) >= 0) {
     console.log("User has an entitlement");
-    document.getElementById("loading").style.display = "none";
-    document.getElementById("welcome").style.display = "block";
+    showSuccess();
   } else {
-    console.log("User has not got an entitlement so retrieve a link to purchasing the product");
-    agoraLib.getPurchaseUrl(getPurchaseUrlResponseCallback);
+    console.log("User has not got an entitlement so create one");
+    agoraLib.createEntitlement(createEntitlementResponseCallback);
+    setTimeout(function () {
+        if (!createEntitlementSuccess) {
+            console.log("createEntitlementResponseCallback request timed out");
+            showError("Sorry but the createEntitlement response timed out", true);
+        }
+    }, API_TIMEOUT);  
   }       
 }
  
@@ -40,4 +97,12 @@ function isEntitledResponseCallback(result) {
 function checkEntitlement() {
   console.log("Checking entitlement");
   agoraLib.isEntitled(isEntitledResponseCallback);
+    
+  setTimeout(function () {
+      if (!isEntitledSuccess) {
+          console.log("isEntitledResponseCallback request timed out");
+          showError("Sorry but the isEntitled response timed out", true);
+      }
+  }, API_TIMEOUT);
+
 }

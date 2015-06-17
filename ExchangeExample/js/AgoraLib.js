@@ -11,7 +11,7 @@
 *
 **************************************************************************************************/
 
-/** AgoraLib - v5.2.0 */
+/** AgoraLib - v6.0.0 */
 
 /**
  * @class AgoraLib
@@ -22,29 +22,32 @@
 function AgoraLib() {
     var extensionID = window.__adobe_cep__.getExtensionId();
     // GUID discussions: http://stackoverflow.com/questions/105034/how-to-create-a-guid-uuid-in-javascript
-    var guid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);return v.toString(16);});
+    var guid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);return v.toString(16);});
+    var that = this;
+    var exchangeVersion;
+    
     this.callerID = guid + '_' + extensionID;
     this.bundleID = window.__adobe_cep__.invokeSync("getBundleId", "");
 
-    var that = this;
-
 //--------------------------------------- Private functions ------------------------------    
-    this.responseCallback = function(message) {
+    this.responseCallback = function (message) {
         if (window.DOMParser) {
             var parser = new window.DOMParser();
             try {
                 var xmlDoc = parser.parseFromString(message.data, "text/xml");
                 var payloadNode = xmlDoc.getElementsByTagName("payload")[0];
+                
                 if (payloadNode && payloadNode.childNodes[0]) {
                     payloadNode = payloadNode.childNodes[0].nodeValue;
                 }
-                if (payloadNode != null) {
+                if (payloadNode !== null) {
                     payloadNode = cep.encoding.convertion.b64_to_utf8(payloadNode);
                 }
                 console.log("Decoded payload: " + payloadNode);
 
-                var payloadDoc = parser.parseFromString(payloadNode, "text/xml");
+                var payloadDoc = parser.parseFromString(payloadNode, "text/xml")
                 var responses = payloadDoc.getElementsByTagName("Response");
+                
                 for (var i = 0; i < responses.length; i++) {
                     var respElem = responses[i];
                     if (respElem) {
@@ -78,6 +81,7 @@ function AgoraLib() {
                             } else if (apiName === AgoraLib.GET_VERSION) {
                                 console.log("GetVersion callback");
                                 var response = new AgoraLibResponse(params["Version"], params[AgoraLib.STATUS], params[AgoraLib.STATUSCODE]);
+                                that.exchangeVersion = params["Version"];
                                 that.getVersionCallback(response);
                             } else if (apiName === AgoraLib.CREATE_ENTITLEMENT) {
                                 console.log("CreateEntitlement callback");
@@ -108,9 +112,18 @@ function AgoraLib() {
         return;
     };
 
-    this.checkConnection = function(callback) {
-
+    this.continueWithCheckVersion = function() {
+        if (!that.exchangeVersion) {
+            that.checkVersion();
+        } else {
+            var responseObject = new AgoraLibResponse(this.exchangeVersion, AgoraLib.status.success.status, AgoraLib.status.success.code);
+            that.getVersionCallback(responseObject);
+        }
+    };
+    
+    this.checkConnection = function(callback, ignoreACCC) {        
         that.getVersionCallback = callback;
+        var param = "";
         var status = AgoraLib.status.internalClientError.status;
         var statusCode =  AgoraLib.status.internalClientError.code;
 
@@ -118,52 +131,24 @@ function AgoraLib() {
         // use the vulcan control library to detect CoreSync and Thor and launch when not running.
         var isInstalled = VulcanInterface.isAppInstalled("coresync");
         
-        // TODO: remove when above feature is implemented in CoreSync
-        var acccPath = "/Applications/Utilities/Adobe Creative Cloud/ACC/Creative Cloud.app/Contents/MacOS/Creative Cloud";
-        if ((navigator.platform == "Win32") || (navigator.platform == "Windows")) {
-            acccPath = navigator.userAgent.indexOf("WOW64") > -1 ? "C:\\Program Files (x86)\\Adobe\\Adobe Creative Cloud\\ACC\\Creative Cloud.exe" : "C:\\Program Files\\Adobe\\Adobe Creative Cloud\\ACC\\Creative Cloud.exe";
-        }
-        
         if (!isInstalled) {
-            var result = window.cep.fs.stat(acccPath);
-            if (0 == result.err) {
-                if (result.data.isFile()) {
-                    isInstalled = true;
-                }
-            }
-        }
-        // end of removal
-        
-        if (!isInstalled) {
-            console.log("location does not exist");
+            console.log("CoreSync does not exist");
             status = AgoraLib.status.creativeCloudNotFoundError.status;
             statusCode = AgoraLib.status.creativeCloudNotFoundError.code;
         } else {
             var isRunning = VulcanInterface.isAppRunning("coresync");
-
-            if (!isRunning) {
+            
+            console.log("CoreSync running? : " + isRunning + ", should it be launched if not running? " + (ignoreACCC ? "no" : "yes"));
+            if (!isRunning && !ignoreACCC) {
                 // attempt to launch ACC desktop which will launch CoreSync
                 isRunning = VulcanInterface.launchApp("creativecloud", false, "");
                 
-                // TODO: remove when vulcan specifier is integrated into Thor
-                if (!isRunning) {
-                    var createProcessResult = window.cep.process.createProcess(acccPath, "&"); //&
-                    if (0 == createProcessResult.err) {
-                        var gPID = createProcessResult.data;
-                        console.log("createProcess succeed, " + gPID);
-                        var isRunningResult = window.cep.process.isRunning(gPID);
-                        if (0 == isRunningResult.err && true == isRunningResult.data) {
-                            isRunning = true;
-                        }
-                    }
-                }
-                // end of removal
                 if (isRunning) {
                   console.log("ACCC is now being launched");
                   var startedUpCallback = function(message) {
                     console.log("ACCC started up");
                     VulcanInterface.removeMessageListener(AgoraLib.ACCC_STARTED_UP_MESSAGE, this);
-                    this.checkVersion();
+                    that.continueWithCheckVersion();
                   };
                   // add event listener for vulcan.SuiteMessage.any.cosy.app.StartedUp so we know CoreSync is launched and ready to receive messages
                   VulcanInterface.addMessageListener(AgoraLib.ACCC_STARTED_UP_MESSAGE, startedUpCallback);
@@ -172,12 +157,16 @@ function AgoraLib() {
                     status = AgoraLib.status.creativeCloudFailedToLaunchError.status;
                     statusCode = AgoraLib.status.creativeCloudFailedToLaunchError.code; 
                 }
+            } else if (!isRunning && ignoreACCC) {
+                // CoreSync is not running but user wants to bypass launching it. Return error to callback.
+                status = AgoraLib.status.creativeCloudNotLaunchedError.status;
+                statusCode = AgoraLib.status.creativeCloudNotLaunchedError.code;
             } else {
-                this.checkVersion();
+                that.continueWithCheckVersion();
                 return;
             }
         }
-        var responseObject = new AgoraLibResponse("", status, statusCode);
+        var responseObject = new AgoraLibResponse(param, status, statusCode);
         callback(responseObject);
     };
 
@@ -217,9 +206,10 @@ AgoraLib.prototype = (function(){
     * This API has a dependency on VulcanInterface.js and will throw an error if it is not defined.
     * 
     * @param callback  The JavaScript handler function to return the AgoraLibResponse object.
+    * @param ignoreACCC  When true this API will not attempt to launch the Adobe Creative Cloud Connection application if it is not running. The default value is false.
     * @since 5.2.0
     */
-    var isEntitled = function(callback) {
+    var isEntitled = function(callback, ignoreACCC) {
 
         if (typeof(Vulcan) === 'undefined') {
             throw 'Vulcan.js is required.';
@@ -228,17 +218,22 @@ AgoraLib.prototype = (function(){
         if (callback == null || callback == undefined) {
             callback = function(result){};
         }
-
+        
+        if (ignoreACCC == null || ignoreACCC == undefined) {
+            ignoreACCC = false;
+        }
+        
         this.isEntitledCallback = callback;
         var that = this;
         var success = false;
+        
         // check connection
         this.checkConnection(function(responseObj) {
-            console.log("IsEntitled checkConnection response:" + responseObj.response + " with status: " + responseObj.status + " and statusCode: " + responseObj.statusCode);
+            console.log("isEntitled checkConnection response: " + responseObj.response + " with status: " + responseObj.status + " and statusCode: " + responseObj.statusCode);
             success = true;
             // check status and statusCode for success.
             if (responseObj.statusCode === "0" && that.compareVersion(responseObj.response, "1.0.0") >= 0) {
-                console.log("Connection check successful, now continue with isEntitled API call...");
+                console.log("isEntitled: connection check successful, now continue with isEntitled API call...");
                 var request = "<Request name=\"" + AgoraLib.IS_ENTITLED + "\" callerID=\"" + that.callerID + "\"><Parameters>";
                 request += "<Parameter name=\"BundleID\"><Value>" + that.bundleID + "</Value></Parameter>";
                 request += "</Parameters></Request>";
@@ -253,11 +248,11 @@ AgoraLib.prototype = (function(){
                 var response = new AgoraLibResponse("Unknown", responseObj.status, responseObj.statusCode);
                 callback(response);
             }
-        });
+        }, ignoreACCC);
         // add a timeout and return error if response is not returned after a minute
         setTimeout(function(){
           if (!success) {
-            console.log("Request timed out");
+            console.log("isEntitled: Request timed out");
             var response = new AgoraLibResponse("Unknown", AgoraLib.status.internalClientError.status, AgoraLib.status.internalClientError.code);
             callback(response);
           }
@@ -271,16 +266,21 @@ AgoraLib.prototype = (function(){
      *
      * @param callback  The JavaScript handler function to return the AgoraLibResponse object. The Response property will either be the final checkout page or the product details page (see below).
      * @param straightToCheckout If set to true the URL returned will be the final checkout page for this Extension on the Adobe Add-ons site. If set to false the
-     *                           URL returned will be the Product details page for this Extension on the Adobe Add-ons site. Default is false.                                 
+     *                           URL returned will be the Product details page for this Extension on the Adobe Add-ons site. Default is false. 
+     * @param ignoreACCC  When true this API will not attempt to launch the Adobe Creative Cloud Connection application if it is not running. The default value is false.
      * @since 5.2.0
      */
-    var getPurchaseUrl = function(callback, straightToCheckout) {
+    var getPurchaseUrl = function(callback, straightToCheckout, ignoreACCC) {
         if (typeof(Vulcan) === 'undefined') {
             throw 'Vulcan.js is required.';
         }
 
         if (callback == null || callback == undefined) {
             callback = function(result){};
+        }
+        
+        if (ignoreACCC == null || ignoreACCC == undefined) {
+            ignoreACCC = false;
         }
 
         this.getPurchaseUrlCallback = callback;
@@ -291,7 +291,7 @@ AgoraLib.prototype = (function(){
         // check connection
         this.checkConnection(function(responseObj) {
             success = true;
-            console.log("getPurchaseUrl checkConnection response:" + responseObj.response + " with status: " + responseObj.status + " and statusCode: " + responseObj.statusCode);
+            console.log("getPurchaseUrl: checkConnection response: " + responseObj.response + " with status: " + responseObj.status + " and statusCode: " + responseObj.statusCode);
             if (responseObj.statusCode === "0" && that.compareVersion(responseObj.response, "1.0.0") >= 0) {
                 console.log("Connection check successful, now continue with getPurchaseUrl API call...");
                 var request = "<Request name=\"" + AgoraLib.GET_PURCHASE_URL + "\" callerID=\"" + that.callerID + "\"><Parameters>";
@@ -309,11 +309,11 @@ AgoraLib.prototype = (function(){
                 var response = new AgoraLibResponse("", responseObj.status, responseObj.statusCode);
                 callback(response);
             }
-        });
+        }, ignoreACCC);
         // add a timeout and return error if response is not returned after a minute
         setTimeout(function(){
           if (!success) {
-            console.log("Request timed out");
+            console.log("getPurchaseUrl: Request timed out");
             var response = new AgoraLibResponse("", AgoraLib.status.internalClientError.status, AgoraLib.status.internalClientError.code);
             callback(response);
           }
@@ -328,12 +328,13 @@ AgoraLib.prototype = (function(){
     * By adding an entitlement the user will be kept up date with the latest version of the extension
     * which will be published to Adobe Exchange.
     * 
-    * This API has a dependency on VulcanInterface.js CSInterface.js and will throw an error if either is not defined.
+    * This API has a dependency on VulcanInterface.js & CSInterface.js and will throw an error if either is not defined.
     * 
     * @param callback  The JavaScript handler function to return the AgoraLibResponse object.
+    * @param ignoreACCC  When true this API will not attempt to launch the Adobe Creative Cloud Connection application if it is not running. The default value is false.
     * @since 5.2.0
     */
-    var createEntitlement = function(callback) {
+    var createEntitlement = function(callback, ignoreACCC) {
         if (typeof(Vulcan) === 'undefined') {
             throw 'Vulcan.js is required.';
         }
@@ -345,17 +346,21 @@ AgoraLib.prototype = (function(){
         if (callback == null || callback == undefined) {
             callback = function(result){};
         }
+        
+        if (ignoreACCC == null || ignoreACCC == undefined) {
+            ignoreACCC = false;
+        }
 
         this.createEntitlementCallback = callback;
         var that = this;
         var success = false;
         // check connection
         this.checkConnection(function(responseObj) {
-            console.log("createEntitlement checkConnection response:" + responseObj.response + " with status: " + responseObj.status + " and statusCode: " + responseObj.statusCode);
+            console.log("createEntitlement: checkConnection response: " + responseObj.response + " with status: " + responseObj.status + " and statusCode: " + responseObj.statusCode);
             success = true;
             // check status and statusCode for success.
             if (responseObj.statusCode === "0" && that.compareVersion(responseObj.response, "1.0.0") >= 0) {
-                console.log("Connection check successful, now continue with createEntitlement API call...");
+                console.log("createEntitlement: Connection check successful, now continue with createEntitlement API call...");
                 var csLibrary = new CSInterface();
                 var extensionDir = csLibrary.getSystemPath(SystemPath.EXTENSION);
                 var os = csLibrary.getOSInformation();
@@ -370,7 +375,6 @@ AgoraLib.prototype = (function(){
                         var extManifest = xmlDoc.getElementsByTagName("ExtensionManifest")[0];
                         if (extManifest) {
                             var extensionBundleVersion = extManifest.attributes.getNamedItem("ExtensionBundleVersion").nodeValue; 
-                            console.log("ExtensionBundleVersion: " + extensionBundleVersion);
                             var request = "<Request name=\"" + AgoraLib.CREATE_ENTITLEMENT + "\" callerID=\"" + that.callerID + "\"><Parameters>";
                             request += "<Parameter name=\"BundleID\"><Value>" + that.bundleID + "</Value></Parameter>";
                             request += "<Parameter name=\"ExtensionBundleVersion\"><Value>" + extensionBundleVersion + "</Value></Parameter>";
@@ -399,11 +403,11 @@ AgoraLib.prototype = (function(){
                 var response = new AgoraLibResponse("", responseObj.status, responseObj.statusCode);
                 callback(response);
             }
-        });
+        }, ignoreACCC);
         // add a timeout and return error if response is not returned after a minute
         setTimeout(function(){
           if (!success) {
-            console.log("Request timed out");
+            console.log("createEntitlement: Request timed out");
             var response = new AgoraLibResponse("", AgoraLib.status.internalClientError.status, AgoraLib.status.internalClientError.code);
             callback(response);
           }
@@ -414,7 +418,7 @@ AgoraLib.prototype = (function(){
         constructor: AgoraLib,
         isEntitled: isEntitled,
         getPurchaseUrl: getPurchaseUrl,
-        createEntitlement: createEntitlement,
+        createEntitlement: createEntitlement
     };
 })();
 
@@ -501,6 +505,10 @@ AgoraLib.status = {
     ApiNotSupportedError : {
             status        : "API not supported",
             code          : "1009"
+    },
+    creativeCloudNotLaunchedError : {
+            status        : "Creative Cloud was not launched",
+            code          : "1010"
     }
        
 };
