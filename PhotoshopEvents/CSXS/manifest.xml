@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<ExtensionManifest ExtensionBundleId="com.example.photoshopevents" ExtensionBundleName="PhotoshopEvents" ExtensionBundleVersion="1.0" Version="4.0">
+  <ExtensionList>
+    <Extension Id="com.example.photoshopevents.extension" Version="1.0"/>
+    <Extension Id="com.example.photoshopevents.extension2" Version="1.0"/>
+  </ExtensionList>
+  <ExecutionEnvironment>
+    <HostList>
+      <Host Name="PHXS" Version="[14.0,99.9]"/>
+    </HostList>
+    <LocaleList>
+      <Locale Code="All"/>
+    </LocaleList>
+    <RequiredRuntimeList>
+      <RequiredRuntime Name="CSXS" Version="4.0"/>
+    </RequiredRuntimeList>
+  </ExecutionEnvironment>
+  <DispatchInfoList>
+    <Extension Id="com.example.photoshopevents.extension">
+      <DispatchInfo>
+        <Resources>
+          <MainPath>./index.html</MainPath>
+          <ScriptPath>./host/ps.jsx</ScriptPath>
+        </Resources>
+        <UI>
+          <Type>Panel</Type>
+          <Menu>PhotoshopEvents</Menu>
+          <Geometry>
+            <Size>
+              <Height>460</Height>
+              <Width>320</Width>
+            </Size>
+            <MaxSize>
+              <Height>800</Height>
+              <Width>1200</Width>
+            </MaxSize>
+            <MinSize>
+              <Height>100</Height>
+              <Width>100</Width>
+            </MinSize>
+          </Geometry>
+          <Icons>
+            <Icon Type="Normal">./PhotoshopEventsNormal.png</Icon>
+            <Icon Type="RollOver">./PhotoshopEventsRollover.png</Icon>
+          </Icons>
+        </UI>
+      </DispatchInfo>
+    </Extension>
+    <Extension Id="com.example.photoshopevents.extension2">
+      <DispatchInfo>
+        <Resources>
+          <MainPath>./index.html</MainPath>
+          <ScriptPath>./host/ps.jsx</ScriptPath>
+        </Resources>
+        <UI>
+          <Type>Panel</Type>
+          <Menu>PhotoshopEvents 2</Menu>
+          <Geometry>
+            <Size>
+              <Height>460</Height>
+              <Width>320</Width>
+            </Size>
+            <MaxSize>
+              <Height>800</Height>
+              <Width>1200</Width>
+            </MaxSize>
+            <MinSize>
+              <Height>100</Height>
+              <Width>100</Width>
+            </MinSize>
+          </Geometry>
+          <Icons>
+            <Icon Type="Normal">./PhotoshopEventsNormal.png</Icon>
+            <Icon Type="RollOver">./PhotoshopEventsRollover.png</Icon>
+          </Icons>
+        </UI>
+      </DispatchInfo>
+    </Extension>
+  </DispatchInfoList>
+</ExtensionManifest>
