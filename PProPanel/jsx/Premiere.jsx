@@ -1,4 +1,4 @@
-$._ext_PPRO={
+﻿$._ext_PPRO={
 
 	getVersionInfo : function() {
 		return 'PPro ' + app.version + 'x' + app.build;
@@ -17,29 +17,31 @@ $._ext_PPRO={
 		}
 	},
 
+    getSep : function() {
+		if (Folder.fs == 'Macintosh') {
+		    return '/';
+		} else {
+			return '\\';
+		}
+	},
+
 	saveProject : function() {
 		app.project.save();
 	},
 
     exportCurrentFrameAsPNG : function() {
-        app.enableQE();	 									// enables QE DOM, including sequence objects with super powers
+        app.enableQE();	 									
 
         var activeSequence 		= qe.project.getActiveSequence(); 	// note: make sure a sequence is active in PPro UI
 
         if (activeSequence != null) {
-	        var time 		= activeSequence.CTI.timecode; 			// CTI = Current Time Indicator.
-	        var outputPath   	= new File("~/Desktop");
+	        var time 		= activeSequence.CTI.timecode; 	// CTI = Current Time Indicator.
+	        var outputPath  = new File("~/Desktop");
 
-			if (Folder.fs == 'Macintosh') {
-			    var sep = '/';
-			} else {
-				var sep         = '\\';
-			}
-
-			var outputFileName = outputPath.fsName + sep + activeSequence.name;
+			var outputFileName = outputPath.fsName + $._ext_PPRO.getSep() + activeSequence.name;
 			activeSequence.exportFramePNG(time, outputFileName);
-            outputFileName = outputFileName + '.png'; // exportFramePNG() added the correct extension
-			app.project.importFiles([outputFileName]);    
+            outputFileName = outputFileName + '.png';	// exportFramePNG() added the .png extension, AFTER we called exportFramePNG.
+			app.project.importFiles([outputFileName]);	// [] brackets, because importFiles() takes an _array_ of paths.    
 		} else {
 			alert("Active sequence required.");
 		}
@@ -47,7 +49,7 @@ $._ext_PPRO={
 
     renameFootage : function() {
 		
-		// Warning: Currently, sample code assumes the zero-th item in the project is footage.
+		// Sample code assumes the zero-th item in the project is footage.
 
 		var item = app.project.rootItem.children[0]; 
 		
@@ -55,7 +57,6 @@ $._ext_PPRO={
 			alert("No project items found.");
 		} else {
 			alert("Changing name of " + item.name + ".");
-
 			item.name = item.name + ", updated by PProPanel.";
 		}
 	},
@@ -76,29 +77,22 @@ $._ext_PPRO={
 		    
 			// Here's how to get the start time offset to a sequence.
 
-			var startTimeOffset = activeSequence.zeroPoint;
-		    var prProjExtension   	= '.prproj';
+			var startTimeOffset	= activeSequence.zeroPoint;
+		    var prProjExtension = '.prproj';
 		    
 			var outputName 		= activeSequence.name;
-            
-            if (Folder.fs == 'Macintosh') {
-                var sep = '/';
-            } else {
-            	var sep = '\\';
-            }
 		    
 			var outFolder = Folder.selectDialog();
 		
 		    if (outFolder != null) {
                 var completeOutputPath =	outFolder.fsName + 
-                                      	sep +
+                                 	     	$._ext_PPRO.getSep() +
                                       		outputName +
                                       		prProjExtension;
-
+			
 				project.activeSequence.exportAsProject(completeOutputPath);
 		
 			    var info = "Exported " + project.activeSequence.name + " to " + completeOutputPath + ".";
-			
 			    alert(info);
 			} else {
 				alert("Could not find/create output folder.");
@@ -185,22 +179,16 @@ $._ext_PPRO={
 
         if (app.project.activeSequence != null) {
         
-            var projPath   = new File(app.project.path);
-            var parentDir  = projPath.parent;
-            var outputName    = app.project.activeSequence.name;
-        	var xmlExtension   = '.xml';
+            var projPath   		= new File(app.project.path);
+            var parentDir  		= projPath.parent;
+            var outputName    	= app.project.activeSequence.name;
+        	var xmlExtension   	= '.xml';
 
-			if (Folder.fs == 'Macintosh') {
-                var sep = '/';
-            } else {
-   	            var sep = '\\';
-            }
-            
             var outputPath = Folder.selectDialog("Choose the output directory");
 		
 			if (outputPath != null) {
 
-	            var completeOutputPath = outputPath.fsName + sep + outputName + xmlExtension;
+	            var completeOutputPath = outputPath.fsName + $._ext_PPRO.getSep() + outputName + xmlExtension;
 	        	
 	        	app.project.activeSequence.exportAsFinalCutProXML(completeOutputPath, 1); // 1 == suppress UI
 	        	
@@ -229,12 +217,12 @@ $._ext_PPRO={
 		}
 	},
 
-	searchForBinWithName : function (name) {
+	searchForBinWithName : function (nameToFind) {
 
         var numItemsAtRoot	= app.project.rootItem.children.numItems;
         var foundBin 		= 0;
           
-            for (var i = 0; i < numItemsAtRoot && foundBin == 0; i++) {
+            for (var i = 0; (numItemsAtRoot >0) && (i < numItemsAtRoot) && (foundBin == 0); i++) {
                 var currentItem = app.project.rootItem.children[i];
           
                 if (currentItem != null && currentItem.name == nameToFind) {
@@ -248,19 +236,18 @@ $._ext_PPRO={
         
         if (app.project != null) {
 
-        // Find or create a target bin.
-
+	        // If panel can't find the target bin, it creates it.
         var nameToFind = 'Targeted by PProPanel import';
 
 	        var targetBin = $._ext_PPRO.searchForBinWithName(nameToFind);
 
-        if (targetBin == 0) {
+	        if (targetBin === 0) {
             app.project.rootItem.createBin(nameToFind);
+	        targetBin = $._ext_PPRO.searchForBinWithName(nameToFind);
         }
 			
-	        targetBin = $.ext_PPro.searchForBinWithName(nameToFind);
 
-			if (targetBin != null){
+			if (targetBin != 0){
 		
             targetBin.select();
             
@@ -289,13 +276,13 @@ $._ext_PPRO={
 		if ((firstProjectItem != null) && 
 			firstProjectItem.canChangeMediaPath()) {
 			
-			/* 	setScaleToFrameSize() ensures that for all clips created from this footage, 
+			/* 	NEW in 9.0: setScaleToFrameSize() ensures that for all clips created from this footage, 
 				auto scale to frame size will be ON, regardless of the current user preference. 
 				This is	important for proxy workflows, to avoid mis-scaling upon replacement. */
 			
-			firstProjectItem.setScaleToFrameSize();	// new in 9.0
+			firstProjectItem.setScaleToFrameSize();
 			
-			var replacementMedia = File.openDialog(	"Choose new media file, for project item " + 
+			var replacementMedia = File.openDialog(	"Choose new media file, for " + 
 													firstProjectItem.name, 
 														0, 
 														false);
@@ -361,7 +348,7 @@ $._ext_PPRO={
 			// Define a couple of callback functions, for AME to use during render.
 			
 			function message(msg) {
-				 $.writeln(msg);	 // Using '$' object will invoke ExtendScript Toolkit, if installed.
+				 //$.writeln(msg);	 // Using '$' object will invoke ExtendScript Toolkit, if installed.
 			}
 			
 			function onEncoderJobComplete(jobID, outputFilePath) {
@@ -417,10 +404,8 @@ $._ext_PPRO={
 			
 				if (Folder.fs == 'Macintosh') {
 					var outputPresetPath = "/Applications/Adobe\ Premiere\ Pro\ CC\ 2015/Adobe\ Premiere\ Pro\ CC\ 2015.app/Contents/MediaIO/systempresets/58444341_4d584658/XDCAMHD\ 50\ NTSC\ 60i.epr";
-					var sep = '/';
 				} else {
 					var outputPresetPath	= "C:\\Program Files\\Adobe\\Adobe Media Encoder CC 2015\\MediaIO\\systempresets\\58444341_4d584658\\XDCAMHD 50 NTSC 60i.epr";
-					var sep = '\\';
 			}
 				
 				var outPreset  		= new File(outputPresetPath);
@@ -431,10 +416,10 @@ $._ext_PPRO={
 			
 					if (outputFormatExtension != null){
 						var fullPathToFile 	= 	outputPath.fsName + 
-											sep + 
-											activeSequence.name + 
-											"." + 
-											outputFormatExtension;			
+												$._ext_PPRO.getSep() + 
+												activeSequence.name + 
+												"." + 
+												outputFormatExtension;			
 			
 			app.encoder.bind('onEncoderJobComplete',	onEncoderJobComplete);
 			app.encoder.bind('onEncoderJobError', 		onEncoderJobError);
@@ -470,12 +455,6 @@ $._ext_PPRO={
 		var sessionCounter = 1;
 		var outputPath 	= Folder.selectDialog("Choose the output directory");
         
-        if (Folder.fs == 'Macintosh') {
-            var sep = '/';
-        } else {
-   			var sep	= '\\';
-        };
-		    
 		if (outputPath != null) {
 			var absPath 	= outputPath.fsName;
 		    var outputName 	= new String(app.project.name);
@@ -484,7 +463,7 @@ $._ext_PPRO={
 		    outputName = array[0]+ sessionCounter + '.' + array[1]; 
 		    sessionCounter++;
 			
-		    var fullOutPath = absPath + sep + outputName;
+		    var fullOutPath = absPath + $._ext_PPRO.getSep() + outputName;
 		    app.project.saveAs(fullOutPath);
 		    app.openDocument(fullOutPath);
 		}
@@ -533,7 +512,7 @@ $._ext_PPRO={
     									1, 
     									firstDescription);
     			} else {
-    				var appendedText 	= '...blahblahblah added by PProPanel.';
+    				var appendedText 	= '...added by PProPanel.';
 
     				oldDescriptionValue = xmp.getArrayItem(XMPConst.NS_DC, descriptionProp, 1);
 
@@ -551,8 +530,7 @@ $._ext_PPRO={
 		}
 	},
 	
-	pokeAnywhere : function() {
-		function getProductionByName(nameToGet) {
+	getProductionByName : function(nameToGet) {
 			for (var i = 0; i < productionList.numProductions; i++) {
 				this_prod = productionList[i];
 
@@ -561,7 +539,9 @@ $._ext_PPRO={
 				}
 			}
 			return undefined;
-		}
+	},
+
+	pokeAnywhere : function() {
 
 		var token 				= app.anywhere.getAuthenticationToken();
 		var productionList 		= app.anywhere.listProductions();
@@ -572,13 +552,13 @@ $._ext_PPRO={
 			var selectionURL		= app.anywhere.getCurrentEditingSessionSelectionURL();
 			var activeSequenceURL	= app.anywhere.getCurrentEditingSessionActiveSequenceURL();
 			
-			var theOneIAskedFor = getProductionByName("test");
+			var theOneIAskedFor = $._ext_PPRO.getProductionByName("test");
 		
 			if (theOneIAskedFor != null) {
 				var out = theOneIAskedFor.name + ", " + theOneIAskedFor.description;
 
 				alert("Found: " + out);	// todo: put useful code here.
-		}
+			}
 		} else {
 			alert("No Production open.");
 		}
@@ -595,13 +575,7 @@ $._ext_PPRO={
 				var absPath = outputPath.fsName;
 			    var outputName  = new String(activeSequence.name) + '.omf';
 
-                var sep         = '\\';
-
-                if (Folder.fs == 'Macintosh') {
-                	sep = '/';
-                }
-                
-                var fullOutPathWithName = absPath + sep + outputName;
+                var fullOutPathWithName = absPath + $._ext_PPRO.getSep() + outputName;
 
 				app.project.exportOMF(	app.project.activeSequence,		// sequence
 										fullOutPathWithName, 		// output file path
@@ -658,8 +632,7 @@ $._ext_PPRO={
 		var desc      = "Column.PropertyText.Description";
 
 		if (app.isDocumentOpen()) {
-			var projectItem = app.project.rootItem.children[0];
-
+			var projectItem = app.project.rootItem.children[0]; // just grabs first projectItem.
 			if (projectItem != null) {
 				if (ExternalObject.AdobeXMPScript == undefined) {
 					ExternalObject.AdobeXMPScript = new ExternalObject('lib:AdobeXMPScript');
@@ -701,7 +674,8 @@ $._ext_PPRO={
 
 		// If there is an item, and it's either a clip or file...
 
-		if(	(item != null) && ((item.type == ProjectItemType.FILE) || (item.type == ProjectItemType.CLIP))){
+		if(	(item != null) && 
+			((item.type == ProjectItemType.FILE) || (item.type == ProjectItemType.CLIP))){
 				item.setOverridePixelAspectRatio(185,  100); // anamorphic is BACK!   :)
 			} else {
 				alert('You cannot override the PAR of bins or sequences.')
@@ -711,34 +685,33 @@ $._ext_PPRO={
 	getnumAEProjectItems : function() {
 		var bt 	  = new BridgeTalk;
 		bt.target = 'aftereffects';
-		bt.body   = 'alert("Items in project: " + app.project.rootFolder.numItems);app.quit();';
+		bt.body   = 'alert("Items in AE project: " + app.project.rootFolder.numItems);app.quit();';
 		bt.send();
 	},
 
 	updateEventPanel : function() {
 		app.setSDKEventMessage('Here is some information.', 'info');
 		app.setSDKEventMessage('Here is a warning.', 'warning');
-		app.setSDKEventMessage('Here is an error.', 'error');
+		//app.setSDKEventMessage('Here is an error.', 'error');  // Very annoying; use wisely.
 	},
 
-	walkAllBinsForFootage : function(parentItem){
+	walkAllBinsForFootage : function(parentItem, outPath){
 		for (var j = 0; j < parentItem.children.numItems; j++){
 			var currentChild = parentItem.children[j];
 			if (currentChild != null){
 				if (currentChild.type == ProjectItemType.BIN){
-					walkAllBinsForFootage(currentChild);
+					$._ext_PPRO.walkAllBinsForFootage(currentChild, outPath);		// warning; recursion!
 				} else {
-					$._ext_PPRO.dumpProjectItemXMP(currentChild);
+					$._ext_PPRO.dumpProjectItemXMP(currentChild, outPath);
 				}
 			}
 		}
 	},
 
-    dumpProjectItemXMP : function(outPath, projectItem, sep) {
-		var xmpBlob = projectItem.getXMPMetadata();
-
+    dumpProjectItemXMP : function(projectItem, outPath) {
+		var xmpBlob				= projectItem.getXMPMetadata();
 		var outFileName 		= projectItem.name + '.xmp';
-        var completeOutputPath 	= outPath.fsName + sep + outFileName;
+        var completeOutputPath 	= outPath + $._ext_PPRO.getSep() + outFileName;
 
 		var outFile 			= new File(completeOutputPath);
 
@@ -779,25 +752,20 @@ $._ext_PPRO={
 
 	dumpXMPFromAllProjectItems : function() {
         var outPath = Folder.selectDialog("Choose the output directory");
-		var sep 	= '\\';
 		         
-		if (Folder.fs == 'Macintosh') {
-		    sep = '/';
-		}
-
 		if (outPath != null) {
-		var	numItemsInRoot = app.project.rootItem.children.numItems;
+			var	numItemsInRoot = app.project.rootItem.children.numItems;
 
-		for (var i = 0; i < numItemsInRoot; i++){
-			var currentItem = app.project.rootItem.children[i];
-			if (currentItem != null){
-		        if (currentItem.type == ProjectItemType.BIN){
-				        $._ext_PPRO.walkAllBinsForFootage(currentItem);
-				} else {
-						$._ext_PPRO.dumpProjectItemXMP(outPath, currentItem, sep);
+			for (var i = 0; i < numItemsInRoot; i++){
+				var currentItem = app.project.rootItem.children[i];
+				if (currentItem != null){
+			        if (currentItem.type == ProjectItemType.BIN){
+				        $._ext_PPRO.walkAllBinsForFootage(currentItem, outPath.fsName);
+					} else {
+					    $._ext_PPRO.dumpProjectItemXMP(currentItem, outPath.fsName);
+					}
 				}
 			}
-		}
 		}
 	},
 
@@ -807,15 +775,9 @@ $._ext_PPRO={
 		
 		if (app.project.activeSequence != null){
 
-		var outputPath 	= Folder.selectDialog("Choose the output directory");
+			var outputPath 	= Folder.selectDialog("Choose the output directory");
         
-        if (Folder.fs == 'Macintosh') {
-            var sep = '/';
-        } else {
-   			var sep	= '\\';
-        };
-		    
-		if (outputPath != null) {
+			if (outputPath != null) {
 			
 				var absPath 	= outputPath.fsName;
 			    var outputName 	= new String(app.project.name);
@@ -824,7 +786,7 @@ $._ext_PPRO={
 			    outputName = array[0]+ sessionCounter + '.' + array[1]; 
 			    sessionCounter++;
 				
-			    var fullOutPath = absPath + sep + outputName + '.aaf';
+			    var fullOutPath = absPath + $._ext_PPRO.getSep() + outputName + '.aaf';
 
 				app.project.exportAAF(  app.project.activeSequence,       	// which sequence
 										fullOutPath,						// output path
@@ -837,7 +799,7 @@ $._ext_PPRO={
 										0,                                 	// trim sources? 
 				                        0);                                	// number of 'handle' frames
 			} else {
-			alert("Couldn't create AAF output.");
+				alert("Couldn't create AAF output.");
 	        }
         } else {
         	alert("No active sequence.");
@@ -852,4 +814,5 @@ $._ext_PPRO={
 			app.setScratchDiskPath(scratchPath.fsName, ScratchDiskType.FirstAutoSaveFolder); // see ScratchDiskType object, in ESTK.
         }
 	},
+
 };

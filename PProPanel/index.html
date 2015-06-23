@@ -34,12 +34,19 @@
             var path    	= csInterface.getSystemPath(SystemPath.EXTENSION);
 
 			if (OSVersion != null){
+				
+				// The path always comes back with '/' path separators. Windows needs '\\'.
+
 				if (OSVersion.indexOf("Windows") >=0){
 					var sep = '\\\\';
 					path = path.replace(/\//g, sep);
             } else {
               var sep = '/';
             }
+
+				// Build a String to pass the path to the script.
+				// (Sounds more complicated than it is.)
+				
            		path = path + sep + 'payloads' + sep + 'PProPanel.sqpreset';
 
            	var pre       = '$._ext_PPRO.createSequenceFromPreset(\'';
