@@ -1,4 +1,4 @@
-$._ext_PPRO={
+﻿$._ext_PPRO={
 
 	getVersionInfo : function() {
 		return 'PPro ' + app.version + 'x' + app.build;
@@ -241,7 +241,7 @@ $._ext_PPRO={
 
 	        var targetBin = $._ext_PPRO.searchForBinWithName(nameToFind);
 
-	        if (targetBin == 0) {
+	        if (targetBin === 0) {
             app.project.rootItem.createBin(nameToFind);
 	        targetBin = $._ext_PPRO.searchForBinWithName(nameToFind);
         }
@@ -611,7 +611,7 @@ $._ext_PPRO={
 					new_marker.end 		= 15.6789;
 
 					//default marker type == comment. To change marker type, call one of these:
-                        
+
 				// new_marker.setTypeAsChapter();
 				// new_marker.setTypeAsWebLink();
 				// new_marker.setTypeAsSegmentation();
