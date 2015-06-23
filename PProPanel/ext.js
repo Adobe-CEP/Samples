@@ -26,6 +26,8 @@ function onLoaded() {
     // Update the color of the panel when the theme color of the product changed.
     csInterface.addEventListener(CSInterface.THEME_COLOR_CHANGED_EVENT, onAppThemeColorChanged);
 
+    // Listen for event sent in response to rendering a sequence.
+
     csInterface.addEventListener("com.adobe.csxs.events.PProPanelRenderEvent", function(event){
         alert(event.data);
     });
@@ -79,7 +81,7 @@ function updateThemeWithAppSkinInfo(appSkinInfo) {
     var boxShadow           = "-webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 1px 1px rgba(0, 0, 0, 0.2);";
     var boxActiveShadow     = "-webkit-box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.6);";
 	    
-    var isPanelThemeLight   = panelBackgroundColor.red > 73; // choose your own sweet spot
+    var isPanelThemeLight   = panelBackgroundColor.red > 63; // choose your own sweet spot
 	    
 	    var fontColor, disabledFontColor;
 	    var borderColor;

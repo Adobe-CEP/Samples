@@ -14,7 +14,7 @@
     <script type="text/javascript">
 
       $( document ).ready(function() {
-      	  
+ 
         $("#getseqname").on("click", function(e){
            	e.preventDefault(); 
            	var csInterface = new CSInterface();
@@ -34,12 +34,19 @@
             var path    	= csInterface.getSystemPath(SystemPath.EXTENSION);
 
 			if (OSVersion != null){
+				
+				// The path always comes back with '/' path separators. Windows needs '\\'.
+
 				if (OSVersion.indexOf("Windows") >=0){
 					var sep = '\\\\';
 					path = path.replace(/\//g, sep);
             } else {
               var sep = '/';
             }
+
+				// Build a String to pass the path to the script.
+				// (Sounds more complicated than it is.)
+				
            		path = path + sep + 'payloads' + sep + 'PProPanel.sqpreset';
 
            	var pre       = '$._ext_PPRO.createSequenceFromPreset(\'';
@@ -55,12 +62,12 @@
 
     </script>
   </head>
-
+ 
   <body onLoad="onLoaded()">
-    <p id="version_string">[uninitialized]</p>
-  	<p id="active_seq">[uninitialized]</p>
-  	
-      <!-- // These have JavaScript handlers... --> 
+	<p id="version_string">[uninitialized]</p>
+	<p id="active_seq">[uninitialized]</p>
+
+	<!-- // These have JavaScript handlers... --> 
 
     <button id="getseqname">Get active sequence</button>
     <button id="newseqfrompreset">Create Sequence From Preset</button>
@@ -70,7 +77,7 @@
 
     <button class="controlBg textStyle" id="btn_PPRO1"	 onClick="evalScript('$._ext_PPRO.render()')">Render active sequence using AME</button>
 		<button class="controlBg textStyle" id="btn_PPRO2"	 onClick="evalScript('$._ext_PPRO.createSequence()')">Create Sequence</button>
-		<button class="controlBg textStyle" id="btn_PPRO3"  onClick="evalScript('$._ext_PPRO.openProject()')">Open different project</button>
+	<button class="controlBg textStyle" id="btn_PPRO3"  onClick="evalScript('$._ext_PPRO.openProject()')">Open different project</button>
     <button class="controlBg textStyle" id="btn_PPRO4"   onClick="evalScript('$._ext_PPRO.saveProject()')">Save project</button>
 		<button class="controlBg textStyle" id="btn_PPRO4"	 onClick="evalScript('$._ext_PPRO.saveProjectAs()')">Save project as...</button>
 		<button class="controlBg textStyle" id="btn_PPRO5"	 onClick="evalScript('$._ext_PPRO.importFiles()')">Import Files</button>
