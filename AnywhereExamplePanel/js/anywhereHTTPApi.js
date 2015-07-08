@@ -34,7 +34,7 @@ var AnywhereHTTPApi = (function(exports) {
                                     url: url,
                                     async: false,
                                     beforeSend: function(xhr) {
-                                        xhr.setRequestHeader("Cookie", sessionToken);
+                                        xhr.setRequestHeader("Cookie", token);
                                     },
                                     success: function(session){
                                         // go through all the links and find the one requested
@@ -46,14 +46,88 @@ var AnywhereHTTPApi = (function(exports) {
                                         });
                                     },
                                     error : function(xhr, statusText, err) {
-                                        alert("ERROR while creating an Ingest Job. Error " + xhr.status + " "+ err);
+                                        alert("ERROR while resolving a link. Error " + xhr.status + " "+ err);
                                     }
                                 });
             if (href=="") {
-                alert("Error: Could not find the link:  \n" + rel + "\n on the page: \n" + url);
+                console.log("Error: Could not find the link:  \n" + rel + "\n on the page: \n" + url);
             }
         }
         return href;
+    }
+    
+    /**
+    * returns the list of mountpoints configured in the settings of the Anywhere server.
+    * sessionURL: the current user session url
+    * token: the authentication token
+    * successCallback: the callback called with the results (the mountpoint list)
+    */
+    exports.getMountpoints = function (sessionURL, token, successCallback) {
+        var mountpoints = [];
+        var parser = document.createElement('a');
+        parser.href = sessionURL;
+
+        var mountpointURL = parser.protocol + "//" + parser.hostname + ":" + parser.port + "/content/ea/api/settings/mountpoints.v1.json?scope=AMSE";
+        
+        
+       
+        var response = $.ajax({
+                                type: "GET",
+                                url: mountpointURL,
+                                async: false,
+                                dataType: 'json',
+                                beforeSend: function(xhr) {
+                                    xhr.setRequestHeader("Cookie", token);
+                                },
+                                success: successCallback,
+                                error : function(xhr, statusText, err) {
+                                    alert("ERROR while gettting settings from server. Error " + xhr.status + " "+ err);
+                                }
+                            });
+    }
+    
+    /**
+    * constructs the discovery
+    */
+    exports.getLatestsDiscoveryURL = function(sessionURL, token) {
+        var parser = document.createElement('a');
+        parser.href = sessionURL;
+
+        var discoveryURL = parser.protocol + "//" + parser.hostname + ":" + parser.port+ "/ea/api/discovery.json";
+        return AnywhereHTTPApi.getLink(token, discoveryURL, "http://anywhere.adobe.com/discovery/v1");
+    }
+    /**
+    * returns is the server is running in colab only mode (without renderer)
+    */
+    exports.hasRemoteRendering = function (sessionURL, token, successCallback) {
+        var currentDiscoveryURL = exports.getLatestsDiscoveryURL(sessionURL, token)
+        
+        var response = $.ajax({
+                                type: "GET",
+                                url: currentDiscoveryURL,
+                                async: false,
+                                dataType: 'json',
+                                beforeSend: function(xhr) {
+                                    xhr.setRequestHeader("Cookie", sessionToken);
+                                },
+                                dataFilter : function (data, type) {
+                                    if (type == "json") {
+                                        //Convert to Json object to allo addition of custom Object
+                                        var jsonObj = JSON.parse(data);
+                                        var configuration = jsonObj["server"]["configuration"];
+
+                                        if (configuration.hasOwnProperty("remoteRendering")) {
+                                            return jsonObj["server"]["configuration"]["remoteRendering"];
+                                        } else {
+                                            return true;
+                                        }
+                                    }
+                                },
+                                success: successCallback,
+                                error : function(xhr, statusText, err) {
+                                    alert("ERROR while getting discovery data from server. Error " + xhr.status + " "+ err);
+                                }
+                            }); 
     }
     
     /**

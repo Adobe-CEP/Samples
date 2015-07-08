@@ -10,7 +10,7 @@
  */
 
 /***************************************************************************************
- * -- PremiereDOMBridge ------------------------------------------------------------------------
+ * -- DOMBridge ------------------------------------------------------------------------
  * 
  * The ExtendScript libraries are not directly accessible from the CEP HTML5 JavaScript 
  * engine. Interactions with the application DOM or other ExtendScript components need 
@@ -18,14 +18,14 @@
  * ExtendScript expressions to be evaluated within the application's scripting context 
  * and registering a callback function to capture the results. 
  * 
- * In order to provide a more convenient and high-level API the PremiereDOMBridge acts as a 
- * plain JavaScript proxy to the $.PREMIERE utility that lives inside the ExtendScript 
+ * In order to provide a more convenient and high-level API the DOMBridge acts as a 
+ * plain JavaScript proxy to the $.PREMIERE and $.ANYWHERE utility that lives inside the ExtendScript 
  * environment.
  * 
- * Add more Premiere DOM functionality here.
+ * Add more DOM functionality here.
  * 
  **************************************************************************************/
-var PremiereDOMBridge = (function(exports) {
+var DOMBridge = (function(exports) {
     var CS_INTERFACE = new CSInterface();
     
     /**
@@ -56,33 +56,55 @@ var PremiereDOMBridge = (function(exports) {
 		CS_INTERFACE.evalScript(script, callback);
 	}
     
+    
     // public methods -----------------------------------------------------------------------
+    /**
+    * initializes the jsx files used in this wrapper
+    */
+    exports.init = function(callback) {
+        var extensionRoot = CS_INTERFACE.getSystemPath(SystemPath.EXTENSION) + "/jsx/";
+        callExtendScript('$._ext.evalFiles',extensionRoot, callback);
+    }
+    
+    /**
+    * returns the application ID
+    */
+    exports.getApplicationID = function(callback) {
+        return  CS_INTERFACE.getApplicationID();
+    };
     // wrap Anywhere specific DOM calls $.PREMIERE.ANYWHERE in an own object 
     // PremiereDOMBridge.anywhere
     var anywhere = {};
     
     /**
-	 * @see $.PREMIERE.ANYWHERE#getAuthenticationToken
+	 * @see $.ANYWHERE#getAuthenticationToken
 	 */
     anywhere.getAuthenticationToken = function(callback) {
-        callExtendScript('$.PREMIERE.ANYWHERE.getAuthenticationToken', callback);
+        callExtendScript('$.ANYWHERE.getAuthenticationToken', callback);
     };
     
      /**
-	 * @see $.PREMIERE.ANYWHERE#isProductionOpen
+	 * @see $.ANYWHERE#isProductionOpen
 	 */
     anywhere.isProductionOpen = function(callback) {
-        callExtendScript('$.PREMIERE.ANYWHERE.isProductionOpen', callback);
+        callExtendScript('$.ANYWHERE.isProductionOpen', callback);
     };
     
     /**
-	 * @see $.PREMIERE.ANYWHERE#getCurrentEditingSessionURL
+	 * @see $.ANYWHERE#getCurrentEditingSessionURL
 	 */
     anywhere.getCurrentEditingSessionURL = function(callback) {
-        callExtendScript('$.PREMIERE.ANYWHERE.getCurrentEditingSessionURL', callback);
+        callExtendScript('$.ANYWHERE.getCurrentEditingSessionURL', callback);
     }
     
     exports.anywhere = anywhere;
+    
+    /**
+	 * @see $.PREMIERE#version
+	 */
+    exports.version = function( callback) {
+        callExtendScript('$.PREMIERE.version', callback);
+    };
     
     /**
 	 * @see $.PREMIERE#openInSource
@@ -106,4 +128,4 @@ var PremiereDOMBridge = (function(exports) {
     };
 
     return exports;
-})(PremiereDOMBridge || {});
+})(DOMBridge || {});
