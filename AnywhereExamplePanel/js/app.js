@@ -38,18 +38,21 @@ $(document).ready(function() {
         // get and save auth token
         DOMBridge.anywhere.getAuthenticationToken( function(token) {
             if (token && token.length !== 0) {
-                // save token
-                sessionToken = token;
                 // check if a production is opened
                 DOMBridge.anywhere.isProductionOpen( function(isOpen) {
                     if (isOpen === 'true')
                     {
                         // show main UI
                         $('#generalError').hide();
-                        registerCallbacks(token);   
+                        registerCallbacks();   
 
                         // setup the browse tree (if the browse API is supported)
-                        DOMBridge.anywhere.getCurrentEditingSessionURL( setupTree );
+                        DOMBridge.anywhere.getCurrentEditingSessionURL( function (sessionURL) {
+                            // save token
+                            AnywhereHTTPApi.saveTokenAsCookie (token, sessionURL, function() {
+                                setupTree(sessionURL);
+                            });
+                        });
 
                         $('#main').show();
 
@@ -76,7 +79,7 @@ $(document).ready(function() {
     **/
     function setupTree(sessionURL) {
         // first make sure that we are not in colabOnly mode
-        AnywhereHTTPApi.hasRemoteRendering(sessionURL, sessionToken, function(hasRemoteRendering) {
+        AnywhereHTTPApi.hasRemoteRendering(sessionURL, function(hasRemoteRendering) {
             if (!hasRemoteRendering) {
                 // colab Only mode == show error
                 // hide main UI and show error
@@ -87,27 +90,38 @@ $(document).ready(function() {
                 $('#btn_refresh').hide();
             } 
             // try to get the browse API
-            var currentDiscoveryURL = AnywhereHTTPApi.getLatestsDiscoveryURL( sessionURL, sessionToken);
-            var browseAPIURL = AnywhereHTTPApi.getLink(sessionToken, currentDiscoveryURL, "http://anywhere.adobe.com/mountpoints/browse");
+            var currentDiscoveryURL = AnywhereHTTPApi.getLatestsDiscoveryURL( sessionURL);
+            var browseAPIURL = AnywhereHTTPApi.getLink( currentDiscoveryURL, "http://anywhere.adobe.com/mountpoints/browse");
 
             // check if browse API is supported already
             if (browseAPIURL !== "" ){ 
 
-                AnywhereHTTPApi.getMountpoints(sessionURL, sessionToken, function(mountpointsJSON) {
-
+                AnywhereHTTPApi.getMountpoints(sessionURL, function(mountpointsJSON) {
+                    console.dir(mountpointsJSON)
                     //fill mountpoints in drop down
                     var mountpoints = mountpointsJSON["setting"]["properties"]["mountpoints"]
                     $.each(mountpoints, function() {
-                        $("#mountpointDropDown").append(new Option(this.label, this.label));
+                       $("#mountpointDropDown").append(new Option(this.label, this.label));
                     });
 
                     // changing the mountpoint in the dropdown causes a reload of the tree data
                     $("#mountpointDropDown").change(function () {
-                        initTreeData(sessionToken, browseAPIURL, $('#mountpointDropDown option:selected').val())
-                    });
+                            DOMBridge.anywhere.getAuthenticationToken( function(newToken) {
+                                 // save token
+                                if (newToken && newToken.length !== 0) {
+                                    AnywhereHTTPApi.saveTokenAsCookie (newToken, sessionURL, function() {
+                                        initTreeData( browseAPIURL, $('#mountpointDropDown option:selected').val())
+                                    });
+                                }else {
+                                    // hide main UI and show error
+                                    $('#error').html("Please Sign in to Adobe Anywhere!").show();
+                                    $('#main').hide();
+                                }                            
+                            });
+                        });
 
                     //init tree
-                    initTreeData(sessionToken, browseAPIURL, $('#mountpointDropDown option:selected').val())
+                    initTreeData( browseAPIURL, $('#mountpointDropDown option:selected').val());
                 });
             } else {
                 // hide tree
@@ -116,6 +130,32 @@ $(document).ready(function() {
         });      
     };
     
+    /*
+    * reload the data of the tree ui
+    * Parameters:
+    * browseAPIURL - string - the browseAPI url
+    * mountpoint - string - the mountpoint to be browsed
+    */
+    function initTreeData( browseAPIURL, mountpoint) {
+         $("#browse_jstree").jstree('destroy');
+        
+        $("#browse_jstree")
+            .on('select_node.jstree', function (e, data) {
+                var pathArray = getSelectedPaths();
+                if ( pathArray.length > 0 ) {
+                    if (pathArray.length > 1) {
+                        $('#ingestPath').val( JSON.stringify(pathArray) );
+                    } else {
+                        // for single clips only show the eameadia path (not JSON syntax)
+                        $('#ingestPath').val( pathArray[0] );
+                    }
+                }
+                
+            })
+            .jstree( JSTreeAnywhereBrowser.setupDataLink( browseAPIURL, mountpoint) );
+        
+    };
+
     /**
     * creates an array of the selected files and filters out selected folders
     */
@@ -132,32 +172,7 @@ $(document).ready(function() {
         return pathArray;
     }
     
-    /*
-    * reload the data of the tree ui
-    * Parameters:
-    * sessionToken - string - the auth token used to authenticate the http call
-    * browseAPIURL - string - the browseAPI url
-    * mountpoint - string - the mountpoint to be browsed
-    */
-    function initTreeData(sessionToken, browseAPIURL, mountpoint) {
-         $("#browse_jstree").jstree('destroy');
-        
-        $("#browse_jstree")
-            .on('select_node.jstree', function (e, data) {
-                var pathArray = getSelectedPaths();
-                if ( pathArray.length > 0 ) {
-                    if (pathArray.length > 1) {
-                        $('#ingestPath').val( JSON.stringify(pathArray) );
-                    } else {
-                        // for single clips only show the eameadia path (not JSON syntax)
-                        $('#ingestPath').val( pathArray[0] );
-                    }
-                }
-                
-            })
-            .jstree( JSTreeAnywhereBrowser.setupDataLink(sessionToken, browseAPIURL, mountpoint) );
-        
-    };
+    
     /**
     * function that checks if the path is valid and displays error if not.
     * More checks might be added here.
@@ -176,18 +191,17 @@ $(document).ready(function() {
     * triggers an server side Ingest Job
     * Parameters:
     * isTargetUserSession - bool - if true, ingests into the user session instead of the main line
-    * token - string - the auth token used to authenticate the http call
     * paths - array - array of eamedia:// paths to the media to ingest
     * comment - string - some comments for the job
     * see AnywhereHTTPApi#ingest
     */
-    function httpIngest( isTargetUserSession, token, paths, comment) {
+    function httpIngest( isTargetUserSession, paths, comment) {
         DOMBridge.anywhere.getCurrentEditingSessionURL(function(sessionURL) {
-            AnywhereHTTPApi.ingest( sessionURL, isTargetUserSession, token, paths, comment );
+            AnywhereHTTPApi.ingest( sessionURL, isTargetUserSession, paths, comment );
         });
     }
     
-    function getPaths() {
+    function getPathsFromInputTextField() {
         var pathsString = $('#ingestPath').val()
         if (pathsString.length !== 0) {
             if (pathsString[0] === '[') // indicator that it might be multiselect (JSON)
@@ -208,10 +222,10 @@ $(document).ready(function() {
     /**
     * register all callbacks related to UI elements
     */
-    function registerCallbacks(token) {
+    function registerCallbacks() {
         // button events
         $('#btn_openInSource').click(function() {
-            var paths = getPaths();
+            var paths = getPathsFromInputTextField();
             if ( paths instanceof Array) { // more than one clip selected
                 // only play the first path
                 if ( validPath(paths[0]) ) {
@@ -223,7 +237,7 @@ $(document).ready(function() {
          });
 
         $('#btn_ingestDOMUser').click(function() {
-            var paths = getPaths();
+            var paths = getPathsFromInputTextField();
             if ( paths instanceof Array) { // more than one clip selected
                 // register callback as second parameter if needed
                 DOMBridge.importFiles( paths );
@@ -235,7 +249,7 @@ $(document).ready(function() {
 
         //dragHandler
         $('#btn_dragthing').on('dragstart',function(event) {
-            var paths = getPaths();
+            var paths = getPathsFromInputTextField();
              if ( paths instanceof Array) { // more than one clip selected
                 // only play the first path
                 if ( validPath(paths[0]) ) {
@@ -249,20 +263,20 @@ $(document).ready(function() {
         });
         
         $('#btn_ingestHTTPUser').click(function() {
-            var paths = getPaths();
+            var paths = getPathsFromInputTextField();
             if ( !(paths instanceof Array)) {
                 paths = [ paths ]
             }
-            httpIngest( true, token, paths, "ingest into session demo");
+            httpIngest( true, paths, "ingest into session demo");
             
         });
 
         $('#btn_ingestHTTPProd').click(function() {
-            var paths = getPaths();
+            var paths = getPathsFromInputTextField();
             if ( !(paths instanceof Array)) {
                 paths = [ paths ]
             }
-            httpIngest( false, token, paths, "ingest into Production demo");
+            httpIngest( false, paths, "ingest into Production demo");
         });
 
         

@@ -19,7 +19,7 @@ var JSTreeAnywhereBrowser = (function(exports) {
     /*
     * this function returns the ajax data connection to initialize a jstree component with the Adobe Anywhere browse api
     **/
-    exports.setupDataLink = function(token, browseAPIURL, mountpoint ) {
+    exports.setupDataLink = function( browseAPIURL, mountpoint ) {
         
         
     return {
@@ -52,7 +52,7 @@ var JSTreeAnywhereBrowser = (function(exports) {
                     type: 'POST',
                     dataType: 'json',
                     beforeSend: function(xhr) {
-                        xhr.setRequestHeader("Cookie", sessionToken);
+                        xhr.withCredentials = true;
                     },
                     // the data filter turns the input from the browse API to the JOSN expected by the jstree component
                     dataFilter : function (data, type) {
