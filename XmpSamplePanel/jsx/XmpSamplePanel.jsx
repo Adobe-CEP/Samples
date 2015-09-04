@@ -1,4 +1,4 @@
-﻿/*  
+/*  
  * ADOBE SYSTEMS INCORPORATED
  * Copyright 2014 Adobe Systems Incorporated
  * All Rights Reserved.
@@ -39,6 +39,7 @@ if(typeof($)=='undefined')
  * IDSN = InDesign
  * PPRO = Premiere Pro
  * ILST = Illustrator
+ * AUDT = Audition
  * 
  * Those correspond to the application ID that can be obtained via the CEP JavaScript 
  * interface.
@@ -270,6 +271,31 @@ $.delegates = (function(exports) {
 	    }
 	});
 	
+	exports["AUDT"] = new XMPScriptAdapter({
+		getTarget: function() {
+			if(!app.documents.length) {
+				app.createNewWaveDocument("Untitled", 44100, 2, 32);
+                if(app.documents.length > 0) {
+                    app.documents[0].activate();
+                }
+			}
+		
+			return app.activeDocument;
+		},
+
+		getTargetName: function(target) {
+			return target.displayName;
+		},
+
+		getXmpPacket : function(doc) {
+			return doc.metadata.Xmp;
+		},
+	
+		setXmpPacket : function(doc, xmpPacket) {
+			doc.metadata.Xmp = xmpPacket;
+		}
+	});
+	
 	return exports;
 	
 })($.delegates || {});
@@ -350,7 +376,7 @@ $.XMP = (function(exports) {
 	exports.commit = function() {
 		DELEGATE_API.commit();
 	};
-		
-	return exports;
+	
+ 	return exports;
 	
 })($.XMP || {});
