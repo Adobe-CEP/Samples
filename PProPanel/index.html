@@ -4,9 +4,11 @@
   <head>
     <meta charset="utf-8">
     <script src="./ext.js"></script>
+    <script src="./CC.js"></script>
     <script src="./lib/CSInterface.js"></script>
     <script src="./lib/jquery-1.9.1.js"></script>
 
+<!-- Instantiate Feather -->
 <link id="ppstyle" rel="stylesheet" type="text/css" href="css/style.css">
 
 <title>PProPanel</title>
@@ -18,45 +20,60 @@
         $("#getseqname").on("click", function(e){
            	e.preventDefault(); 
            	var csInterface = new CSInterface();
-           	csInterface.evalScript('$._ext_PPRO.getActiveSequenceName()', myCallBackFunction);  
+           	csInterface.evalScript('$._ext_PProPanel.getActiveSequenceName()', myCallBackFunction);  
+            csInterface.evalScript('$._ext_PProPanel.getSequenceProxySetting()', myGetProxyFunction);
         });
 
-        $("#checkforums").on("click", function(e){
+         $("#toggleproxy").on("click", function(e){
+            e.preventDefault(); 
+            var csInterface = new CSInterface();
+            csInterface.evalScript('$._ext_PProPanel.toggleProxyState()', mySetProxyFunction);
+            csInterface.evalScript('$._ext_PProPanel.getActiveSequenceName()', myCallBackFunction);
+            csInterface.evalScript('$._ext_PProPanel.getSequenceProxySetting()', myGetProxyFunction);
+        });
+
+       $("#checkforums").on("click", function(e){
+            e.preventDefault(); 
+            var csInterface = new CSInterface();
+            csInterface.openURLInDefaultBrowser("https://forums.adobe.com/community/premiere/sdk");
+        });
+
+       $("#checkCCLibraries").on("click", function(e){
             e.preventDefault(); 
             var csInterface = new CSInterface();
             csInterface.openURLInDefaultBrowser("https://forums.adobe.com/community/premiere/sdk");
         });
 
         $("#newseqfrompreset").on("click", function(e){
-           	e.preventDefault(); 
-           	var csInterface = new CSInterface();
-			var OSVersion   = csInterface.getOSInformation();
-            var path    	= csInterface.getSystemPath(SystemPath.EXTENSION);
+          e.preventDefault(); 
+          var csInterface = new CSInterface();
+          var OSVersion   = csInterface.getOSInformation();
+          var path    	= csInterface.getSystemPath(SystemPath.EXTENSION);
 
-			if (OSVersion != null){
-				
-				// The path always comes back with '/' path separators. Windows needs '\\'.
+          if (OSVersion){
 
-				if (OSVersion.indexOf("Windows") >=0){
-					var sep = '\\\\';
-					path = path.replace(/\//g, sep);
+            // The path always comes back with '/' path separators. Windows needs '\\'.
+
+            if (OSVersion.indexOf("Windows") >=0){
+              var sep = '\\\\';
+              path = path.replace(/\//g, sep);
             } else {
               var sep = '/';
             }
 
-				// Build a String to pass the path to the script.
-				// (Sounds more complicated than it is.)
-				
-           		path = path + sep + 'payloads' + sep + 'PProPanel.sqpreset';
+            // Build a String to pass the path to the script.
+            // (Sounds more complicated than it is.)
 
-           	var pre       = '$._ext_PPRO.createSequenceFromPreset(\'';
-           	var post      = '\'';
-           	var postpost  = ')';
+            path = path + sep + 'payloads' + sep + 'PProPanel.sqpreset';
 
-           	var whole_megillah =  pre + path + post + postpost;
-           	
-           	csInterface.evalScript(whole_megillah);
-            }
+            var pre       = '$._ext_PProPanel.createSequenceFromPreset(\'';
+            var post      = '\'';
+            var postpost  = ')';
+
+            var whole_megillah =  pre + path + post + postpost;
+
+            csInterface.evalScript(whole_megillah);
+          }
         });
       });
 
@@ -66,7 +83,8 @@
   <body onLoad="onLoaded()">
     <p id="version_string">[uninitialized]</p>
   	<p id="active_seq">[uninitialized]</p>
-  	
+    <p id="proxies_on">Proxies enabled for sequence: </p>
+
       <!-- // These have JavaScript handlers... --> 
 
     <button id="getseqname">Get active sequence</button>
@@ -75,30 +93,36 @@
     
       <!-- ...the rest call directly into ExtendScript. -->
 
-    <button class="controlBg textStyle" id="btn_PPRO1"	 onClick="evalScript('$._ext_PPRO.render()')">Render active sequence using AME</button>
-		<button class="controlBg textStyle" id="btn_PPRO2"	 onClick="evalScript('$._ext_PPRO.createSequence()')">Create Sequence</button>
-		<button class="controlBg textStyle" id="btn_PPRO3"  onClick="evalScript('$._ext_PPRO.openProject()')">Open different project</button>
-    <button class="controlBg textStyle" id="btn_PPRO4"   onClick="evalScript('$._ext_PPRO.saveProject()')">Save project</button>
-		<button class="controlBg textStyle" id="btn_PPRO4"	 onClick="evalScript('$._ext_PPRO.saveProjectAs()')">Save project as...</button>
-		<button class="controlBg textStyle" id="btn_PPRO5"	 onClick="evalScript('$._ext_PPRO.importFiles()')">Import Files</button>
-		<button class="controlBg textStyle" id="btn_PPRO6"  onClick="evalScript('$._ext_PPRO.exportFCPXML()')">Export FCP XML</button>
-		<button class="controlBg textStyle" id="btn_PPRO7"  onClick="evalScript('$._ext_PPRO.pokeAnywhere()')">Poke Anywhere</button>
-		<button class="controlBg textStyle" id="btn_PPRO8"  onClick="evalScript('$._ext_PPRO.openInSource()')">Open in Source Monitor...</button>
-		<button class="controlBg textStyle" id="btn_PPRO9"  onClick="evalScript('$._ext_PPRO.replaceMedia()')">Replace media...</button>
-		<button class="controlBg textStyle" id="btn_PPRO10" onClick="evalScript('$._ext_PPRO.createSequenceMarkers()')">Add sequence markers</button>
-		<button class="controlBg textStyle" id="btn_PPRO11" onClick="evalScript('$._ext_PPRO.mungeXMP()')">Manipulate XMP</button>
-    <button class="controlBg textStyle" id="btn_PPRO12" onClick="evalScript('$._ext_PPRO.exportSequenceAsPrProj()')">New project from sequence</button>
-    <button class="controlBg textStyle" id="btn_PPRO13" onClick="evalScript('$._ext_PPRO.exportCurrentFrameAsPNG()')">Export sequence frame</button>
-    <button class="controlBg textStyle" id="btn_PPRO14" onClick="evalScript('$._ext_PPRO.updateGrowingFile()')">Update growing file</button>
-    <button class="controlBg textStyle" id="btn_PPRO15" onClick="evalScript('$._ext_PPRO.modifyProjectMetadata()')">Modify project metadata</button>
-    <button class="controlBg textStyle" id="btn_PPRO16" onClick="evalScript('$._ext_PPRO.addClipMarkers()')">Add clip markers</button>
-    <button class="controlBg textStyle" id="btn_PPRO17" onClick="evalScript('$._ext_PPRO.updatePAR()')">Update PAR</button>
-    <button class="controlBg textStyle" id="btn_PPRO18" onClick="evalScript('$._ext_PPRO.getnumAEProjectItems()')">AE project item count</button>
-    <button class="controlBg textStyle" id="btn_PPRO19" onClick="evalScript('$._ext_PPRO.updateEventPanel()')">Update event panel</button>
-    <button class="controlBg textStyle" id="btn_PPRO20" onClick="evalScript('$._ext_PPRO.dumpXMPFromAllProjectItems()')">Dump XMP from all items</button>
-    <button class="controlBg textStyle" id="btn_PPRO21" onClick="evalScript('$._ext_PPRO.addSubClip()')">Create subclip</button>
-    <button class="controlBg textStyle" id="btn_PPRO22" onClick="evalScript('$._ext_PPRO.exportAAF()')">Export sequence to AAF</button>
-    <button class="controlBg textStyle" id="btn_PPRO23" onClick="evalScript('$._ext_PPRO.setScratchDisk()')">Set scratch disk path</button>
+    <button class="controlBg textStyle" id="btn_PPRO1"	 onClick="evalScript('$._ext_PProPanel.render()')">Render active sequence using AME</button>
+		<button class="controlBg textStyle" id="btn_PPRO2"	 onClick="evalScript('$._ext_PProPanel.createSequence()')">Create Sequence</button>
+		<button class="controlBg textStyle" id="btn_PPRO3"  onClick="evalScript('$._ext_PProPanel.openProject()')">Open different project</button>
+    <button class="controlBg textStyle" id="btn_PPRO4"   onClick="evalScript('$._ext_PProPanel.saveProject()')">Save project</button>
+		<button class="controlBg textStyle" id="btn_PPRO34"	 onClick="evalScript('$._ext_PProPanel.saveProjectAs()')">Save project as...</button>
+		<button class="controlBg textStyle" id="btn_PPRO5"	 onClick="evalScript('$._ext_PProPanel.importFiles()')">Import Files</button>
+		<button class="controlBg textStyle" id="btn_PPRO6"  onClick="evalScript('$._ext_PProPanel.exportFCPXML()')">Export FCP XML</button>
+		<button class="controlBg textStyle" id="btn_PPRO7"  onClick="evalScript('$._ext_PProPanel.pokeAnywhere()')">Poke Anywhere</button>
+		<button class="controlBg textStyle" id="btn_PPRO8"  onClick="evalScript('$._ext_PProPanel.openInSource()')">Open in Source Monitor...</button>
+		<button class="controlBg textStyle" id="btn_PPRO9"  onClick="evalScript('$._ext_PProPanel.replaceMedia()')">Replace media...</button>
+		<button class="controlBg textStyle" id="btn_PPRO10" onClick="evalScript('$._ext_PProPanel.createSequenceMarkers()')">Add sequence markers</button>
+		<button class="controlBg textStyle" id="btn_PPRO11" onClick="evalScript('$._ext_PProPanel.mungeXMP()')">Manipulate XMP</button>
+    <button class="controlBg textStyle" id="btn_PPRO12" onClick="evalScript('$._ext_PProPanel.exportSequenceAsPrProj()')">New project from sequence</button>
+    <button class="controlBg textStyle" id="btn_PPRO13" onClick="evalScript('$._ext_PProPanel.exportCurrentFrameAsPNG()')">Export sequence frame</button>
+    <button class="controlBg textStyle" id="btn_PPRO14" onClick="evalScript('$._ext_PProPanel.updateGrowingFile()')">Update growing file</button>
+    <button class="controlBg textStyle" id="btn_PPRO15" onClick="evalScript('$._ext_PProPanel.modifyProjectMetadata()')">Modify project metadata</button>
+    <button class="controlBg textStyle" id="btn_PPRO16" onClick="evalScript('$._ext_PProPanel.addClipMarkers()')">Add clip markers</button>
+    <button class="controlBg textStyle" id="btn_PPRO17" onClick="evalScript('$._ext_PProPanel.updatePAR()')">Update PAR</button>
+    <button class="controlBg textStyle" id="btn_PPRO18" onClick="evalScript('$._ext_PProPanel.getnumAEProjectItems()')">AE project item count</button>
+    <button class="controlBg textStyle" id="btn_PPRO19" onClick="evalScript('$._ext_PProPanel.updateEventPanel()')">Update event panel</button>
+    <button class="controlBg textStyle" id="btn_PPRO20" onClick="evalScript('$._ext_PProPanel.dumpXMPFromAllProjectItems()')">Dump XMP from all items</button>
+    <button class="controlBg textStyle" id="btn_PPRO21" onClick="evalScript('$._ext_PProPanel.addSubClip()')">Create subclip</button>
+    <button class="controlBg textStyle" id="btn_PPRO22" onClick="evalScript('$._ext_PProPanel.exportAAF()')">Export sequence to AAF</button>
+    <button class="controlBg textStyle" id="btn_PPRO23" onClick="evalScript('$._ext_PProPanel.setScratchDisk()')">Set scratch disk path</button>
+    <button class="controlBg textStyle" id="btn_PPRO24" onClick="evalScript('$._ext_PProPanel.setProxiesON()')">Add proxy to first projItem</button>
+    <button class="controlBg textStyle" id="btn_PPRO25" onClick="evalScript('$._ext_PProPanel.clearCache()')">Clear media cache</button>
+    <button class="controlBg textStyle" id="btn_PPRO26" onClick="evalScript('$._ext_PProPanel.exportFramesForMarkers()')">Export frames for markers</button>
+    <button id="toggleproxy">Toggle proxies in active sequence</button>
+
     <div id="dragthing" draggable="true" ondragstart="dragHandler(event)">drag me</div>
+
   </body>
 </html>

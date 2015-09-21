@@ -26,7 +26,15 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 				</Resources>
 				<Lifecycle>
 					<AutoVisible>true</AutoVisible>
+					<StartOn>
+						<!-- PPro dispatches this event on startup -->
+						<Event>com.adobe.csxs.events.ApplicationActivate</Event>
+					</StartOn>
 				</Lifecycle>
+				<CEFCommandLine>
+				    <Parameter>--allow-file-access</Parameter>
+				    <Parameter>--allow-file-access-from-files</Parameter>
+				</CEFCommandLine>
 				<UI>
 					<Type>Panel</Type>
 					<Menu>PProPanel (SDK sample panel)</Menu>
