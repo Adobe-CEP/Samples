@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ExtensionManifest Version="5.0" ExtensionBundleId="SimpleDissolveSupport" ExtensionBundleVersion="1.0.0"
+		ExtensionBundleName="SimpleDissolveApplyFilter" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<ExtensionList>
+		<Extension Id="SimpleDissolveApplyFilter" Version="1.0" />
+	</ExtensionList>
+	<ExecutionEnvironment>
+		<HostList>
+            <Host Name="PHXS" Version="[14.0,99.0]" />
+		</HostList>
+		<LocaleList>
+			<Locale Code="All" />
+		</LocaleList>
+		<RequiredRuntimeList>
+			<RequiredRuntime Name="CSXS" Version="5.0" />
+		</RequiredRuntimeList>
+	</ExecutionEnvironment>
+	<DispatchInfoList>
+		<Extension Id="SimpleDissolveApplyFilter">
+			<DispatchInfo >
+				<Resources>
+				<MainPath>./index.html</MainPath>
+				<ScriptPath>./jsx/hostscript.jsx</ScriptPath>
+				</Resources>
+				<Lifecycle>
+					<AutoVisible>false</AutoVisible>
+					<StartOn>
+						<Event>com.adobe.event.loadSimpleDissolveSupport</Event>
+					</StartOn>
+				</Lifecycle>
+				<UI>
+					<Type>Panel</Type>
+					<Geometry>
+						<Size>
+							<Height>1</Height>
+							<Width>1</Width>							
+						</Size>						
+					</Geometry>
+				</UI>
+			</DispatchInfo>
+		</Extension>
+	</DispatchInfoList>
+</ExtensionManifest>

@@ -68,3 +68,116 @@
     color:#46afa0;                      /* text color */
     border-left:12px solid #46afa0;
 }
+
+#EnvnavigationDiv {
+    position: absolute;
+    width: 258px;
+    height: 177px;
+    z-index: 1;
+}
+
+#EnvSeperateline {
+    position: absolute;
+    left: 180px;
+    top: 50px;;
+}
+
+#EnvHostEnvironmentDiv {
+    position: absolute;
+    width: 435px;
+    height: 329px;
+    z-index: 2;
+    left: 200px;
+    top: 80px;
+    color: #FFF;
+}
+
+#EnvHostCapabilitiesDiv {
+    position: absolute;
+    width: 572px;
+    height: 190px;
+    z-index: 3;
+    left: 200px;
+    top: 80px;
+    color: #FFF;
+}
+
+#EnvCurrentStateInfoDiv {
+    position: absolute;
+    width: 572px;
+    height: 213px;
+    z-index: 4;
+    left: 200px;
+    top: 80px;
+    color: #FFF;
+}
+
+#EnvOthersDiv {
+    position: absolute;
+    width: 572px;
+    height: 213px;
+    z-index: 5;
+    left: 200px;
+    top: 80px;
+    color: #FFF;
+}
+
+#OpenUrlDiv {
+    position: absolute;
+    width: 435px;
+    height: 229px;
+    z-index: 2;
+    left: 200px;
+    top: 50px;
+    color: #FFF;
+}
+
+#GetExtensionIdDiv {
+    position: absolute;
+    width: 435px;
+    height: 229px;
+    z-index: 4;
+    left: 200px;
+    top: 50px;
+    color: #FFF;
+}
+
+#GetScaleFactorDiv {
+    position: absolute;
+    width: 435px;
+    height: 229px;
+    z-index: 4;
+    left: 200px;
+    top: 50px;
+    color: #FFF;
+}
+
+#GetCurrentApiVersionDiv {
+    position: absolute;
+    width: 435px;
+    height: 229px;
+    z-index: 5;
+    left: 200px;
+    top: 50px;
+    color: #FFF;
+}
+
+#IsWindowVisibleDiv {
+    position: absolute;
+    width: 435px;
+    height: 229px;
+    z-index: 6;
+    left: 200px;
+    top: 50px;
+    color: #FFF;
+}
+
+#EnvnavigationDiv li:hover{            /* mouse hover on Environment tab navigation bar */
+    width:120px;
+    background-color:#333;
+    color:#46afa0;
+}
+
+.resizeExtension {
+    color: #FFF;
+}

@@ -250,7 +250,13 @@
                                                         SSDEXFriendlyFilePrefixVal,
                                                         SSDEXPromptVal,
                                                         SSDEXNameFieldLabelVal);
-            document.getElementById("ShowSaveDialogOutputEX").innerHTML = "The file is: " + "\n" + result.data;        
+            var targetFilePath = result.data;
+            var writeResult = window.cep.fs.writeFile(targetFilePath, "/*This is a test file*/");
+            if (0 != writeResult.err){
+                alert("failed to write a file at the destination:" + targetFilePath + ", error code:" + writeResult.err);
+            }
+            
+            document.getElementById("ShowSaveDialogOutputEX").innerHTML = "The file is: " + "\n" + targetFilePath;
         })
         $("#SSDClearAreaEX").click(function () {
             document.getElementById("ShowSaveDialogOutputEX").innerHTML = "";
@@ -1235,6 +1241,10 @@
                </table>
              </td>
            </tr>
+           <tr><td>&nbsp;</td></tr>
+           <tr><label>With the Base64 option checked, the ReadFile function is called with Base64 encoding mode in which
+               the data is converted to a base64-encoded string after it is read from the local disk.</label></tr>
+           <tr><td>&nbsp;</td></tr>
            <tr>
              <td><form id="form6" name="form6" method="post" action="">
                <label for="ReadFileTextArea"></label>
@@ -1272,16 +1282,17 @@
                </table>
              </td>
            </tr>
-           <tr><td>&nbsp;&nbsp;</td></tr>
+           <tr><td>&nbsp;</td></tr>
+           <tr><label>With the Base64 option checked, the input file content is converted into a Base64-encoded string,then WriteFile
+               function decodes this string to get the raw input content before writing it to the local disk.</label></tr>
+           <tr><td>&nbsp;</td></tr>
            <tr>
              <td><label>Please input new file content:</label></td>
            </tr>
            <tr>
-             <td><form id="form6" name="form6" method="post" action="">
+             <td>
                <label for="WriteFileTextArea"></label>
-               <textarea name="WriteFileTextArea" id="WriteFileTextArea" cols="60" rows="10">Test content Test content
-               </textarea>
-               </form>
+               <textarea name="WriteFileTextArea" id="WriteFileTextArea" cols="60" rows="10">Test content Test content</textarea>
              </td>
            </tr>
            <tr>

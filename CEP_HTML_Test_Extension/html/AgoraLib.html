@@ -159,8 +159,8 @@
             addToStatus("onclickCreateEntitlement: faking exchange plugin workflows.");
             VulcanInterface.addMessageListener(AgoraLib.MESSAGE_TYPE, handleRequestCallback);
         }
-        addToStatus("onclickCreateEntitlement: calling createEntitlement.");
-        agoraLib.createEntitlement(createEntitlementResponseCallback);
+        addToStatus("onclickCreateEntitlement: calling createEntitlement with ignoreACCC value of: " + agora_ignoreACCC.checked);
+        agoraLib.createEntitlement(createEntitlementResponseCallback, agora_ignoreACCC.checked);
     }
 
     function onclickIsEntitled() {
@@ -168,8 +168,8 @@
             addToStatus("onclickIsEntitled: faking exchange plugin workflows.");
             VulcanInterface.addMessageListener(AgoraLib.MESSAGE_TYPE, handleRequestCallback);
         }
-        addToStatus("onclickIsEntitled: calling isEntitled.");
-        agoraLib.isEntitled(isEntitledResponseCallback);
+        addToStatus("onclickIsEntitled: calling isEntitled with ignoreACCC value of: " + agora_ignoreACCC.checked);
+        agoraLib.isEntitled(isEntitledResponseCallback, agora_ignoreACCC.checked);
     }
 
     function onclickGetPurchaseUrl() {
@@ -179,8 +179,8 @@
         }
 
         agora_loadPurchaseUrl.disabled = true;
-        addToStatus("onclickGetPurchaseUrl: calling getPurchaseUrl with straightToCheckout: " + agora_straightToCheckout.checked);
-        agoraLib.getPurchaseUrl(getPurchaseUrlResponseCallback, agora_straightToCheckout.checked);
+        addToStatus("onclickGetPurchaseUrl: calling getPurchaseUrl with straightToCheckout: " + agora_straightToCheckout.checked + " ignoreACCC: " + agora_ignoreACCC.checked);
+        agoraLib.getPurchaseUrl(getPurchaseUrlResponseCallback, agora_straightToCheckout.checked, agora_ignoreACCC.checked);
     }
 
     function openInNewTab() {
@@ -193,6 +193,9 @@
 <body>
     <fieldset>
         <legend>AgoraLib APIs</legend>
+    <p>
+        <label class="agora_label" for="agora_ignoreACCC">Don't launch ACCC if not running?</label><input type="checkbox" name="agora_ignoreACCC" id="agora_ignoreACCC" value="false" />
+    </p>
     <p>
         <input type="button" name="createEntitlement" class="agora_button" id="createEntitlement" value="Create Entitlement" onclick="onclickCreateEntitlement()" />&nbsp;
         <input type="button" name="isEntitled" class="agora_button" id="isEntitled" value="IsEntitled?" onclick="onclickIsEntitled()" />&nbsp;
@@ -207,7 +210,7 @@
 
     <p class="header">The following are for testing purposes until Exchange Plugin has finished their implementation</p>
     <p>
-        <label class="agora_label" for="agora_fakeExchangePlugin">Fake ExchangePlugin?</label><input type="checkbox" name="agora_fakeExchangePlugin" id="agora_fakeExchangePlugin" value="agora_fakeExchangePlugin" checked /><br />
+        <label class="agora_label" for="agora_fakeExchangePlugin">Fake ExchangePlugin?</label><input type="checkbox" name="agora_fakeExchangePlugin" id="agora_fakeExchangePlugin" value="agora_fakeExchangePlugin" /><br />
         <label class="agora_label" for="agora_fakeExchangePluginReturnValues">IsEntitled Return Status:</label>
         <select id="agora_fakeExchangePluginReturnValues"><option value="True">True</option><option value="False">False</option><option value="Unknown">Unknown</option></select>
         <br />

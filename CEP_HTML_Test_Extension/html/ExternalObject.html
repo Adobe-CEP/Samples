@@ -42,7 +42,8 @@
 		});
 		
         function eventCallback(event) {
-            $("#EvalScriptResult").val("Received event: " + JSON.stringify(event));			
+            var currentStatus = $("#EvalScriptResult").val();
+            $("#EvalScriptResult").val(currentStatus + "\nReceived event: " + JSON.stringify(event));			
             $("#EventsGreenLightImg").show();
         }
 		

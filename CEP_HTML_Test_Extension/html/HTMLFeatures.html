@@ -50,6 +50,7 @@
     
     var result;
     var mediaType;
+    var cookieExpiry;
 
     $(document).ready(function() {
         // adjust layout on Windows
@@ -64,9 +65,9 @@
             $("#DisplayArea").attr("src", $("#OpenURLInput").val());
         });
         
-        $("#adobe").click(function() {
-            $("#DisplayArea").attr("src", "http://www.adobe.com");
-            $("#OpenURLInput").attr("value", "http://www.adobe.com");
+        $("#tooltips").click(function() {
+            $("#DisplayArea").attr("src", "http://www.a2zwebhelp.com/bootstrap-tooltips");
+            $("#OpenURLInput").attr("value", "http://www.a2zwebhelp.com/bootstrap-tooltips");
         });
         
         $("#baidu").click(function() {
@@ -112,7 +113,18 @@
         $("#adobeTV").click(function() {
             $("#DisplayArea").attr("src", "http://tv.adobe.com");
             $("#OpenURLInput").attr("value", "http://tv.adobe.com");
-        });		
+        });	
+        
+        $("#contextMenu").click(function() {
+            $("#DisplayArea").attr("src", "http://www.javascripttoolbox.com/lib/contextmenu/");
+            $("#OpenURLInput").attr("value", "http://www.javascripttoolbox.com/lib/contextmenu/");
+        });	
+        
+        $("#basicAuth").click(function() {
+            $("#DisplayArea").attr("src", "http://www.httpwatch.com/httpgallery/authentication/");
+            $("#OpenURLInput").attr("value", "http://www.httpwatch.com/httpgallery/authentication/");
+        });
+			
 		
 		$("#btnRunScript").click(function() {
 		    var scriptText = $("#JavaScriptCode").val();
@@ -177,6 +189,36 @@
         $("#btnShowSite").click(function() {
             document.getElementById("CookieTestWeb").src 
                 = "http://www.w3schools.com/js/tryit.asp?filename=tryjs_cookie_username";
+        });
+        
+        // To create and retrieve file cookies.
+        $("#btnGetCookie").click(function() {
+            var result = "";
+            var name = $("#SessionCookieName").val() + "=";
+            var ca = document.cookie.split(';');
+            for (var i=0; i < ca.length; i++) {
+                var c = ca[i];
+                while (c.charAt(0)==' ') c = c.substring(1);
+                if (c.indexOf(name) == 0) {
+                    result = c.substring(name.length, c.length);
+                    break;
+                }
+            }
+            $("#cookieOutput").html("Cookie found: " + result);
+        });
+        
+        $("#btnSetCookie").click(function() {
+            cookieExpiry = "";
+            var name = $("#SessionCookieName").val();
+            var value = $("#SessionCookieValue").val();
+            
+            if ($('#sessionCookieExpiry').attr('checked')) {
+                var d = new Date();
+                d.setTime(d.getTime() + (30*24*60*60*1000));
+                cookieExpiry = "; expires=" + d.toGMTString();
+            }
+            document.cookie = name + "=" + value + cookieExpiry;
+            $("#cookieOutput").html("Cookie Set!: " + name);
         });
 		
 		$('#controls').click(function() {
@@ -246,7 +288,6 @@
        $("#btnTestMouseClick").click(function(e) {
           $("#btnTestMouseClickLog").prepend('SHIFT_KEY:' + e.shiftKey + ' ALT_KEY:' + e.altKey + ' CTRL_KEY:' + e.ctrlKey + ' META_KEY:' + e.metaKey + '\n');
        });
-
     });
 </script>
 <link href="SpryAssets/SpryTabbedPanels.css" rel="stylesheet" type="text/css" />
@@ -260,9 +301,17 @@
 .cookiestyle {
     font-size:15px;
     color:#EBEBEB;
-    background:#555555;    
+    background:#555555;  
+}
+    
+.cookiestyle li {
+    list-style: circle !important;
 }
 
+#cookieOutput p {
+    color: red;
+}
+    
 .videoDescriptionStyle {
 	color:#EBEBEB;
 	line-height:200%;
@@ -278,18 +327,6 @@
     color:#EBEBEB;
     background:#555555;
 }
-
-.flyoutMenuDescription {
-    color:#EBEBEB;
-    font-size: 16px;
-}
-
-#flyoutMenuResult {
-    color:#EBEBEB;
-    font-size:16px;
-	background-color:transparent; 
-	border-color:transparent;
-}
 </style>
 </head>
 
@@ -299,7 +336,8 @@
     <li class="TabbedPanelsTab" tabindex="0">Open Link</li>
     <li class="TabbedPanelsTab" tabindex="0">Open Video</li>
     <li class="TabbedPanelsTab" tabindex="0">Widgets</li>
-    <li class="TabbedPanelsTab" tabindex="0">Cookies</li>
+    <li class="TabbedPanelsTab" tabindex="0">HTTP Cookies</li>
+    <li class="TabbedPanelsTab" tabindex="0">File Cookies</li>
 	<li class="TabbedPanelsTab" tabindex="0">Run JavaScript</li>
     <li class="TabbedPanelsTab" tabindex="0">WebRTC</li>
     <li class="TabbedPanelsTab" tabindex="0">Mouse</li>
@@ -323,7 +361,7 @@
               <td>
                 <form id="form1" name="form1" method="post" action="">
                   <label for="OpenURLInput"></label>
-                  <input name="OpenURLInput" type="text" id="OpenURLInput" value="http://www.adobe.com" size="110" />
+                  <input name="OpenURLInput" type="text" id="OpenURLInput" value="http://www.a2zwebhelp.com/bootstrap-tooltips" size="110" />
                 </form>
               </td>
             </tr>
@@ -331,7 +369,7 @@
               <table width="200" border="0" cellspacing="0" cellpadding="0">
                 <tr>
                   <td> 
-                    <input type="button" name="adobe" id="adobe" value="adobe"/>
+                    <input type="button" name="tooltips" id="tooltips" value="tooltips"/>
                   </td>
                   <td>
                     <input type="button" name="baidu" id="baidu" value="baidu"/>
@@ -360,8 +398,16 @@
                   <td>
                     <input type="button" name="behance" id="behance" value="behance"/>
                   </td>
+                  </tr>
+                  <tr>
                   <td>
                     <input type="button" name="adobeTV" id="adobeTV" value="adobe TV"/>
+                  </td>		
+                  <td>
+                    <input type="button" id="contextMenu" value="Context Menu"/>
+                  </td>
+                  <td>
+                    <input type="button" id="basicAuth" value="Basic Authentication"/>
                   </td>				  
                 </tr>
               </table>
@@ -370,7 +416,7 @@
         </tr>
         <tr>
           <td>
-            <iframe width="700" height="380" name="DisplayArea" id="DisplayArea" src="http://www.adobe.com"  frameborder="1" nodejs-disabled="true">
+            <iframe width="700" height="380" name="DisplayArea" id="DisplayArea" src="http://www.a2zwebhelp.com/bootstrap-tooltips"  frameborder="1" nodejs-disabled="true">
             </iframe>
           </td>
         </tr>
@@ -452,22 +498,23 @@
     <!----------------------->
     
     <!----------------------->
-    <!-- Cookie Test begin -->
+    <!-- HTTP Cookie Test begin -->
     <!----------------------->
-    <div class="TabbedPanelsContent" id="test">
+    <div class="TabbedPanelsContent">
         <div class="cookiestyle">
+            <h2>HTTP/HTTPS Cookies</h2>
             <div>
-                This test case is used to test if CEPHtmlEngine support persistent cookies.
+                This test case is used to test if CEPHtmlEngine support HTTP/HTTPS persistent cookies.
                 <ol>
                     <li>When you load the test website first time, it will require you to enter your name. This name will store in cookies.</li>
                     <li>When you reclick "Show Test Website" or click the button "Submit Code" on the website, it will pop up a dialog with your name which you entered before.</li>
                     <li>Close all Html extensions, then delete cookies file.
                         <ul>
-                            <li>Cookies Path on Windows: "C:\Users\[yourusername]\AppData\Local\Temp\cep_cookies"</li>
-                            <li>Cookies Path on Mac: "/Users/[yourusername]/Library/Logs/CSXS/cep_cookies"</li>
+                            <li>Cookies Path on Windows: "C:\Users\[yourusername]\AppData\Local\Temp\cep_cache"</li>
+                            <li>Cookies Path on Mac: "/Users/[yourusername]/Library/Caches/CSXS/cep_cache"</li>
                         </ul>
                     </li>
-                    <li>Reclick "Show Test Website", it will require you to enter your name again. This means this test case has passed.</li>
+                    <li>Reclick "Show Test Website", it will require you to enter your name again. This means this test case has passed for persistent cookies</li>
                 </ol>
             </div>
             <button name="btnShowSite" id="btnShowSite">Show Test Website</button>
@@ -478,7 +525,42 @@
         </div>
     </div>
     <!----------------------->
-    <!--- Cookie Test end --->
+    <!--- HTTP Cookie Test end --->
+    <!----------------------->
+      
+      <!----------------------->
+    <!-- File Cookie Test begin -->
+    <!----------------------->
+    <div class="TabbedPanelsContent">
+        <div class="cookiestyle">
+            <h2>File Cookies</h2>
+            <div>
+                <p>This test case is used to test if CEPHtmlEngine supports session and persistent file cookies.</p>
+                <ol>
+                    <li>Enter a cookie name and value (or keep with the defaults) and click Set Cookie.</li>
+                    <li>Click Get Cookie to confirm it has been set.</li>
+                    <li>Restart Application.</li>
+                    <li>Return to File Cookies tab and click Get Cookie. No Cookie should be returned.</li>
+                    <li>Now check Add expiry and click Set Cookie.</li>
+                    <li>Restart Application and return to File Cookies tab.</li>
+                    <li>Click Get Cookie. Your cookie value should be returned.</li>
+                </ol>
+                <label for="SessionCookieName">Cookie Name</label>
+                <input name="SessionCookieName" type="text" id="SessionCookieName" value="myCookie" size="110" />
+                <br />
+                <label for="SessionCookieValue">Cookie Value</label>
+                <input name="SessionCookieValue" type="text" id="SessionCookieValue" value="myCookieValue" size="110" />
+                <br />
+                <input type="checkbox" name="sessionCookieExpiry" id="sessionCookieExpiry" />Add expiry (e.g. persistent cookie)
+                <br />
+                <button name="btnSetCookie" id="btnSetCookie">Set Cookie</button>
+                <button name="btnGetCookie" id="btnGetCookie">Get Cookie</button>
+                <p id="cookieOutput" width="300" height="100"></p>
+            </div>
+        </div>
+    </div>
+    <!----------------------->
+    <!--- File Cookie Test end --->
     <!----------------------->
 	
 	<!------------------------------->

@@ -1,0 +1,31 @@
+<!doctype html>
+<!-- Wed Apr 29 2015 08:40:46 GMT-0700 (Pacific Daylight Time) -->
+<html>
+ <style>
+	.labellong {
+    	width: 240px;
+      text-align: left;
+      display:inline-block;
+    }
+  </style>
+  <body onload="Initialize()">
+  	<h3 align="center">Photoshop JSON Events v0.1</h3>
+    <button id="btnClose">Close</button>
+  	<div>
+      <label><input type="checkbox" id="cbMake" checked="true" onClick="EventClick(this);">Make</label>
+      <label id="lblMake"> 0</label><br>
+      <label><input type="checkbox" id="cbDelete" checked="true" onClick="EventClick(this);">Delete</label>
+      <label id="lblDelete"> 0</label><br>
+      <label><input type="checkbox" id="cbClose" checked="true" onClick="EventClick(this);">Close</label>
+      <label id="lblClose"> 0</label><br>
+      <label><input type="checkbox" id="cbSelect" checked="true" onClick="EventClick(this);">Select</label>
+      <label id="lblSelect"> 0</label><br>
+      <label><input type="checkbox" id="cbSet" checked="true" onClick="EventClick(this);">Set</label>
+      <label id="lblSet"> 0</label><br>
+  	</div>
+  	<div><label id="lblResult" class="labellong">Results go here</label></div>
+  	<div><label id="lblTiming" class="labellong">Timing info goes here</label></div>
+ </body>
+  <script src="js/CSInterface.js"></script>
+  <script src="js/main.js"></script>
+</html>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<ExtensionManifest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ExtensionBundleId="com.adobe.CEPHTMLTEST" ExtensionBundleVersion="1.0" Version="5.0">
+<ExtensionManifest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ExtensionBundleId="com.adobe.CEPHTMLTEST" ExtensionBundleVersion="1.0" Version="6.0"> <!-- MAJOR-VERSION-UPDATE-MARKER -->
     <ExtensionList>
         <Extension Id="com.adobe.CEPHTMLTEST.Panel1" Version="1.0"/>
         <Extension Id="com.adobe.CEPHTMLTEST.Panel2" Version="1.0"/>
@@ -8,26 +8,23 @@
     </ExtensionList>
     <ExecutionEnvironment>
         <HostList>
-            <Host Name="DRWV" Version="12.0"/>
-            <Host Name="FLPR" Version="12.0"/>
-            <Host Name="FWKS" Version="12.0"/>
-            <Host Name="IDSN" Version="8.0"/>
-            <Host Name="AICY" Version="8.0"/>
-            <Host Name="ILST" Version="16.0"/>
-            <Host Name="PHSP" Version="13.0"/>
-            <Host Name="PHXS" Version="13.0"/>
-            <Host Name="PPRO" Version="6.0"/>
-            <Host Name="CNTB" Version="6.1"/>
-            <Host Name="CPTV" Version="6.0"/>
-            <Host Name="AUDT" Version="5.0"/>
-            <Host Name="PRLD" Version="2.0"/>
+            <Host Name="DRWV" Version="14.0"/>
+            <Host Name="FLPR" Version="14.0"/>
+            <Host Name="IDSN" Version="10.0"/>
+            <Host Name="AICY" Version="10.0"/>
+            <Host Name="ILST" Version="18.0"/>
+            <Host Name="PHSP" Version="14.0"/>
+            <Host Name="PHXS" Version="14.0"/>
+            <Host Name="PPRO" Version="8.0"/>
+            <Host Name="PRLD" Version="3.0"/>
             <Host Name="AEFT" Version="13.0"/>
+            <Host Name="DEMO" Version="1.0"/>
         </HostList>
         <LocaleList>
             <Locale Code="All"/>
         </LocaleList>
         <RequiredRuntimeList>
-            <RequiredRuntime Name="CSXS" Version="5.0"/>
+            <RequiredRuntime Name="CSXS" Version="6.0"/> <!-- MAJOR-VERSION-UPDATE-MARKER -->
         </RequiredRuntimeList>
     </ExecutionEnvironment>
     <DispatchInfoList>
@@ -76,6 +73,7 @@
 					<CEFCommandLine>
                         <Parameter>--enable-speech-input</Parameter>
 						<Parameter>--enable-media-stream</Parameter>
+						<Parameter>--cep-disable-authentication</Parameter>
                     </CEFCommandLine>
                 </Resources>
                 <Lifecycle>

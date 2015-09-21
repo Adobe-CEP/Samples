@@ -11,7 +11,7 @@
 *
 **************************************************************************************************/
 
-/** CSInterface - v5.2.0 */
+/** CSInterface - v6.0.0 */
 
 /**
  * Stores constants for the window types supported by the CSXS infrastructure.
@@ -873,9 +873,12 @@ CSInterface.prototype.getCurrentApiVersion = function()
  *
  * Since 5.2.0
  *
- * If user wants to be noticed when clicking an menu item, user needs to register "com.adobe.csxs.events.flyoutMenuClicked" Event by calling AddEventListener.
- * When an menu item is clicked, the event callback function will be called. 
+ * Register a callback function for "com.adobe.csxs.events.flyoutMenuClicked" to get notified when a 
+ * menu item is clicked.
  * The "data" attribute of event is an object which contains "menuId" and "menuName" attributes. 
+ *
+ * Register callback functions for "com.adobe.csxs.events.flyoutMenuOpened" and "com.adobe.csxs.events.flyoutMenuClosed"
+ * respectively to get notified when flyout menu is opened or closed.
  *
  * @param menu     A XML string which describes menu structure.
  * An example menu XML:
@@ -938,13 +941,17 @@ CSInterface.prototype.updatePanelMenuItem = function(menuItemLabel, enabled, che
  * - an item without menu ID or menu name is disabled and is not shown.
  * - if the item name is "---" (three hyphens) then it is treated as a separator. The menu ID in this case will always be NULL.
  * - Checkable attribute takes precedence over Checked attribute.
+ * - a PNG icon. For optimal display results please supply a 16 x 16px icon as larger dimensions will increase the size of the menu item. 
+     The Chrome extension contextMenus API was taken as a reference. 
+     https://developer.chrome.com/extensions/contextMenus
+ * - the items with icons and checkable items cannot coexist on the same menu level. The former take precedences over the latter.
  *
  * @param menu      A XML string which describes menu structure.
  * @param callback  The callback function which is called when a menu item is clicked. The only parameter is the returned ID of clicked menu item.
  *
  * An example menu XML:
  * <Menu>
- *   <MenuItem Id="menuItemId1" Label="TestExample1" Enabled="true" Checkable="true" Checked="false"/>
+ *   <MenuItem Id="menuItemId1" Label="TestExample1" Enabled="true" Checkable="true" Checked="false" Icon="./image/small_16X16.png"/>
  *   <MenuItem Id="menuItemId2" Label="TestExample2">
  *     <MenuItem Id="menuItemId2-1" Label="TestExample2-1" >
  *       <MenuItem Id="menuItemId2-1-1" Label="TestExample2-1-1" Enabled="false" Checkable="true" Checked="true"/>
@@ -959,10 +966,89 @@ CSInterface.prototype.setContextMenu = function(menu, callback)
 {
     if ("string" != typeof menu)
     {
-        return;	
+        return;
     }
     
 	window.__adobe_cep__.invokeAsync("setContextMenu", menu, callback);
+};
+
+/**
+ * Set context menu by JSON string.
+ *
+ * Since 6.0.0
+ *
+ * There are a number of conventions used to communicate what type of menu item to create and how it should be handled.
+ * - an item without menu ID or menu name is disabled and is not shown.
+ * - if the item label is "---" (three hyphens) then it is treated as a separator. The menu ID in this case will always be NULL.
+ * - Checkable attribute takes precedence over Checked attribute.
+ * - a PNG icon. For optimal display results please supply a 16 x 16px icon as larger dimensions will increase the size of the menu item. 
+     The Chrome extension contextMenus API was taken as a reference.
+ * - the items with icons and checkable items cannot coexist on the same menu level. The former take precedences over the latter.
+     https://developer.chrome.com/extensions/contextMenus
+ *
+ * @param menu      A JSON string which describes menu structure.
+ * @param callback  The callback function which is called when a menu item is clicked. The only parameter is the returned ID of clicked menu item.
+ *
+ * An example menu JSON:
+ *
+ * { 
+ *      "menu": [
+ *          {
+ *              "id": "menuItemId1",
+ *              "label": "testExample1",
+ *              "enabled": true,
+ *              "checkable": true,
+ *              "checked": false,
+ *              "icon": "./image/small_16X16.png"
+ *          },
+ *          {
+ *              "id": "menuItemId2",
+ *              "label": "testExample2",
+ *              "menu": [
+ *                  {
+ *                      "id": "menuItemId2-1",
+ *                      "label": "testExample2-1",
+ *                      "menu": [
+ *                          {
+ *                              "id": "menuItemId2-1-1",
+ *                              "label": "testExample2-1-1",
+ *                              "enabled": false,
+ *                              "checkable": true,
+ *                              "checked": true
+ *                          }
+ *                      ]
+ *                  },
+ *                  {
+ *                      "id": "menuItemId2-2",
+ *                      "label": "testExample2-2",
+ *                      "enabled": true,
+ *                      "checkable": true,
+ *                      "checked": true
+                    }
+ *              ]
+ *          },
+ *          {
+ *              "label": "---"
+ *          },
+ *          {
+ *              "id": "menuItemId3",
+ *              "label": "testExample3",
+ *              "enabled": false,
+ *              "checkable": true,
+ *              "checked": false
+ *          }
+ *      ]
+ *  }
+ *
+ */
+CSInterface.prototype.setContextMenuByJSON = function(menu, callback)
+{
+    if ("string" != typeof menu)
+    {
+        return;	
+    }
+    
+	window.__adobe_cep__.invokeAsync("setContextMenuByJSON", menu, callback);
 };
 
 /**
@@ -978,4 +1064,39 @@ CSInterface.prototype.updateContextMenuItem = function(menuItemID, enabled, chec
 {
 	var itemStatus = new ContextMenuItemStatus(menuItemID, enabled, checked);
 	ret = window.__adobe_cep__.invokeSync("updateContextMenuItem", JSON.stringify(itemStatus));
+};
+
+/**
+ * Get the visibility status of an extension window. 
+ *  
+ * Since 6.0.0
+ *
+ * @return true if the extension window is visible; false if the extension window is hidden.
+ */
+CSInterface.prototype.isWindowVisible = function()
+{
+	return window.__adobe_cep__.invokeSync("isWindowVisible", "");
+};
+
+/**
+ * Resize extension's content to the specified dimensions.
+ * 1. Works with modal and modeless extensions in all Adobe products.
+ * 2. Extension's manifest min/max size constraints apply and take precedence. 
+ * 3. For panel extensions
+ *    3.1 This works in all Adobe products except:
+ *        * Premiere Pro
+ *        * Prelude
+ *        * After Effects
+ *    3.2 When the panel is in certain states (especially when being docked),
+ *        it will not change to the desired dimensions even when the
+ *        specified size satisfies min/max constraints.
+ *
+ * Since 6.0.0
+ *
+ * @param width  The new width
+ * @param height The new height
+ */
+CSInterface.prototype.resizeContent = function(width, height)
+{
+    window.__adobe_cep__.resizeContent(width, height);
 };

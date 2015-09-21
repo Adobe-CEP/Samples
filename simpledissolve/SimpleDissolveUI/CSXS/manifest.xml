@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ExtensionManifest Version="5.0" ExtensionBundleId="SimpleDissolveUI" ExtensionBundleVersion="1.0.0"
+		ExtensionBundleName="SimpleDissolveUI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<ExtensionList>
+		<Extension Id="SimpleDissolveUI" Version="1.0" />
+	</ExtensionList>
+	<ExecutionEnvironment>
+		<HostList>
+            <Host Name="PHXS" Version="[14.0,99.0]" />
+		</HostList>
+		<LocaleList>
+			<Locale Code="All" />
+		</LocaleList>
+		<RequiredRuntimeList>
+			<RequiredRuntime Name="CSXS" Version="5.0" />
+		</RequiredRuntimeList>
+	</ExecutionEnvironment>
+	<DispatchInfoList>
+		<Extension Id="SimpleDissolveUI">
+			<DispatchInfo >
+				<Resources>
+				<MainPath>./index.html</MainPath>
+				<ScriptPath>./jsx/hostscript.jsx</ScriptPath>
+				</Resources>
+				<Lifecycle>
+					<AutoVisible>true</AutoVisible>
+					<StartOn>
+						<Event>com.adobe.event.loadSimpleDissolve</Event>
+					</StartOn>
+				</Lifecycle>
+				<UI>
+					<Type>ModalDialog</Type>
+					<Menu></Menu>
+					<Geometry>
+						<Size>
+							<Height>220</Height>
+							<Width>450</Width>							
+						</Size>
+						<MaxSize>
+							<Height></Height>
+							<Width></Width>
+						</MaxSize>
+						<MinSize>
+							<Height></Height>
+							<Width></Width>
+						</MinSize>						
+					</Geometry>
+				</UI>
+			</DispatchInfo>
+		</Extension>
+	</DispatchInfoList>
+</ExtensionManifest>

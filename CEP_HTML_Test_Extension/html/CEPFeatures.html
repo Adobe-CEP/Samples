@@ -61,8 +61,8 @@
 	}
 	
 	function onclickSetPanelMenu() {
-	    var menuXML = document.getElementById("TestMenuStructure").value;
-		CSLibrary.setPanelFlyoutMenu(menuXML, setPanelCallback);
+	  var menuXML = document.getElementById("TestMenuStructure").value;
+    CSLibrary.setPanelFlyoutMenu(menuXML, setPanelCallback);
 		setMenuXML = menuXML;
 		setMenuList();
 	}
@@ -115,9 +115,14 @@
     <!-- Context Menu tab begin -->
     <!--------------------------->
 	var setContextMenuXML;
-	function contextMenuCallback(meunID) {
-		document.getElementById("ReturnMenuID").value = 'The menu ID is: ' + meunID;
+    var SetContextMenuByJSON;
+	function contextMenuCallback(menuID) {
+		document.getElementById("ReturnMenuID").value = 'The menu ID is: ' + menuID;
 	}
+
+    function contextMenuByJSONCallback(menuID) {
+        document.getElementById("ReturnMenuIDJSON").value = 'The menu ID is: ' + menuID;
+    }
 
 	function onclickSetContextMenu() {
 	    var menuXML = document.getElementById("TestContextMenuStructure").value;
@@ -125,22 +130,36 @@
 		setContextMenuXML = menuXML;
 		setContextMenuList();
 	}
+
+    function onclickSetContextMenuByJSON() {
+        var menuJSON = document.getElementById("TestContextMenuJSONStructure").value;
+        CSLibrary.setContextMenuByJSON(menuJSON, contextMenuByJSONCallback);
+        SetContextMenuByJSON = menuJSON;
+        setContextMenuByJSONList();
+    }
 	
 	function onclickClearContextMenu() {
 		CSLibrary.setContextMenu("", contextMenuCallback);
 		setContextMenuXML = "";
+        SetContextMenuByJSON = "";
 		setContextMenuList();
+        setContextMenuByJSONList();
 	}
 	
-	function onclickUpdateMenuItem(){
+	function onclickContextUpdateMenuItem(){
 		var list = document.getElementById("ContextLabelList");	
 		CSLibrary.updateContextMenuItem(list.options[list.selectedIndex].text, document.getElementById("ContextItemEnabled").checked, document.getElementById("ContextItemChecked").checked);
 	}
+
+    function onclickContextUpdateMenuItemByJSON(){
+        var list = document.getElementById("ContextJSONLabelList");
+        CSLibrary.updateContextMenuItem(list.options[list.selectedIndex].text, document.getElementById("ContextItemJSONEnabled").checked, document.getElementById("ContextItemJSONChecked").checked);
+    }
 	
 	function setContextMenuList() { 
 		var list = document.getElementById("ContextLabelList");
 		list.innerHTML = "";
-		xmlDoc = $.parseXML(setContextMenuXML),
+		xmlDoc = $.parseXML(setContextMenuXML);
 		$xml = $(xmlDoc);
 		var i = 0;
 		$($xml).find("MenuItem").each(function() {
@@ -154,6 +173,29 @@
 			}
 		});
 	}
+
+    function setContextMenuByJSONList() {
+        var list = document.getElementById("ContextJSONLabelList");
+        list.innerHTML = "";
+        jsonDoc = $.parseJSON(SetContextMenuByJSON);
+        
+        function iterateMenu(i, obj) {
+            var option = document.createElement("option");
+			var id = obj.id;
+			var name = obj.label;
+			if (id != undefined && id != '' && name != undefined && name != '' && name != '---') {
+				option.value = ++i;
+				option.appendChild(document.createTextNode(id));
+				list.appendChild(option);
+			}
+            
+            if (obj.menu != undefined) {
+                $(obj.menu).each(iterateMenu);
+            }
+        }
+        
+        iterateMenu(0, jsonDoc);
+    }
     <!--------------------------->
     <!-- Context Menu tab end   -->
     <!--------------------------->
@@ -164,10 +206,9 @@
 <body>
 <div id="TabbedPanels1" class="TabbedPanels">
   <ul class="TabbedPanelsTabGroup">
-    <li class="TabbedPanelsTab" tabindex="0">Flyout Menu<br />
-    </li>
-    <li class="TabbedPanelsTab" tabindex="0">Context Menu<br />
-    </li>
+    <li class="TabbedPanelsTab">Flyout Menu</li>
+    <li class="TabbedPanelsTab">Context Menu</li>
+    <li class="TabbedPanelsTab">Context Menu Using JSON</li>
   </ul>
   
   <div class="TabbedPanelsContentGroup">
@@ -176,104 +217,103 @@
     <!--------------------------->
     <div class="TabbedPanelsContent">
       <div><label style="color: #FFF">Test Flyout Menu: THIS FEATURE IS ONLY AVAILABLE ON PANEL EXTENSIONS</label></div>
+      <div>
+        <table width="800" border="0">
+           <tr>
+            <td width="300">&nbsp;</td>
+            <td width="300">&nbsp;</td>
+          </tr>
 
-<div>
-  <table width="800" border="0">
-	 <tr>
-	  <td width="300">&nbsp;</td>
-	  <td width="300">&nbsp;</td>
-	</tr>
+          <tr>
+            <td><label style="color: #FFF">Test Menu Structure:</label>&nbsp;</td>
+            <td>
+              <label for="TestMenuStructure"></label>
+              <textarea name="TestMenuStructure" id="TestMenuStructure" cols="80" rows="6" align="left">
+            <Menu>
+             <MenuItem Id="menuItemId1" Label="TestExample1" Enabled="true" Checked="false"/>
+             <MenuItem Label="TestExample2">
+               <MenuItem Label="TestExample2-1" >
+                 <MenuItem Label="TestExample2-1-1" Enabled="false" Checked="true"/>
+               </MenuItem>
+               <MenuItem Label="TestExample2-2" Enabled="true" Checked="true"/>
+             </MenuItem>
+             <MenuItem Label="---" />
+             <MenuItem Label="TestExample3" Enabled="false" Checked="false"/>
+            </Menu>
+              </textarea>
+          </td>
+          </tr>
 
-	<tr>
-	  <td><label style="color: #FFF">Test Menu Structure:</label>&nbsp;</td>
-	  <td><form id="formESP" name="formESP" method="post" action="">
-		<label for="TestMenuStructure"></label>
-		<textarea name="TestMenuStructure" id="TestMenuStructure" cols="80" rows="6" align="left">
-<Menu>
-   <MenuItem Id="menuItemId1" Label="TestExample1" Enabled="true" Checked="false"/>
-   <MenuItem Label="TestExample2">
-	 <MenuItem Label="TestExample2-1" >
-	   <MenuItem Label="TestExample2-1-1" Enabled="false" Checked="true"/>
-	 </MenuItem>
-	 <MenuItem Label="TestExample2-2" Enabled="true" Checked="true"/>
-   </MenuItem>
-   <MenuItem Label="---" />
-   <MenuItem Label="TestExample3" Enabled="false" Checked="false"/>
-</Menu>
-		</textarea>
-	  </form></td>
-	</tr>
+          <tr>
+            <td><label style="color: #FFF">Return Object:</label>&nbsp;</td>
+            <td><form id="formESP" name="formESP" method="post" action="">
+              <label for="ReturnObject"></label>
+              <textarea name="ReturnObject" id="ReturnObject" cols="80" rows="4" align="left"></textarea>
+            </form></td>
+          </tr>
+        </table>
+        <table>
+          <tr>
+          <td><label style="color: #FFF">Dispatch XML:</label>&nbsp;</td>
+            <td><form id="formIES" name="formIES" method="post" action="">
+              <input type="button" name="SetPanelMenu" id="SetPanelMenu" value="SetPanelMenu" onclick="onclickSetPanelMenu()" />
+            </form></td>
+            <td><label style="color: #FFF">Dispatch Null:</label>&nbsp;</td>
+            <td><form id="formIES" name="formIES" method="post" action="">
+              <input type="button" name="ClearPanelMenu" id="ClearPanelMenu" value="ClearPanelMenu" onclick="onclickClearPanelMenu()" />
+            </form></td>
+            <td><label style="color: #FFF">Flyout MenuItem Clicked:</label>&nbsp;</td>
+            <td><input type="image" name="GreenLightImg" id="GreenLightImg" src="../img/greenLED.png"/></td>
+            <td><form id="formIES" name="formIES" method="post" action="">
+              <input type="button" name="Reset" id="Reset" value="Reset" onclick="onclickReset()" />
+            </form></td>
+          </tr>
+        </table>
+      </div>
 
-	<tr>
-	  <td><label style="color: #FFF">Return Object:</label>&nbsp;</td>
-	  <td><form id="formESP" name="formESP" method="post" action="">
-		<label for="ReturnObject"></label>
-		<textarea name="ReturnObject" id="ReturnObject" cols="80" rows="4" align="left"></textarea>
-	  </form></td>
-	</tr>
-  </table>
-  <table>
-	<tr>
-	<td><label style="color: #FFF">Dispatch XML:</label>&nbsp;</td>
-	  <td><form id="formIES" name="formIES" method="post" action="">
-		<input type="button" name="SetPanelMenu" id="SetPanelMenu" value="SetPanelMenu" onclick="onclickSetPanelMenu()" />
-	  </form></td>
-	  <td><label style="color: #FFF">Dispatch Null:</label>&nbsp;</td>
-	  <td><form id="formIES" name="formIES" method="post" action="">
-		<input type="button" name="ClearPanelMenu" id="ClearPanelMenu" value="ClearPanelMenu" onclick="onclickClearPanelMenu()" />
-	  </form></td>
-	  <td><label style="color: #FFF">Flyout MenuItem Clicked:</label>&nbsp;</td>
-	  <td><input type="image" name="GreenLightImg" id="GreenLightImg" src="../img/greenLED.png"/></td>
-	  <td><form id="formIES" name="formIES" method="post" action="">
-		<input type="button" name="Reset" id="Reset" value="Reset" onclick="onclickReset()" />
-	  </form></td>
-	</tr>
-  </table>
-</div>
+      <div>
+        <label style="color: #FFF">Update Extension Menu Item:</label>
+        <table width="800" border="0">
+          <tr>
+          <td width="100">&nbsp;</td>
+          <td width="300">&nbsp;</td>
+          </tr>
 
-<div>
-  <label style="color: #FFF">Update Extension Menu Item:</label>
-  <table width="800" border="0">
-	 <tr>
-	  <td width="100">&nbsp;</td>
-	  <td width="300">&nbsp;</td>
-	</tr>
+          <tr>
+            <td><label style="color: #FFF">Capability:</label>&nbsp;</td>
+            <td><label style="color: #FFF" id="CapabilityLabel">EXTENDED_PANEL_MENU is : </label>&nbsp;</td>
+          </tr>
 
-	<tr>
-	  <td><label style="color: #FFF">Capability:</label>&nbsp;</td>
-	  <td><label style="color: #FFF" id="CapabilityLabel">EXTENDED_PANEL_MENU is : </label>&nbsp;</td>
-	</tr>
+          <tr>
+            <td><label style="color: #FFF">Item Labels:</label>&nbsp;</td>
+            <td><form id="formESP" name="formESP" method="post" action="">
+                  <label for="LabelList"></label>
+                  <select name="LabelList" id="LabelList" style="width:300px" disabled="disable"/>
+            </form></td>
+          </tr>
+          
+          <tr>
+          <td><label style="color: #FFF">Item Enabled:</label>&nbsp;</td>
+            <td><form id="formIES" name="formIES" method="post" action="">
+               <input type="checkbox" name="ItemEnabled" id="ItemEnabled" disabled="disable"/>
+            </form></td>
+          </tr>
 
-	<tr>
-	  <td><label style="color: #FFF">Item Labels:</label>&nbsp;</td>
-	  <td><form id="formESP" name="formESP" method="post" action="">
-		    <label for="LabelList"></label>
-            <select name="LabelList" id="LabelList" style="width:300px" disabled="disable"/>
-	  </form></td>
-	</tr>
-	
-	<tr>
-	<td><label style="color: #FFF">Item Enabled:</label>&nbsp;</td>
-	  <td><form id="formIES" name="formIES" method="post" action="">
-		 <input type="checkbox" name="ItemEnabled" id="ItemEnabled" disabled="disable"/>
-	  </form></td>
-	</tr>
-
-	<tr>
-	<td><label style="color: #FFF">Item Checked:</label>&nbsp;</td>
-	  <td><form id="formIES" name="formIES" method="post" action="">
-		 <input type="checkbox" name="ItemChecked" id="ItemChecked" disabled="disable"/>
-	  </form></td>
-	</tr>
-	
-	<tr>
-	<td><label style="color: #FFF">Dispatch:</label>&nbsp;</td>
-	  <td><form id="formIES" name="formIES" method="post" action="">
-		<input type="button" name="UpdateMenuItem" id="UpdateMenuItem" value="UpdateMenuItem" onclick="onclickUpdateMenuItem()" disabled="disable"/>
-	  </form></td>
-	</tr>
-  </table>
-</div>
+          <tr>
+          <td><label style="color: #FFF">Item Checked:</label>&nbsp;</td>
+            <td><form id="formIES" name="formIES" method="post" action="">
+               <input type="checkbox" name="ItemChecked" id="ItemChecked" disabled="disable"/>
+            </form></td>
+          </tr>
+          
+          <tr>
+          <td><label style="color: #FFF">Dispatch:</label>&nbsp;</td>
+            <td><form id="formIES" name="formIES" method="post" action="">
+              <input type="button" name="UpdateMenuItem" id="UpdateMenuItem" value="UpdateMenuItem" onclick="onclickUpdateMenuItem()" disabled="disable"/>
+            </form></td>
+          </tr>
+        </table>
+      </div>
     </div>
     <!------------------------->
     <!-- Flyout Menu tab end -->
@@ -283,98 +323,237 @@
     <!-- Context Menu tab begin -->
     <!--------------------------->
     <div class="TabbedPanelsContent">
-      <!-- Environment tab div EnvnavigationDiv begin -->
-      <div id="EnvnavigationDiv">
+      <!-- Environment tab div begin -->
+      <div>
         <div>
-		  <table width="800" border="0">
-			 <tr>
-			  <td width="300">&nbsp;</td>
-			  <td width="300">&nbsp;</td>
-			</tr>
-
-			<tr>
-			  <td><label style="color: #FFF">Test Menu Structure:</label>&nbsp;</td>
-			  <td><form id="formESP" name="formESP" method="post" action="">
-				<label for="TestMenuStructure"></label>
-				<textarea name="TestMenuStructure" id="TestContextMenuStructure" cols="80" rows="6" align="left">
-<Menu>
-   <MenuItem Id="menuItemId1" Label="TestExample1" Enabled="true" Checkable="true" Checked="false"/>
-   <MenuItem Id="menuItemId2" Label="TestExample2">
-     <MenuItem Id="menuItemId2-1" Label="TestExample2-1" >
-       <MenuItem Id="menuItemId2-1-1" Label="TestExample2-1-1" Enabled="false" Checkable="true" Checked="true"/>
-     </MenuItem>
-     <MenuItem Id="menuItemId2-2" Label="TestExample2-2" Enabled="true" Checkable="true" Checked="true"/>
-   </MenuItem>
-   <MenuItem Label="---" />
-   <MenuItem Id="menuItemId3" Label="TestExample3" Enabled="false" Checkable="true" Checked="false"/>
-</Menu>
-				</textarea>
-			  </form></td>
-			</tr>
-
-			<tr>
-			  <td><label style="color: #FFF">Return Object:</label>&nbsp;</td>
-			  <td><form id="formESP" name="formESP" method="post" action="">
-				<label for="ReturnMenuID"></label>
-				<textarea name="ReturnObject" id="ReturnMenuID" cols="80" rows="4" align="left"></textarea>
-			  </form></td>
-			</tr>
-		  </table>
-		  <table>
-			<tr>
-			<td><label style="color: #FFF">Dispatch XML:</label>&nbsp;</td>
-			  <td><form id="formIES" name="formIES" method="post" action="">
-				<input type="button" name="SetContextMenu" id="SetContextMenu" value="SetContextMenu" onclick="onclickSetContextMenu()" />
-			  </form></td>
-			  <td><label style="color: #FFF">Dispatch Null:</label>&nbsp;</td>
-			  <td><form id="formIES" name="formIES" method="post" action="">
-				<input type="button" name="ClearContextMenu" id="ClearContextMenu" value="ClearContextMenu" onclick="onclickClearContextMenu()" />
-			  </form></td>
-			</tr>
-		  </table>
-		</div>
-
-		<div>
-		  <label style="color: #FFF">Update Extension Menu Item:</label>
-		  <table width="800" border="0">
-			 <tr>
-			  <td width="100">&nbsp;</td>
-			  <td width="300">&nbsp;</td>
-			</tr>
-
-			<tr>
-			  <td><label style="color: #FFF">Item Labels:</label>&nbsp;</td>
-			  <td><form id="formESP" name="formESP" method="post" action="">
-					<label for="ContextLabelList"></label>
-					<select name="ContextLabelList" id="ContextLabelList" style="width:300px" />
-			  </form></td>
-			</tr>
-			
-			<tr>
-			<td><label style="color: #FFF">Item Enabled:</label>&nbsp;</td>
-			  <td><form id="formIES" name="formIES" method="post" action="">
-				 <input type="checkbox" name="ItemEnabled" id="ContextItemEnabled" />
-			  </form></td>
-			</tr>
-
-			<tr>
-			<td><label style="color: #FFF">Item Checked:</label>&nbsp;</td>
-			  <td><form id="formIES" name="formIES" method="post" action="">
-				 <input type="checkbox" name="ItemChecked" id="ContextItemChecked" />
-			  </form></td>
-			</tr>
-			
-			<tr>
-			<td><label style="color: #FFF">Dispatch:</label>&nbsp;</td>
-			  <td><form id="formIES" name="formIES" method="post" action="">
-				<input type="button" name="UpdateContextMenuItem" id="UpdateContextMenuItem" value="UpdateContextMenuItem" onclick="onclickUpdateMenuItem()"/>
-			  </form></td>
-			</tr>
-		  </table>
-		</div>
+          <table width="800" border="0">
+            <tr>
+              <td width="300">&nbsp;</td>
+              <td width="300">&nbsp;</td>
+            </tr>
+              
+            <tr>
+              <td><label style="color: #FFF">Test Menu Structure:</label>&nbsp;</td>
+              <td>
+                <label for="TestMenuStructure"></label>
+                <textarea name="TestMenuStructure" id="TestContextMenuStructure" cols="80" rows="6" align="left">
+                  <Menu>
+                    <MenuItem Id="menuItemId1" Label="TestExample1" Enabled="true" Checkable="true" Checked="false"
+                        Icon="./img/context-menu-item-icon.png"/>
+                    <MenuItem Id="menuItemId2" Label="TestExample2">
+                      <MenuItem Id="menuItemId2-1" Label="TestExample2-1" >
+                        <MenuItem Id="menuItemId2-1-1" Label="TestExample2-1-1" Enabled="false" Checkable="true" Checked="true"/>
+                      </MenuItem>
+                      <MenuItem Id="menuItemId2-2" Label="TestExample2-2" Enabled="true" Checkable="true" Checked="true"/>
+                    </MenuItem>
+                    <MenuItem Label="---" />
+                    <MenuItem Id="menuItemId3" Label="TestExample3" Enabled="false" Checkable="true" Checked="false"/>
+                  </Menu>
+                </textarea>
+              </td>
+            </tr>
+              
+            <tr>
+              <td><label style="color: #FFF">Return Object:</label>&nbsp;</td>
+              <td>
+                <label for="ReturnMenuID"></label>
+                <textarea name="ReturnObject" id="ReturnMenuID" cols="80" rows="4" align="left"></textarea>
+              </td>
+            </tr>
+          </table>
+          <table>
+            <tr>
+              <td><label style="color: #FFF">Dispatch XML:</label>&nbsp;</td>
+              <td>
+                <input type="button" name="SetContextMenu" id="SetContextMenu" value="SetContextMenu" onclick="onclickSetContextMenu()" />
+              </td>
+              <td><label style="color: #FFF">Dispatch Null:</label>&nbsp;</td>
+              <td>
+                <input type="button" name="ClearContextMenu" id="ClearContextMenu" value="ClearContextMenu" onclick="onclickClearContextMenu()" />
+              </td>
+            </tr>
+          </table>
+       </div>
+      
+       <div>
+          <label style="color: #FFF">Update Extension Menu Item:</label>
+          <table width="800" border="0">
+            <tr>
+              <td width="100">&nbsp;</td>
+              <td width="300">&nbsp;</td>
+            </tr>
+              
+            <tr>
+              <td><label style="color: #FFF">Item Labels:</label>&nbsp;</td>
+              <td>
+                <label for="ContextLabelList"></label>
+                <select name="ContextLabelList" id="ContextLabelList" style="width:300px" />
+              </td>
+            </tr>
+            
+            <tr>
+              <td><label style="color: #FFF">Item Enabled:</label>&nbsp;</td>
+              <td>
+                <input type="checkbox" name="ItemEnabled" id="ContextItemEnabled" />
+              </td>
+            </tr>
+            
+            <tr>
+              <td><label style="color: #FFF">Item Checked:</label>&nbsp;</td>
+              <td>
+                <input type="checkbox" name="ItemChecked" id="ContextItemChecked" />
+              </td>
+            </tr>
+            
+            <tr>
+              <td><label style="color: #FFF">Dispatch:</label>&nbsp;</td>
+              <td>
+                <input type="button" name="UpdateContextMenuItem" id="UpdateContextMenuItem" value="UpdateContextMenuItem" onclick="onclickContextUpdateMenuItem()"/>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
     </div>
     <!------------------------->
     <!-- Context Menu tab end -->
+    <!------------------------->
+        
+    <!--------------------------->
+    <!-- Context Menu Using JSON tab begin -->
+    <!--------------------------->
+    <div class="TabbedPanelsContent">
+      <!-- Environment tab div begin -->
+      <div>
+        <div>
+          <table width="800" border="0">
+            <tr>
+              <td width="300">&nbsp;</td>
+              <td width="300">&nbsp;</td>
+            </tr>
+              
+            <tr>
+              <td><label style="color: #FFF">Test Menu Structure:</label>&nbsp;</td>
+              <td>
+                <label for="TestContextMenuJSONStructure"></label>
+                <textarea name="TestContextMenuJSONStructure" id="TestContextMenuJSONStructure" cols="80" rows="6" align="left">
+                    {
+                          "menu": [
+                              {
+                                  "id": "menuItemId1",
+                                  "label": "testExample1",
+                                  "enabled": true,
+                                  "checkable": true,
+                                  "checked": false,
+                                  "icon": "./img/context-menu-item-icon.png"
+                              },
+                              {
+                                  "id": "menuItemId2",
+                                  "label": "testExample2",
+                                  "menu": [
+                                      {
+                                          "id": "menuItemId2-1",
+                                          "label": "testExample2-1",
+                                          "menu": [
+                                              {
+                                                  "id": "menuItemId2-1-1",
+                                                  "label": "testExample2-1-1",
+                                                  "enabled": false,
+                                                  "checkable": true,
+                                                  "checked": true
+                                              }
+                                          ]
+                                      },
+                                      {
+                                          "id": "menuItemId2-2",
+                                          "label": "testExample2-2",
+                                          "enabled": true,
+                                          "checkable": true,
+                                          "checked": true
+                                      }
+                                  ]
+                              },
+                              {
+                                  "label": "---"
+                              },
+                              {
+                                  "id": "menuItemId3",
+                                  "label": "testExample3",
+                                  "enabled": false,
+                                  "checkable": true,
+                                  "checked": false
+                              }
+                          ]
+                      }
+
+                </textarea>
+              </td>
+            </tr>
+            
+            <tr>
+              <td><label style="color: #FFF">Return Object:</label>&nbsp;</td>
+              <td>
+                <label for="ReturnMenuIDJSON"></label>
+                <textarea name="ReturnObject" id="ReturnMenuIDJSON" cols="80" rows="4" align="left"></textarea>
+              </td>
+            </tr>
+          </table>
+          <table>
+            <tr>
+              <td><label style="color: #FFF">Dispatch JSON:</label>&nbsp;</td>
+              <td>
+                <input type="button" name="SetContextMenuByJSON" id="SetContextMenuByJSON" value="SetContextMenuByJSON" onclick="onclickSetContextMenuByJSON()" />
+              </td>
+              <td><label style="color: #FFF">Dispatch Null:</label>&nbsp;</td>
+              <td>
+                <input type="button" name="ClearContextMenu" id="ClearContextMenu" value="ClearContextMenu" onclick="onclickClearContextMenu()" />
+              </td>
+            </tr>
+          </table>
+        </div>
+        
+        <div>
+          <label style="color: #FFF">Update Extension Menu Item:</label>
+          <table width="800" border="0">
+            <tr>
+              <td width="100">&nbsp;</td>
+              <td width="300">&nbsp;</td>
+            </tr>
+            
+            <tr>
+              <td><label style="color: #FFF">Item Labels:</label>&nbsp;</td>
+              <td>
+                <label for="ContextJSONLabelList"></label>
+                <select name="ContextJSONLabelList" id="ContextJSONLabelList" style="width:300px" />
+              </td>
+            </tr>
+            
+            <tr>
+              <td><label style="color: #FFF">Item Enabled:</label>&nbsp;</td>
+              <td>
+                <input type="checkbox" name="ItemEnabled" id="ContextItemJSONEnabled" />
+              </td>
+            </tr>
+            
+            <tr>
+              <td><label style="color: #FFF">Item Checked:</label>&nbsp;</td>
+              <td>
+                <input type="checkbox" name="ItemChecked" id="ContextItemJSONChecked" />
+              </td>
+            </tr>
+            
+            <tr>
+              <td><label style="color: #FFF">Dispatch:</label>&nbsp;</td>
+              <td>
+                <input type="button" name="UpdateContextMenuItem" id="UpdateContextMenuItem" value="UpdateContextMenuItem" onclick="onclickContextUpdateMenuItemByJSON()"/>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+    <!------------------------->
+    <!-- Context Menu Using JSON tab end -->
     <!------------------------->
 
     <!--------------------------->

@@ -13,11 +13,16 @@
       <h1>Welcome to the Exchange APIs Example!</h1>
       <p>Let's get started...</p>
     </div>
+      
+    <div id="welcome">
+      <h1>Welcome to the Exchange APIs Example! You have an update available for this extension.</h1>
+      <p>Please open ACCC and turn on Sync to get the update.</p>
+    </div>
     
     <div id="purchase">
       <h1>Oh No! You cannot access this extension!</h1>
       <p>Get access online:</p>
-      <a id="purchaseBtn">Acquire extension online</a>
+      <input type="button" onclick="launchBrowser()" value="Acquire extension online" />
     </div>
   </body>
   <script type="text/javascript" src="./js/CSInterface.js"></script>
