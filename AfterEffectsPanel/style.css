@@ -1,0 +1,30 @@
+
+body {
+text-align:center;
+}
+
+button, select, input
+{
+border:1px solid;
+height:19px;
+}
+
+input[type=text]
+{
+height:16px;
+}
+
+#content {
+margin-right:auto;
+margin-left:auto;
+vertical-align:middle;
+width:100%;
+}
+
+#content ul {
+padding:0px;
+}
+
+#content ul li {
+margin:3px 0px 3px 0px;
+}
