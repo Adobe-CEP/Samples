@@ -28,40 +28,14 @@ if(typeof($)=='undefined')
  * 
  **************************************************************************************/
 $.PREMIERE  = (function(exports) {
-    // used for the open in source and other experimental DOM calls
-    app.enableQE();
-    
-    var ANYWHERE = {}
-    
-    /**
-    * returns the correct authentication token in the form key=value
-    * so it can stored in a cookie as it is
-    */
-    ANYWHERE.getAuthenticationToken = function() {
-        var token = app.anywhere.getAuthenticationToken();
-        return token;
-    };
-    
-    /**
-    * returns if a production is open (false if a local project is open)
-    */
-    ANYWHERE.isProductionOpen = function() {
-        return app.anywhere.isProductionOpen()
-    };
-    
-    /**
-    * returns the current editing (user) session URL
-    */
-    ANYWHERE.getCurrentEditingSessionURL = function() {
-        var url = app.anywhere.getCurrentEditingSessionURL();
-        return url;
-    };
-    
 
+    /**
+    * get Premiere version
+    */
+    exports.version = function() {
+        return app.version;
+    }
     
-    exports.ANYWHERE = ANYWHERE;
-    
-    /// Premiere related ////
     /**
     * see $.PREMIERE#importFiles
     * the same but only for one file path
@@ -89,6 +63,7 @@ $.PREMIERE  = (function(exports) {
     * can be a local path or a eamedia:// path
     */
     exports.openInSourceAndPlay = function(mediaUrl) {
+        app.enableQE();
     	if (qe.source.openFilePath(mediaUrl)) {
             qe.source.player.play();
         } else {

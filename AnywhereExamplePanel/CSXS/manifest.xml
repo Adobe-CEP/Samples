@@ -7,7 +7,8 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	</ExtensionList>
 	<ExecutionEnvironment>
 		<HostList>
-			<Host Name="PPRO" Version="[8.0,9.9]" />
+			<Host Name="PPRO" Version="[8.0,20.0]" />
+            <Host Name="PRLD" Version="[3.2,20.0]" />
 		</HostList>
 		<LocaleList>
 			<Locale Code="All" />
@@ -22,7 +23,7 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 			<DispatchInfo >
 				<Resources>
 					<MainPath>./index.html</MainPath>
-					<ScriptPath>./jsx/PremiereDOM.jsx</ScriptPath>
+                    <ScriptPath>./jsx/init.jsx</ScriptPath>
 				</Resources>
 				<Lifecycle>
 					<AutoVisible>true</AutoVisible>
@@ -32,7 +33,7 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 					<Menu>Anywhere Example Panel</Menu>
 					<Geometry>
 						<Size>
-							<Height>410</Height>
+							<Height>650</Height>
 							<Width>600</Width>
 						</Size>
 					</Geometry>

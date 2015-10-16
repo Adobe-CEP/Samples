@@ -18,13 +18,43 @@
 var AnywhereHTTPApi = (function(exports) {
     
     /**
+    * Calling the below URL saves the cookie on CEP level for the current server (as a loopback).
+    * This way all calls to the server which uses withCredentials = true will get the cookie
+    * and are authenticated
+    * Cookies Path on Windows: "C:\Users\[yourusername]\AppData\Local\Temp\cep_cache"</li>
+    * Cookies Path on Mac: "/Users/[yourusername]/Library/Caches/CSXS/cep_cache"</li>
+    * note: document.cookie will not work to store the cookie because of the wrong scope
+    * note2: sending cookie as part of the header request is not working since CEP is
+    * using a newer webkit version.
+    */
+    exports.saveTokenAsCookie = function(token, sessionURL, successCallback) {
+        var parser = document.createElement('a');
+        parser.href = sessionURL;
+        
+        var separatorIndex = token.indexOf("=");
+        var sessionId = token.substring(separatorIndex+1);
+        var loginUrl = parser.protocol + "//" + parser.hostname + ":" + parser.port+ "/libs/granite/core/content/login.html?sid="+sessionId;
+        var response = $.ajax({
+                                type: "GET",
+                                url: loginUrl,
+                                crossDomain: true,
+                                async: false,
+                                beforeSend: function(xhr) {
+                                    xhr.withCredentials = true;
+                                },
+                                success: successCallback,
+                                error : function(xhr, statusText, err) {
+                                    alert("ERROR while saving authentication cookie. Error " + xhr.status + " "+ err);
+                                }
+                            });
+    }
+
+    /**
     * This is a helper to step through the discoverable API. All entity pages have a 
     * link section with functionality or further resources to discover.
     * This function returns the 'href' of a link based on the 'rel' string.
-    * Authentication is done by sending the cookie string (token) directly. (This could 
-    * also be done by storing the cookie)
     */
-    exports.getLink = function(token, url, rel ) {
+    exports.getLink = function( url, rel ) {
         href = "";
         
         if (url && url.length !== 0 && rel && rel.length !== 0){
@@ -32,9 +62,10 @@ var AnywhereHTTPApi = (function(exports) {
             var response = $.ajax({
                                     type: "GET",
                                     url: url,
+                                    crossDomain: true,
                                     async: false,
                                     beforeSend: function(xhr) {
-                                        xhr.setRequestHeader("Cookie", sessionToken);
+                                        xhr.withCredentials = true;
                                     },
                                     success: function(session){
                                         // go through all the links and find the one requested
@@ -46,14 +77,89 @@ var AnywhereHTTPApi = (function(exports) {
                                         });
                                     },
                                     error : function(xhr, statusText, err) {
-                                        alert("ERROR while creating an Ingest Job. Error " + xhr.status + " "+ err);
+                                        alert("ERROR while resolving a link. Error " + xhr.status + " "+ err);
                                     }
                                 });
             if (href=="") {
-                alert("Error: Could not find the link:  \n" + rel + "\n on the page: \n" + url);
+                console.log("Error: Could not find the link:  \n" + rel + "\n on the page: \n" + url);
             }
         }
         return href;
+    }
+    
+    /**
+    * returns the list of mountpoints configured in the settings of the Anywhere server.
+    * sessionURL: the current user session url
+    * successCallback: the callback called with the results (the mountpoint list)
+    */
+    exports.getMountpoints = function (sessionURL, successCallback) {
+        var mountpoints = [];
+        var parser = document.createElement('a');
+        parser.href = sessionURL;
+
+        var mountpointURL = parser.protocol + "//" + parser.hostname + ":" + parser.port + "/content/ea/api/settings/mountpoints.v1.json?scope=AMSE";
+        
+        
+       
+        var response = $.ajax({
+                                type: "GET",
+                                url: mountpointURL,
+                                crossDomain: true,
+                                async: false,
+                                dataType: 'json',
+                                beforeSend: function(xhr) {
+                                    xhr.withCredentials = true;
+                                },
+                                success: successCallback,
+                                error : function(xhr, statusText, err) {
+                                    alert("ERROR while getting settings from server. Error " + xhr.status + " "+ err);
+                                }
+                            });
+    }
+    
+    /**
+    * constructs the discovery
+    */
+    exports.getLatestsDiscoveryURL = function(sessionURL) {
+        var parser = document.createElement('a');
+        parser.href = sessionURL;
+
+        var discoveryURL = parser.protocol + "//" + parser.hostname + ":" + parser.port+ "/ea/api/discovery.json";
+        return AnywhereHTTPApi.getLink( discoveryURL, "http://anywhere.adobe.com/discovery/v1");
+    }
+    /**
+    * returns is the server is running in colab only mode (without renderer)
+    */
+    exports.hasRemoteRendering = function (sessionURL, successCallback) {
+        var currentDiscoveryURL = exports.getLatestsDiscoveryURL(sessionURL)
+        
+        var response = $.ajax({
+                                type: "GET",
+                                url: currentDiscoveryURL,
+                                crossDomain: true,
+                                async: false,
+                                dataType: 'json',
+                                beforeSend: function(xhr) {
+                                    xhr.withCredentials = true;
+                                },
+                                dataFilter : function (data, type) {
+                                    if (type == "json") {
+                                        //Convert to Json object to allo addition of custom Object
+                                        var jsonObj = JSON.parse(data);
+                                        var configuration = jsonObj["server"]["configuration"];
+
+                                        if (configuration.hasOwnProperty("remoteRendering")) {
+                                            return jsonObj["server"]["configuration"]["remoteRendering"];
+                                        } else {
+                                            return true;
+                                        }
+                                    }
+                                },
+                                success: successCallback,
+                                error : function(xhr, statusText, err) {
+                                    alert("ERROR while getting discovery data from server. Error " + xhr.status + " "+ err);
+                                }
+                            }); 
     }
     
     /**
@@ -61,13 +167,13 @@ var AnywhereHTTPApi = (function(exports) {
     * Please see the Anywhere API documentation for more details:
     * <anywhereRoot>/docs/documentation/api/jobs/IngestJobCreate.html
     */
-    exports.ingest = function( sessionURL, isTargetUserSession, token, mediaPaths, comment) {
+    exports.ingest = function( sessionURL, isTargetUserSession, mediaPaths, comment) {
         // go through the discoverable API. First get the production URL from the session page ..
-        productionURL = this.getLink(token, sessionURL, "http://anywhere.adobe.com/productions/production");
+        productionURL = this.getLink( sessionURL, "http://anywhere.adobe.com/productions/production");
         // .. then get the jobs url from the production page ..
-        jobsURL = this.getLink(token, productionURL, "http://anywhere.adobe.com/jobs");
+        jobsURL = this.getLink( productionURL, "http://anywhere.adobe.com/jobs");
         //.. then get the ingest job url from the jobs page.
-        ingestJobURL = this.getLink(token, jobsURL, "http://anywhere.adobe.com/jobs/ingest#create");
+        ingestJobURL = this.getLink( jobsURL, "http://anywhere.adobe.com/jobs/ingest#create");
 
         // check what the destination should be
         if (isTargetUserSession) {
@@ -98,7 +204,7 @@ var AnywhereHTTPApi = (function(exports) {
                 crossDomain: true,
                 type: 'POST',
                 beforeSend: function(xhr) {
-                    xhr.setRequestHeader("Cookie", sessionToken);
+                    xhr.withCredentials = true;
                 },
                 success: function(data, textStatus, request){
                     // the data object has the current json response of the job
