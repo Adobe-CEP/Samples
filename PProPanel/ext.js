@@ -32,8 +32,10 @@ function onLoaded() {
         alert(event.data);
     });
 
-    csInterface.evalScript('$._ext_PPRO.getVersionInfo()', myVersionInfoFunction);  
-    csInterface.evalScript('$._ext_PPRO.getActiveSequenceName()', myCallBackFunction);  	
+    csInterface.evalScript('$._ext_PProPanel.getVersionInfo()', myVersionInfoFunction);  
+    csInterface.evalScript('$._ext_PProPanel.getActiveSequenceName()', myCallBackFunction);  	
+    csInterface.evalScript('$._ext_PProPanel.getSequenceProxySetting()', myGetProxyFunction);
+
 }
 
 function dragHandler(event){
@@ -55,6 +57,27 @@ function myCallBackFunction (data) {
      var boilerPlate        = "Active Sequence: ";
      var seq_display        = document.getElementById("active_seq");
      seq_display.innerHTML  = boilerPlate + data;
+}
+
+function myGetProxyFunction (data) {
+    
+    // Updates proxy_display based on current sequence's value.
+    var boilerPlate        = "Proxies enabled for sequence: "
+    var proxy_display      = document.getElementById("proxies_on");
+
+    if (proxy_display != null) {
+        proxy_display.innerHTML = boilerPlate + data;
+    }
+}
+
+function mySetProxyFunction (data) {
+
+    var csInterface = new CSInterface();
+    csInterface.evalScript('$._ext_PProPanel.toggleProxyState()');
+    csInterface.evalScript('$._ext_PProPanel.getActiveSequenceName()', myCallBackFunction);
+    csInterface.evalScript('$._ext_PProPanel.getSequenceProxySetting()', myProxyFunction);
+
+
 }
      
 function myVersionInfoFunction (data) {
