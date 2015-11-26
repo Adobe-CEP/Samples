@@ -272,15 +272,12 @@ $.delegates = (function(exports) {
 	});
 	
 	exports["AUDT"] = new XMPScriptAdapter({
-		getTarget: function() {
-			if(!app.documents.length) {
-				app.createNewWaveDocument("Untitled", 44100, 2, 32);
-                if(app.documents.length > 0) {
-                    app.documents[0].activate();
-                }
-			}
-		
-			return app.activeDocument;
+		getTarget: function() {	
+            if (app.activeDocument && app.activeDocument.reflect.name == "WaveDocument") {
+			     return app.activeDocument;
+            }
+            
+            return null;
 		},
 
 		getTargetName: function(target) {
@@ -288,11 +285,11 @@ $.delegates = (function(exports) {
 		},
 
 		getXmpPacket : function(doc) {
-			return doc.metadata.Xmp;
+			return doc.metadata.xmp;
 		},
 	
 		setXmpPacket : function(doc, xmpPacket) {
-			doc.metadata.Xmp = xmpPacket;
+			doc.metadata.xmp = xmpPacket;
 		}
 	});
 	
