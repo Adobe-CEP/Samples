@@ -23,6 +23,7 @@ that triggers Anywhere functionality through the DOM and by calling the Anywhere
     <!-- style -->
     <link href="css/app.css" rel="stylesheet">
     <link href="css/jquery-ui.theme.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="./lib/jstree/themes/default-dark/style.min.css" />
     
     <!-- DOM Interface script -->
     <script src="./lib/CSInterface.js"></script>
@@ -35,10 +36,15 @@ that triggers Anywhere functionality through the DOM and by calling the Anywhere
     <script src="./lib/jquery.js"></script>
     <script src="./lib/jquery-ui.min.js"></script>
     
+    <!-- jstree -->
+    <script src="./lib/jstree/jstree.min.js"></script>
+    <script src="./js/jsTreeAnywhereBrowser.js"></script>
+    
     <!-- own scripts -->
-    <script src="./js/premiereDOMBridge.js"></script>
+    <script src="./js/DOMBridge.js"></script>
     <script src="./js/anywhereHTTPApi.js"></script>
     <script src="./js/app.js"></script>
+  
 </head>
     
 <body>
@@ -49,56 +55,68 @@ that triggers Anywhere functionality through the DOM and by calling the Anywhere
     
 </div>
 <br>
-<!-- div only visible in case of not logged in to an Anywhere Server -->
-<div class="error" id="generalError">
-    <h3  id="error" ></h3>
-    <button id="btn_refresh" onclick="location.reload()">refresh</button>
-</div>
-
-<!-- main UI: only visible if logged in to an Anywhere Server -->
-<div class="main" id="main">
-        <table class="mainTble">
-            <tr>
-                <td colspan="2"><input class="pathInput" size="85" type="text" id="ingestPath" placeholder="Local or eamedia:// path"></td>
-            </tr>
-            <tr>
-                <td class="firstTD">
-                    <button id="btn_openInSource" class="myButton">
-                        <span   class="ui-icon ui-icon-triangle-1-e"></span>
-                    </button>
-                </td>
-                <td>Play in Source Monitor</td>
-            </tr>
-            <tr>
-                <td><button id="btn_ingestDOMUser" class="myButton">GO</button></td>
-                <td>Ingest through Premiere DOM (user sandbox)</td>
-            </tr>
-            <tr>
-                <td>
-                    <button id="btn_dragthing" draggable="true" class="myButton">
-                        <span   class="ui-icon ui-icon-video" ></span>
-                    </button>
-                </td>
-                <td>Drag Me (into the production panel, source monitor or timeline) </td>
-            </tr>
-        </table>
+    <!-- div only visible in case of not logged in to an Anywhere Server -->
+    <div class="error" id="generalError">
+        <h4  id="error" ></h4>
+        <button id="btn_refresh" onclick="location.reload()">refresh</button>
+    </div>
     
+    
+    <!-- main UI: only visible if logged in to an Anywhere Server -->
+    <div class="main" id="main">
+        <div class="browseUI" id="browseUI">
+            <p1>Mountpoints:
+                <select id="mountpointDropDown">
+                </select>
+            </p1>
+            <div id="browse_jstree" class="treeDiv"></div>
+        </div>
+        <input class="pathInput" type="text" id="ingestPath" placeholder="Local or eamedia:// path">
         <br />
-    
-        <fieldset>
-            <legend>Adobe Anywhere with Mercury Streaming Engines</legend>
-            <table class="mainTble">
+        <div id="Controls">
+            <table class="mainTble" id="DOMTble">
                 <tr>
-                    <td><button id="btn_ingestHTTPUser" class="myButton">GO</button></td>
-                    <td>Ingest through HTTP call (user sandbox)</td>
+                    <td class="firstTD">
+                        <button id="btn_openInSource" class="myButton">
+                            <span   class="ui-icon ui-icon-triangle-1-e"></span>
+                        </button>
+                    </td>
+                    <td>Play in Source Monitor</td>
                 </tr>
                 <tr>
-                    <td><button id="btn_ingestHTTPProd" class="myButton">GO</button></td>
-                    <td>Ingest through HTTP call (Production)</td>
+                    <td><button id="btn_ingestDOMUser" class="myButton">GO</button></td>
+                    <td>Ingest through Premiere DOM (user sandbox)</td>
+                </tr>
+                <tr>
+                    <td>
+                        <button id="btn_dragthing" draggable="true" class="myButton">
+                            <span   class="ui-icon ui-icon-video" ></span>
+                        </button>
+                    </td>
+                    <td>Drag Me (into the production panel, source monitor or timeline) </td>
                 </tr>
             </table>
-        </fieldset>
-        <br />
-</div>
+
+            <br />
+
+            <fieldset>
+                <legend>Adobe Anywhere with Mercury Streaming Engines</legend>
+                <table class="mainTble">
+                    <tr>
+                        <td colspan="2"><small>note: only works with remote assets (eamedia paths)</small></td>
+                    </tr>
+                    <tr>
+                        <td><button id="btn_ingestHTTPUser" class="myButton">GO</button></td>
+                        <td>Ingest through HTTP/REST call (user sandbox)</td>
+                    </tr>
+                    <tr>
+                        <td><button id="btn_ingestHTTPProd" class="myButton">GO</button></td>
+                        <td>Ingest through HTTP/REST call (Production)</td>
+                    </tr>
+                </table>
+            </fieldset>
+            <br />
+        </div>
+    </div>
 </body>
 </html>
