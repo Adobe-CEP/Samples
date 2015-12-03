@@ -68,7 +68,7 @@ function toHex(color, delta) {
             computedValue = 255;
         }
 
-        computedValue = computedValue.toString(16);
+        computedValue = Math.round(computedValue).toString(16);
         return computedValue.length == 1 ? "0" + computedValue : computedValue;
     }
 
