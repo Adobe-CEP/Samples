@@ -32,22 +32,30 @@ function onLoaded() {
         alert(event.data);
     });
 
-    csInterface.evalScript('$._ext_PProPanel.getVersionInfo()', myVersionInfoFunction);  
-    csInterface.evalScript('$._ext_PProPanel.getActiveSequenceName()', myCallBackFunction);  	
-    csInterface.evalScript('$._ext_PProPanel.getSequenceProxySetting()', myGetProxyFunction);
+    csInterface.evalScript('$._PPP_.getVersionInfo()', myVersionInfoFunction);  
+    csInterface.evalScript('$._PPP_.getActiveSequenceName()', myCallBackFunction);  	
+    csInterface.evalScript('$._PPP_.getUserName()', myUserNameFunction);  
+    csInterface.evalScript('$._PPP_.getSequenceProxySetting()', myGetProxyFunction);
 
 }
 
 function dragHandler(event){
 
     var csInterface = new CSInterface();
-    var path = csInterface.getSystemPath(SystemPath.EXTENSION);
+    var extPath = csInterface.getSystemPath(SystemPath.EXTENSION);
+    var OSVersion   = csInterface.getOSInformation();
     
-    if (path != null){
-        path = path + '/payloads/test.jpg';
-        event.dataTransfer.setData("com.adobe.cep.dnd.file.0", path);
-    //  event.dataTransfer.setData("com.adobe.cep.dnd.file.N", path);  N = (items to import - 1)
-    
+    if (extPath != null){
+
+        var path1 = extPath + '/payloads/test.jpg';
+
+        if (OSVersion.indexOf("Windows") >=0){
+            var sep = '\\';
+            path1 = path1.replace(/\//g, sep);
+        }
+
+        event.dataTransfer.setData("com.adobe.cep.dnd.file.0", path1);
+
     }
 }
 
@@ -57,6 +65,14 @@ function myCallBackFunction (data) {
      var boilerPlate        = "Active Sequence: ";
      var seq_display        = document.getElementById("active_seq");
      seq_display.innerHTML  = boilerPlate + data;
+}
+
+function myUserNameFunction (data) {
+     // Updates username with whatever ExtendScript function returns.
+
+     var boilerPlate        = "OS Username: ";
+     var user_name          = document.getElementById("username");
+     user_name.innerHTML    = data;
 }
 
 function myGetProxyFunction (data) {
@@ -73,9 +89,8 @@ function myGetProxyFunction (data) {
 function mySetProxyFunction (data) {
 
     var csInterface = new CSInterface();
-    csInterface.evalScript('$._ext_PProPanel.toggleProxyState()');
-    csInterface.evalScript('$._ext_PProPanel.getActiveSequenceName()', myCallBackFunction);
-    csInterface.evalScript('$._ext_PProPanel.getSequenceProxySetting()', myProxyFunction);
+    csInterface.evalScript('$._PPP_.getActiveSequenceName()', myCallBackFunction);
+    csInterface.evalScript('$._PPP_.getSequenceProxySetting()', myProxyFunction);
 
 
 }
