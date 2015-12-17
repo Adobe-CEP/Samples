@@ -32,6 +32,14 @@
     var dbType = 'mongodb';
     var mongodbCollection = "";
     
+	function isNodeJSEnabled() {		
+		if (typeof(require) !== 'undefined') {
+			$('#result').val("Node.js is enabled");
+		} else {
+			$('#result').val("Node.js is disabled");
+		}
+	}
+	
     function connectToDB() {
         dbtype = $('#db').val();
         if ('mongodb' == dbtype) {
@@ -62,6 +70,7 @@
     }
     
     $(function() {
+		$('#btnCheckEnabled').click(isNodeJSEnabled);
         $('#btnConnect').click(connectToDB);
         $('#db').change(updateUI);
         
@@ -167,7 +176,6 @@
     
     function initMongoDB() {
         $('#result').val('Connecting Mongo DB...');
-        
         var mongodbModule;
         try {
             mongodbModule = require('mongodb');
@@ -326,6 +334,12 @@
 <body>
   <div id="dbs">
     <div>
+		<table>
+			<tr>
+				<label>Check if Node.js is enabled: </label>
+				<button name="btnCheckEnabled" id="btnCheckEnabled"> IsNodeJSEnabled </button>
+			</tr>
+		</table>
         <label for="db">DB:</label>
         <select name="db" id="db">
             <option value="mongodb">MongoDB</option>
