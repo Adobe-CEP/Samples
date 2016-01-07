@@ -46,16 +46,16 @@ function dragHandler(event){
     var OSVersion   = csInterface.getOSInformation();
     
     if (extPath != null){
-
-        var path1 = extPath + '/payloads/test.jpg';
+        path = path + '/payloads/test.jpg';
 
         if (OSVersion.indexOf("Windows") >=0){
-            var sep = '\\';
-            path1 = path1.replace(/\//g, sep);
+            var sep = '\\\\';
+            path = path.replace(/\//g, sep);
         }
 
-        event.dataTransfer.setData("com.adobe.cep.dnd.file.0", path1);
-
+        event.dataTransfer.setData("com.adobe.cep.dnd.file.0", path);
+    //  event.dataTransfer.setData("com.adobe.cep.dnd.file.N", path);  N = (items to import - 1)
+    
     }
 }
 
@@ -70,7 +70,6 @@ function myCallBackFunction (data) {
 function myUserNameFunction (data) {
      // Updates username with whatever ExtendScript function returns.
 
-     var boilerPlate        = "OS Username: ";
      var user_name          = document.getElementById("username");
      user_name.innerHTML    = data;
 }
@@ -191,7 +190,7 @@ function toHex(color, delta) {
             computedValue = 255;
         }
 
-        computedValue = computedValue.toString(16);
+        computedValue = Math.round(computedValue).toString(16);
         return computedValue.length == 1 ? "0" + computedValue : computedValue;
     }
 
