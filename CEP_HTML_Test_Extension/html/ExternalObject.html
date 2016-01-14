@@ -28,11 +28,15 @@
 <script type="text/javascript">
     var CSLibrary = new CSInterface();
 	var eventType;
+	var receivedEventNum = 0;
+
     $(document).ready(function() {
         
 		eventType = document.getElementById("EventType").value;
 		$("#EventsGreenLightImg").hide();
 		$("#EventsClearReceivedEvent").click(function() {
+			receivedEventNum = 0;
+			$("#ReceivedEvents").val("");			
             $("#EventsGreenLightImg").hide();
         }); 
 		
@@ -42,8 +46,10 @@
 		});
 		
         function eventCallback(event) {
-            var currentStatus = $("#EvalScriptResult").val();
-            $("#EvalScriptResult").val(currentStatus + "\nReceived event: " + JSON.stringify(event));			
+            var display = $("#ReceivedEvents").val();
+            display += "Received event " + receivedEventNum++ + ": " + JSON.stringify(event) + "\n";
+            $("#ReceivedEvents").val(display);
+            ReceivedEvents.scrollTop = ReceivedEvents.scrollHeight;
             $("#EventsGreenLightImg").show();
         }
 		
@@ -77,25 +83,16 @@
 
 
 </head>
-<div><label style="color: #FFF">Test ExternalObject:</label></div>
+<div><label style="color: #FFF">Test ExternalObject</label></div>
+<div><label style="color: #FFF">Dispatch Events by ExtendScript:</label></div>
 
 <div>
-  <table width="535" border="0">
-	 <tr>
-	  <td width="184">&nbsp;</td>
-	  <td width="356">&nbsp;</td>
-	</tr>
-	<tr>
-	  <td width="100">&nbsp;</td>
-	  <td width="325"><label style="color: #FFF"><strong>Invoke evalScript() with script</strong></label>
-	  <strong>&nbsp;</strong></td>
-	</tr>
-	
+  <table width="100%" border="0">
 	<tr>
 	  <td><label style="color: #FFF">Script:</label>&nbsp;</td>
 	  <td><form id="formESP" name="formESP" method="post" action="">
 		<label for="EvalScriptPara"></label>
-		<textarea name="EvalScriptPara" id="EvalScriptPara" cols="70" rows="6">var mylib = new ExternalObject ("lib:" + "PlugPlugExternalObject");
+		<textarea name="EvalScriptPara" id="EvalScriptPara" cols="80" rows="6">var mylib = new ExternalObject ("lib:" + "PlugPlugExternalObject");
 var myObject = new CSXSEvent();
 myObject.type = "CEP.externalobject.test";
 myObject.data = "success";
@@ -108,18 +105,10 @@ myObject.dispatch();
 	  <td><label style="color: #FFF">Execution times:</label>&nbsp;</td>
 	  <td><form id="formESP" name="formESP" method="post" action="">
 		<label for="ExecutionTimes"></label>
-		<textarea name="ExecutionTimes" id="ExecutionTimes" cols="70" rows="1">1</textarea>
+		<textarea name="ExecutionTimes" id="ExecutionTimes" cols="80" rows="1">1</textarea>
 	  </form></td>
 	</tr>
-	
-	<tr>
-	  <td><label style="color: #FFF">Result:</label>&nbsp;</td>
-	  <td><form id="formESP" name="formESP" method="post" action="">
-		<label for="EvalScriptResult"></label>
-		<textarea name="EvalScriptResult" id="EvalScriptResult" cols="70" rows="3" readonly="readonly"></textarea>
-	  </form></td>
-	</tr>
-	
+		
 	<tr>
 	  <td>&nbsp;</td>
 	  <td><form id="formIES" name="formIES" method="post" action="">
@@ -129,14 +118,14 @@ myObject.dispatch();
   </table>
 </div>
 
-<div><label style="color: #FFF">Dispatch Event by ExternalObject:</label></div>
+<div><label style="color: #FFF">Receive Events by JavaScript:</label></div>
 <div style="overflow:auto; height:350px; width:auto">
   <table width="752" border="1" id="eventsTable">
     <tr>
       <th width="42" scope="col" style="color: #FFF">Scope</th>
       <th width="334" scope="col" style="color: #FFF">Type</th>
-      <th width="76" scope="col" style="color: #FFF">Registered</th>
-      <th width="205" scope="col" style="color: #FFF">Received Events*</th>
+      <th width="76" scope="col" style="color: #FFF">Listen?</th>
+      <th width="205" scope="col" style="color: #FFF">Received?</th>
     </tr>
     
     <tr>
@@ -151,9 +140,17 @@ myObject.dispatch();
       </form></td>
     </tr>
   </table>
-  <form id="form5" name="form5" method="post" action="">
-    <input type="button" name="EventsClearReceivedEvent" id="EventsClearReceivedEvent" value="Clear Received Event"/>
-  </form>
+
+  <table width="100%" border="0">
+	<tr>
+	  <td><label style="color: #FFF">Received Events:</label></td>
+	  <td><textarea name="ReceivedEvents" id="ReceivedEvents" cols="80" rows="5" readonly="readonly"></textarea></td>
+	</tr>
+	<tr>
+	  <td></td>
+	  <td><input type="button" name="EventsClearReceivedEvent" id="EventsClearReceivedEvent" value="Clear Received Events"/></td>
+	</tr>
+  </table>
 </div>
 
 </body>

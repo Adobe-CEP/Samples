@@ -35,6 +35,10 @@
         $("#GetExtensionIdDiv").hide();
         $("#GetScaleFactorDiv").hide();
         $("#GetCurrentApiVersionDiv").hide();
+                      
+        $("#OpenURL").click(function() {
+            $("#DisplayArea").attr("src", $("#OpenURLInput").val());
+        });
     });
     
 	<!--------------------------->
@@ -43,8 +47,14 @@
     var CSLibrary = new CSInterface();
 	var setMenuXML;
 	function setPanelCallback(event) {
-		document.getElementById("ReturnObject").value = 'The menu ID is: ' + event.data.menuId + '\n' + 'The menu name is: ' + event.data.menuName;
-		$("#GreenLightImg").show();
+		if (event.type === "com.adobe.csxs.events.flyoutMenuClicked") {
+			document.getElementById("ReturnObject").value = 'The menu ID is: ' + event.data.menuId + '\n' + 'The menu name is: ' + event.data.menuName;
+			$("#GreenLightImg").show();
+		} else if (event.type === "com.adobe.csxs.events.flyoutMenuOpened") {
+			$("#GreenLightImg2").show();
+		} else if (event.type === "com.adobe.csxs.events.flyoutMenuClosed") {
+			$("#GreenLightImg3").show();
+		}
 	}
 	
 	function checkCapabilities() {
@@ -75,6 +85,8 @@
 
 	function onclickReset() {
 		$("#GreenLightImg").hide();
+		$("#GreenLightImg2").hide();
+		$("#GreenLightImg3").hide();
 		document.getElementById("ReturnObject").value = "";
 	}	
 	
@@ -102,7 +114,11 @@
 
     $(document).ready(function() {
 		$("#GreenLightImg").hide();
+		$("#GreenLightImg2").hide();
+		$("#GreenLightImg3").hide();
 		CSLibrary.addEventListener("com.adobe.csxs.events.flyoutMenuClicked", setPanelCallback);
+		CSLibrary.addEventListener("com.adobe.csxs.events.flyoutMenuOpened", setPanelCallback);
+		CSLibrary.addEventListener("com.adobe.csxs.events.flyoutMenuClosed", setPanelCallback);
 		checkCapabilities();
     }); 
 
@@ -199,16 +215,67 @@
     <!--------------------------->
     <!-- Context Menu tab end   -->
     <!--------------------------->
+    
+    <!--------------------------->
+    <!-- Key Event Interest tab begin -->
+    <!--------------------------->
+    var setKeyEventInterestJSON;
+    
+    function formatKeyEvent(keyEvent)
+    {
+        var resultStr = "";
+        resultStr = "keyCode:" + keyEvent.keyCode + "\n";
+        resultStr = resultStr + "ctrlKey:" + keyEvent.ctrlKey + "\n";
+        resultStr = resultStr + "altKey:" + keyEvent.altKey + "\n";
+        resultStr = resultStr + "shiftKey:" + keyEvent.shiftKey + "\n";
+        resultStr = resultStr + "metaKey:" + keyEvent.metaKey + "\n";
+        return resultStr;
+    }
+
+	function onclickRegisterInterest() {
+	    var jsonString = document.getElementById("TestKeyEventInterestStructure").value;
+		CSLibrary.registerKeyEventsInterest(jsonString);
+		setKeyEventInterestJSON = jsonString;
+		$("#TestKeyEventInterestStructure").blur();
+		$("#KeyHitReturnObject").blur();
+	}
+	
+	function onclickClearTestResult() {
+	    document.getElementById("KeyHitReturnObject").value = "";	
+		$("#TestKeyEventInterestStructure").blur();
+		$("#KeyHitReturnObject").blur();
+	}
+
+	function onclickClearKeyInterest() {
+		CSLibrary.registerKeyEventsInterest(null);
+        setKeyEventInterestJSON = "";
+		$("#TestKeyEventInterestStructure").blur();
+		$("#KeyHitReturnObject").blur();
+	}
+
+    function keyDownInBody(event) {
+        var resultStr = "";
+        var resultValue = document.getElementById("KeyHitReturnObject").value;
+        resultValue = resultValue + "\n";
+        resultValue = resultValue + formatKeyEvent(event);
+        document.getElementById("KeyHitReturnObject").value = resultValue;
+    }
+
+    <!--------------------------->
+    <!-- Key Event Interest tab end   -->
+    <!--------------------------->
 </script>
 
 </head>
 
-<body>
+<body onkeydown="keyDownInBody(event)">
 <div id="TabbedPanels1" class="TabbedPanels">
   <ul class="TabbedPanelsTabGroup">
     <li class="TabbedPanelsTab">Flyout Menu</li>
     <li class="TabbedPanelsTab">Context Menu</li>
     <li class="TabbedPanelsTab">Context Menu Using JSON</li>
+    <li class="TabbedPanelsTab">Key Event Interest</li>
+	<li class="TabbedPanelsTab">Testing Iframe</li>
   </ul>
   
   <div class="TabbedPanelsContentGroup">
@@ -262,11 +329,30 @@
             <td><form id="formIES" name="formIES" method="post" action="">
               <input type="button" name="ClearPanelMenu" id="ClearPanelMenu" value="ClearPanelMenu" onclick="onclickClearPanelMenu()" />
             </form></td>
-            <td><label style="color: #FFF">Flyout MenuItem Clicked:</label>&nbsp;</td>
-            <td><input type="image" name="GreenLightImg" id="GreenLightImg" src="../img/greenLED.png"/></td>
-            <td><form id="formIES" name="formIES" method="post" action="">
-              <input type="button" name="Reset" id="Reset" value="Reset" onclick="onclickReset()" />
-            </form></td>
+          </tr>
+        </table>
+        <!-- Test flyout menu events -->
+        <table width="100%">
+          <tr>
+            <!-- Test event type com.adobe.csxs.events.flyoutMenuClicked -->
+            <td width="30%">
+              <label style="color: #FFF">Flyout MenuItem Clicked:</label>
+              <input type="image" name="GreenLightImg" id="GreenLightImg" src="../img/greenLED.png"/>
+            </td>
+            <!-- Test event type com.adobe.csxs.events.flyoutMenuOpened -->
+            <td width="30%">
+              <label style="color: #FFF">Flyout MenuItem Opened:</label>
+              <input type="image" name="GreenLightImg2" id="GreenLightImg2" src="../img/greenLED.png"/>
+            </td>
+            <!-- Test event type com.adobe.csxs.events.flyoutMenuClosed -->
+            <td width="30%">
+              <label style="color: #FFF">Flyout MenuItem Closed:</label>
+              <input type="image" name="GreenLightImg3" id="GreenLightImg3" src="../img/greenLED.png"/>
+            </td>
+            <!-- Reset -->
+            <td width="10%">
+              <input type="button" value="Reset" onclick="onclickReset()" />
+            </td>
           </tr>
         </table>
       </div>
@@ -274,10 +360,6 @@
       <div>
         <label style="color: #FFF">Update Extension Menu Item:</label>
         <table width="800" border="0">
-          <tr>
-          <td width="100">&nbsp;</td>
-          <td width="300">&nbsp;</td>
-          </tr>
 
           <tr>
             <td><label style="color: #FFF">Capability:</label>&nbsp;</td>
@@ -554,6 +636,94 @@
     </div>
     <!------------------------->
     <!-- Context Menu Using JSON tab end -->
+    <!------------------------->
+    
+    <!--------------------------->
+    <!-- Key Event Interest tab begin -->
+    <!--------------------------->
+    <div class="TabbedPanelsContent">
+        <div><label style="color: #FFF">Test Key Event Interest Registration: THIS FEATURE IS ONLY AVAILABLE ON MODELEESS AND PANEL EXTENSIONS</label></div>
+        <div>
+            <table width="800" border="0">
+                <tr>
+                    <td width="300">&nbsp;</td>
+                    <td width="300">&nbsp;</td>
+                </tr>
+                
+                <tr>
+                    <td><label style="color: #FFF">Test Key Interest Structure:</label>&nbsp;</td>
+                    <td>
+                        <label for="TestKeyEventInterestStructure"></label>
+                        <textarea name="TestKeyEventInterestStructure" id="TestKeyEventInterestStructure" cols="80" rows="6" align="left">
+                            [
+                                {
+                                    "keyCode": 0
+                                },
+                                {
+                                    "keyCode": 0,
+                                    "ctrlKey": true
+                                }
+                            ]
+                        </textarea>
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td><label style="color: #FFF">Test Result:</label>&nbsp;</td>
+                    <td><form id="formESP" name="formESP" method="post" action="">
+                        <label for="KeyHitReturnObject"></label>
+                        <textarea name="KeyHitReturnObject" id="KeyHitReturnObject" cols="80" rows="4" align="left">
+                            Please make sure the keyboard focus is out of any text editable or dropdown element, then hit keys.
+                        </textarea>
+                    </form></td>
+                </tr>
+            </table>
+            <table>
+                <tr>
+                    <td><label style="color: #FFF">Register Interest:</label>&nbsp;</td>
+                    <td><form id="formIES" name="formIES" method="post" action="">
+                        <input type="button" name="RegisterKeyEventInterest" id="RegisterKeyEventInterest" value="RegisterKeyEventInterest" onclick="onclickRegisterInterest()" />
+                    </form></td>
+                    <td><label style="color: #FFF">Register Null:</label>&nbsp;</td>
+                    <td><form id="formIES" name="formIES" method="post" action="">
+                        <input type="button" name="ClearKeyEventInterest" id="ClearKeyEventInterest" value="ClearKeyEventInterest" onclick="onclickClearKeyInterest()" />
+                    </form></td>
+					<td><label style="color: #FFF">Clear Test Result:</label>&nbsp;</td>
+                    <td><form id="formIES" name="formIES" method="post" action="">
+                        <input type="button" name="ClearTestResult" id="ClearTestResult" value="ClearTestResult" onclick="onclickClearTestResult()" />
+                    </form></td>
+                </tr>
+            </table>           
+        </div>
+    </div>
+    <!------------------------->
+    <!-- Key Event Interest tab end -->
+    <!------------------------->
+	
+	<!--------------------------->
+    <!-- Key Event Interest iframe tab begin -->
+    <!--------------------------->
+    <div class="TabbedPanelsContent">
+        <div><label style="color: #FFF">Test Key Event Interest Registration: THIS FEATURE IS ONLY AVAILABLE ON MODELEESS AND PANEL EXTENSIONS</label></div>
+        <div>
+                <table>
+                <tr>
+                    <td>
+                        <input type="button" name="OpenURL" id="OpenURL" value="Open Link" />
+                        <input name="OpenURLInput" type="text" id="OpenURLInput" value="http://www.a2zwebhelp.com/bootstrap-tooltips" size="110"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <iframe width="780" height="780" name="DisplayArea" id="DisplayArea" src="http://www.a2zwebhelp.com/bootstrap-tooltips"  frameborder="1" nodejs-disabled="true"  scrolling="yes">
+                        </iframe>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <!------------------------->
+    <!-- Key Event Interest iframe end -->
     <!------------------------->
 
     <!--------------------------->
