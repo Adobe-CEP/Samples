@@ -7,7 +7,7 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	</ExtensionList>
 	<ExecutionEnvironment>
 		<HostList>
-			<Host Name="PPRO" Version="[9.1,9.9]" />
+			<Host Name="PPRO" Version="[9.1,10.9]" />
 		</HostList>
 		<LocaleList>
 			<Locale Code="All" />

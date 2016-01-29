@@ -47,7 +47,7 @@
 						var addOutPath	= '/Documents/Adobe/Premiere\ Pro/9.0/Profile-CreativeCloud-/Effect\ Presets\ and\ Custom\ Items.prfpset';
 						var fullOutPath = initPath + addOutPath;
 						var writeResult = window.cep.fs.writeFile(fullOutPath, readResult.data);
-
+				
 						if (0 == writeResult.err){
 							alert("Successfully copied effect presets from panel to user's configuration."); //result.data is file content
 						} else {
@@ -125,6 +125,7 @@
     <button id="getseqname">Get active sequence</button>
     <button id="newseqfrompreset">Create Sequence From Preset</button>
     <button id="checkforums">Check SDK Forums</button>
+    <button id="copypresets">Copy Presets</button>
     
       <!-- ...the rest call directly into ExtendScript. -->
 

@@ -46,14 +46,14 @@ function dragHandler(event){
     var OSVersion   = csInterface.getOSInformation();
     
     if (extPath != null){
-        path = path + '/payloads/test.jpg';
+        extPath = extPath + '/payloads/test.jpg';
 
         if (OSVersion.indexOf("Windows") >=0){
             var sep = '\\\\';
-            path = path.replace(/\//g, sep);
+            extPath = extPath.replace(/\//g, sep);
         }
 
-        event.dataTransfer.setData("com.adobe.cep.dnd.file.0", path);
+        event.dataTransfer.setData("com.adobe.cep.dnd.file.0", extPath);
     //  event.dataTransfer.setData("com.adobe.cep.dnd.file.N", path);  N = (items to import - 1)
     
     }
