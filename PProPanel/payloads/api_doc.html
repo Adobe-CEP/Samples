@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<meta charset="utf-8">
+<title>api_doc</title>
+
+
+<style type="text/css">
+body {
+  font-family: Helvetica, arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background-color: white;
+  padding: 30px; }
+
+body > *:first-child {
+  margin-top: 0 !important; }
+body > *:last-child {
+  margin-bottom: 0 !important; }
+
+a {
+  color: #4183C4; }
+a.absent {
+  color: #cc0000; }
+a.anchor {
+  display: block;
+  padding-left: 30px;
+  margin-left: -30px;
+  cursor: pointer;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0; }
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 20px 0 10px;
+  padding: 0;
+  font-weight: bold;
+  -webkit-font-smoothing: antialiased;
+  cursor: text;
+  position: relative; }
+
+h1:hover a.anchor, h2:hover a.anchor, h3:hover a.anchor, h4:hover a.anchor, h5:hover a.anchor, h6:hover a.anchor {
+  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA09pVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoMTMuMCAyMDEyMDMwNS5tLjQxNSAyMDEyLzAzLzA1OjIxOjAwOjAwKSAgKE1hY2ludG9zaCkiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6OUM2NjlDQjI4ODBGMTFFMTg1ODlEODNERDJBRjUwQTQiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6OUM2NjlDQjM4ODBGMTFFMTg1ODlEODNERDJBRjUwQTQiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo5QzY2OUNCMDg4MEYxMUUxODU4OUQ4M0REMkFGNTBBNCIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo5QzY2OUNCMTg4MEYxMUUxODU4OUQ4M0REMkFGNTBBNCIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PsQhXeAAAABfSURBVHjaYvz//z8DJYCRUgMYQAbAMBQIAvEqkBQWXI6sHqwHiwG70TTBxGaiWwjCTGgOUgJiF1J8wMRAIUA34B4Q76HUBelAfJYSA0CuMIEaRP8wGIkGMA54bgQIMACAmkXJi0hKJQAAAABJRU5ErkJggg==) no-repeat 10px center;
+  text-decoration: none; }
+
+h1 tt, h1 code {
+  font-size: inherit; }
+
+h2 tt, h2 code {
+  font-size: inherit; }
+
+h3 tt, h3 code {
+  font-size: inherit; }
+
+h4 tt, h4 code {
+  font-size: inherit; }
+
+h5 tt, h5 code {
+  font-size: inherit; }
+
+h6 tt, h6 code {
+  font-size: inherit; }
+
+h1 {
+  font-size: 28px;
+  color: black; }
+
+h2 {
+  font-size: 24px;
+  border-bottom: 1px solid #cccccc;
+  color: black; }
+
+h3 {
+  font-size: 18px; }
+
+h4 {
+  font-size: 16px; }
+
+h5 {
+  font-size: 14px; }
+
+h6 {
+  color: #777777;
+  font-size: 14px; }
+
+p, blockquote, ul, ol, dl, li, table, pre {
+  margin: 15px 0; }
+
+hr {
+  background: transparent url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAECAYAAACtBE5DAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNSBNYWNpbnRvc2giIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6OENDRjNBN0E2NTZBMTFFMEI3QjRBODM4NzJDMjlGNDgiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6OENDRjNBN0I2NTZBMTFFMEI3QjRBODM4NzJDMjlGNDgiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo4Q0NGM0E3ODY1NkExMUUwQjdCNEE4Mzg3MkMyOUY0OCIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo4Q0NGM0E3OTY1NkExMUUwQjdCNEE4Mzg3MkMyOUY0OCIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PqqezsUAAAAfSURBVHjaYmRABcYwBiM2QSA4y4hNEKYDQxAEAAIMAHNGAzhkPOlYAAAAAElFTkSuQmCC) repeat-x 0 0;
+  border: 0 none;
+  color: #cccccc;
+  height: 4px;
+  padding: 0;
+}
+
+body > h2:first-child {
+  margin-top: 0;
+  padding-top: 0; }
+body > h1:first-child {
+  margin-top: 0;
+  padding-top: 0; }
+  body > h1:first-child + h2 {
+    margin-top: 0;
+    padding-top: 0; }
+body > h3:first-child, body > h4:first-child, body > h5:first-child, body > h6:first-child {
+  margin-top: 0;
+  padding-top: 0; }
+
+a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 {
+  margin-top: 0;
+  padding-top: 0; }
+
+h1 p, h2 p, h3 p, h4 p, h5 p, h6 p {
+  margin-top: 0; }
+
+li p.first {
+  display: inline-block; }
+li {
+  margin: 0; }
+ul, ol {
+  padding-left: 30px; }
+
+ul :first-child, ol :first-child {
+  margin-top: 0; }
+
+dl {
+  padding: 0; }
+  dl dt {
+    font-size: 14px;
+    font-weight: bold;
+    font-style: italic;
+    padding: 0;
+    margin: 15px 0 5px; }
+    dl dt:first-child {
+      padding: 0; }
+    dl dt > :first-child {
+      margin-top: 0; }
+    dl dt > :last-child {
+      margin-bottom: 0; }
+  dl dd {
+    margin: 0 0 15px;
+    padding: 0 15px; }
+    dl dd > :first-child {
+      margin-top: 0; }
+    dl dd > :last-child {
+      margin-bottom: 0; }
+
+blockquote {
+  border-left: 4px solid #dddddd;
+  padding: 0 15px;
+  color: #777777; }
+  blockquote > :first-child {
+    margin-top: 0; }
+  blockquote > :last-child {
+    margin-bottom: 0; }
+
+table {
+  padding: 0;border-collapse: collapse; }
+  table tr {
+    border-top: 1px solid #cccccc;
+    background-color: white;
+    margin: 0;
+    padding: 0; }
+    table tr:nth-child(2n) {
+      background-color: #f8f8f8; }
+    table tr th {
+      font-weight: bold;
+      border: 1px solid #cccccc;
+      margin: 0;
+      padding: 6px 13px; }
+    table tr td {
+      border: 1px solid #cccccc;
+      margin: 0;
+      padding: 6px 13px; }
+    table tr th :first-child, table tr td :first-child {
+      margin-top: 0; }
+    table tr th :last-child, table tr td :last-child {
+      margin-bottom: 0; }
+
+img {
+  max-width: 100%; }
+
+span.frame {
+  display: block;
+  overflow: hidden; }
+  span.frame > span {
+    border: 1px solid #dddddd;
+    display: block;
+    float: left;
+    overflow: hidden;
+    margin: 13px 0 0;
+    padding: 7px;
+    width: auto; }
+  span.frame span img {
+    display: block;
+    float: left; }
+  span.frame span span {
+    clear: both;
+    color: #333333;
+    display: block;
+    padding: 5px 0 0; }
+span.align-center {
+  display: block;
+  overflow: hidden;
+  clear: both; }
+  span.align-center > span {
+    display: block;
+    overflow: hidden;
+    margin: 13px auto 0;
+    text-align: center; }
+  span.align-center span img {
+    margin: 0 auto;
+    text-align: center; }
+span.align-right {
+  display: block;
+  overflow: hidden;
+  clear: both; }
+  span.align-right > span {
+    display: block;
+    overflow: hidden;
+    margin: 13px 0 0;
+    text-align: right; }
+  span.align-right span img {
+    margin: 0;
+    text-align: right; }
+span.float-left {
+  display: block;
+  margin-right: 13px;
+  overflow: hidden;
+  float: left; }
+  span.float-left span {
+    margin: 13px 0 0; }
+span.float-right {
+  display: block;
+  margin-left: 13px;
+  overflow: hidden;
+  float: right; }
+  span.float-right > span {
+    display: block;
+    overflow: hidden;
+    margin: 13px auto 0;
+    text-align: right; }
+
+code, tt {
+  margin: 0 2px;
+  padding: 0 5px;
+  white-space: nowrap;
+  border: 1px solid #eaeaea;
+  background-color: #f8f8f8;
+  border-radius: 3px; }
+
+pre code {
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  border: none;
+  background: transparent; }
+
+.highlight pre {
+  background-color: #f8f8f8;
+  border: 1px solid #cccccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px; }
+
+pre {
+  background-color: #f8f8f8;
+  border: 1px solid #cccccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px; }
+  pre code, pre tt {
+    background-color: transparent;
+    border: none; }
+
+sup {
+    font-size: 0.83em;
+    vertical-align: super;
+    line-height: 0;
+}
+* {
+	-webkit-print-color-adjust: exact;
+}
+@media screen and (min-width: 914px) {
+    body {
+        width: 854px;
+        margin:0 auto;
+    }
+}
+@media print {
+	table, pre {
+		page-break-inside: avoid;
+	}
+	pre {
+		word-wrap: break-word;
+	}
+}
+</style>
+
+
+</head>
+
+<body>
+
+<h1 id="toc_0">Premiere Pro ExtendScript API</h1>
+
+<p>Here is some basic information about the methods and members available through Premiere Pro&#39;s ExtendScript API. </p>
+
+<p>Please continue to <a href="mailto:bbb@adobe.com?subject=PPro_ExtendScript_API">contact us</a> with any API questions.</p>
+
+<h2 id="toc_1">App object</h2>
+
+<h3 id="toc_2">anywhere</h3>
+
+<p>Anywhere object; only valid when connected to an Anywhere server. See below.</p>
+
+<h3 id="toc_3">encoder</h3>
+
+<p>Encoder object, used to drive Adobe Media Encoder for background rendering (on the same system).</p>
+
+<h3 id="toc_4">userGuid</h3>
+
+<p>The Creative Cloud User&#39;s GUID. </p>
+
+<h3 id="toc_5">version</h3>
+
+<p>The version of Premiere Pro currently running.</p>
+
+<h3 id="toc_6">project</h3>
+
+<p>Project object; see below.</p>
+
+<h3 id="toc_7">getPProPrefPath()</h3>
+
+<p>Returns the path containing the preferences currently in use.</p>
+
+<h3 id="toc_8">getPProSystemPrefPath()</h3>
+
+<p>Returns the user&#39;s Creative Cloud profile directory, where PPremiere ProPro keeps other settings and configuration files.</p>
+
+<h3 id="toc_9">isDocument(pathTofileToTest)</h3>
+
+<p>Returns <code>true</code> if Premiere Pro can open the file to test.</p>
+
+<h3 id="toc_10">isDocumentOpen()</h3>
+
+<p>Returns <code>true</code> if Premiere Pro currently has a project open.</p>
+
+<h3 id="toc_11">openFCPXML(fileToOpen)</h3>
+
+<p>Returns <code>true</code> if Premiere Pro can open the file as a new project.</p>
+
+<h3 id="toc_12">quit()</h3>
+
+<p>Quits Premiere Pro.</p>
+
+<h3 id="toc_13">setScratchDiskPath(<code>newPathValue</code>, <code>scratchDiskPathType</code>)</h3>
+
+<p>Returns true if Premiere Pro was able to change the specified scratch disk path to the new value. Potential values for <strong>scratchDiskPathType</strong>: </p>
+
+<ul>
+<li><code>ScratchDiskType.FirstVideoCaptureFolder</code></li>
+<li><code>ScratchDiskType.FirstAudioPreviewFolder</code></li>
+<li><code>ScratchDiskType.FirstAutoSaveFolder</code></li>
+<li><code>ScratchDiskType.FirstCCLibrariesFolder</code></li>
+<li><code>ScratchDiskType.FirstVideoCaptureFolder</code></li>
+<li><code>ScratchDiskType.FirstAudioCaptureFolder</code></li>
+</ul>
+
+<h3 id="toc_14">setSDKEventMessage(<code>messageToSend</code>, <code>eventType</code>)</h3>
+
+<p>Returns true if Premiere Pro successfully added the message to the Events panel. Potential values for <strong>eventType</strong> are <code>warning</code>, <code>info</code> and <code>error</code>.</p>
+
+<h2 id="toc_15">Project object</h2>
+
+<h3 id="toc_16">rootItem</h3>
+
+<p>The root <code>projectItem</code>, for iteration purposes.</p>
+
+<h3 id="toc_17">sequences</h3>
+
+<p>An array of all sequences available in the entire project.</p>
+
+<h3 id="toc_18">activeSequence</h3>
+
+<p>The currently active sequence, if there is one.</p>
+
+<h3 id="toc_19">openSequence(<code>sequenceID</code>)</h3>
+
+<p>Returns true if Premiere Pro was able to activate the sequence with the specified ID.</p>
+
+<h3 id="toc_20">importFiles(<code>arrayOfFilePathsToImport</code>, <code>suppressUI=false</code>, <code>importAsNumberedStills=false</code>)</h3>
+
+<p>Returns 0 if Premiere Pro successfully imports the array of file paths. If <code>suppressUI</code> is true, no UI will be presented. if <code>importAsNumberedStills</code> is true, Premiere Pro will attempt to import the array as a still image sequence.</p>
+
+<h3 id="toc_21">importSequences(<code>pathToProjectFile</code>, <code>arrayOfSeqIDsToImport</code>)</h3>
+
+<p>Returns 0 if Premiere Pro successfully imports the sequences with IDs specified, from that project.</p>
+
+<h3 id="toc_22">createNewSequence(<code>sequenceName</code>, <code>desiredID</code>)</h3>
+
+<p>Returns 0 if Premiere Pro successfully imports a sequence with the specified name and ID. </p>
+
+<h3 id="toc_23">deleteSequence(<code>sequenceID</code>)</h3>
+
+<p>Returns true if Premiere Pro successfully deleted a sequence with the specified ID.</p>
+
+<h3 id="toc_24">exportFinalCutProXML(<code>exportPath</code>, <code>suppressUI=false</code>)</h3>
+
+<p>Returns 0 if Premiere Pro successfully exports the current project to the specified path. If supressUI is true, no warnings will be displayed.</p>
+
+<h3 id="toc_25">exportTimeline(<code>exportControllerName</code>)</h3>
+
+<p>Returns 0 if Premiere Pro successfully renders the current active sequence using an Export Controller plug-in with the specified name.</p>
+
+<h3 id="toc_26">exportOMF(<code>sequenceToExport</code>, <code>exportPath</code>, <code>OMFTitle</code>, <code>sampleRate</code>, <code>bitsPerSample</code>, <code>audioEncapsulated</code>, <code>audioFileFormat</code>, <code>trimAudioFiles</code>, <code>handleFrames</code>, <code>includePan</code>)</h3>
+
+<p>Exports the specified sequence to OMF, using specified settings. Returns <code>0</code> if Premiere Pro successfully exports the specifed sequence to OMF.</p>
+
+<ul>
+<li><strong>sequenceToExport</strong> :    sequenceID</li>
+<li><strong>filePath</strong>: save .omf file here</li>
+<li><strong>OMFTitle</strong>: title to use in .omf file</li>
+<li><strong>sampleRate</strong>: 48000 or 96000</li>
+<li><strong>bitsPerSample</strong>: 16 or 24</li>
+<li><strong>audioEncapsulated</strong>: 0 or 1; if 1, audio is embedded.</li>
+<li><strong>audioFileFormat</strong>: 0 = AIFF, 1 = WAV</li>
+<li><strong>trimAudioFiles</strong>: 0 = export entire file, 1 = export a subset file</li>
+<li><strong>handleFrames</strong>: specify 0 to 1000 extra &#39;handle&#39; frames of audio</li>
+<li><strong>includePan</strong>: 0 or 1; if 1, include pan position information</li>
+</ul>
+
+<h3 id="toc_27">exportAAF(<code>sequenceToExport</code>, <code>exportPath</code>, <code>mixDownVideo</code>, <code>explodeToMono</code>, <code>sampleRate</code>, <code>bitsPerSample</code>, <code>embedAudio</code>, <code>audioFileFormat</code>, <code>trimSources</code>, <code>handleFrames</code>)</h3>
+
+<p>Exports the specified sequence to AAF, using specified settings. Returns <code>0</code> if Premiere Pro successfully exports the specified sequence to AAF.</p>
+
+<ul>
+<li><strong>sequenceToExport</strong> :    sequenceID</li>
+<li><strong>filePath</strong>: save .aaf file here</li>
+<li><strong>mixDownVideo</strong>: 0 or 1; if 1, render video</li>
+<li><strong>explodeToMono</strong>: 0 or 1; if 1, break audio out into mono channels</li>
+<li><strong>sampleRate</strong>: 48000 or 96000</li>
+<li><strong>bitsPerSample</strong>: 16 or 24</li>
+<li><strong>embedAudio</strong>: 0 or 1; if 1, audio is embedded.</li>
+<li><strong>audioFileFormat</strong>: 0 = AIFF, 1 = WAV</li>
+<li><strong>trimSources</strong>: 0 = export entire files, 1 = export subsetted files</li>
+<li><strong>handleFrames</strong>: specify 0 to 1000 extra &#39;handle&#39; frames</li>
+</ul>
+
+<h3 id="toc_28">save()</h3>
+
+<p>Returns <code>0</code> if Premiere Pro successfully saves the current project.</p>
+
+<h3 id="toc_29">saveAs(<code>newProjectPath</code>)</h3>
+
+<p>Returns <code>0</code> if Premiere Pro successfully saves the current project to <code>newProjectPath</code>.</p>
+
+<h3 id="toc_30">pauseGrowing(<code>pauseOrNot</code>)</h3>
+
+<p>Returns <code>0</code> if Premiere Pro successfully pauses, or un-pauses, growing files. 1 = pause, 0 = grow.</p>
+
+<h3 id="toc_31">closeDoc(<code>saveFirst=0</code>, <code>promptUserIfDirty=0</code>)</h3>
+
+<p>Returns <code>0</code> if Premiere Pro successfully closes the current project. if <code>saveFirst</code> is 1, Premiere Pro will save the .prproj before closing. If <code>promptUserIfDirty</code> is 1 and there are unsaved changes, the user will be asked whether to save first.</p>
+
+<h3 id="toc_32">placeAsset()</h3>
+
+<p>For Creative Cloud Libraries usage only. Ignore.</p>
+
+<h3 id="toc_33">addPropertyToProjectMetadataSchema(<code>propertyName</code>, <code>propertyLabel</code>, <code>propertyType</code>)</h3>
+
+<p>Returns <code>1</code> if Premiere Pro created the new property. Returns <code>0</code> if that property already existed. Supported <code>propertyType</code> values: 0 = integer, 1 = Real, 2 = Text, 3 = Boolean.</p>
+
+<h2 id="toc_34">anywhere object</h2>
+
+<h3 id="toc_35">getAuthenticationToken()</h3>
+
+<p>Returns token as string, if available.</p>
+
+<h3 id="toc_36">GetCurrentEditingSessionURL()</h3>
+
+<p>Returns url as string, if available.</p>
+
+<h3 id="toc_37">GetCurrentEditingSessionSelectionURL()</h3>
+
+<p>Returns url as string, if available.</p>
+
+<h3 id="toc_38">getCurrentEditingSessionActiveSequenceURL()</h3>
+
+<p>Returns url of active sequence, if available.</p>
+
+<h3 id="toc_39">isProductionOpen()</h3>
+
+<p>Returns <code>true</code> if there is currently a production open.</p>
+
+<h3 id="toc_40">listProductions()</h3>
+
+<p>Returns an array of urls to productions, if available.</p>
+
+<h3 id="toc_41">openProduction(<code>urlToOpen</code>)</h3>
+
+<p>Returns <code>1</code> if Premiere Pro successfully opens the production&#39;s url.</p>
+
+<h3 id="toc_42">setAuthenticationToken(<code>serverName</code>, <code>userName</code>, <code>authToken</code>)</h3>
+
+<p>Returns <code>1</code> if Premiere Pro successfully logs the specifed user into the server, using the token.</p>
+
+<h2 id="toc_43">Document object</h2>
+
+<p>Avoid; use project object instead.</p>
+
+<h2 id="toc_44">Encoder object</h2>
+
+<h3 id="toc_45">launchEncoder()</h3>
+
+<p>Launches Adobe Media Encoder. <em>This can take a while, so if you&#39;re going to render using AME, call this early.</em></p>
+
+<h3 id="toc_46">setEmbeddedXMPEnabled(<code>enableOrNot</code>)</h3>
+
+<p>Pass <code>0</code> to disable or <code>1</code> to enable the embedding of XMP into output files.</p>
+
+<h3 id="toc_47">setSidecarXMPEnabled(<code>enabledOrNot</code>)</h3>
+
+<p>Pass 0 to disable or 1 to enable the writing of XMP into &#39;side car&#39; files. <em>Premiere Pro decides whether to embed metadata or write it into a side car, based on the specified output format. To prevent the writing of ANY metadata, set both of these to 0.</em></p>
+
+<h3 id="toc_48">encodeSequence(<code>sequence</code>, <code>outputFilePath</code>, <code>presetPath</code>, <code>workAreaType</code>, <code>removeFromQueueWhenComplete</code>)</h3>
+
+<p>Renders the specified sequence, using the specified output preset, to the specified output path, with options. Returns the <code>jobID</code> of the encoder job started for the specified sequence. <strong>workAreaType</strong> values: 0 = entire sequence, 1 = in to out points, 2 = work area. if <code>removeFromQueueWhenComplete</code> is 1, the job will be removed from the Adobe Media Encoder queue upon completion. <em>This can prevent out-of-memory problems when performing many renders.</em></p>
+
+<h3 id="toc_49">startBatch()</h3>
+
+<p>Returns <code>1</code> if Premiere Pro successfully started Adobe Media Encoder&#39;s batch encoding list, <code>0</code> if not.</p>
+
+<h2 id="toc_50">TrackCollection object</h2>
+
+<p>A collection of tracks, for iteration.</p>
+
+<h3 id="toc_51">numTracks</h3>
+
+<p>The number of tracks (of either audio or video, depending on the collection) available.</p>
+
+<h2 id="toc_52">Track object</h2>
+
+<h3 id="toc_53">getMediaType()</h3>
+
+<p>Returns &quot;Video&quot; for video tracks, &quot;Audio&quot; for audio tracks.</p>
+
+<h3 id="toc_54">getClips()</h3>
+
+<p>Returns a <code>TrackItemCollection</code> of the track&#39;s clips.</p>
+
+<h3 id="toc_55">getTransitions()</h3>
+
+<p>Returns a <code>trackItemCollection</code> of the transitions applied to the track&#39;s clips.</p>
+
+<h3 id="toc_56">isMuted()</h3>
+
+<p>Returns <code>1</code> if the track is muted, <code>0</code> if not.</p>
+
+<h3 id="toc_57">setMute(muteOrNot)</h3>
+
+<p>Pass <code>1</code> to mute the track, <code>0</code> to un-mute.</p>
+
+<h2 id="toc_58">TrackItem object</h2>
+
+<h3 id="toc_59">projectItem</h3>
+
+<p>The <code>projectItem</code> corresponding to the track item.</p>
+
+<h3 id="toc_60">mediaType</h3>
+
+<p>Either <code>video</code> or <code>audio</code>.</p>
+
+<h3 id="toc_61">Start / End</h3>
+
+<p>The start and end time of the clip, in sequence time. </p>
+
+<h3 id="toc_62">type</h3>
+
+<p>Returns the type of track item.</p>
+
+<h2 id="toc_63">MarkerCollection object</h2>
+
+<p>Marker collections contain the markers associated with a given <code>projectItem</code>, or sequence. For project items corresponding to sequences, the collection will reference sequence markers, and be obtained from the sequence object; for project items corresponding to media, the collection will reference clip markers, and be obtained from a project item. </p>
+
+<h2 id="toc_64">numMarkers</h2>
+
+<p>How many markers are associated with this item.</p>
+
+<h2 id="toc_65">createMarker(<code>secondsAsFloat</code>)</h2>
+
+<p>Returns a new marker at the start time specified, defaulting to marker type &#39;Comment&#39;, and duration 0.</p>
+
+<h2 id="toc_66">deleteMarker(<code>marker</code>)</h2>
+
+<p>Removes the specified marker from the marker collection.</p>
+
+<h2 id="toc_67">getFirstMarker()</h2>
+
+<p>Returns the (temporally) first marker from the marker collection. Use this to begin iteration.</p>
+
+<h2 id="toc_68">getNextMarker(<code>marker</code>)</h2>
+
+<p>Returns the marker (temporally) subsequent to the specified <code>marker</code>, from the marker collection. </p>
+
+<h2 id="toc_69">getPrevMarker(<code>marker</code>)</h2>
+
+<p>Returns the marker (temporally) prior to the specified <code>marker</code>, from the marker collection. </p>
+
+<h2 id="toc_70">getLastMarker()</h2>
+
+<p>Returns the (temporally) last <code>marker</code> from the marker collection. </p>
+
+<h2 id="toc_71">Marker object</h2>
+
+<p>Markers are temporal metadata, potentially with duration, and of specifiable type. Some fields are only meaningful for some marker types.</p>
+
+<h2 id="toc_72">name</h2>
+
+<p>The marker&#39;s name, as a string. Read/Write.</p>
+
+<h2 id="toc_73">comments</h2>
+
+<p>The comments (if any) contained within the marker, as a string. Read/Write.</p>
+
+<h2 id="toc_74">start</h2>
+
+<p>A <code>Time</code> object representing the start time of the marker. Read/Write.</p>
+
+<h2 id="toc_75">end</h2>
+
+<p>A <code>Time</code> object representing the end time of the marker. Read/Write.</p>
+
+<h2 id="toc_76">type</h2>
+
+<p>The type of the marker, as a string. Read/Write.</p>
+
+<h2 id="toc_77">setTypeAsComment</h2>
+
+<p>Sets the type of the marker to <code>Comment</code>.</p>
+
+<h2 id="toc_78">setTypeAsChapter</h2>
+
+<p>Sets the type of the marker to <code>Chapter</code>.</p>
+
+<h2 id="toc_79">setTypeAsWebLink</h2>
+
+<p>Sets the type of the marker to <code>WebLink</code>.</p>
+
+<h2 id="toc_80">setTypeAsSegmentation</h2>
+
+<p>Sets the type of the marker to <code>Segmentation</code>.</p>
+
+<h2 id="toc_81">getWebLinkURL</h2>
+
+<p>Returns the web link URL (if any) of the marker, as a string.</p>
+
+<h2 id="toc_82">getwebLinkFrameTarget</h2>
+
+<p>Returns the web link frame target (if any) of the marker, as a string.</p>
+
+<h1 id="toc_83">projectItem object</h1>
+
+<p>All items in Premiere Pro&#39;s project are represented by <code>projectItem</code> objects. </p>
+
+<h2 id="toc_84">children</h2>
+
+<p>This is a <code>ProjectItemCollection</code> referencing the children (if any) of this item; only valid for bins.</p>
+
+<h2 id="toc_85">name</h2>
+
+<p>The name of the <code>projectItem</code>, as a string. Read/Write.</p>
+
+<h2 id="toc_86">treePath</h2>
+
+<p>The path to the <code>projectItem</code>, within the project.</p>
+
+<h2 id="toc_87">type</h2>
+
+<p>The type of the <code>projectItem</code>; will be <code>BIN</code>, <code>CLIP</code>, <code>FILE</code> or <code>ROOT</code>.</p>
+
+<h2 id="toc_88">createSmartBin(<code>binName</code>, <code>query</code>)</h2>
+
+<p>Returns a new bin, based on the specified query.</p>
+
+<h2 id="toc_89">createBin(<code>binName</code>)</h2>
+
+<p>Returns a new &#39;child&#39; bin, as named.</p>
+
+<h2 id="toc_90">deleteBin(<code>binToDelete</code>)</h2>
+
+<p>Deletes the bin (the same bin, of which this is a method) from the project.</p>
+
+<h2 id="toc_91">renameBin(<code>newName</code>)</h2>
+
+<p>Changes the name of this bin, as specified.</p>
+
+<h2 id="toc_92">moveBin(<code>newParent</code>)</h2>
+
+<p>Moves the <code>projectItem</code> to the new parent bin, within the project.</p>
+
+<h2 id="toc_93">getXMPMetadata</h2>
+
+<p>Returns the XMP metadata associated with the <code>projectItem</code>, as a string.</p>
+
+<h2 id="toc_94">setXMPMetadata(<code>newData</code>)</h2>
+
+<p>Replaces any existing XMP metadata with the new data specified. Note: This includes marker data.</p>
+
+<h2 id="toc_95">getProjectMetadata()</h2>
+
+<p>Returns Premiere Pro&#39;s private project metadata, associated with the &#39;projectItem&#39;, as a string.</p>
+
+<h2 id="toc_96">setProjectMetadata(<code>newDate</code>, <code>fieldsToBeUpdated</code>)</h2>
+
+<p>Adds or updates the specified fields within Premiere Pro&#39;s private project metadata, to the new value(s) specified.</p>
+
+<h2 id="toc_97">getMarkers()</h2>
+
+<p>Returns the MarkerCollection associated with the <code>projectItem</code>; if there are no markers, this will return <code>undefined</code>.</p>
+
+<h2 id="toc_98">refreshMedia()</h2>
+
+<p>Makes Premiere Pro reload the media, from disk. </p>
+
+<h2 id="toc_99">canChangeMediaPath()</h2>
+
+<p>Returns <code>true</code> if the media path for this <code>projectItem</code> can be changed; <code>false</code> if not..</p>
+
+<h2 id="toc_100">changeMediaPath(<code>newMediaPath</code>)</h2>
+
+<p>Changes the media referenced by the <code>projectItem</code> to the media Premiere Pro finds at <code>newMediaPath</code>.</p>
+
+<h2 id="toc_101">canProxy()</h2>
+
+<p>Returns <code>true</code> if a proxy can be attached to this <code>projectItem</code>.</p>
+
+<h2 id="toc_102">hasProxy()</h2>
+
+<p>Returns <code>true</code> if a proxy is already attached to this <code>projectItem</code>.</p>
+
+<h2 id="toc_103">attachProxy(<code>newPath</code>, <code>attachAsFullRes</code>)</h2>
+
+<p>Attaches the media Premiere Pro finds at <code>newPath</code>, as the new proxy path for this projectItem. If <code>attachAsFullRes</code> is 1, <code>newPath</code> is assigned as the new full resolution path.</p>
+
+<h1 id="toc_104">Sequence object</h1>
+
+<h2 id="toc_105">timeBase</h2>
+
+<p>Expressed in <code>ticks</code>; there are 254016000000 ticks per second.</p>
+
+<h2 id="toc_106">setPlayerPosition(<code>timeCodeAsString</code>)</h2>
+
+<p>Sets the CTI to the specified timecode value; &#39;00;00;11;23&#39;.</p>
+
+<h2 id="toc_107">setInPoint(<code>secondsAsFloat</code>)</h2>
+
+<p>Sets the in point of the sequence; &#39;6.234&#39;.</p>
+
+<h2 id="toc_108">setOutPoint(<code>secondsAsFloat</code>)</h2>
+
+<p>Sets the in point of the sequence; &#39;12.321&#39;.</p>
+
+<h2 id="toc_109">getInPoint()</h2>
+
+<p>Returns time of sequence&#39;s in point, in seconds.</p>
+
+<h2 id="toc_110">getOutPoint()</h2>
+
+<p>Returns time of sequence&#39;s out point, in seconds.</p>
+
+<h2 id="toc_111">setZeroPoint(<code>ticks</code>)</h2>
+
+<p>Sets the starting timecode of the sequence. </p>
+
+<h2 id="toc_112">attachCustomProperty(<code>propertyID</code>, <code>propertyValue</code>)</h2>
+
+<p>Attaches a custom property, and value, to the sequence. This property is visible if/when the sequence is exported to FCP XML.</p>
+
+<h2 id="toc_113">clone()</h2>
+
+<p>Returns a duplicate of the sequence, with &quot; Clone&quot; appended to the new sequence&#39;s name.</p>
+
+<h2 id="toc_114">exportAsProject(<code>exportPath</code>)</h2>
+
+<p>Creates a new .prproj file containing only this sequence and its constituent media items.</p>
+
+<h2 id="toc_115">exportAsFinalCutProXML(<code>exportPath</code>)</h2>
+
+<p>Creates a new FCP XML file containing only this sequence and its constituent media items.</p>
+
+<h2 id="toc_116">exportAsMediaDirect(<code>outputFilePath</code>, <code>outputPresetPath</code>, <code>workAreaType</code>)</h2>
+
+<p>Renders the sequence to the specified output path, using the specified path. <code>workAreaType</code> can be <code>ENCODE_WORKAREA</code>, <code>ENCODE_ENTIRE</code>, or <code>ENCODE_IN_TO_OUT</code>.</p>
+
+<p><img src="sequence_output_options.png" alt=""></p>
+
+<h2 id="toc_117">getEnableProxy()</h2>
+
+<p>Returns <code>1</code> if proxies are enabled in the current sequence; <code>0</code> if not.</p>
+
+<h2 id="toc_118">setEnableProxy(<code>enable</code>)</h2>
+
+<p>Pass a <code>1</code> to enable proxies in the sequence; <code>0</code> to disable.</p>
+
+
+
+
+</body>
+
+</html>

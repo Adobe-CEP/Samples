@@ -1,13 +1,13 @@
 # How to develop Premiere Pro panels
 
 ---
-### 1. Install the following
+### 1. Install these
 
 * [Creative Cloud](http://creative.adobe.com). Use the Creative Cloud application to install the applications with which you'll be developing and testing, as well as ExtendScript Toolkit (available under 'previous versions').
 
 * The [PProPanel](https://github.com/Adobe-CEP/Samples/tree/master/PProPanel)  sample project.
 
-* The ZXPSignCmd signing utility for  [Windows](http://download.macromedia.com/pub/labs/extensionbuilder3/ccextensionswin64.exe) or [Mac]( http://download.macromedia.com/pub/labs/extensionbuilder3/ccextensionsmac.zip), creates signed .zxp bundles for Add-Ons or direct distribution.
+* The [ZXPSignCmd](https://github.com/Adobe-CEP/CEP-Resources/tree/master/ZXPSignCMD/3.0.19) signing utility creates signed .zxp bundles for Add-Ons or direct distribution.
 
 		
 ### 2. Configure the environment 
@@ -29,7 +29,7 @@ On Windows, make the following registry entry:
 	
 ### 3. Create your panel in JavaScript using your browser's developer tools
 
-To enable debugging of panels using Chrome or Safari’s integrated debugger, put a file named `.debug` into your extension’s folder (as a peer of the `/CSXS` folder). The contents of the file should resemble the following:
+To enable debugging of panels using Chrome’s integrated debugger, put a file named `.debug` into your extension’s folder (as a peer of the `/CSXS` folder). The contents of the file should resemble the following:
 
 	<?xml version="1.0" encoding="UTF-8"?>
 	<ExtensionList>

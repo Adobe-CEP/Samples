@@ -3,11 +3,11 @@
 ExtensionBundleName="Premiere Pro sample panel" 
 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<ExtensionList>
-		<Extension Id="com.adobe.PProPanel" Version="9.1.0" />
+		<Extension Id="com.adobe.PProPanel" Version="10.3.0" />
 	</ExtensionList>
 	<ExecutionEnvironment>
 		<HostList>
-			<Host Name="PPRO" Version="[9.1,10.9]" />
+			<Host Name="PPRO" Version="[9.0,10.9]" />
 		</HostList>
 		<LocaleList>
 			<Locale Code="All" />
@@ -36,8 +36,8 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 					<Menu>PProPanel (SDK sample panel)</Menu>
 					<Geometry>
 						<Size>
-							<Height>400</Height>
-							<Width>550</Width>
+							<Height>300</Height>
+							<Width>180</Width>
 						</Size>
 					</Geometry>
 				</UI>

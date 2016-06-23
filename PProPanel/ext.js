@@ -1,33 +1,14 @@
 
 function onLoaded() {
     var csInterface = new CSInterface();
-	
-    var appName = csInterface.hostEnvironment.appName;
+	var appName = csInterface.hostEnvironment.appName;
     document.getElementById("dragthing").style.backgroundColor = "lightblue";
-    
-    if(appName != "FLPR"){
-    	loadJSX();
-    }    
-    
-    var appNames = ["PPRO"];
-
-    for (var i = 0; i < appNames.length; i++) {
-        var name = appNames[i];
-        if (appName.indexOf(name) >= 0) {
-           var btn = document.getElementById("btn_" + name);
-           if (btn)
-                btn.disabled = false;
-        }
-    }
-    
 
     updateThemeWithAppSkinInfo(csInterface.hostEnvironment.appSkinInfo);
 
     // Update the color of the panel when the theme color of the product changed.
     csInterface.addEventListener(CSInterface.THEME_COLOR_CHANGED_EVENT, onAppThemeColorChanged);
-
     // Listen for event sent in response to rendering a sequence.
-
     csInterface.addEventListener("com.adobe.csxs.events.PProPanelRenderEvent", function(event){
         alert(event.data);
     });
@@ -36,32 +17,27 @@ function onLoaded() {
     csInterface.evalScript('$._PPP_.getActiveSequenceName()', myCallBackFunction);  	
     csInterface.evalScript('$._PPP_.getUserName()', myUserNameFunction);  
     csInterface.evalScript('$._PPP_.getSequenceProxySetting()', myGetProxyFunction);
-
+    csInterface.evalScript('$._PPP_.keepPanelLoaded()', null);
 }
 
 function dragHandler(event){
-
     var csInterface = new CSInterface();
-    var extPath = csInterface.getSystemPath(SystemPath.EXTENSION);
+    var extPath 	= csInterface.getSystemPath(SystemPath.EXTENSION);
     var OSVersion   = csInterface.getOSInformation();
     
     if (extPath != null){
         extPath = extPath + '/payloads/test.jpg';
-
         if (OSVersion.indexOf("Windows") >=0){
             var sep = '\\\\';
             extPath = extPath.replace(/\//g, sep);
         }
-
         event.dataTransfer.setData("com.adobe.cep.dnd.file.0", extPath);
     //  event.dataTransfer.setData("com.adobe.cep.dnd.file.N", path);  N = (items to import - 1)
-    
     }
 }
 
 function myCallBackFunction (data) {
      // Updates seq_display with whatever ExtendScript function returns.
-
      var boilerPlate        = "Active Sequence: ";
      var seq_display        = document.getElementById("active_seq");
      seq_display.innerHTML  = boilerPlate + data;
@@ -69,29 +45,24 @@ function myCallBackFunction (data) {
 
 function myUserNameFunction (data) {
      // Updates username with whatever ExtendScript function returns.
-
      var user_name          = document.getElementById("username");
      user_name.innerHTML    = data;
 }
 
 function myGetProxyFunction (data) {
-    
     // Updates proxy_display based on current sequence's value.
-    var boilerPlate        = "Proxies enabled for sequence: "
+    var boilerPlate        = "Proxies enabled for sequence: ";
     var proxy_display      = document.getElementById("proxies_on");
 
-    if (proxy_display != null) {
+    if (proxy_display !== null) {
         proxy_display.innerHTML = boilerPlate + data;
     }
 }
 
 function mySetProxyFunction (data) {
-
     var csInterface = new CSInterface();
     csInterface.evalScript('$._PPP_.getActiveSequenceName()', myCallBackFunction);
     csInterface.evalScript('$._PPP_.getSequenceProxySetting()', myProxyFunction);
-
-
 }
      
 function myVersionInfoFunction (data) {
@@ -111,14 +82,13 @@ function updateThemeWithAppSkinInfo(appSkinInfo) {
     var panelBackgroundColor = appSkinInfo.panelBackgroundColor.color;
     document.body.bgColor = toHex(panelBackgroundColor);
         
-    var styleId = "ppstyle";
-    
+    var styleId 			= "ppstyle";
     var gradientBg          = "background-image: -webkit-linear-gradient(top, " + toHex(panelBackgroundColor, 40) + " , " + toHex(panelBackgroundColor, 10) + ");";
     var gradientDisabledBg  = "background-image: -webkit-linear-gradient(top, " + toHex(panelBackgroundColor, 15) + " , " + toHex(panelBackgroundColor, 5) + ");";
     var boxShadow           = "-webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 1px 1px rgba(0, 0, 0, 0.2);";
     var boxActiveShadow     = "-webkit-box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.6);";
 	    
-    var isPanelThemeLight   = panelBackgroundColor.red > 63; // choose your own sweet spot
+    var isPanelThemeLight   = panelBackgroundColor.red > 50; // choose your own sweet spot
 	    
 	    var fontColor, disabledFontColor;
 	    var borderColor;
