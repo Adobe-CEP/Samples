@@ -3,6 +3,21 @@ function onLoaded() {
     var csInterface = new CSInterface();
 	var appName = csInterface.hostEnvironment.appName;
     document.getElementById("dragthing").style.backgroundColor = "lightblue";
+    
+    if(appName != "FLPR"){
+    	loadJSX();
+    }    
+    
+    var appNames = ["PPRO"];
+
+    for (var i = 0; i < appNames.length; i++) {
+        var name = appNames[i];
+        if (appName.indexOf(name) >= 0) {
+           var btn = document.getElementById("btn_" + name);
+           if (btn)
+                btn.disabled = false;
+        }
+    }
 
     updateThemeWithAppSkinInfo(csInterface.hostEnvironment.appSkinInfo);
 
@@ -81,7 +96,7 @@ function updateThemeWithAppSkinInfo(appSkinInfo) {
 
     var panelBackgroundColor = appSkinInfo.panelBackgroundColor.color;
     document.body.bgColor = toHex(panelBackgroundColor);
-        
+    
     var styleId 			= "ppstyle";
     var gradientBg          = "background-image: -webkit-linear-gradient(top, " + toHex(panelBackgroundColor, 40) + " , " + toHex(panelBackgroundColor, 10) + ");";
     var gradientDisabledBg  = "background-image: -webkit-linear-gradient(top, " + toHex(panelBackgroundColor, 15) + " , " + toHex(panelBackgroundColor, 5) + ");";
@@ -202,5 +217,5 @@ function onClickButton(ppid) {
     } else {
     	var extScript = "$._ext_" + ppid + ".run()";
 		evalScript(extScript);
-	}
+        }   
 }
