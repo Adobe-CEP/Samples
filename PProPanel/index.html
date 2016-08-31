@@ -66,9 +66,9 @@
 			});
 
 			$("#checkforums").on("click", function(e){
-				e.preventDefault(); 
-				var csInterface = new CSInterface();
-				csInterface.openURLInDefaultBrowser("https://forums.adobe.com/community/premiere/sdk");
+						e.preventDefault(); 
+						var csInterface = new CSInterface();
+						csInterface.openURLInDefaultBrowser("https://forums.adobe.com/community/premiere/sdk");
 			});
 
 			$("#readAPIdocs").on("click", function(e){
@@ -168,12 +168,11 @@
 					csInterface.evalScript(whole_megillah);
 				}
 			});
-
 		});
 		</script>
 	</head>
 
-  <body onLoad="onLoaded()">
+	<body onLoad="onLoaded()">
 		<a href="javascript:history.go(0)">Refresh panel</a>
 		<p id="username_pre">User name: </p>
 		<p id="username">[uninitialized]</p>
@@ -222,22 +221,22 @@
 		<button class="controlBg textStyle" id="btn_PPRO25" onClick="evalScript('$._PPP_.clearCache()')">Clear media cache</button>
 		<button class="controlBg textStyle" id="btn_PPRO26" onClick="evalScript('$._PPP_.exportFramesForMarkers()')">Export frames for markers</button>
 		<button class="controlBg textStyle" id="btn_PPRO27" onClick="evalScript('$._PPP_.randomizeSequenceSelection()')">Randomize selection</button>
-
+		<button class="controlBg textStyle" id="btn_PPRO28" onClick="evalScript('$._PPP_.muteFun()')">Mute fun!</button>
 		<div id="dragthing" draggable="true" ondragstart="dragHandler(event)">drag me</div>
 	</body>
 	<script>
-  document.body.onbeforeunload = function() {
- 	var csInterface = new CSInterface();
-    var OSVersion   = csInterface.getOSInformation();
-    
-    var path = "file:///Library/Application Support/Adobe/CEP/extensions/PProPanel/payloads/onbeforeunload.html";
-    
-    if (OSVersion.indexOf("Windows") >=0){
-			var path = "file:///C:/Program%20Files%20(x86)/Common%20Files/Adobe/CEP/extensions/PProPanel/payloads/onbeforeunload.html"
-    }
-    csInterface.openURLInDefaultBrowser(path);		
-  };
-</script>
+		document.body.onbeforeunload = function() {
+			var csInterface = new CSInterface();
+		    var OSVersion   = csInterface.getOSInformation();
+		    
+		    var path = "file:///Library/Application Support/Adobe/CEP/extensions/PProPanel/payloads/onbeforeunload.html";
+		    
+		    if (OSVersion.indexOf("Windows") >=0){
+				path = "file:///C:/Program%20Files%20(x86)/Common%20Files/Adobe/CEP/extensions/PProPanel/payloads/onbeforeunload.html"
+		    }
+		    csInterface.openURLInDefaultBrowser(path);		
+	  	};
+	</script>
 	</script>
 
 </html>
