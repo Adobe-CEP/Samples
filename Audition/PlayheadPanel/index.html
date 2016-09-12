@@ -1,0 +1,31 @@
+<!doctype html>
+<!-- 
+ADOBE SYSTEMS INCORPORATED
+ Copyright 2016 Adobe Systems Incorporated
+ All Rights Reserved.
+
+NOTICE:  Adobe permits you to use, modify, and distribute this file in accordance with the
+terms of the Adobe license agreement accompanying it.  If you have received this file from a
+source other than Adobe, then your use, modification, or distribution of it requires the prior
+written permission of Adobe.
+-->
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Playhead</title>
+
+		<!-- CSS -->
+		<link id="adobestyle" rel="stylesheet" href="./css/style.css">
+
+		<!-- scripts -->
+		<script src="./main.js"></script>
+		<script src="./lib/Appearance.js"></script>
+		<script src="./lib/CSInterface.js"></script>
+
+	</head>
+	<body class="spc--dark" onLoad="onLoaded();">
+		<p><span id="starttime"></span>&nbsp;<input id="range" type="range" disabled="true" min="0" max="1" step="0.01" value="0" oninput="showSliderPosition(this.value, false)" onchange="showSliderPosition(this.value, true)" />&nbsp;<span id="endtime"></span></p>
+		<p>Playhead: <span id="currenttime"></span></p>
+		<p id="debug"></p>
+	</body>
+</html>

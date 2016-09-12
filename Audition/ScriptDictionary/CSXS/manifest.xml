@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ADOBE SYSTEMS INCORPORATED
+ Copyright 2016 Adobe Systems Incorporated
+ All Rights Reserved.
+
+NOTICE:  Adobe permits you to use, modify, and distribute this file in accordance with the
+terms of the Adobe license agreement accompanying it.  If you have received this file from a
+source other than Adobe, then your use, modification, or distribution of it requires the prior
+written permission of Adobe.
+-->
+<ExtensionManifest Version="4.0" ExtensionBundleId="com.adobe.ScriptDictionary" ExtensionBundleVersion="1.0"
+ExtensionBundleName="Script Dictionary" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<ExtensionList>
+		<Extension Id="com.adobe.ScriptDictionary" Version="1.0">
+			<HostList>
+	            <Host Name="AUDT"/>
+				<Host Name="PPRO"/>
+				<Host Name="PRLD"/>
+				<Host Name="AEFT"/>
+	        </HostList>
+	    </Extension>
+	</ExtensionList>
+	<ExecutionEnvironment>
+		<HostList>
+			<Host Name="AUDT" Version="9.2.0" />
+			<Host Name="PPRO"/>
+			<Host Name="PRLD"/>
+			<Host Name="AEFT"/>
+		</HostList>
+		<LocaleList>
+			<Locale Code="All" />
+		</LocaleList>
+		<RequiredRuntimeList>
+			<RequiredRuntime Name="CSXS" Version="6.0" />
+		</RequiredRuntimeList>
+	</ExecutionEnvironment>
+
+	<DispatchInfoList>
+		<Extension Id="com.adobe.ScriptDictionary">
+			<DispatchInfo >
+				<Resources>
+					<MainPath>./index.html</MainPath>
+				</Resources>
+				<Lifecycle>
+					<AutoVisible>true</AutoVisible>
+					<!--<StartOn>
+                        <Event>com.adobe.csxs.events.ApplicationInitialized</Event>
+                    </StartOn>-->
+				</Lifecycle>
+				<UI>
+					<Type>Panel</Type>
+					<Menu>Script Dictionary</Menu>
+					<Geometry>
+						<Size>
+							<Height>150</Height>
+							<Width>150</Width>
+						</Size>
+					</Geometry>
+				</UI>
+			</DispatchInfo>
+		</Extension>
+	</DispatchInfoList>
+</ExtensionManifest>
