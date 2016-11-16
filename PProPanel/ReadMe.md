@@ -3,19 +3,19 @@
 ---
 ### 1. Install these
 
-* [Creative Cloud](http://creative.adobe.com). Use the Creative Cloud application to install the applications with which you'll be developing and testing, as well as ExtendScript Toolkit (available under 'previous versions').
+* [Creative Cloud](http://creative.adobe.com). Use the Creative Cloud application to install Premiere Pro CC and other Adobe applications with which you'll be developing and testing, as well as ExtendScript Toolkit (available under 'previous versions').
 
 * The [PProPanel](https://github.com/Adobe-CEP/Samples/tree/master/PProPanel)  sample project.
 
-* The [ZXPSignCmd](https://github.com/Adobe-CEP/CEP-Resources/tree/master/ZXPSignCMD/3.0.19) signing utility creates signed .zxp bundles for Add-Ons or direct distribution.
+* The [ZXPSignCmd](https://github.com/Adobe-CEP/CEP-Resources/tree/master/ZXPSignCMD/4.0.7) signing utility creates signed .zxp bundles for Add-Ons or direct distribution.
 
 		
 ### 2. Configure the environment 
-Put PPro panel (or your own panel) here, to have Premiere Pro load it:
+Put the PProPanel directory (or your own panel) into this directory, to have Premiere Pro load it:
 	
-Windows: 	`C:\Program Files (x86)\Common Files\Adobe\CEP\extensions\PanelDir`
+Windows: 	`C:\Program Files (x86)\Common Files\Adobe\CEP\extensions`
 	
-Mac:		`/Library/Application Support/Adobe/CEP/extensions/PanelDir`
+Mac:		`/Library/Application Support/Adobe/CEP/extensions`
 	
 Tell Premiere Pro to load unsigned panels.
 	
@@ -29,7 +29,7 @@ On Windows, make the following registry entry:
 	
 ### 3. Create your panel in JavaScript using your browser's developer tools
 
-To enable debugging of panels using Chrome’s integrated debugger, put a file named `.debug` into your extension’s folder (as a peer of the `/CSXS` folder). The contents of the file should resemble the following:
+To enable debugging of panels using Chrome’s developer tools, put a file named `.debug` into your extension’s folder (as a peer of the `/CSXS` folder). The contents of the file should resemble the following (and the Extension ID must match the one in the panel's manifest):
 
 	<?xml version="1.0" encoding="UTF-8"?>
 	<ExtensionList>
@@ -44,7 +44,7 @@ When the panel is active, you can debug the panel in your web browser by browsin
 
 ![](payloads/localhost.png)
 
-Optional: Turn on CEP logging. Find CEP logs (distinct from Premiere Pro's logs) here. Note that Mac Library path is the system's library, not the user's. 
+Optional diagnostics: Turn on CEP logging. Find CEP logs (distinct from Premiere Pro's logs) here. Note that Mac Library path is the system's library, not the user's. Also, not that logging WILL impact performance.
 
 Windows: `~\AppData\Local\Temp\csxs6-PPRO.log`
 
@@ -66,10 +66,10 @@ Once in the session, use the Data Browser to view the DOM.
 
 Prior to PPro 9.0, you could just click the chain link and PPro would launch. That no longer works with the shipping version of ESTK; launch PPro first, then connect. Also new in 9.0, set breakpoints in your panel's .jsx files, and they will break into ESTK; very handy! 
 
+Here's a [screen video](https://www.dropbox.com/s/lwo8jg0klxkq91s/walkthru.mp4) showing how to debug panels at both the JavaScript and ExtendScript levels.
 
 
-
-### **5. Package and deploy your panel**
+### **6. Package and deploy your panel**
 
 You can either generate a self-signed certificate (ZXPSignCmd will make them for you), or get one from a commercial security provider. Here's an example:
 
@@ -79,5 +79,7 @@ To sign directory `/PanelDir` with `certificate.p12`, do the following:
 
 	./ZXPSignCmd -sign panelDir/ PanelName.zxp certificate.p12 password -tsa https://timestamp.geotrust.com/tsa
 
-Submit your panel to the [Adobe Add-Ons site](https://www.adobeexchange.com/producer) for approval, and distribution. You can also directly supply the .zxp file enterprise customers, and those who do not connect their systems to the public internet, for installation using [ExManCmd](https://www.adobeexchange.com/resources/27), the command line version of Extension Manager.
+Submit your panel to the [Adobe Add-Ons site](https://www.adobeexchange.com/producer) for approval, and distribution. You can also directly supply the .zxp file enterprise customers, and those who do not connect their systems to the public internet, for installation using [ExManCmd](https://www.adobeexchange.com/resources/28), the command line version of Extension Manager.
+
+If you encounter any issues with the Add-Ons store or ExManCmd, please [contact the Add-Ons team](mailto:avetting@adobe.com).
 
