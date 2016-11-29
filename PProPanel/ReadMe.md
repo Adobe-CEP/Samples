@@ -1,23 +1,27 @@
-# How to develop Premiere Pro panels
+# Premiere Pro panel SDK
+*Last updated 11/29/16, current released version = Premiere Pro 11.0.1.*
+
+# Configure your development environment
 
 ---
-### 1. Install these
+### 1. Obtain and install these
 
 * [Creative Cloud](http://creative.adobe.com). Use the Creative Cloud application to install Premiere Pro CC and other Adobe applications with which you'll be developing and testing, as well as ExtendScript Toolkit (available under 'previous versions').
 
 * The [PProPanel](https://github.com/Adobe-CEP/Samples/tree/master/PProPanel)  sample project.
 
 * The [ZXPSignCmd](https://github.com/Adobe-CEP/CEP-Resources/tree/master/ZXPSignCMD/4.0.7) signing utility creates signed .zxp bundles for Add-Ons or direct distribution.
+* Use the [ExManCmd](https://www.adobeexchange.com/resources/28) command line utility to test .zxp installation.
 
 		
-### 2. Configure the environment 
+### 2. Put panel in extensions directory 
 Put the PProPanel directory (or your own panel) into this directory, to have Premiere Pro load it:
 	
 Windows: 	`C:\Program Files (x86)\Common Files\Adobe\CEP\extensions`
 	
 Mac:		`/Library/Application Support/Adobe/CEP/extensions`
 	
-Tell Premiere Pro to load unsigned panels.
+### 3. Make Premiere Pro load unsigned panels
 	
 On Mac, type the following into Terminal, then relaunch Finder:
 
@@ -27,7 +31,7 @@ On Mac, type the following into Terminal, then relaunch Finder:
 On Windows, make the following registry entry:
 	![On Windows, make the following registry entry:](payloads/win7_64.png)
 	
-### 3. Create your panel in JavaScript using your browser's developer tools
+### 4. Write and test your panel's JavaScript using Chrome debugger
 
 To enable debugging of panels using Chrome’s developer tools, put a file named `.debug` into your extension’s folder (as a peer of the `/CSXS` folder). The contents of the file should resemble the following (and the Extension ID must match the one in the panel's manifest):
 
@@ -56,7 +60,7 @@ Windows: `HKEY_CURRENT_USER/Software/Adobe/CSXS.6`
 
 Mac: `~/Library/Preferences/com.adobe.CSXS.6.plist`
 
-### 4. Drive Premiere Pro from within ExtendScript Toolkit (ESTK)
+### 5. Write and test your panel's ExtendScript using ExtendScript Toolkit (ESTK)
 
 Launch ESTK; Launch PPro, then then click the chain link to connect. 
 
@@ -83,3 +87,17 @@ Submit your panel to the [Adobe Add-Ons site](https://www.adobeexchange.com/prod
 
 If you encounter any issues with the Add-Ons store or ExManCmd, please [contact the Add-Ons team](mailto:avetting@adobe.com).
 
+# What's Possible?
+
+Here are links to working sample code, showing what's possible for Premiere Pro panels:
+
+* [Browse and import files from the OS](https://github.com/Adobe-CEP/Samples/blob/master/PProPanel/jsx/Premiere.jsx#L215)
+* [Get and set all XMP metadata](https://github.com/Adobe-CEP/Samples/blob/master/PProPanel/jsx/Premiere.jsx#L508) (including Premiere Pro's [private project metadata](https://github.com/Adobe-CEP/Samples/blob/master/PProPanel/jsx/Premiere.jsx#L659)) for any projectItem.
+* [Import files via drag and drop](https://github.com/Adobe-CEP/Samples/blob/master/PProPanel/ext.js#L47), from a panel into Premiere Pro (Project panel, or directly onto a timeline).
+* [Preview any supported media in the Source monitor](https://github.com/Adobe-CEP/Samples/blob/master/PProPanel/jsx/Premiere.jsx#L190) (without requiring that it be imported into the project).
+* Access and modify [clip markers](https://github.com/Adobe-CEP/Samples/blob/master/PProPanel/jsx/Premiere.jsx#L629), and [sequence markers](https://github.com/Adobe-CEP/Samples/blob/master/PProPanel/jsx/Premiere.jsx#L121).
+* [Create new sequences](https://github.com/Adobe-CEP/Samples/blob/master/PProPanel/jsx/Premiere.jsx#L349) either from a preset, or with user interaction.
+* [Open different projects](https://github.com/Adobe-CEP/Samples/blob/master/PProPanel/jsx/Premiere.jsx#L288) (while the panel remains active; this behavior is new as of Premiere Pro 10.3).
+* [Render a sequence](https://github.com/Adobe-CEP/Samples/blob/master/PProPanel/jsx/Premiere.jsx#L412) to any destination(s), based on any preset(s), including ftp upload, and controlling metadata output.
+* Export either a [given sequence](https://github.com/Adobe-CEP/Samples/blob/master/PProPanel/jsx/Premiere.jsx#L164) or the entire project as Final Cut Pro 7 XML. 
+* [Save as a new project](https://github.com/Adobe-CEP/Samples/blob/master/PProPanel/jsx/Premiere.jsx#L487), or create a new project containing only a specified sequence and its constituent media.
