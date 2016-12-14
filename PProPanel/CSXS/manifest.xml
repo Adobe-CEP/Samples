@@ -28,8 +28,8 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 					<AutoVisible>true</AutoVisible>
 				</Lifecycle>
 				<CEFCommandLine>
-					<Parameter>--allow-file-access</Parameter>
-					<Parameter>--allow-file-access-from-files</Parameter>
+				    <Parameter>--allow-file-access</Parameter>
+				    <Parameter>--allow-file-access-from-files</Parameter>
 					<Parameter>--enable-nodejs</Parameter>
 				</CEFCommandLine>
 				<UI>
