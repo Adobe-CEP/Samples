@@ -1,5 +1,5 @@
 # Premiere Pro panel SDK
-*Last updated 11/29/16, current released version = Premiere Pro 11.0.1.*
+*Last updated 2/1/17, current released version = Premiere Pro 11.0.2.*
 
 # What's Possible?
 

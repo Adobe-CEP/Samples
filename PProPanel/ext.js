@@ -34,14 +34,14 @@ function onLoaded() {
 	    VulcanMessage.TYPE_PREFIX + "com.DVA.message.sendtext",
 	    function(message) {
 	        var str = VulcanInterface.getPayload(message);
-	        alert("Inter-tool message: " + str );
+	        // You just received the text of every Text layer in the current AE comp.
 	    }
 	);
 	csInterface.evalScript('$._PPP_.getVersionInfo()', myVersionInfoFunction);	
 	csInterface.evalScript('$._PPP_.getActiveSequenceName()', myCallBackFunction);		
 	csInterface.evalScript('$._PPP_.getUserName()', myUserNameFunction);  
 	csInterface.evalScript('$._PPP_.getSequenceProxySetting()', myGetProxyFunction);
-	csInterface.evalScript('$._PPP_.keepPanelLoaded()', null);
+	csInterface.evalScript('$._PPP_.keepPanelLoaded()');
 }
 
 function dragHandler(event){
