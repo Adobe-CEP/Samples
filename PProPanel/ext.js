@@ -29,19 +29,25 @@ function onLoaded() {
 		alert(event.data);
 	});
 
+	csInterface.addEventListener("com.adobe.csxs.events.WorkspaceChanged", function(event){
+		alert("New workspace selected: " + event.data);
+	});
+
+
 	// register for messages
 	VulcanInterface.addMessageListener(
 	    VulcanMessage.TYPE_PREFIX + "com.DVA.message.sendtext",
 	    function(message) {
 	        var str = VulcanInterface.getPayload(message);
-	        alert("Inter-tool message: " + str );
+	        // You just received the text of every Text layer in the current AE comp.
 	    }
 	);
 	csInterface.evalScript('$._PPP_.getVersionInfo()', myVersionInfoFunction);	
 	csInterface.evalScript('$._PPP_.getActiveSequenceName()', myCallBackFunction);		
 	csInterface.evalScript('$._PPP_.getUserName()', myUserNameFunction);  
 	csInterface.evalScript('$._PPP_.getSequenceProxySetting()', myGetProxyFunction);
-	csInterface.evalScript('$._PPP_.keepPanelLoaded()', null);
+	csInterface.evalScript('$._PPP_.keepPanelLoaded()');
+	csInterface.evalScript('$._PPP_.disableImportWorkspaceWithProjects()');
 }
 
 function dragHandler(event){

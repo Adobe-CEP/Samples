@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ExtensionManifest Version="4.0" ExtensionBundleId="com.adobe.PProPanel" ExtensionBundleVersion="1.0.1"
+<ExtensionManifest Version="4.0" ExtensionBundleId="com.adobe.PProPanel" ExtensionBundleVersion="11.1"
 ExtensionBundleName="Premiere Pro sample panel" 
 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<ExtensionList>
@@ -7,7 +7,7 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	</ExtensionList>
 	<ExecutionEnvironment>
 		<HostList>
-			<Host Name="PPRO" Version="[9.1,11.9]" />
+			<Host Name="PPRO" Version="9.0" />
 		</HostList>
 		<LocaleList>
 			<Locale Code="All" />
@@ -28,8 +28,8 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 					<AutoVisible>true</AutoVisible>
 				</Lifecycle>
 				<CEFCommandLine>
-				    <Parameter>--allow-file-access</Parameter>
-				    <Parameter>--allow-file-access-from-files</Parameter>
+					<Parameter>--allow-file-access</Parameter>
+					<Parameter>--allow-file-access-from-files</Parameter>
 					<Parameter>--enable-nodejs</Parameter>
 				</CEFCommandLine>
 				<UI>
