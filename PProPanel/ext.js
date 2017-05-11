@@ -154,7 +154,7 @@ function updateThemeWithAppSkinInfo(appSkinInfo) {
 		addRule(styleId, "[disabled]", gradientDisabledBg);
 		addRule(styleId, "[disabled]", disabledFontColor);
 		addRule(styleId, "input[type=text]", "padding:1px 3px;");
-		addRule(styleId, "input[type=text]", "background-color: " + inputBackgroundColor) + ";";
+		addRule(styleId, "input[type=text]", "background-color: " + inputBackgroundColor + ";");
 		addRule(styleId, "input[type=text]:focus", "background-color: #ffffff;");
 		addRule(styleId, "input[type=text]:focus", "color: #000000;");
 }
