@@ -1,11 +1,10 @@
-﻿$._PPP_={
+$._PPP_={
 
 	getVersionInfo : function() {
 		return 'PPro ' + app.version + 'x' + app.build;
 	},
 
 	getUserName : function() {
-
 		var	homeDir		= new File('~/');
 		var	userName	= homeDir.displayName;
 		homeDir.close();
@@ -17,7 +16,6 @@
 	},
 
 	updateGrowingFile : function() {
-
 		var numItems	= app.project.rootItem.children.numItems;
 		var currentItem	= 0;
 
@@ -30,7 +28,6 @@
 	},
 
 	getSep : function() {
-
 		if (Folder.fs == 'Macintosh') {
 			return '/';
 		} else {
@@ -43,9 +40,7 @@
 	},
 
 	exportCurrentFrameAsPNG : function() {
-
 		app.enableQE();
-
 		var activeSequence	= qe.project.getActiveSequence(); 	// note: make sure a sequence is active in PPro UI
 
 		if (activeSequence) {
@@ -54,14 +49,11 @@
 			var outputFileName	= outputPath.fsName + $._PPP_.getSep() + time + '_' + activeSequence.name;
 
 			activeSequence.exportFramePNG(time, outputFileName);
-
 		} else {
-			alert("Active sequence required.");
-		}
+			alert("No active sequence.");		}
 	},
 
 	renameFootage : function() {
-
 		var item = app.project.rootItem.children[0]; // assumes the zero-th item in the project is footage.
 		if (item) {
 			item.name = item.name + ", updated by PProPanel.";
@@ -71,7 +63,6 @@
 	},
 
 	getActiveSequenceName : function() {
-
 		if (app.project.activeSequence) {
 			return app.project.activeSequence.name;
 		} else {
@@ -80,11 +71,8 @@
 	},
 	
 	exportSequenceAsPrProj : function() {
-
 		var activeSequence = app.project.activeSequence;
 		if (activeSequence) {
-
-			// Here's how to get the start time offset to a sequence.
 
 			var startTimeOffset		= activeSequence.zeroPoint;
 			var prProjExtension		= '.prproj';
@@ -101,8 +89,7 @@
 		
 				alert("Exported " + app.project.activeSequence.name + " to " + completeOutputPath + ".");
 			} else {
-				alert("Could not find/create output folder.");
-			}
+				alert("Could not find or create output folder.");			}
 
 			// Here's how to import N sequences from a project.
 			//
@@ -162,7 +149,6 @@
 	},
 	
 	exportFCPXML : function() {
- 
 		if (app.project.activeSequence) {
 			var projPath			= new File(app.project.path);
 			var parentDir			= projPath.parent;
@@ -188,7 +174,6 @@
 	},
 
 	openInSource : function() {
-
 		app.enableQE();
 		var fileToOpen = File.openDialog ("Choose file to open.", 0, false);
 		if (fileToOpen) {
@@ -199,12 +184,10 @@
 	},
 
 	searchForBinWithName : function (nameToFind) {
-
 		var numItemsAtRoot	= app.project.rootItem.children.numItems;
 		var foundBin 		= 0;
 
-		for (var i = 0; (numItemsAtRoot >0) && (i < numItemsAtRoot) && (foundBin === 0); i++) {
-			var currentItem = app.project.rootItem.children[i];
+		for (var i = 0; (numItemsAtRoot > 0) && (i < numItemsAtRoot) && (foundBin === 0); i++) {			var currentItem = app.project.rootItem.children[i];
 			if ((currentItem) && currentItem.name == nameToFind) {
 				foundBin = currentItem;
 			}
@@ -213,7 +196,6 @@
 	},
 
 	importFiles : function() {
-
 		if (app.project) {
 			var fileOrFilesToImport	= File.openDialog (	"Choose files to import", 	// title
 														0, 							// filter available files? 
@@ -223,10 +205,7 @@
 
 			var currentTargetBin = app.project.getInsertionBin();
 
-			if (currentTargetBin.nodeId == app.project.rootItem.nodeId){
-				// target == project root.
-			}
-
+			if (currentTargetBin.nodeId === app.project.rootItem.nodeId){				// If we're here, then the target bin is the root of the project.			}
 			if (fileOrFilesToImport) {
 				var nameToFind	= 'Targeted by PProPanel import';
 				var targetBin	= $._PPP_.searchForBinWithName(nameToFind);
@@ -236,7 +215,6 @@
 					app.project.rootItem.createBin(nameToFind);
 					targetBin	= $._PPP_.searchForBinWithName(nameToFind);
 				}
-
 				if (targetBin) {
 					targetBin.select();
 					// We have an array of File objects; importFiles() takes an array of paths.
@@ -259,13 +237,8 @@
 	},
 
 	muteFun : function() {
-	
 		if (app.project.activeSequence){
-			var atrax = app.project.activeSequence.audioTracks;
-		
-			for (var i = 0; i < atrax.numTracks; i++){
-				var currentTrack	= atrax[i];
-				 if (Math.random() > 0.5){
+			for (var i = 0; i < app.project.activeSequence.audioTracks.numTracks; i++){				var currentTrack	= app.project.activeSequence.audioTracks[i];				 if (Math.random() > 0.5){
 					currentTrack.setMute(!(currentTrack.isMuted()));
 				 }
 			}
@@ -275,18 +248,10 @@
 	},
 
 	disableImportWorkspaceWithProjects : function() {
-
-		var prefToModify = 'FE.Prefs.ImportWorkspace';
-		var appProperties = app.properties;
-		
+		var prefToModify	= 'FE.Prefs.ImportWorkspace';		var appProperties 	= app.properties;		
 		if (appProperties){
-			var propertyExists = app.properties.doesPropertyExist(prefToModify);
-			var propertyIsReadOnly = app.properties.isPropertyReadOnly(prefToModify);
-			var propertyValue = app.properties.getProperty(prefToModify);
-		
-			// optional third parameter possible: 0, : non-persistent,  1 : persistent (default)
-			appProperties.setProperty(prefToModify, false, 1);
-
+			var propertyExists 		= app.properties.doesPropertyExist(prefToModify);			var propertyIsReadOnly 	= app.properties.isPropertyReadOnly(prefToModify);			var propertyValue 		= app.properties.getProperty(prefToModify);		
+			// optional third parameter possible: 0 = non-persistent,  1 = persistent (default)			appProperties.setProperty(prefToModify, false, 1);
 			var safetyCheck = app.properties.getProperty(prefToModify);
 
 			if (safetyCheck != propertyValue){
@@ -299,7 +264,7 @@
 
 	replaceMedia : function() {
 		
-		var firstProjectItem = app.project.rootItem.children[0]; 
+		// 	Note: 	This method of changing paths for projectItems is from the time		//			before PPro supported full-res AND proxy paths for each projectItem. 		//			This can still be used, and will change the hi-res projectItem path, but		//			if your panel supports proxy workflows, it should rely instead upon		//			projectItem.setProxyPath() instead. 		var firstProjectItem = app.project.rootItem.children[0]; 
 		if (firstProjectItem) {
 			if (firstProjectItem.canChangeMediaPath()) {
 			
@@ -307,7 +272,7 @@
 				//	auto scale to frame size will be ON, regardless of the current user preference. 
 				//	This is	important for proxy workflows, to avoid mis-scaling upon replacement. 
 
-				firstProjectItem.setScaleToFrameSize();
+				//	Addendum: This setting will be in effect the NEXT time the projectItem is added to a 				//	sequence; it will not affect or reinterpret clips from this projectItem, already in				//	sequences.				firstProjectItem.setScaleToFrameSize();
 				
 				var replacementMedia = File.openDialog(	"Choose new media file, for " + 
 														firstProjectItem.name, 
@@ -328,10 +293,8 @@
 	},
 	
 	openProject : function() {
-
 		var filterString = "";
-		if (Folder.fs == 'Windows'){
-			filterString = "All files:*.*";
+		if (Folder.fs === 'Windows'){			filterString = "All files:*.*";
 		}
 		var projToOpen	= File.openDialog ("Choose project:", filterString, false);
 		if ((projToOpen) && projToOpen.exists) {
@@ -344,7 +307,6 @@
 	},
 
 	exportFramesForMarkers : function (){
-
 		app.enableQE();
 		var activeSequence = app.project.activeSequence;
 		if (activeSequence) {
@@ -382,14 +344,12 @@
 	},
 
 	createSequence : function(name) {
-		
 		var someID = "xyz123";
 		var seqName = prompt('Name of sequence?',	 '<<<default>>>', 'Sequence Naming Prompt');
 		app.project.createNewSequence(seqName, someID);
 	},
 
 	createSequenceFromPreset : function(presetPath) {
-		
 		app.enableQE();
 		var seqName = prompt('Name of sequence?',	 '<<<default>>>', 'Sequence Naming Prompt');
 		if (seqName) {
@@ -398,13 +358,12 @@
 	},
 
 	transcode : function(outputPresetPath) {
-
 		app.encoder.bind('onEncoderJobComplete',	$._PPP_.onEncoderJobComplete);
 		app.encoder.bind('onEncoderJobError', 		$._PPP_.onEncoderJobError);
 		app.encoder.bind('onEncoderJobProgress', 	$._PPP_.onEncoderJobProgress);
 		app.encoder.bind('onEncoderJobQueued', 		$._PPP_.onEncoderJobQueued);
-
-		var firstProjectItem = app.project.rootItem.children[0];
+		app.encoder.bind('onEncoderJobCanceled',	$._PPP_.onEncoderJobCanceled);
+		var firstProjectItem = app.project.rootItem.children[0];
 		if (firstProjectItem){
 
 			app.encoder.launchEncoder();	// This can take a while; let's get the ball rolling.
@@ -433,7 +392,6 @@
 	},
 
 	transcodeExternal : function (outputPresetPath){
-		
 		app.encoder.launchEncoder();
 		var fileToTranscode = File.openDialog ("Choose file to open.", 0, false);
 		if (fileToTranscode) {
@@ -455,7 +413,6 @@
 	},
 
 	render : function(outputPresetPath) {
-		
 		app.enableQE();
 		var activeSequence = qe.project.getActiveSequence();	// we use a QE DOM function, to determine the output extension.
 		if (activeSequence)	{
@@ -469,15 +426,13 @@
 			var seqInPoint	= app.project.activeSequence.getInPoint();	// new in 9.0
 			var seqOutPoint	= app.project.activeSequence.getOutPoint();	// new in 9.0
 
-			var projPath	  	= new File(app.project.path);
-			var outputPath  = Folder.selectDialog("Choose the output directory");
+			var projPath	= new File(app.project.path);			var outputPath  = Folder.selectDialog("Choose the output directory");
 
 			if ((outputPath) && projPath.exists){
 				var outPreset		= new File(outputPresetPath);
 				if (outPreset.exists === true){
 					var outputFormatExtension		=	activeSequence.getExportFileExtension(outPreset.fsName);
 					if (outputFormatExtension){
-
 						var outputFilename	= activeSequence.name + '.' + outputFormatExtension;
 
 						var fullPathToFile	= 	outputPath.fsName + 
@@ -500,8 +455,8 @@
 						app.encoder.bind('onEncoderJobError', 		$._PPP_.onEncoderJobError);
 						app.encoder.bind('onEncoderJobProgress', 	$._PPP_.onEncoderJobProgress);
 						app.encoder.bind('onEncoderJobQueued', 		$._PPP_.onEncoderJobQueued);
-
-						// use these 0 or 1 settings to disable some/all metadata creation.
+						app.encoder.bind('onEncoderJobCanceled',	$._PPP_.onEncoderJobCanceled);
+						// use these 0 or 1 settings to disable some/all metadata creation.
 
 						app.encoder.setSidecarXMPEnabled(0);
 						app.encoder.setEmbeddedXMPEnabled(0);
@@ -510,14 +465,12 @@
 
 						For reference, here's how to export from within PPro (blocking further user interaction).
 						
-						activeSequence.exportAsMediaDirect(	fullPathToFile,  
-																outPreset.fsName, 
+						var seq = app.project.activeSequence(); 												seq.exportAsMediaDirect(	fullPathToFile,  																outPreset.fsName, 
 																app.encoder.ENCODE_WORKAREA);
 						
 						Bonus: Here's how to compute a sequence's duration, in ticks. 254016000000 ticks/second.
 
-						var duration = app.project.activeSequence.end - app.project.activeSequence.zeroPoint;
-						
+						var sequenceDuration = app.project.activeSequence.end - app.project.activeSequence.zeroPoint;						
 						*/
 						
 						var jobID = app.encoder.encodeSequence(	app.project.activeSequence,
@@ -541,15 +494,12 @@
 	},
 
 	saveProjectAs : function() {
-
 		var sessionCounter	= 1;
 		var outputPath		= Folder.selectDialog("Choose the output directory");
 		if (outputPath) {
-			var absPath			= outputPath.fsName;
-			var outputName	= String(app.project.name);
-			var array			= outputName.split('.', 2);
-
-			outputName = array[0]+ sessionCounter + '.' + array[1]; 
+			var absPath		= outputPath.fsName;			var outputName	= String(app.project.name);
+			var array		= outputName.split('.', 2);
+			outputName = array[0]+ sessionCounter + '.' + array[1]; 
 			sessionCounter++;
 			
 			var fullOutPath = absPath + $._PPP_.getSep() + outputName;
@@ -562,7 +512,6 @@
 	},
 
 	mungeXMP : function(){
-		
 		var projectItem	= app.project.rootItem.children[0]; // assumes first item is footage.
 		if (projectItem) {
 			if (ExternalObject.AdobeXMPScript === undefined) {
@@ -631,7 +580,6 @@
 	},
 	
 	getProductionByName : function(nameToGet) {
-		
 		for (var i = 0; i < productionList.numProductions; i++) {
 			this_prod = productionList[i];
 
@@ -643,7 +591,6 @@
 	},
 
 	pokeAnywhere : function() {
-
 		var token				= app.anywhere.getAuthenticationToken();
 		var productionList		= app.anywhere.listProductions();
 		var isProductionOpen	= app.anywhere.isProductionOpen();
@@ -665,7 +612,6 @@
 	},
 
 	dumpOMF : function() {
-
 		var activeSequence	= app.project.activeSequence;
 		if (activeSequence) {
 			var outputPath	= Folder.selectDialog("Choose the output directory");
@@ -692,7 +638,6 @@
 	},
 
 	addClipMarkers : function () {
-
 		if (app.project.rootItem.children.numItems > 0){
 			var projectItem	= app.project.rootItem.children[0]; // assumes first item is footage.
 			if (projectItem) {
@@ -731,14 +676,12 @@
 	},
 
 	modifyProjectMetadata : function () {
-
 		var kPProPrivateProjectMetadataURI	= "http://ns.adobe.com/premierePrivateProjectMetaData/1.0/";
 
 		var namefield	= "Column.Intrinsic.Name";
 		var tapename	= "Column.Intrinsic.TapeName";
 		var desc		= "Column.PropertyText.Description";
-		 var logNote    = "Column.Intrinsic.LogNote";
-		var newField	= "ExampleFieldName";
+		var logNote    	= "Column.Intrinsic.LogNote";		var newField	= "ExampleFieldName";
 
 		if (app.isDocumentOpen()) {
 			var projectItem	= app.project.rootItem.children[0]; // just grabs first projectItem.
@@ -746,7 +689,6 @@
 				if (ExternalObject.AdobeXMPScript === undefined) {
 					ExternalObject.AdobeXMPScript	= new ExternalObject('lib:AdobeXMPScript');
 				}
-
 				if (ExternalObject.AdobeXMPScript !== undefined) {	// safety-conscious!
 					var projectMetadata		= projectItem.getProjectMetadata();
 					var successfullyAdded	= app.project.addPropertyToProjectMetadataSchema(newField, "ExampleFieldLabel",	2);
@@ -816,7 +758,6 @@
 	},
 
 	updatePAR : function() {
-
 		var item = app.project.rootItem.children[0]; 
 		if (item) {
 			if ((item.type == ProjectItemType.FILE) || (item.type == ProjectItemType.CLIP)){
@@ -831,7 +772,6 @@
 	},
 	
 	getnumAEProjectItems : function() {
-		
 		var bt		= new BridgeTalk();
 		bt.target	= 'aftereffects';
 		bt.body		= 'alert("Items in AE project: " + app.project.rootFolder.numItems);app.quit();';
@@ -839,14 +779,12 @@
 	},
 
 	updateEventPanel : function() {
-
 		app.setSDKEventMessage('Here is some information.', 'info');
 		app.setSDKEventMessage('Here is a warning.', 'warning');
 		//app.setSDKEventMessage('Here is an error.', 'error');  // Very annoying; use sparingly.
 	},
 
 	walkAllBinsForFootage : function(parentItem, outPath){
-
 		for (var j = 0; j < parentItem.children.numItems; j++){
 			var currentChild	= parentItem.children[j];
 			if (currentChild){
@@ -860,7 +798,6 @@
 	},
 
 	searchBinForProjItemByName : function(i, currentItem, nameToFind){
-
 		for (var j = i; j < currentItem.children.numItems; j++){
 			var currentChild	= currentItem.children[j];
 			if (currentChild){
@@ -881,7 +818,6 @@
 	},
 
 	dumpXMPFromSequences : function (){
-
 		var outPath		= Folder.selectDialog("Choose the output directory");
 		var projForSeq	= 0;
 		var seqCount	= app.project.sequences.numSequences;
@@ -900,7 +836,6 @@
 	},
 
 		dumpProjectItemXMP : function (projectItem, outPath) {
-
 			var xmpBlob				= projectItem.getXMPMetadata();
 			var outFileName			= projectItem.name + '.xmp';
 			var completeOutputPath	= outPath + $._PPP_.getSep() + outFileName;
@@ -915,16 +850,13 @@
 		},
 
 	addSubClip : function() {
-
 		var startTimeSeconds	= 1.23743;
 		var endTimeSeconds		= 3.5235;
 		var hasHardBoundaries	= 0;
 
 		var sessionCounter		= 1;
-		var takeVideo			= 1;	 // optional, defaulting to 1
-		var takeAudio			= 1; //	optional, defaulting to 1
-
-		var projectItem			= app.project.rootItem.children[0]; // just grabs the first item
+		var takeVideo			= 1; // optional, defaults to 1		var takeAudio			= 1; //	optional, defaults to 1
+		var projectItem			= app.project.rootItem.children[0]; // just grabs the first item
 
 		if (projectItem) {
 			if ((projectItem.type == ProjectItemType.CLIP)	|| (projectItem.type == ProjectItemType.FILE)) {
@@ -938,8 +870,7 @@
 															takeAudio);
 
 				if (newSubClip){
-					newSubClip.setStartTime(12.345); // New in 11.0
-				}
+					newSubClip.setStartTime(12.345); // In seconds. New in 11.0				}
 			} else {
 				alert("Could not sub-clip " + projectItem.name + ".");
 			}
@@ -949,7 +880,6 @@
 	},
 
 	dumpXMPFromAllProjectItems : function() {
-
 		var	numItemsInRoot	= app.project.rootItem.children.numItems;
 
 		if (numItemsInRoot > 0) {
@@ -972,7 +902,6 @@
 	},
 
 	exportAAF : function() {
-
 		var sessionCounter	= 1;
 
 		if (app.project.activeSequence){
@@ -1012,7 +941,6 @@
 	},
 
 	setScratchDisk : function (){
-		
 		var scratchPath = Folder.selectDialog("Choose new scratch disk directory");
 
 		if ((scratchPath) && scratchPath.exists) {
@@ -1021,7 +949,6 @@
 	},
 
 	getSequenceProxySetting : function() {
-
 		var returnVal	= 'No sequence detected.';
 		var seq			= app.project.activeSequence;
 
@@ -1031,12 +958,11 @@
 			} else {
 				returnVal	= 'false';
 			}
-		}
+		} else {			alert("No active sequence.");		}
 		return returnVal;
 	},
 
 	toggleProxyState : function() {
-
 		var seq	= app.project.activeSequence;
 		if (seq) {
 			var update	= "Proxies for " + seq.name + " turned ";
@@ -1056,7 +982,6 @@
 	},
 
 	setProxiesON : function () {
-
 		var firstProjectItem = app.project.rootItem.children[0]; 
 
 		if (firstProjectItem) {
@@ -1069,7 +994,6 @@
 					var proxyPath	= File.openDialog("Choose proxy for " + firstProjectItem.name + ":" );
 					if (proxyPath.exists){
 						firstProjectItem.attachProxy(proxyPath.fsName, 0);
-						// var proxyPath = firstProjectItem.getProxyPath(); // New in 11.0
 					} else {
 						alert("Could not attach proxy from " + proxyPath + ".");
 					}
@@ -1083,7 +1007,6 @@
 	},
 
 	clearCache : function () {
-
 		app.enableQE();
 
 		MediaType 	= {};
@@ -1098,7 +1021,6 @@
 	},
 	
 	randomizeSequenceSelection : function (){
-		
 		var sequence			= app.project.activeSequence;
 
 		if (sequence){
@@ -1156,7 +1078,6 @@
 	},
 	
 	onEncoderJobComplete : function (jobID, outputFilePath) {
-		
 		var eoName;
 
 		if (Folder.fs == 'Macintosh') {
@@ -1184,11 +1105,9 @@
 	},
 
 	onEncoderJobError : function (jobID, errorMessage) {
-
 		var eoName; 
 
-		if (Folder.fs == 'Macintosh') {
-			eoName	= "PlugPlugExternalObject";							
+		if (Folder.fs === 'Macintosh') {			eoName	= "PlugPlugExternalObject";							
 		} else {
 			eoName	= "PlugPlugExternalObject.dll";
 		}
@@ -1202,7 +1121,6 @@
 	},
 	
 	onEncoderJobProgress : function (jobID, progress) {
-
 		$._PPP_.message('onEncoderJobProgress called. jobID = ' + jobID + '. progress = ' + progress + '.');
 	},
 
@@ -1210,9 +1128,8 @@
 		app.encoder.startBatch();
 	},
 
-	onPlayWithKeyframes  : function () {
-
-		var seq = app.project.activeSequence;
+	onEncoderJobCanceled : function (jobID) {		$._PPP_.message('OnEncoderJobCanceled called. jobID = ' + jobID +  '.');	},
+	onPlayWithKeyframes  : function () {		var seq = app.project.activeSequence;
 		if (seq) {
 			var firstVideoTrack	= seq.videoTracks[0];
 			if (firstVideoTrack){
@@ -1223,13 +1140,9 @@
 						for (var i = 0; i < clipComponents.numItems; ++i){
 							$._PPP_.message('component ' + i + ' = ' + clipComponents[i].matchName + ' : ' + clipComponents[i].displayName);
 						}
-						
 						if (clipComponents.numItems > 2){
-							// Assume Gaussian Blur is the first effect applied to the clip.
-							// 0 = 
-							// 1 = Opacity
-							var blur	= clipComponents[2];
-							if (blur){
+														// 0 = clip							// 1 = Opacity
+							var blur	= clipComponents[2]; // Assume Gaussian Blur is the first effect applied to the clip.							if (blur){
 								var blurProps	= blur.properties;
 								if (blurProps){
 									for( var j = 0; j < blurProps.numItems; ++j){
@@ -1243,8 +1156,7 @@
 										for(var k = 0; k < 20; ++k){
 											updateUI	= (k==9);  		// Decide how often to update PPro's UI
 											blurriness.addKey(k);
-											var blurVal	= Math.sin(3.14159*i/5)*20+25;
-											blurriness.setValueAtKey(k, blurVal, updateUI);
+											var blurVal	= Math.sin(3.14159*k/5)*20+25;											blurriness.setValueAtKey(k, blurVal, updateUI);
 										}
 									}
 									var repeatEdgePixels	= blurProps[2];
@@ -1293,23 +1205,19 @@
 									// remove keyframes in range from 0s to 5s
 									var shouldUpdateUI	= true;
 									blurriness.removeKeyRange(0,5, shouldUpdateUI);
-								}
+								} else {									alert("Could not get Blur properties.");								}
 
-							} 
 						} else {
-							alert("Please apply the effect \'Gaussian Blur\' to the first clip in the first video track of the active sequence.");
-						}
+								alert("Co Blur\' to the first clip in the first video track of the active sequence.");						}
 					}
-				}
-			}
+					} else {						alert("Could not acquire clip components.");				}
+				} else {					alert("Could not find first clip on track.");			}
 		} else {
-			alert("No active sequence found.");
+				alert("Could not find first video track.");			}		} else {			alert("No active sequence found.");
 		}
 	},
 
-	getJustFileName : function (fullPath){
-
-		var lastDot	= fullPath.lastIndexOf(".");
+	extractFileNameFromPath : function (fullPath){		var lastDot	= fullPath.lastIndexOf(".");
 		var lastSep	= fullPath.lastIndexOf("/");
 
 		if (lastDot > -1){
@@ -1320,7 +1228,6 @@
 	},
 
 	onProxyTranscodeJobComplete : function (jobID, outputFilePath) {
-		
 		var suffixAddedByPPro	= '_1'; // You should really test for any suffix.
 		var withoutExtension	= outputFilePath.slice(0,-4); // trusting 3 char extension
 		var lastIndex			= outputFilePath.lastIndexOf(".");
@@ -1352,12 +1259,11 @@
 	},
 
 	ingestFiles : function(outputPresetPath) {
-
 		app.encoder.bind('onEncoderJobComplete',	$._PPP_.onProxyTranscodeJobComplete);
 		app.encoder.bind('onEncoderJobError',		$._PPP_.onProxyTranscodeJobError);
 		app.encoder.bind('onEncoderJobQueued',		$._PPP_.onProxyTranscodeJobQueued);
-
-		if (app.project) {
+		app.encoder.bind('onEncoderJobCanceled',	$._PPP_.onEncoderJobCanceled);
+		if (app.project) {
 			var fileOrFilesToImport	= File.openDialog (	"Choose full resolution files to import", 	// title
 														0, 											// filter available files? 
 														true); 										// allow multiple?
@@ -1381,8 +1287,7 @@
 					if (importThese){
 						for (var i = 0; i < fileOrFilesToImport.length; i++) {
 							importThese[i]			= fileOrFilesToImport[i].fsName;
-							var justFileName		= getJustFileName(importThese[i]);
-							var suffix				= '_PROXY.mp4'; 
+							var justFileName		= extractFileNameFromPath(importThese[i]);							var suffix				= '_PROXY.mp4'; 
 							var containingPath		= fileOrFilesToImport[i].parent.fsName;
 							var completeProxyPath	= containingPath + $._PPP_.getSep() + justFileName + suffix; 
 
