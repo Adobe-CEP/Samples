@@ -1003,21 +1003,16 @@ $._PPP_={
 	},
 
 	toggleProxyState : function() {
-		var seq	= app.project.activeSequence;
-		if (seq) {
-			var update	= "Proxies for " + seq.name + " turned ";
-	
-			if (seq.getEnableProxies() > 0) {
-				seq.setEnableProxies(false);
-				update	= update + "OFF.";
-				app.setSDKEventMessage(update, 'info');
-			} else {
-				seq.setEnableProxies(true);
-				update	= update + "ON.";
-				app.setSDKEventMessage(update, 'info');
-			}
+		var update	= "Proxies turned ";
+
+		if (app.getEnableProxies() > 0) {
+			app.setEnableProxies(false);
+			update	= update + "OFF.";
+			app.setSDKEventMessage(update, 'info');
 		} else {
-			alert("No active sequence.");
+			app.setEnableProxies(true);
+			update	= update + "ON.";
+			app.setSDKEventMessage(update, 'info');
 		}
 	},
 
