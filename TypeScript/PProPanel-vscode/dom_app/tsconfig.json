@@ -10,9 +10,5 @@
         // "alwaysStrict": true,
         // "strictNullChecks": true,
         "target": "es3"             // In case TypeScript is used, this will compile to ECMAScript 3 (ExtendScript!) compatible code.
-    },
-    "include": [                    // Custom include to get the shared folder.
-        "./**/*",
-        "../shared/**/*"
-    ]
+    }
 }
