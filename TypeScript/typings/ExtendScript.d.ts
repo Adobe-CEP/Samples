@@ -1,12 +1,78 @@
-// Type definitions for ExtendScript Built-in types
-// Definitions by: Eric Robinson <eric@sonicbloom.io>
+// Type declarations for ExtendScript Built-in types
+// Initial declarations by: Eric Robinson <eric@sonicbloom.io>
+
+/**
+ * The base class of all JavaScript objects.
+ */
+interface Object
+{
+    /**
+     * Points to the constructor function that created this object.
+     * Note that this property is treated as an XML element in the XML class.
+     */
+    constructor: Function;
+
+    /**
+     * Retrieves and returns the Reflection object associated with this method or a property.
+     * Note that this property is treated as an XML element in the XML class.
+     */
+    reflect: Reflection;
+
+    /**
+     * Creates and returns a string representation of this object.
+     * This function serializes the object, so that it can, for example, be passed between engines. Pass the returned string back to eval() to recreate the object. Works only with built-in classes.
+     */
+    toSource(): string;
+
+    /**
+     * Many objects (such as Date) override this method in favor of their own implementation. If an object has no string value and no user-defined toString() method, the default method returns [object type], where "type" is the object type or the name of the constructor function that created the object.
+     */
+    toString(): string;
+
+    /**
+     * Removes the watch function of a property.
+     * @param name The name of the property to unwatch.
+     */
+    unwatch(name: string): void;
+
+    /**
+     * If the object has no primitive value, returns the object itself.  Note that you rarely need to call this method yourself.  The JavaScript interpreter automatically invokes it when encountering an object where a primitive value is expected.
+     */
+    valueOf(): Object;
+
+    /**
+     * Adds a watch function to a property, which is called when the value changes.
+     * This function can accept, modify, or reject a new value that the user, application, or a script has attempted to place in a property.
+     * @param name The name of the property to watch.
+     * @param func The function to be called when the value of this property changes.
+     * This function must three arguments, and return as its result the value to be stored in the property. The arguments are:
+     *      name: the name of the property that changes.
+     *      oldValue: the old property value.
+     *      newValue: the new property value that was specified.
+     */
+    watch(name: string, func: Function): void;
+}
+
+interface ObjectConstructor
+{
+    /**
+     * Note that this property is treated as an XML element in the XML class.
+     */
+    readonly prototype: Object;
+
+    /**
+     * Reports whether an object is still valid.
+     * @param what The object to check.
+     */
+    isValid(what: Object): boolean;
+}
 
 /**
  * The $ object provides a number of debugging facilities and informational methods.
  */
 declare const $: Helper;
 
-declare class Helper
+interface Helper extends Object
 {
     /**
      * The ExtendScript build information.
@@ -114,18 +180,18 @@ declare class Helper
     about(): string;
     /**
      * Breaks execution at the current position.
-     * @param {any} [condition] - A string containing a JavaScript statement to be used as a condition. If the statement evaluates to true or nonzero when this point is reached, execution stops.
+     * @param condition A string containing a JavaScript statement to be used as a condition. If the statement evaluates to true or nonzero when this point is reached, execution stops.
      */
     bp(condition?: any): void;
     /**
      * Invokes the platform-specific color selection dialog, and returns the selected color.
-     * @param {number} color - The color to be preselected in the dialog, as 0xRRGGBB, or -1 for the platform default.
+     * @param color The color to be preselected in the dialog, as 0xRRGGBB, or -1 for the platform default.
      */
     colorPicker(color: number): number;
     /**
      * Loads and evaluates a file.
-     * @param {File} file - The file to load.
-     * @param {number} [timeout] - An optional timeout in milliseconds.
+     * @param file The file to load.
+     * @param timeout An optional timeout in milliseconds.
      */
     evalFile(file: File, timeout?: number): any;
     /**
@@ -134,19 +200,19 @@ declare class Helper
     gc(): void;
     /**
      * Retrieves the value of an environment variable.
-     * @param {string} name - The name of the variable.
+     * @param name The name of the variable.
      */
     getEnv(name: string): string;
     /**
      * Sets the value of an environment variable.
-     * @param {string} name - The name of the variable.
-     * @param {string} value - The value of the variable.
+     * @param name The name of the variable.
+     * @param value The value of the variable.
      */
     setEnv(name: string, value: string): void;
     /**
      * Suspends the calling thread for a number of milliseconds.
      * During a sleep period, checks at 100 millisecond intervals to see whether the sleep should be terminated. This can happen if there is a break request, or if the script timeout has expired.
-     * @param {number} msecs - Number of milliseconds to sleep.
+     * @param msecs Number of milliseconds to sleep.
      */
     sleep(msecs: number): void;
     /**
@@ -155,17 +221,154 @@ declare class Helper
     toString():string;
     /**
      * Prints text to the Console.
-     * @param {any} text - The text to print. All arguments are concatenated.
+     * @param text The text to print. All arguments are concatenated.
      */
     write(text: any): void;
     /**
      * Prints text to the Console, and adds a newline character.
-     * @param {any} text - The text to print. All arguments are concatenated.
+     * @param text - The text to print. All arguments are concatenated.
      */
     writeln(text: any): void;
 }
 
-declare class ScreenObject
+/**
+ * Provides information about a class.
+ */
+declare class Reflection extends Object
+{
+    /**
+     * The long description text.
+     */
+    readonly description: string;
+
+    /**
+     * The short description text.
+     */
+    readonly help: string;
+
+    /**
+     * An array of method descriptions.
+     */
+    readonly methods: ReflectionInfo[];
+
+    /**
+     * The class name.
+     */
+    readonly name: string;
+
+    /**
+     * An array of property descriptions.
+     */
+    readonly properties: ReflectionInfo[];
+
+    /**
+     * Sample code, if present.
+     */
+    readonly sampleCode: string;
+
+    /**
+     * A file containing sample code. May be null.
+     */
+    readonly sampleFile: File;
+
+    /**
+     * An array of class method descriptions.
+     */
+    readonly staticMethods: ReflectionInfo[];
+
+    /**
+     * An array of class property descriptions.
+     */
+    readonly staticProperties: ReflectionInfo[];
+
+    /**
+     * Finds an element description by name.
+     * @param name The name of the element to find.
+     */
+    find(name: string): ReflectionInfo;
+
+    /**
+     * Returns this class information as XML in OMV format.
+     */
+    toXML(): XML;
+}
+
+// Consider this for the ReflectionInfo.type parameter's type annotation:
+// type ReflectionInfoTypeOption = "unknown" | "readonly" | "readwrite" | "createonly" | "method" | "parameter";
+
+/**
+ * Provides information about a method, a property or a method parameters.
+ */
+declare class ReflectionInfo extends Object
+{
+    /**
+     * The description of method or function arguments.
+     */
+    readonly arguments: ReflectionInfo[];
+
+    /**
+     * The data type.
+     */
+    readonly dataType: string;
+
+    /**
+     * The default value.
+     */
+    readonly defaultValue: any;
+
+    /**
+     * The long description text.
+     */
+    readonly description: string;
+
+    /**
+     * The short description text.
+     */
+    readonly help: string;
+
+    /**
+     * Contains true if the class describes a collection class.
+     */
+    readonly isCollection: boolean;
+
+    /**
+     * The maximum value.
+     */
+    readonly max: number;
+
+    /**
+     * The minimum value.
+     */
+    readonly min: number;
+
+    /**
+     * The element name.
+     */
+    readonly name: string;
+
+    /**
+     * The class object that this element belongs to.
+     */
+    readonly parent: Reflection;
+
+    /**
+     * Sample code, if present.
+     */
+    readonly sampleCode: string;
+
+    /**
+     * A file containing sample code. May be null.
+     */
+    readonly sampleFile: File;
+
+    /**
+     * The element type.
+     * One of unknown, readonly, readwrite, createonly, method or parameter.
+     */
+    readonly type: string;
+}
+
+declare class ScreenObject extends Object
 {
     /**
      * Pixel position of the left side of the screen in global coordinates.
@@ -190,7 +393,18 @@ declare class ScreenObject
     readonly primary: boolean;
 }
 
-declare class File
+/**
+ * Represents a file in the local file system in a platform-independent manner.
+ */
+declare class File extends Object
+{
+    // TODO: Fill this in.
+}
+
+/**
+ * Wraps XML into an object.
+ */
+declare class XML extends Object
 {
     // TODO: Fill this in.
 }
