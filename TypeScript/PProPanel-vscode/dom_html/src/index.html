@@ -1,0 +1,73 @@
+<!doctype html>
+
+<html>
+	<head>
+		<meta charset="utf-8">
+		<script src="./ext.js"></script>
+		<script src="../lib/CSInterface.js"></script>
+		<script src="../lib/jquery-1.9.1.js"></script>
+		<script src="../lib/Vulcan.js"></script>
+		<link href="css/style.css" rel="stylesheet" type="text/css">
+		<script src="./pre-body.js"></script>
+	</head>
+
+	<body onLoad="onLoaded()">
+		<a href="javascript:history.go(0)">Refresh panel</a>
+		<p id="username_pre">User name: </p>
+		<p id="username">[uninitialized]</p>
+		<p id="version_string">[uninitialized]</p>
+		<p id="active_seq">[uninitialized]</p>
+		<p id="proxies_on">Proxies enabled for sequence: </p>
+
+		<!-- // These have JavaScript handlers... --> 
+
+		<button id="getseqname">Get active sequence</button>
+		<button id="newseqfrompreset">Create Sequence From Preset</button>
+		<button id="renderusingdefaultpreset">Render w/custom preset</button>
+		<button id="transcodeusingdefaultpreset">Transcode first project item</button>
+		<button id="transcodeexternal">Transcode external file</button>
+		<button id="checkforums">Check SDK Forums</button>
+		<button id="readAPIdocs">Read API documentation</button>
+		<button id="installationhelp">Explain how extensions get installed</button>
+		<button id="copypresets">Copy Presets</button>
+		<button id="toggleproxy">Toggle proxies in active sequence</button>
+		<button id="ingest">Ingest files, create proxies</button>
+
+		<!-- ...the rest call directly into ExtendScript. -->
+
+		<button class="controlBg textStyle" id="btn_PPRO1"	 onClick="evalScript('$._PPP_.render()')">Render active sequence using AME</button>
+		<button class="controlBg textStyle" id="btn_PPRO2"	 onClick="evalScript('$._PPP_.createSequence()')">Create Sequence</button>
+		<button class="controlBg textStyle" id="btn_PPRO3"  onClick="evalScript('$._PPP_.openProject()')">Open different project</button>
+		<button class="controlBg textStyle" id="btn_PPRO4"   onClick="evalScript('$._PPP_.saveProject()')">Save project</button>
+		<button class="controlBg textStyle" id="btn_PPRO34"	 onClick="evalScript('$._PPP_.saveProjectAs()')">Save project as...</button>
+		<button class="controlBg textStyle" id="btn_PPRO5"	 onClick="evalScript('$._PPP_.importFiles()')">Import Files</button>
+		<button class="controlBg textStyle" id="btn_PPRO6"  onClick="evalScript('$._PPP_.exportFCPXML()')">Export FCP XML</button>
+		<button class="controlBg textStyle" id="btn_PPRO7"  onClick="evalScript('$._PPP_.pokeAnywhere()')">Poke Anywhere</button>
+		<button class="controlBg textStyle" id="btn_PPRO8"  onClick="evalScript('$._PPP_.openInSource()')">Open in Source Monitor...</button>
+		<button class="controlBg textStyle" id="btn_PPRO9"  onClick="evalScript('$._PPP_.replaceMedia()')">Replace media...</button>
+		<button class="controlBg textStyle" id="btn_PPRO10" onClick="evalScript('$._PPP_.createSequenceMarkers()')">Add sequence markers</button>
+		<button class="controlBg textStyle" id="btn_PPRO11" onClick="evalScript('$._PPP_.mungeXMP()')">Manipulate XMP</button>
+		<button class="controlBg textStyle" id="btn_PPRO12" onClick="evalScript('$._PPP_.exportSequenceAsPrProj()')">New project from sequence</button>
+		<button class="controlBg textStyle" id="btn_PPRO13" onClick="evalScript('$._PPP_.exportCurrentFrameAsPNG()')">Export sequence frame</button>
+		<button class="controlBg textStyle" id="btn_PPRO14" onClick="evalScript('$._PPP_.updateGrowingFile()')">Update growing file</button>
+		<button class="controlBg textStyle" id="btn_PPRO15" onClick="evalScript('$._PPP_.modifyProjectMetadata()')">Modify project metadata</button>
+		<button class="controlBg textStyle" id="btn_PPRO16" onClick="evalScript('$._PPP_.addClipMarkers()')">Add clip markers</button>
+		<button class="controlBg textStyle" id="btn_PPRO17" onClick="evalScript('$._PPP_.updatePAR()')">Update PAR</button>
+		<button class="controlBg textStyle" id="btn_PPRO18" onClick="evalScript('$._PPP_.getnumAEProjectItems()')">AE project item count</button>
+		<button class="controlBg textStyle" id="btn_PPRO19" onClick="evalScript('$._PPP_.updateEventPanel()')">Update event panel</button>
+		<button class="controlBg textStyle" id="btn_PPRO20" onClick="evalScript('$._PPP_.dumpXMPFromAllProjectItems()')">Dump XMP from all items</button>
+		<button class="controlBg textStyle" id="btn_PPRO21" onClick="evalScript('$._PPP_.addSubClip()')">Create subclip</button>
+		<button class="controlBg textStyle" id="btn_PPRO22" onClick="evalScript('$._PPP_.exportAAF()')">Export sequence to AAF</button>
+		<button class="controlBg textStyle" id="btn_PPRO23" onClick="evalScript('$._PPP_.setScratchDisk()')">Set scratch disk path</button>
+		<button class="controlBg textStyle" id="btn_PPRO24" onClick="evalScript('$._PPP_.setProxiesON()')">Add proxy to first projItem</button>
+		<button class="controlBg textStyle" id="btn_PPRO25" onClick="evalScript('$._PPP_.clearCache()')">Clear media cache</button>
+		<button class="controlBg textStyle" id="btn_PPRO26" onClick="evalScript('$._PPP_.exportFramesForMarkers()')">Export frames for markers</button>
+		<button class="controlBg textStyle" id="btn_PPRO27" onClick="evalScript('$._PPP_.randomizeSequenceSelection()')">Randomize selection</button>
+		<button class="controlBg textStyle" id="btn_PPRO28" onClick="evalScript('$._PPP_.muteFun()')">Mute fun!</button>
+		<button class="controlBg textStyle" id="btn_PPRO29" onClick="evalScript('$._PPP_.onPlayWithKeyframes()')">Manipulate keyframes</button>
+		<button class="controlBg textStyle" id="btn_PPRO30" onClick="evalScript('$._PPP_.insertOrAppend()')">insert or append to active sequence</button>
+		<button class="controlBg textStyle" id="btn_PPRO31" onClick="evalScript('$._PPP_.overWrite()')">overwrite at CTI</button>
+		<div id="dragthing" draggable="true" ondragstart="dragHandler(event)">drag me</div>
+	</body>
+	<script src="./post-body.js"></script>
+</html>

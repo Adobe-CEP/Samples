@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PremiereData Version="3">
+	<SequencePreset ObjectRef="1"/>
+	<SequencePreset ObjectID="1" ClassID="5e73dd7e-4f86-4917-80eb-08ddb2f4a5f3" Version="8">
+		<PreviewVideoFrameSize>0,0,1920,1080</PreviewVideoFrameSize>
+		<ImmersiveVideoVRConfiguration>{"capturedHorizontalView":0,"capturedVerticalView":0,"fieldOfHorizontalView":90,"fieldOfVerticalView":60,"projectionType":0,"stereoscopicEye":0,"stereoscopicType":0,"version":2}</ImmersiveVideoVRConfiguration>
+		<VideoTracks>[]</VideoTracks>
+		<AudioTracks>[{"mAudioSends":[],"mChannelType":1,"mExpandedHeight":25,"mIsOpen":false,"mIsSubmix":false,"mMatrix":[],"mName":"","mPan":0,"mPannerAssignments":[],"mSolo":false,"mTrackID":-1,"mVolume":1},{"mAudioSends":[],"mChannelType":1,"mExpandedHeight":25,"mIsOpen":false,"mIsSubmix":false,"mMatrix":[],"mName":"","mPan":0,"mPannerAssignments":[],"mSolo":false,"mTrackID":-1,"mVolume":1},{"mAudioSends":[],"mChannelType":1,"mExpandedHeight":25,"mIsOpen":false,"mIsSubmix":false,"mMatrix":[],"mName":"","mPan":0,"mPannerAssignments":[],"mSolo":false,"mTrackID":-1,"mVolume":1},{"mAudioSends":[],"mChannelType":1,"mExpandedHeight":25,"mIsOpen":false,"mIsSubmix":false,"mMatrix":[],"mName":"","mPan":0,"mPannerAssignments":[],"mSolo":false,"mTrackID":-1,"mVolume":1}]</AudioTracks>
+		<InitialNumberOfVideoTracks>3</InitialNumberOfVideoTracks>
+		<AdaptiveNumChannels>2</AdaptiveNumChannels>
+		<VideoAllowLinearCompositing>false</VideoAllowLinearCompositing>
+		<VideoUseMaxRenderQuality>false</VideoUseMaxRenderQuality>
+		<VideoUseMaxBitDepth>false</VideoUseMaxBitDepth>
+		<VideoPixelAspectRatio>1,1</VideoPixelAspectRatio>
+		<PreviewPresetVideoCodec.Win>1297107278</PreviewPresetVideoCodec.Win>
+		<PreviewPresetFileName.Win>I-Frame Only MPEG</PreviewPresetFileName.Win>
+		<PreviewPresetVideoCodec.Mac>1297107278</PreviewPresetVideoCodec.Mac>
+		<PreviewPresetFileName.Mac>I-Frame Only MPEG</PreviewPresetFileName.Mac>
+		<EditingModeGUID.Win>cc7991f5-c236-4db1-957e-2c71f924e81c</EditingModeGUID.Win>
+		<EditingModeGUID.Mac>cc7991f5-c236-4db1-957e-2c71f924e81c</EditingModeGUID.Mac>
+		<Descriptions Version="1">
+			<DescriptionItem Version="1" Index="0">
+				<Second></Second>
+				<First>en_US</First>
+			</DescriptionItem>
+		</Descriptions>
+		<Names Version="1">
+			<NameItem Version="1" Index="0">
+				<Second>fupduddy</Second>
+				<First>en_US</First>
+			</NameItem>
+		</Names>
+		<VideoFieldType>0</VideoFieldType>
+		<AudioTimeDisplay>200</AudioTimeDisplay>
+		<VideoTimeDisplay>102</VideoTimeDisplay>
+		<AudioChannelType>1</AudioChannelType>
+		<AudioFrameRate>5292000</AudioFrameRate>
+		<VideoFrameSize>0,0,1920,1080</VideoFrameSize>
+		<VideoFrameRate>8475667200</VideoFrameRate>
+	</SequencePreset>
+</PremiereData>
