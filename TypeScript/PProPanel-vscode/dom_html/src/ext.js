@@ -195,9 +195,7 @@ function toHex(color, delta) {
 
 	var hex = "";
 	if (color) {
-		with (color) {
-			hex = computeValue(red, delta) + computeValue(green, delta) + computeValue(blue, delta);
-		};
+		hex = computeValue(color.red, delta) + computeValue(color.green, delta) + computeValue(color.blue, delta);
 	}
 	return "#" + hex;
 }
