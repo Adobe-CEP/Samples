@@ -1,54 +1,5 @@
-// Type definitions for Premiere Pro API
-// Definitions by: Eric Robinson <eric@sonicbloom.io>
-// 
-// TODO: Create the Core JavaScript Classes typings. These will inform
-//  the system of the *full* suite of available APIs. For now, the
-//  system is somewhat incomplete, but most Object-level APIs aren't
-//  interesting for us anyway.
-// For now, it is enough to know that APIs like toSource(), watch(),
-//  and unwatch() come in from the ExtendScript base Object class.
-//  Those listed above are non-standard. For now, we can rely upon
-//  the base 'Object' class (at time of writing, sourced from the es5
-//  type declaration library) - it's "good enough".
-// The PremiereObject class is a special middle-man class that adds
-//  the bind(), unbind(), and setTimeout() methods to the objects.
-//  These aren't particularly useful or interesting, but they do help
-//  match things up to what is visible in the ExtendScript Object
-//  Model Viewer.
-// 
-// As a heads up, the core libs appear to use interfaces for their
-//  base type definitions. They do this by splitting up the content
-//  between a "Constructor" 'type' that handles class-static stuff
-//  and an "Instance" 'type' that handles instance stuff. This
-//  appears to be mostly doable with straight-up classes as well.
-//  Examples of this are below:
-/*
-    // INTERFACE VERSION:
-    // Instance definition.
-    interface Blah1 extends Object
-    {
-        num: number;
-    }
-
-    // Static definitions.
-    interface Blah1Constructor
-    {
-        val: object;
-        new (): Blah1;  // <-- The "construct signature".
-    }
-
-    // Puts a Value named "Blah1" in the global context that
-    //  creates "Blah1" Type objects with 'new'.
-    declare const Blah1: Blah1Constructor;
-
-    // CLASS VERSION:
-    declare class Blah2 extends Object
-    {
-        constructor();
-        static val: object;
-        num: number;
-    }
-*/
+// Type declarations for Premiere Pro API
+// Initial declarations by: Eric Robinson <eric@sonicbloom.io>
 
 declare var app: App;
 
@@ -99,27 +50,12 @@ type ProjectItemTypeOptions = 1 | 2 | 3 | 4;
  */
 type EncoderOptions = 0 | 1 | 2;
 
-//------------------------------------------------------
-// NOTE: The PremiereObject class defines how much of
-//  the base object API is actually resolved during
-//  lookup. Swap out the uncommented version below for
-//  autocompletion of major built-ins. The other version
-//  keeps autocomplete to Premiere-specific APIs.
-//------------------------------------------------------
-
-// NOTE: the Object class will refer to the ECMAScript v5 Object
-//  by default.
-// declare class PremiereObject extends Object
-// {
-//     // These appear to be unique to PremiereObject classes.
-//     bind(eventName: string, func: any): void;
-//     setTimeout(eventName: string, func: any, milliseconds: number): void;
-//     unbind(eventName: string): void;
-// }
-
-declare class PremiereObject
+declare class PremiereObject extends Object
 {
-    // Clean version!
+    // These appear to be unique to PremiereObject classes.
+    bind(eventName: string, func: any): void;
+    setTimeout(eventName: string, func: any, milliseconds: number): void;
+    unbind(eventName: string): void;
 }
 
 /**
