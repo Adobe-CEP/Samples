@@ -379,6 +379,9 @@ declare class ProjectItem extends PremiereObject
      * The name of the projectItem, as a string. Read/Write.
      */
     name: string;
+    /**
+     * The projectItem's position within the project 'tree'; not guaranteed to be unique forever.
+     */
     readonly nodeId: string;
     /**
      * The path to the projectItem, within the project.
