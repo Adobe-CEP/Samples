@@ -218,14 +218,15 @@ function loadJSX() {
 	var csInterface = new CSInterface();
 
 	// get the appName of the currently used app. For Premiere Pro it's "PPRO"
-	const appName = csInterface.hostEnvironment.appName;
+	var appName = csInterface.hostEnvironment.appName;
+	var extensionPath = csInterface.getSystemPath(SystemPath.EXTENSION);
 
-	// loadJSX - load general JSX script independent of appName
-	const extensionRootGeneral = `${csInterface.getSystemPath(SystemPath.EXTENSION)}/jsx/${appName}/`;
+	// load general JSX script independent of appName
+	const extensionRootGeneral = extensionPath + '/jsx/';
 	csInterface.evalScript('$._ext.evalFiles("' + extensionRootGeneral + '")');
 
-	// loadJSX - load JSX scripts based on appName
-	const extensionRootApp = `${csInterface.getSystemPath(SystemPath.EXTENSION)}/jsx/`;
+	// load JSX scripts based on appName
+	const extensionRootApp = extensionPath + '/jsx/' + appName + '/';
 	csInterface.evalScript('$._ext.evalFiles("' + extensionRootApp + '")');
 }
 
