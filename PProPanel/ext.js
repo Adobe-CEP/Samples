@@ -222,11 +222,11 @@ function loadJSX() {
 	var extensionPath = csInterface.getSystemPath(SystemPath.EXTENSION);
 
 	// load general JSX script independent of appName
-	const extensionRootGeneral = extensionPath + '/jsx/';
+	var extensionRootGeneral = extensionPath + '/jsx/';
 	csInterface.evalScript('$._ext.evalFiles("' + extensionRootGeneral + '")');
 
 	// load JSX scripts based on appName
-	const extensionRootApp = extensionPath + '/jsx/' + appName + '/';
+	var extensionRootApp = extensionPath + '/jsx/' + appName + '/';
 	csInterface.evalScript('$._ext.evalFiles("' + extensionRootApp + '")');
 }
 
