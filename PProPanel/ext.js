@@ -211,13 +211,22 @@ function onAppThemeColorChanged(event) {
 } 
 
 /**
-* Load JSX file into the scripting context of the product. All the jsx files in 
-* folder [ExtensionRoot]/jsx will be loaded. 
+* Load JSX file into the scripting context of the product. All the jsx files in
+* folder [ExtensionRoot]/jsx & [ExtensionRoot]/jsx/[AppName] will be loaded.
 */
 function loadJSX() {
 	var csInterface = new CSInterface();
-	var extensionRoot = csInterface.getSystemPath(SystemPath.EXTENSION) + "/jsx/";
-	csInterface.evalScript('$._ext.evalFiles("' + extensionRoot + '")');
+
+	// get the appName of the currently used app. For Premiere Pro it's "PPRO"
+	const appName = csInterface.hostEnvironment.appName;
+
+	// loadJSX - load general JSX script independent of appName
+	const extensionRootGeneral = `${csInterface.getSystemPath(SystemPath.EXTENSION)}/jsx/${appName}/`;
+	csInterface.evalScript('$._ext.evalFiles("' + extensionRootGeneral + '")');
+
+	// loadJSX - load JSX scripts based on appName
+	const extensionRootApp = `${csInterface.getSystemPath(SystemPath.EXTENSION)}/jsx/`;
+	csInterface.evalScript('$._ext.evalFiles("' + extensionRootApp + '")');
 }
 
 function evalScript(script, callback) {
