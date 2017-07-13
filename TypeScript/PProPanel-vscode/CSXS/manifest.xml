@@ -21,8 +21,8 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 		<Extension Id="com.adobe.PProPanel">
 			<DispatchInfo >
 				<Resources>
-					<MainPath>./index.html</MainPath>
-					<ScriptPath>./PProPanel.jsx</ScriptPath>
+					<MainPath>./dom_html/src/index.html</MainPath>
+					<ScriptPath>./dom_app/src/PProPanel.jsx</ScriptPath>
 				</Resources>
 				<Lifecycle>
 					<AutoVisible>true</AutoVisible>

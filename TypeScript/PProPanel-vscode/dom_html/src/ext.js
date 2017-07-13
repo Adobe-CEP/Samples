@@ -195,9 +195,7 @@ function toHex(color, delta) {
 
 	var hex = "";
 	if (color) {
-		with (color) {
-			hex = computeValue(red, delta) + computeValue(green, delta) + computeValue(blue, delta);
-		};
+		hex = computeValue(color.red, delta) + computeValue(color.green, delta) + computeValue(color.blue, delta);
 	}
 	return "#" + hex;
 }
@@ -211,23 +209,13 @@ function onAppThemeColorChanged(event) {
 } 
 
 /**
-* Load JSX file into the scripting context of the product. All the jsx files in
-* folder [ExtensionRoot]/jsx & [ExtensionRoot]/jsx/[AppName] will be loaded.
+* Load JSX file into the scripting context of the product. All the jsx files in 
+* folder [ExtensionRoot]/jsx will be loaded. 
 */
 function loadJSX() {
 	var csInterface = new CSInterface();
-
-	// get the appName of the currently used app. For Premiere Pro it's "PPRO"
-	var appName = csInterface.hostEnvironment.appName;
-	var extensionPath = csInterface.getSystemPath(SystemPath.EXTENSION);
-
-	// load general JSX script independent of appName
-	var extensionRootGeneral = extensionPath + '/jsx/';
-	csInterface.evalScript('$._ext.evalFiles("' + extensionRootGeneral + '")');
-
-	// load JSX scripts based on appName
-	var extensionRootApp = extensionPath + '/jsx/' + appName + '/';
-	csInterface.evalScript('$._ext.evalFiles("' + extensionRootApp + '")');
+	var extensionRoot = csInterface.getSystemPath(SystemPath.EXTENSION) + "/dom_app/src/";
+	csInterface.evalScript('$._ext.evalFiles("' + extensionRoot + '")');
 }
 
 function evalScript(script, callback) {
