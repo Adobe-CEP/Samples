@@ -1,4 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <!--
 /*************************************************************************
 *
@@ -36,10 +36,15 @@
     
     var eventArr = new Array();
     var CSLibrary = new CSInterface();
+    var currentExtensionID = CSLibrary.getExtensionID();
     var characters = "!\"#$%&()*+,-./0123456789:=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~";
+	// The following characters are encoded by UTF-8. 
+	characters += "あららうびゃあبشقشقرشقتعشع测试中文";
     characters += "\"\\\b\f\n\r\t";
     
-    $(document).ready(function() {
+	var jsonPayload = '{"myBoolKey": false,"myIntKey": 7,"myFloatKey": 5.4,"myStringKey": "abcdあららうびゃあبشقشقرشقتعشع测试中文","myArrayKey": [5.4,true,false,{"yellow": true,"green": false},7]}';
+    
+	$(document).ready(function() {
         // adjust layout on Windows
         if ((CSLibrary.getOSInformation()).indexOf("Windows") > -1) {
             $("#apDiv5").attr("style", "top:415px");
@@ -137,6 +142,7 @@
 
         function dispatchEvent(index) {
             var event = new CSEvent(eventArr[index].eventType, eventArr[index].eventScope);
+            event.extensionId = currentExtensionID;
             event.data = eventArr[index].data;
             CSLibrary.dispatchEvent(event);  
         }
@@ -268,6 +274,7 @@
         $("#EventsDispatchAll").click(function() {
             for (var i = 0; i < eventArr.length; i++) {
                 var event = new CSEvent(eventArr[i].eventType, eventArr[i].eventScope);
+                event.extensionId = currentExtensionID;
 				event.data = eventArr[i].data;
 				CSLibrary.dispatchEvent(event); 
             }
@@ -277,6 +284,7 @@
             for (var i = 0; i < eventArr.length; i++) {
                 if (eventArr[i].registered) {
                     var event = new CSEvent(eventArr[i].eventType, eventArr[i].eventScope);
+                    event.extensionId = currentExtensionID;
                     CSLibrary.dispatchEvent(event);    
                 }
             }
@@ -294,36 +302,42 @@
         $("#OMEventDiv").hide();
         var eventType;
         var eventScope = "GLOBAL";
-        var addPayload = false;
         var eventPayload;
-        
-        function OMEventListener() {
-            $("#OMEventReceivedLabel").show(); $("#OMEventGreenLight").show();	
-            CSLibrary.removeEventListener(eventType, OMEventListener);
+		var currentEventType = $("#EventType").val();
+		
+		CSLibrary.addEventListener(currentEventType, OMEventListener);
+		
+        function OMEventListener(event) {
+            $("#OMEventReceivedLabel").show(); $("#OMEventGreenLight").show();
+			var result = "";			
+			if (event.data.constructor === Object) {
+			    result = "The data is an object: \n";
+			    result += JSON.stringify(event.data, null, 4);
+			} else {
+				result = event.data;
+			}
+			document.getElementById("ReceivedPayloadTextArea").value = result;
         }
 		
         function OMEventDivDispatch() {
             eventType = $("#EventType").val();
-            if(addPayload) {
-                eventPayload = $("#AddpayloadTextArea").val();    
-            } else
-            {
-                eventPayload = "";
+            if (document.getElementById("AddStringPayload").checked) {
+                eventPayload = $("#AddStringPayloadTextArea").val();    
+            } else {
+                eventPayload = $("#AddJSONPayloadTextArea").val();
             }
+			
+            if (currentEventType !== eventType) {
+				CSLibrary.removeEventListener(currentEventType, OMEventListener);
+				CSLibrary.addEventListener(eventType, OMEventListener);
+			}
             
-            CSLibrary.addEventListener(eventType, OMEventListener);
+			currentEventType = eventType;
             var event = new CSEvent(eventType, "APPLICATION");
+            event.extensionId = currentExtensionID;
             event.data = eventPayload;
             CSLibrary.dispatchEvent(event);
         }
-        
-        $("#Addpayload").change(function(){
-            if( "checked" == $("#Addpayload").attr("checked")) {
-                addPayload = true;
-            } else {
-                addPayload = false;
-            }
-        });
         
         $("#EventsAddCustomEvent").click(function() {
             $("#OMEventGreenLight").hide();
@@ -334,18 +348,18 @@
                 bgiframe: true,
                 width: 420,
                 modal:true,  
-                title: "Operational Messages Event",
+                title: "Customized Messages Event",
                 
                 buttons: {
                       "Close": function() {
                         $(this).dialog("close");},
                       "Dispatch": function() {
                         OMEventDivDispatch();
-                        $(this).dialog("close");}
+					  }
                 }
             });
-            $("#AddpayloadTextArea").html(characters);
-            
+            $("#AddStringPayloadTextArea").html(characters);
+            $("#AddJSONPayloadTextArea").html(jsonPayload);
             // display
             $("#OMEventDiv").dialog("open");
         });
@@ -558,18 +572,12 @@
 
 <!-- Add Custom Event dialog div begin -->
 <div id="OMEventDiv" style="font-size:14px;">
-  <label><table width="380" border="0">
-    <tr>
-      <td width="380">This dialog enables developers to add a custom event to the list.</td>
-    </tr>
-  </table>
-  
   <table width="380" border="0">
     <tr>
       <td width="82"><label>Event Type:</label>&nbsp;</td>
       <td width="288">
         <label for="EventType"></label>
-        <textarea name="EventType" id="EventType" cols="40" rows="1">com.adobe.csxs.events.MyCustomEvent</textarea>
+        <textarea name="EventType" id="EventType" cols="40" rows="1">com.adobe.csxs.events.customEventA</textarea>
       </td>
     </tr>
   </table>
@@ -577,15 +585,47 @@
   <table width="200" border="0">
     <tr>
       <td>
-        <input type="checkbox" name="Addpayload" id="Addpayload" />
-        <label for="Addpayload"></label>
-      Add payload:
+	    <input type="radio" name="AddPayload" value="AddStringPayload" id="AddStringPayload" checked>AddStringPayload
+        <input type="radio" name="AddPayload" value="AddJSONPayload" id="AddJSONPayload">AddJSONPayload
+      </td>
+    </tr>
+	<tr>
+	  <td>
+      String payload:
+	  </td>
+	</tr>
+    <tr>
+      <td>
+        <label for="AddStringPayloadTextArea"></label>
+        <textarea name="AddStringPayloadTextArea" id="AddStringPayloadTextArea" cols="45" rows="3"></textarea>
+      </td>
+    </tr>
+  </table>
+  
+  <table width="200" border="0">
+    <tr>
+      <td>
+      JSON payload:
       </td>
     </tr>
     <tr>
       <td>
-        <label for="AddpayloadTextArea"></label>
-        <textarea name="AddpayloadTextArea" id="AddpayloadTextArea" cols="45" rows="3"></textarea>
+        <label for="AddJSONPayloadTextArea"></label>
+        <textarea name="AddJSONPayloadTextArea" id="AddJSONPayloadTextArea" cols="45" rows="3"></textarea>
+      </td>
+    </tr>
+  </table>
+  
+  <table width="200" border="0">
+    <tr>
+      <td>
+      Received payload:
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <label for="ReceivedPayloadTextArea"></label>
+        <textarea readonly name="ReceivedPayloadTextArea" id="ReceivedPayloadTextArea" cols="45" rows="3"></textarea>
       </td>
     </tr>
   </table>

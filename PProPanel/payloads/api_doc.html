@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</head>
+<body>
+<h1>Premiere Pro ExtendScript API</h1>
+<p>Here is some basic information about the methods and members available through Premiere Pro's ExtendScript API.</p>
+<h1>Introduction</h1>
+<p>For many years, the Premiere Pro ExtendScript API has been used by hundreds of panel partners—with zero documentation. During those same years, many have expressed (keen!) interest in additional documentation. Here is a skeletal first attempt, starting with the members and methods available from objects in the PPro ExtendScript API.</p>
+<p>Please continue to <a href="mailto:bbb@adobe.com?subject=PPro_ExtendScript_API">contact us</a> with any API questions.</p>
+<p>Also, <a href="mailto:bbb@adobe.com?subject=API_Docs">feedback/requests/questions</a> about the documentation are highly encouraged; rewards occasionally provided.</p>
+<h1>Overview</h1>
+<p>Premiere Pro offers APIs for importing and exporting sequences and projects, manipulating project items and (new in 11.0!) clips within sequences, and rendering.</p>
+<p>Premiere does <em>not</em> offer event-driven messaging. This means you cannot subscribe to be notified when certain things occur.</p>
+<h1>Members and Methods</h1>
+<h2>App object</h2>
+<h3>anywhere</h3>
+<p>Anywhere object; only valid when connected to an Anywhere server. See below.</p>
+<h3>encoder</h3>
+<p>Encoder object, used to drive Adobe Media Encoder for background rendering (on the same system).</p>
+<h3>userGuid</h3>
+<p>The Creative Cloud User's GUID.</p>
+<h3>version</h3>
+<p>The version of Premiere Pro currently running.</p>
+<h3>project</h3>
+<p>Project object; see below.</p>
+<h3>getPProPrefPath()</h3>
+<p>Returns the path containing the preferences currently in use.</p>
+<h3>getPProSystemPrefPath()</h3>
+<p>Returns the user's Creative Cloud profile directory, where PPremiere ProPro keeps other settings and configuration files.</p>
+<h3>isDocument(<code>pathTofileToTest</code>)</h3>
+<p>Returns <code>true</code> if Premiere Pro can open the file to test.</p>
+<h3>isDocumentOpen()</h3>
+<p>Returns <code>true</code> if Premiere Pro currently has a project open.</p>
+<h3>openFCPXML(<code>fileToOpen</code>)</h3>
+<p>Returns <code>true</code> if Premiere Pro can open the file as a new project.</p>
+<h3>quit()</h3>
+<p>Quits Premiere Pro.</p>
+<h3>setScratchDiskPath(<code>newPathValue</code>, <code>scratchDiskPathType</code>)</h3>
+<p>Returns true if Premiere Pro was able to change the specified scratch disk path to the new value. Potential values for <strong>scratchDiskPathType</strong>:</p>
+<ul>
+<li><p><code>ScratchDiskType.FirstVideoCaptureFolder</code></p></li>
+<li><p><code>ScratchDiskType.FirstAudioPreviewFolder</code></p></li>
+<li><p><code>ScratchDiskType.FirstAutoSaveFolder</code></p></li>
+<li><p><code>ScratchDiskType.FirstCCLibrariesFolder</code></p></li>
+<li><p><code>ScratchDiskType.FirstVideoCaptureFolder</code></p></li>
+<li><p><code>ScratchDiskType.FirstAudioCaptureFolder</code></p></li>
+</ul>
+<h3>setSDKEventMessage(<code>messageToSend</code>, <code>eventType</code>)</h3>
+<p>Returns true if Premiere Pro successfully added the message to the Events panel. Potential values for <strong>eventType</strong> are <code>warning</code>, <code>info</code> and <code>error</code>.</p>
+<h2>Project object</h2>
+<h3>rootItem</h3>
+<p>The root <code>projectItem</code>, for iteration purposes.</p>
+<h3>sequences</h3>
+<p>An array of all sequences available in the entire project.</p>
+<h3>activeSequence</h3>
+<p>The currently active sequence, if there is one.</p>
+<h3>openSequence(<code>sequenceID</code>)</h3>
+<p>Returns true if Premiere Pro was able to activate the sequence with the specified ID.</p>
+<h3>importFiles(<code>arrayOfFilePathsToImport</code>, <code>suppressUI=false</code>, <code>importAsNumberedStills=false</code>)</h3>
+<p>If <code>suppressUI</code> is true, no UI will be presented. if <code>importAsNumberedStills</code> is true, Premiere Pro will attempt to import the array as a still image sequence.</p>
+<h3>importSequences(<code>pathToProjectFile</code>, <code>arrayOfSeqIDsToImport</code>)</h3>
+<p>Returns 0 if Premiere Pro successfully imports the sequences with IDs specified, from that project.</p>
+<h3>createNewSequence(<code>sequenceName</code>, <code>desiredID</code>)</h3>
+<p>Returns 0 if Premiere Pro successfully imports a sequence with the specified name and ID.</p>
+<h3>deleteSequence(<code>sequenceID</code>)</h3>
+<p>Returns true if Premiere Pro successfully deleted a sequence with the specified ID.</p>
+<h3>exportFinalCutProXML(<code>exportPath</code>, <code>suppressUI=false</code>)</h3>
+<p>Returns 0 if Premiere Pro successfully exports the current project to the specified path. If supressUI is true, no warnings will be displayed.</p>
+<h3>exportTimeline(<code>exportControllerName</code>)</h3>
+<p>Returns 0 if Premiere Pro successfully renders the current active sequence using an Export Controller plug-in with the specified name.</p>
+<h3>exportOMF(<code>sequenceToExport</code>, <code>exportPath</code>, <code>OMFTitle</code>, <code>sampleRate</code>, <code>bitsPerSample</code>, <code>audioEncapsulated</code>, <code>audioFileFormat</code>, <code>trimAudioFiles</code>, <code>handleFrames</code>, <code>includePan</code>)</h3>
+<p>Exports the specified sequence to OMF, using specified settings. Returns <code>0</code> if Premiere Pro successfully exports the specifed sequence to OMF.</p>
+<ul>
+<li><p><strong>sequenceToExport</strong> : sequenceID</p></li>
+<li><p><strong>filePath</strong>: save .omf file here</p></li>
+<li><p><strong>OMFTitle</strong>: title to use in .omf file</p></li>
+<li><p><strong>sampleRate</strong>: 48000 or 96000</p></li>
+<li><p><strong>bitsPerSample</strong>: 16 or 24</p></li>
+<li><p><strong>audioEncapsulated</strong>: 0 or 1; if 1, audio is embedded.</p></li>
+<li><p><strong>audioFileFormat</strong>: 0 = AIFF, 1 = WAV</p></li>
+<li><p><strong>trimAudioFiles</strong>: 0 = export entire file, 1 = export a subset file</p></li>
+<li><p><strong>handleFrames</strong>: specify 0 to 1000 extra 'handle' frames of audio</p></li>
+<li><p><strong>includePan</strong>: 0 or 1; if 1, include pan position information</p></li>
+</ul>
+<h3>exportAAF(<code>sequenceToExport</code>, <code>exportPath</code>, <code>mixDownVideo</code>, <code>explodeToMono</code>, <code>sampleRate</code>, <code>bitsPerSample</code>, <code>embedAudio</code>, <code>audioFileFormat</code>, <code>trimSources</code>, <code>handleFrames</code>)</h3>
+<p>Exports the specified sequence to AAF, using specified settings. Returns <code>0</code> if Premiere Pro successfully exports the specified sequence to AAF.</p>
+<ul>
+<li><p><strong>sequenceToExport</strong> : sequenceID</p></li>
+<li><p><strong>filePath</strong>: save .aaf file here</p></li>
+<li><p><strong>mixDownVideo</strong>: 0 or 1; if 1, render video</p></li>
+<li><p><strong>explodeToMono</strong>: 0 or 1; if 1, break audio out into mono channels</p></li>
+<li><p><strong>sampleRate</strong>: 48000 or 96000</p></li>
+<li><p><strong>bitsPerSample</strong>: 16 or 24</p></li>
+<li><p><strong>embedAudio</strong>: 0 or 1; if 1, audio is embedded.</p></li>
+<li><p><strong>audioFileFormat</strong>: 0 = AIFF, 1 = WAV</p></li>
+<li><p><strong>trimSources</strong>: 0 = export entire files, 1 = export subsetted files</p></li>
+<li><p><strong>handleFrames</strong>: specify 0 to 1000 extra 'handle' frames</p></li>
+</ul>
+<h3>save()</h3>
+<p>Returns <code>0</code> if Premiere Pro successfully saves the current project.</p>
+<h3>saveAs(<code>newProjectPath</code>)</h3>
+<p>Returns <code>0</code> if Premiere Pro successfully saves the current project to <code>newProjectPath</code>.</p>
+<h3>pauseGrowing(<code>pauseOrNot</code>)</h3>
+<p>Returns <code>0</code> if Premiere Pro successfully pauses, or un-pauses, growing files. 1 = pause, 0 = grow.</p>
+<h3>closeDoc(<code>saveFirst=0</code>, <code>promptUserIfDirty=0</code>)</h3>
+<p>Returns <code>0</code> if Premiere Pro successfully closes the current project. if <code>saveFirst</code> is 1, Premiere Pro will save the .prproj before closing. If <code>promptUserIfDirty</code> is 1 and there are unsaved changes, the user will be asked whether to save first.</p>
+<h3>placeAsset()</h3>
+<p>For Creative Cloud Libraries usage only. Ignore.</p>
+<h3>addPropertyToProjectMetadataSchema(<code>propertyName</code>, <code>propertyLabel</code>, <code>propertyType</code>)</h3>
+<p>Returns <code>1</code> if Premiere Pro created the new property. Returns <code>0</code> if that property already existed. Supported <code>propertyType</code> values: 0 = integer, 1 = Real, 2 = Text, 3 = Boolean.</p>
+<h2>anywhere object</h2>
+<h3>getAuthenticationToken()</h3>
+<p>Returns token as string, if available.</p>
+<h3>GetCurrentEditingSessionURL()</h3>
+<p>Returns url as string, if available.</p>
+<h3>GetCurrentEditingSessionSelectionURL()</h3>
+<p>Returns url as string, if available.</p>
+<h3>getCurrentEditingSessionActiveSequenceURL()</h3>
+<p>Returns url of active sequence, if available.</p>
+<h3>isProductionOpen()</h3>
+<p>Returns <code>true</code> if there is currently a production open.</p>
+<h3>listProductions()</h3>
+<p>Returns an array of urls to productions, if available.</p>
+<h3>openProduction(<code>urlToOpen</code>)</h3>
+<p>Returns <code>1</code> if Premiere Pro successfully opens the production's url.</p>
+<h3>setAuthenticationToken(<code>serverName</code>, <code>userName</code>, <code>authToken</code>)</h3>
+<p>Returns <code>1</code> if Premiere Pro successfully logs the specifed user into the server, using the token.</p>
+<h2>Document object</h2>
+<p>Avoid; use project object instead.</p>
+<h2>Encoder object</h2>
+<h3>launchEncoder()</h3>
+<p>Launches Adobe Media Encoder. <em>This can take a while, so if you're going to render using AME, call this early.</em></p>
+<h3>setEmbeddedXMPEnabled(<code>enableOrNot</code>)</h3>
+<p>Pass <code>0</code> to disable or <code>1</code> to enable the embedding of XMP into output files.</p>
+<h3>setSidecarXMPEnabled(<code>enabledOrNot</code>)</h3>
+<p>Pass 0 to disable or 1 to enable the writing of XMP into 'side car' files. <em>Premiere Pro decides whether to embed metadata or write it into a side car, based on the specified output format. To prevent the writing of ANY metadata, set both of these to 0.</em></p>
+<h3>encodeSequence(<code>sequence</code>, <code>outputFilePath</code>, <code>presetPath</code>, <code>workAreaType</code>, <code>removeFromQueueWhenComplete</code>)</h3>
+<p>Renders the specified sequence, using the specified output preset, to the specified output path, with options. Returns the <code>jobID</code> of the encoder job started for the specified sequence. <code>workAreaType</code> values: 0 = entire sequence, 1 = in to out points, 2 = work area. if <code>removeFromQueueWhenComplete</code> is 1, the job will be removed from the Adobe Media Encoder queue upon completion. <em>This can prevent out-of-memory problems when performing numerous renders.</em></p>
+<h3>startBatch()</h3>
+<p>Returns <code>1</code> if Premiere Pro successfully started Adobe Media Encoder's batch encoding list, <code>0</code> if not.</p>
+<h2>TrackCollection object</h2>
+<p>A collection of tracks, for iteration.</p>
+<h3>numTracks</h3>
+<p>The number of tracks (of either audio or video, depending on the collection) available.</p>
+<h2>Track object</h2>
+<h3>getMediaType()</h3>
+<p>Returns &quot;Video&quot; for video tracks, &quot;Audio&quot; for audio tracks.</p>
+<h3>getClips()</h3>
+<p>Returns a <code>TrackItemCollection</code> of the track's clips.</p>
+<h3>getTransitions()</h3>
+<p>Returns a <code>trackItemCollection</code> of the transitions applied to the track's clips.</p>
+<h3>isMuted()</h3>
+<p>Returns <code>1</code> if the track is muted, <code>0</code> if not.</p>
+<h3>setMute(muteOrNot)</h3>
+<p>Pass <code>1</code> to mute the track, <code>0</code> to un-mute.</p>
+<h2>TrackItem object</h2>
+<h3>projectItem</h3>
+<p>The <code>projectItem</code> corresponding to the track item.</p>
+<h3>mediaType</h3>
+<p>Either <code>video</code> or <code>audio</code>.</p>
+<h3>Start / End</h3>
+<p>The start and end time of the clip, in sequence time.</p>
+<h3>type</h3>
+<p>Returns the type of track item.</p>
+<h2>MarkerCollection object</h2>
+<p>Marker collections contain the markers associated with a given <code>projectItem</code>, or sequence. For project items corresponding to sequences, the collection will reference sequence markers, and be obtained from the sequence object; for project items corresponding to media, the collection will reference clip markers, and be obtained from a project item.</p>
+<h2>numMarkers</h2>
+<p>How many markers are associated with this item.</p>
+<h2>createMarker(<code>secondsAsFloat</code>)</h2>
+<p>Returns a new marker at the start time specified, defaulting to marker type 'Comment', and duration 0.</p>
+<h2>deleteMarker(<code>marker</code>)</h2>
+<p>Removes the specified marker from the marker collection.</p>
+<h2>getFirstMarker()</h2>
+<p>Returns the (temporally) first marker from the marker collection. Use this to begin iteration.</p>
+<h2>getNextMarker(<code>marker</code>)</h2>
+<p>Returns the marker (temporally) subsequent to the specified <code>marker</code>, from the marker collection.</p>
+<h2>getPrevMarker(<code>marker</code>)</h2>
+<p>Returns the marker (temporally) prior to the specified <code>marker</code>, from the marker collection.</p>
+<h2>getLastMarker()</h2>
+<p>Returns the (temporally) last <code>marker</code> from the marker collection.</p>
+<h2>Marker object</h2>
+<p>Markers are temporal metadata, potentially with duration, and of specifiable type. Some fields are only meaningful for some marker types.</p>
+<h2>name</h2>
+<p>The marker's name, as a string. Read/Write.</p>
+<h2>comments</h2>
+<p>The comments (if any) contained within the marker, as a string. Read/Write.</p>
+<h2>start</h2>
+<p>A <code>Time</code> object representing the start time of the marker. Read/Write.</p>
+<h2>end</h2>
+<p>A <code>Time</code> object representing the end time of the marker. Read/Write.</p>
+<h2>type</h2>
+<p>The type of the marker, as a string. Read/Write.</p>
+<h2>setTypeAsComment</h2>
+<p>Sets the type of the marker to <code>Comment</code>.</p>
+<h2>setTypeAsChapter</h2>
+<p>Sets the type of the marker to <code>Chapter</code>.</p>
+<h2>setTypeAsWebLink</h2>
+<p>Sets the type of the marker to <code>WebLink</code>.</p>
+<h2>setTypeAsSegmentation</h2>
+<p>Sets the type of the marker to <code>Segmentation</code>.</p>
+<h2>getWebLinkURL</h2>
+<p>Returns the web link URL (if any) of the marker, as a string.</p>
+<h2>getwebLinkFrameTarget</h2>
+<p>Returns the web link frame target (if any) of the marker, as a string.</p>
+<h1>projectItem object</h1>
+<p>All items in Premiere Pro's project are represented by <code>projectItem</code> objects.</p>
+<h2>children</h2>
+<p>This is a <code>ProjectItemCollection</code> referencing the children (if any) of this item; only valid for bins.</p>
+<h2>name</h2>
+<p>The name of the <code>projectItem</code>, as a string. Read/Write.</p>
+<h2>treePath</h2>
+<p>The path to the <code>projectItem</code>, within the project.</p>
+<h2>type</h2>
+<p>The type of the <code>projectItem</code>; will be <code>BIN</code>, <code>CLIP</code>, <code>FILE</code> or <code>ROOT</code>.</p>
+<h2>createSmartBin(<code>binName</code>, <code>query</code>)</h2>
+<p>Returns a new bin, based on the specified query.</p>
+<h2>createBin(<code>binName</code>)</h2>
+<p>Returns a new 'child' bin, as named.</p>
+<h2>deleteBin(<code>binToDelete</code>)</h2>
+<p>Deletes the bin (the same bin, of which this is a method) from the project.</p>
+<h2>renameBin(<code>newName</code>)</h2>
+<p>Changes the name of this bin, as specified.</p>
+<h2>moveBin(<code>newParent</code>)</h2>
+<p>Moves the <code>projectItem</code> to the new parent bin, within the project.</p>
+<h2>getXMPMetadata</h2>
+<p>Returns the XMP metadata associated with the <code>projectItem</code>, as a string.</p>
+<h2>setXMPMetadata(<code>newData</code>)</h2>
+<p>Replaces any existing XMP metadata with the new data specified. Note: This includes marker data.</p>
+<h2>getProjectMetadata()</h2>
+<p>Returns Premiere Pro's private project metadata, associated with the 'projectItem', as a string.</p>
+<h2>setProjectMetadata(<code>newDate</code>, <code>fieldsToBeUpdated</code>)</h2>
+<p>Adds or updates the specified fields within Premiere Pro's private project metadata, to the new value(s) specified.</p>
+<h2>getMarkers()</h2>
+<p>Returns the MarkerCollection associated with the <code>projectItem</code>; if there are no markers, this will return <code>undefined</code>.</p>
+<h2>refreshMedia()</h2>
+<p>Makes Premiere Pro reload the media, from disk.</p>
+<h2>canChangeMediaPath()</h2>
+<p>Returns <code>true</code> if the media path for this <code>projectItem</code> can be changed; <code>false</code> if not..</p>
+<h2>changeMediaPath(<code>newMediaPath</code>)</h2>
+<p>Changes the media referenced by the <code>projectItem</code> to the media Premiere Pro finds at <code>newMediaPath</code>.</p>
+<h2>canProxy()</h2>
+<p>Returns <code>true</code> if a proxy can be attached to this <code>projectItem</code>.</p>
+<h2>hasProxy()</h2>
+<p>Returns <code>true</code> if a proxy is already attached to this <code>projectItem</code>.</p>
+<h2>attachProxy(<code>newPath</code>, <code>attachAsFullRes</code>)</h2>
+<p>Attaches the media Premiere Pro finds at <code>newPath</code>, as the new proxy path for this projectItem. If <code>attachAsFullRes</code> is 1, <code>newPath</code> is assigned as the new full resolution path.</p>
+<h1>Sequence object</h1>
+<h2>timeBase</h2>
+<p>Expressed in <code>ticks</code>; there are 254016000000 ticks per second.</p>
+<h2>setPlayerPosition(<code>timeInTicks</code>)</h2>
+<p>Sets the CTI to the specified timecode value.</p>
+<h2>setInPoint(<code>secondsAsFloat</code>)</h2>
+<p>Sets the in point of the sequence; '6.234'.</p>
+<h2>setOutPoint(<code>secondsAsFloat</code>)</h2>
+<p>Sets the in point of the sequence; '12.321'.</p>
+<h2>getInPoint()</h2>
+<p>Returns time of sequence's in point, in seconds.</p>
+<h2>getOutPoint()</h2>
+<p>Returns time of sequence's out point, in seconds.</p>
+<h2>setZeroPoint(<code>ticks</code>)</h2>
+<p>Sets the starting timecode of the sequence.</p>
+<h2>attachCustomProperty(<code>propertyID</code>, <code>propertyValue</code>)</h2>
+<p>Attaches a custom property, and value, to the sequence. This property is visible if/when the sequence is exported to FCP XML.</p>
+<h2>clone()</h2>
+<p>Returns a duplicate of the sequence, with &quot; Clone&quot; appended to the new sequence's name.</p>
+<h2>exportAsProject(<code>exportPath</code>)</h2>
+<p>Creates a new .prproj file containing only this sequence and its constituent media items.</p>
+<h2>exportAsFinalCutProXML(<code>exportPath</code>)</h2>
+<p>Creates a new FCP XML file containing only this sequence and its constituent media items.</p>
+<h2>exportAsMediaDirect(<code>outputFilePath</code>, <code>outputPresetPath</code>, <code>workAreaType</code>)</h2>
+<p>Renders the sequence to the specified output path, using the specified path. <code>workAreaType</code> can be <code>ENCODE_WORKAREA</code>, <code>ENCODE_ENTIRE</code>, or <code>ENCODE_IN_TO_OUT</code>.</p>
+<h2>getEnableProxy()</h2>
+<p>Returns <code>1</code> if proxies are enabled in the current sequence; <code>0</code> if not.</p>
+<h2>setEnableProxy(<code>enable</code>)</h2>
+<p>Pass a <code>1</code> to enable proxies in the sequence; <code>0</code> to disable.</p>
+</body>
+</html>

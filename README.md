@@ -5,16 +5,23 @@ These samples demonstrate techniques for building an extension with an HTML5 UI 
 
 Many of the samples are still in development. Some of them use CEP 4 and the CC2013 version of the host app, others are for CEP 5 and CC2014 version of the host application and others are kept up to date with the latest release e.g. CC2015. You can check the manifest.xml file for each extension's compatibility requirements. To run the extensions you must have the host application installed. Requirements for each sample are listed below.
 
+
 * Supported host apps for CEP 6 include the CC2015 versions of: Dreamweaver, Flash Pro, InDesign, Illustrator, InCopy, Photoshop, Premiere Pro, Prelude, and After Effects. 
 * Supported host apps for CEP 5 include the CC2014 versions of: Dreamweaver, Flash Pro, InDesign, Illustrator, InCopy, Photoshop, Premiere Pro, Prelude, and After Effects. 
 * Support for the Flash/ActionScript extension model is deprecated in all apps, and has been removed from Photoshop CC2014, Flash CC2015 and Dreamweaver CC2015.
+ 
+From CEP 7.0, we post official CEP sample extensions under CEP-Resources, along with documentation, API, etc.
+* [CEP 7.0 Sample Extensions](https://github.com/Adobe-CEP/CEP-Resources/tree/master/CEP_7.x/Samples)
+
 
 ##Before running the samples
-The samples provided are unsigned so this will cause the the signature check (built into CEP when first running an extension) to fail. To bypass the signature check, please refer to one of the following steps:
+The samples provided are unsigned so this will cause the the signature check (built into CEP when first running an extension) to fail. To bypass the signature check, please refer to the documentation:
 
-* [CEP6](https://github.com/Adobe-CEP/CEP-Resources/wiki/CEP-6-HTML-Extension-Cookbook-for-CC-2015#development_debugging)
-* [CEP5](https://github.com/Adobe-CEP/CEP-Resources/wiki/CEP-5-HTML-Extension-Cookbook-for-CC-2014#development_debugging) 
-* [CEP4](https://a248.e.akamai.net/f/1953/8974/2h/wwwimages.adobe.com/www.adobe.com/content/dam/Adobe/en/devnet/cs-extension-builder/pdfs/CC_Extension_SDK.pdf) (Page 25) 
+* [CEP 7.0](https://github.com/Adobe-CEP/CEP-Resources/blob/master/CEP_7.x/CEP_7.0_HTML_Extension_Cookbook.pdf)
+* [CEP 6.1](https://github.com/Adobe-CEP/CEP-Resources/blob/master/CEP_6.x/CEP_6.1_HTML_Extension_Cookbook.pdf)
+* [CEP 6](https://github.com/Adobe-CEP/CEP-Resources/wiki/CEP-6-HTML-Extension-Cookbook-for-CC-2015#development_debugging)
+* [CEP 5](https://github.com/Adobe-CEP/CEP-Resources/wiki/CEP-5-HTML-Extension-Cookbook-for-CC-2014#development_debugging) 
+* [CEP 4](https://a248.e.akamai.net/f/1953/8974/2h/wwwimages.adobe.com/www.adobe.com/content/dam/Adobe/en/devnet/cs-extension-builder/pdfs/CC_Extension_SDK.pdf) (Page 25) 
 
 ----
 ## Requirements

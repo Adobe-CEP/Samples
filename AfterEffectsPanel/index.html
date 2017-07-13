@@ -3,10 +3,31 @@
     <head>
         <meta charset="utf-8">
             <script src="./ext.js"></script>
-            <script src="./lib/CSInterface-4.0.0.js"></script>
-            <link rel="stylesheet" type="text/css" href="./style.css">
+            <script src="./lib/CSInterface.js"></script>
+       		<script src="./lib/jquery-1.9.1.js"></script>
+			<script src="./lib/Vulcan.js"></script>
+			<script type="text/javascript">
+
+				$( document ).ready(function() {
+
+
+					// For functions which require interaction at the JavaScript level, we provide these JQuery-based
+					// handlers, instead of directly invoking ExtendScript .This givs the JavaScript layer a chance
+					// to pass data into the ExtendScript layer, and process the results.
+
+					$("#sendtext").on("click", function(e){
+							e.preventDefault(); 
+							var csInterface = new CSInterface();
+
+							csInterface.evalScript('$._ext.sendText()', myTextHandlerFunction);  
+					});
+				});
+			</script>            <link rel="stylesheet" type="text/css" href="./style.css">
     </head>
     <body onLoad="onLoaded()">
-        <button id="generateComplexComp" onClick="evalScript('$._ext.generateComplexComp()')">Generate a Complex Comp</button>
-    </body>
+    		<a href="javascript:history.go(0)">Refresh panel</a>
+
+		<button id="sendtext">Send all text from layers</button>
+<!--         <button id="generateComplexComp" onClick="evalScript('$._ext.generateComplexComp()')">old name Comp</button>
+ -->    </body>
 </html>

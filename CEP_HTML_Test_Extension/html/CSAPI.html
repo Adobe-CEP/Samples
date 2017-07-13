@@ -37,7 +37,8 @@
         $("#GetScaleFactorDiv").hide();
         $("#GetCurrentApiVersionDiv").hide();
         $("#IsWindowVisibleDiv").hide();
-
+        $("#LoadWebSiteWithInvalidCertificateDiv").hide();
+		$("#SetAndGetWindowTitleDiv").hide();
         initExtensionSizeAndConstraints();
         parent.window.addEventListener('resize', browserResized);
     });
@@ -259,25 +260,25 @@
     function onclickOPGetNetworkPreferences() {
         var networkPre = CSLibrary.getNetworkPreferences();
         if(networkPre.isAdminOnline) {
-            document.getElementById("OPAdminallowsonlineaccess").setAttribute("checked");
+            document.getElementById("OPAdminallowsonlineaccess").setAttribute("checked", true);
         } else {
             document.getElementById("OPAdminallowsonlineaccess").removeAttribute("checked");
         }
 
         if(networkPre.isUserOnline) {
-            document.getElementById("OPUserallowsonlineaccess").setAttribute("checked");
+            document.getElementById("OPUserallowsonlineaccess").setAttribute("checked", true);
         } else {
             document.getElementById("OPUserallowsonlineaccess").removeAttribute("checked");
         }
 
         if(networkPre.isAppOnline) {
-            document.getElementById("OPApplicationallowsonlineaccess").setAttribute("checked");
+            document.getElementById("OPApplicationallowsonlineaccess").setAttribute("checked", true);
         } else {
             document.getElementById("OPApplicationallowsonlineaccess").removeAttribute("checked");
         }
 
         if(networkPre.isAdminOnline && networkPre.isUserOnline && networkPre.isAppOnline) {
-            document.getElementById("OPOverallonlineaccessallowed").setAttribute("checked");
+            document.getElementById("OPOverallonlineaccessallowed").setAttribute("checked", true);
         } else {
             document.getElementById("OPOverallonlineaccessallowed").removeAttribute("checked");
         }
@@ -358,6 +359,29 @@
             });
         }
     }
+	
+	function onclickLoadMainJSX() {
+		var mainJSX =  CSLibrary.getSystemPath(SystemPath.EXTENSION) + '/jsx/main.jsx';
+		var script = '$.evalFile("' + mainJSX + '");';
+		CSLibrary.evalScript(script, function(result) {
+				// If CEP failed to load other jsx files, the return result will be "EvalScript error."
+				if ('EvalScript error.' !== result) {
+					document.getElementById("TestMainFunction").disabled = false;
+					document.getElementById("TestMainObj").disabled = false;
+					document.getElementById("TestUtilFunction").disabled = false;
+					document.getElementById("TestUtilObj").disabled = false;
+					document.getElementById("TestMultiJSXScriptResult").value = "Load main.jsx successfully!";	
+				} else {
+					document.getElementById("TestMultiJSXScriptResult").value = result;	
+				}
+            });
+	}
+	
+	function onclickTestMultiJSX(script) {
+		CSLibrary.evalScript(script, function(result) {
+				document.getElementById("TestMultiJSXScriptResult").value = result;	
+            });
+	}
     <!--------------------->
     <!-- Eval Script end -->
     <!--------------------->
@@ -374,6 +398,8 @@
         $("#GetScaleFactorDiv").hide();
         $("#GetCurrentApiVersionDiv").hide();
         $("#IsWindowVisibleDiv").hide();
+        $("#LoadWebSiteWithInvalidCertificateDiv").hide();
+		$("#SetAndGetWindowTitleDiv").hide();
     }
     <!--------------------->
     <!--- Open Url end ---->
@@ -388,6 +414,8 @@
         $("#GetScaleFactorDiv").hide();
         $("#GetCurrentApiVersionDiv").hide();
         $("#IsWindowVisibleDiv").hide();
+        $("#LoadWebSiteWithInvalidCertificateDiv").hide();
+		$("#SetAndGetWindowTitleDiv").hide();
     }
 
     function onclickGetExtensionID(){
@@ -406,6 +434,8 @@
         $("#GetCurrentApiVersionDiv").hide();
         $("#IsWindowVisibleDiv").hide();
         $("#GetScaleFactorDiv").show();
+        $("#LoadWebSiteWithInvalidCertificateDiv").hide();
+		$("#SetAndGetWindowTitleDiv").hide();
     }
 
     function onclickGetScaleFactor(){
@@ -444,6 +474,8 @@
         $("#GetScaleFactorDiv").hide();
         $("#IsWindowVisibleDiv").hide();
         $("#GetCurrentApiVersionDiv").show();
+        $("#LoadWebSiteWithInvalidCertificateDiv").hide();
+		$("#SetAndGetWindowTitleDiv").hide();
     }
 
     function onclickGetCurrentApiVersion(){
@@ -469,6 +501,8 @@
         $("#GetScaleFactorDiv").hide();
         $("#GetCurrentApiVersionDiv").hide();
         $("#IsWindowVisibleDiv").show();
+        $("#LoadWebSiteWithInvalidCertificateDiv").hide();
+		$("#SetAndGetWindowTitleDiv").hide();
     }
 
     function onclickIsWindowVisible() {
@@ -479,6 +513,65 @@
     <!--- IsWindowVisible end----->
     <!---------------------------->
 
+    <!---------------------------------------------->
+    <!--- LoadWebSiteWithInvalidCertificate begin -->
+    <!---------------------------------------------->
+
+    function onLoadWebSiteWithInvalidCertificateBtn() {
+        $("#OpenUrlDiv").hide();
+        $("#GetExtensionIdDiv").hide();
+        $("#GetScaleFactorDiv").hide();
+        $("#GetCurrentApiVersionDiv").hide();
+        $("#IsWindowVisibleDiv").hide();
+        $("#LoadWebSiteWithInvalidCertificateDiv").show();
+		$("#SetAndGetWindowTitleDiv").hide();
+    }
+
+    function onclickLoadWebSite() {
+        var isRegisterCallback = document.getElementById("IsRegisterCallback").checked;
+        if (isRegisterCallback) {
+            CSLibrary.registerInvalidCertificateCallback(function() {
+                alert('registered callback is called!');
+            });
+        }
+
+        parent.window.location = "https://tv.eurosport.com/";
+    }
+
+    <!---------------------------------------------->
+    <!--- LoadWebSiteWithInvalidCertificate end -->
+    <!---------------------------------------------->
+
+	<!--------------------------------->
+    <!--- SetAndGetWindowTitle begin -->
+    <!--------------------------------->
+
+    function onclickSetWindowTitle() {
+        $("#OpenUrlDiv").hide();
+        $("#GetExtensionIdDiv").hide();
+        $("#GetScaleFactorDiv").hide();
+        $("#GetCurrentApiVersionDiv").hide();
+        $("#IsWindowVisibleDiv").hide();
+        $("#LoadWebSiteWithInvalidCertificateDiv").hide();
+		$("#SetAndGetWindowTitleDiv").show();
+    }
+
+    function onclickSetWindowTitleBtn() {
+		CSLibrary.setWindowTitle(document.getElementById("SetWindowTitle").value);
+	}
+	
+	function onclickGetWindowTitleBtn() {
+		document.getElementById("GetWindowTitle").value = CSLibrary.getWindowTitle();
+	}
+	
+	function onClickRestoreDefaultWindowTitle() {
+		CSLibrary.setWindowTitle(CSLibrary.getExtensionID());
+	}
+	
+    <!------------------------------->
+    <!--- SetAndGetWindowTitle end -->
+    <!------------------------------->
+	
     function browserResized() {
         $('#currentContentSize').text('(' + parent.window.innerWidth + ', ' +
                                       parent.window.innerHeight + ')');
@@ -505,7 +598,6 @@
         var height = parseInt($('#extensionNewHeight').val());
         CSLibrary.resizeContent(width, height);
     }
-
 </script>
 </head>
 
@@ -783,55 +875,101 @@
         </tr>
         <tr>
           <td width="72">&nbsp;</td>
-          <td width="325"><label style="color: #FFF"><strong>Invoke evalScript() with script</strong></label>
-          <strong>&nbsp;</strong></td>
+          <td width="325"><label style="color: #FFF"><strong>Invoke evalScript() with script</strong></label></td>
         </tr>
 
         <tr>
-          <td><label style="color: #FFF">Script:</label>&nbsp;</td>
-          <td><form id="formESP" name="formESP" method="post" action="">
+          <td><label style="color: #FFF">Script:</label></td>
+          <td>
             <label for="EvalScriptPara"></label>
             <textarea name="EvalScriptPara" id="EvalScriptPara" cols="48" rows="3">app.documents.add();</textarea>
-          </form></td>
+          </td>
         </tr>
 
         <tr>
-          <td><label style="color: #FFF">Execution times:</label>&nbsp;</td>
-          <td><form id="formESP" name="formESP" method="post" action="">
+          <td><label style="color: #FFF">Execution times:</label></td>
+          <td>
             <label for="ExecutionTimes"></label>
             <textarea name="ExecutionTimes" id="ExecutionTimes" cols="48" rows="1">1</textarea>
-          </form></td>
+          </td>
         </tr>
 
         <tr>
-          <td><label style="color: #FFF">Result:</label>&nbsp;</td>
-          <td><form id="formESP" name="formESP" method="post" action="">
+          <td><label style="color: #FFF">Result:</label></td>
+          <td>
             <label for="EvalScriptResult"></label>
             <textarea name="EvalScriptResult" id="EvalScriptResult" cols="48" rows="3" readonly="readonly"></textarea>
-          </form></td>
+		  </td>
         </tr>
 
         <tr>
           <td>&nbsp;</td>
-          <td><form id="formIES" name="formIES" method="post" action="">
+          <td>
             <input type="button" name="InvokeEvalScript" id="InvokeEvalScript" value="Invoke evalScript()" onclick="onclickInvokeEvalScript()" />
-          </form></td>
+          </td>
         </tr>
       </table>
+	  
+	  <!--Multiple JSX Testing-->
+	  <table width="552" border="0">
+         <tr>
+          <td width="220"></td>
+          <td width="456"></td>
+        </tr>
+        <tr>
+          <td width="72"></td>
+          <td width="325"><label style="color: #FFF"><strong>Multiple JSX Test</strong></label></td>
+        </tr>
 
-      <p>&nbsp;</p>
-      <p>&nbsp;</p>
-      <p>&nbsp;</p>
-      <p>&nbsp;</p>
-      <p>&nbsp;</p>
-      <p>&nbsp;</p>
-      <p>&nbsp;</p>
-      <p>&nbsp;</p>
+		<tr>
+          <td width="72"></td>
+          <td width="400"><label style="color: #FFF"><strong>core.jsx has already been loaded as this extension is loaded.</strong></label></td>
+        </tr>
+		
+        <tr>
+          <td><label style="color: #FFF">Test core.jsx:</label></td>
+          <td>
+			<input type="button" name="TestCoreFunction" id="TestCoreFunction" value="TestCoreFunction" onclick="onclickTestMultiJSX('getMessageFromCore()');" />
+			<input type="button" name="TestCoreObj" id="TestCoreObj" value="TestCoreObj" onclick="onclickTestMultiJSX('objCore.getMessage();');" />
+          </td>
+        </tr>
+
+        <tr>
+          <td><label style="color: #FFF">Test main.jsx:</label></td>
+          <td>
+			<input type="button" name="LoadMainJSX" id="LoadMainJSX" value="LoadMainJSX" onclick="onclickLoadMainJSX();" />
+			<input type="button" name="TestMainFunction" id="TestMainFunction" value="TestMainFunction" onclick="onclickTestMultiJSX('getMessageFromMain()');" disabled="disabled" />
+			<input type="button" name="TestMainObj" id="TestMainObj" value="TestMainObj" onclick="onclickTestMultiJSX('objMain.getMessage();');" disabled="disabled" />
+          </td>
+        </tr>
+		
+		<tr>
+          <td width="72"></td>
+          <td width="325"><label style="color: #FFF"><strong>util.jsx will be loaded by main.jsx</strong></label></td>
+        </tr>
+		
+        <tr>
+          <td><label style="color: #FFF">Test util.jsx:</label></td>
+          <td>
+			<input type="button" name="TestUtilFunction" id="TestUtilFunction" value="TestUtilFunction" onclick="onclickTestMultiJSX('getMessageFromUtil()');" disabled="disabled" />
+			<input type="button" name="TestUtilObj" id="TestUtilObj" value="TestUtilObj" onclick="onclickTestMultiJSX('objUtil.getMessage();');" disabled="disabled" />
+          </td>
+        </tr>
+		
+		<tr>
+          <td><label style="color: #FFF">Result:</label></td>
+          <td>
+            <label for="TestMultiJSXScriptResult"></label>
+            <textarea name="TestMultiJSXScriptResult" id="TestMultiJSXScriptResult" cols="48" rows="3" readonly="readonly"></textarea>
+          </td>
+        </tr>
+		
+      </table>
     </div>
     <!--------------------------->
     <!-- EvalScript tab end -->
     <!--------------------------->
-
+	
     <!------------------------------>
     <!-- Open extension tab begin -->
     <!------------------------------>
@@ -945,11 +1083,13 @@
     <div class="TabbedPanelsContent">
         <div id="EnvnavigationDiv">
             <ul id="ul2">
-                <li><button id="OpenUrlBtn" onclick="onclickOpenUrlBtn()" style="background-color:#333; border:none; color:#FFF;">OpenUrl</button></li>
-                <li><button id="GetExtensionIDBtn" onclick="onclickGetExtensionIDBtn()" style="background-color:#333; border:none; color:#FFF;">GetExtensionID</button></li>
-                <li><button id="GetScaleFactorBtn" onclick="onclickGetScaleFactorBtn()" style="background-color:#333; border:none; color:#FFF;">GetScaleFactor</button></li>
-                <li><button id="GetCurrentApiVersionBtn" onclick="onclickGetCurrentApiVersionBtn()" style="background-color:#333; border:none; color:#FFF;">GetApiVersion</button></li>
-                <li><button id="IsWindowVisible" onclick="onclickIsWindowVisibleBtn()" style="background-color:#333; border:none; color:#FFF;">IsWindowVisible</button></li>
+                <li><button id="OpenUrlBtn" onclick="onclickOpenUrlBtn()">OpenUrl</button></li>
+                <li><button id="GetExtensionIDBtn" onclick="onclickGetExtensionIDBtn()">GetExtensionID</button></li>
+                <li><button id="GetScaleFactorBtn" onclick="onclickGetScaleFactorBtn()">GetScaleFactor</button></li>
+                <li><button id="GetCurrentApiVersionBtn" onclick="onclickGetCurrentApiVersionBtn()">GetApiVersion</button></li>
+                <li><button id="IsWindowVisible" onclick="onclickIsWindowVisibleBtn()">IsWindowVisible</button></li>
+                <li><button id="LoadWebSiteWithInvalidCertificate" onclick="onLoadWebSiteWithInvalidCertificateBtn()">InvalidCertificate</button></li>
+				<li><button id="SetAndGetWindowTitle" onclick="onclickSetWindowTitle()">WindowTitle</button></li>
             </ul>
             <p>&nbsp;</p>
             <p>&nbsp;</p>
@@ -957,7 +1097,7 @@
             <p>&nbsp;</p>
         </div>
 
-      <div id="OpenUrlDiv">
+      <div id="OpenUrlDiv" class="CEPAPIOthersDiv">
         <form id="formEvnInfo" name="formEvnInfo" method="post" action="">
           <p>&nbsp;</p>
           <p><label><strong>DefaultBrowser</strong></label></p>
@@ -972,7 +1112,7 @@
         </form>
       </div>
 
-       <div id="GetExtensionIdDiv">
+       <div id="GetExtensionIdDiv" class="CEPAPIOthersDiv">
         <form id="formExtensionID" name="formExtensionID" method="post" action="">
           <p>&nbsp;</p>
           <p><label><strong>GetExtensionID</strong></label></p>
@@ -987,7 +1127,7 @@
         </form>
       </div>
 
-        <div id="GetScaleFactorDiv">
+        <div id="GetScaleFactorDiv" class="CEPAPIOthersDiv">
             <form id="formScaleFactor" name="formScaleFactor" method="post" action="">
                 <p>&nbsp;</p>
                 <p><label><strong>GetExtensionID</strong></label></p>
@@ -1016,7 +1156,7 @@
             </form>
         </div>
 
-        <div id="GetCurrentApiVersionDiv">
+        <div id="GetCurrentApiVersionDiv" class="CEPAPIOthersDiv">
             <form id="formCurrentApiVersion" name="formCurrentApiVersion" method="post" action="">
               <p>&nbsp;</p>
               <p><label><strong>GetCurrentApiVersion</strong></label></p>
@@ -1031,7 +1171,7 @@
             </form>
           </div>
 
-          <div id="IsWindowVisibleDiv">
+          <div id="IsWindowVisibleDiv" class="CEPAPIOthersDiv">
              <p>&nbsp;</p>
              <p><label><strong>IsWindowVisible</strong></label></p>
              <label for="IsWindowVisible"></label>
@@ -1044,6 +1184,41 @@
              <p>&nbsp;</p>
           </div>
 
+          <div id="LoadWebSiteWithInvalidCertificateDiv" class="CEPAPIOthersDiv">
+             <p>&nbsp;</p>
+             <p><label><strong>LoadWebSiteWithInvalidCertificate</strong></label></p>
+             <p><label><strong>Callback cannot be removed once registered.</strong></label></p>
+             <label for="LoadWebSiteWithInvalidCertificate"></label>
+             <table width="500" border="0">
+               <tr>
+                 <td><input type="checkbox" name="IsRegisterCallback" id="IsRegisterCallback" value="IsRegisterCallback">IsRegisterCallback</input></td>
+                 <td><input type="button" value="LoadWebSite" onclick="onclickLoadWebSite();"></td>
+               </tr>
+             </table>
+             <p>&nbsp;</p>
+          </div>
+		  
+		  <div id="SetAndGetWindowTitleDiv" class="CEPAPIOthersDiv">
+             <p>&nbsp;</p>
+             <p><label><strong>Set and Get the title of the extension window.</strong></label></p>
+			 <p><label><strong>These functions work with modal and modeless extensions in all Adobe products, and panel extensions in Photoshop, InDesign, InCopy, Illustrator, Flash Pro and Dreamweaver. If user uses this function under other point products, the title can be get and set but it may not be changed on the screen.</strong></label></p>
+             <label for="SetAndGetWindowTitleDiv"></label>
+             <table width="500" border="0">
+               <tr>
+                 <td><input type="button" name="SetWindowTitleBtn" id="SetWindowTitleBtn" value="SetWindowTitle" onclick="onclickSetWindowTitleBtn();"></input></td>
+				 <td><textarea name="SetWindowTitle" id="SetWindowTitle" cols="40" rows="1"></textarea></td>
+               </tr>
+			   <tr>
+                 <td><input type="button" name="GetWindowTitleBtn" id="GetWindowTitleBtn" value="GetWindowTitle" onclick="onclickGetWindowTitleBtn();"></input></td>
+				 <td><textarea name="GetWindowTitle" id="GetWindowTitle" cols="40" rows="1"></textarea></td>
+               </tr>
+			   <tr>
+				 <td><input type="button" name="RestoreDefaultWindowTitle" id="RestoreDefaultWindowTitle" value="RestoreDefaultWindowTitle" onclick="onClickRestoreDefaultWindowTitle();"></input></td>
+			   </tr>
+             </table>
+             <p>&nbsp;</p>
+          </div>
+		  
           <p>&nbsp;</p>
           <p>&nbsp;</p>
         </div>

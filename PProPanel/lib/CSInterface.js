@@ -11,14 +11,14 @@
 *
 **************************************************************************************************/
 
-/** CSInterface - v5.0.0 */
+/** CSInterface - v6.1.0 */
 
 /**
  * Stores constants for the window types supported by the CSXS infrastructure.
  */
 function CSXSWindowType()
 {
-};
+}
 
 /** Constant for the CSXS window type Panel. */
 CSXSWindowType._PANEL = "Panel";
@@ -51,7 +51,7 @@ function Version(major, minor, micro, special)
     this.minor = minor;
     this.micro = micro;
     this.special = special;
-};
+}
 
 /**
  * The maximum value allowed for a numeric version component.
@@ -73,7 +73,7 @@ function VersionBound(version, inclusive)
 {
     this.version = version;
     this.inclusive = inclusive;
-};
+}
 
 /**
  * @class VersionRange
@@ -88,7 +88,7 @@ function VersionRange(lowerBound, upperBound)
 {
     this.lowerBound = lowerBound;
     this.upperBound = upperBound;
-};
+}
 
 /**
  * @class Runtime
@@ -105,7 +105,7 @@ function Runtime(name, versionRange)
 {
     this.name = name;
     this.versionRange = versionRange;
-};
+}
 
 /**
 * @class Extension
@@ -150,7 +150,7 @@ function Extension(id, name, mainPath, basePath, windowType, width, height, minW
     this.requiredRuntimeList = requiredRuntimeList;
     this.isAutoVisible = isAutoVisible;
     this.isPluginExtension = isPluginExtension;
-};
+}
 
 /**
  * @class CSEvent
@@ -169,7 +169,7 @@ function CSEvent(type, scope, appId, extensionId)
     this.scope = scope;
     this.appId = appId;
     this.extensionId = extensionId;
-};
+}
 
 /** Event-specific data. */
 CSEvent.prototype.data = "";
@@ -182,7 +182,7 @@ CSEvent.prototype.data = "";
  */
 function SystemPath()
 {
-};
+}
 
 /** The path to user data.  */
 SystemPath.USER_DATA = "userData";
@@ -208,7 +208,7 @@ SystemPath.HOST_APPLICATION = "hostApplication";
  */
 function ColorType()
 {
-};
+}
 
 /** RGB color type. */
 ColorType.RGB = "rgb";
@@ -239,7 +239,7 @@ function RGBColor(red, green, blue, alpha)
     this.green = green;
     this.blue = blue;
     this.alpha = alpha;
-};
+}
 
 /**
  * @class Direction
@@ -257,7 +257,7 @@ function Direction(x, y)
 {
     this.x = x;
     this.y = y;
-};
+}
 
 /**
  * @class GradientStop
@@ -272,7 +272,7 @@ function GradientStop(offset, rgbColor)
 {
     this.offset = offset;
     this.rgbColor = rgbColor;
-};
+}
 
 /**
  * @class GradientColor
@@ -292,7 +292,7 @@ function GradientColor(type, direction, numStops, arrGradientStop)
     this.direction = direction;
     this.numStops = numStops;
     this.arrGradientStop = arrGradientStop;
-};
+}
 
 /**
  * @class UIColor
@@ -311,7 +311,7 @@ function UIColor(type, antialiasLevel, color)
     this.type = type;
     this.antialiasLevel = antialiasLevel;
     this.color = color;
-};
+}
 
 /**
  * @class AppSkinInfo
@@ -336,7 +336,7 @@ function AppSkinInfo(baseFontFamily, baseFontSize, appBarBackgroundColor, panelB
     this.appBarBackgroundColorSRGB = appBarBackgroundColorSRGB;
     this.panelBackgroundColorSRGB = panelBackgroundColorSRGB;
     this.systemHighlightColor = systemHighlightColor;
-};
+}
 
 /**
  * @class HostEnvironment
@@ -361,7 +361,7 @@ function HostEnvironment(appName, appVersion, appLocale, appUILocale, appId, isA
     this.appId = appId;
     this.isAppOnline = isAppOnline;
     this.appSkinInfo = appSkinInfo;
-};
+}
 
 /**
  * @class HostCapabilities
@@ -382,7 +382,7 @@ function HostCapabilities(EXTENDED_PANEL_MENU, EXTENDED_PANEL_ICONS, DELEGATE_AP
     this.DELEGATE_APE_ENGINE = DELEGATE_APE_ENGINE;
     this.SUPPORT_HTML_EXTENSIONS = SUPPORT_HTML_EXTENSIONS;
 	this.DISABLE_FLASH_EXTENSIONS = DISABLE_FLASH_EXTENSIONS; // Since 5.0.0
-};
+}
 
 /**
  * @class ApiVersion
@@ -401,8 +401,45 @@ function ApiVersion(major, minor, micro)
     this.major = major;
     this.minor = minor;
     this.micro = micro;
-};
+}
 
+/**
+ * @class MenuItemStatus
+ * Stores flyout menu item status
+ *
+ * Since 5.2.0
+ *
+ * @param menuItemLabel  The menu item label.
+ * @param enabled  		 True if user wants to enable the menu item.
+ * @param checked  		 True if user wants to check the menu item.
+ *
+ * @return MenuItemStatus object.
+ */
+function MenuItemStatus(menuItemLabel, enabled, checked)
+{
+	this.menuItemLabel = menuItemLabel;
+	this.enabled = enabled;
+	this.checked = checked;
+}
+
+/**
+ * @class ContextMenuItemStatus
+ * Stores the status of the context menu item.
+ *
+ * Since 5.2.0
+ *
+ * @param menuItemID     The menu item id.
+ * @param enabled  		 True if user wants to enable the menu item.
+ * @param checked  		 True if user wants to check the menu item.
+ *
+ * @return MenuItemStatus object.
+ */
+function ContextMenuItemStatus(menuItemID, enabled, checked)
+{
+	this.menuItemID = menuItemID;
+	this.enabled = enabled;
+	this.checked = checked;
+}
 //------------------------------ CSInterface ----------------------------------
 
 /**
@@ -419,7 +456,7 @@ function ApiVersion(major, minor, micro)
  */
 function CSInterface()
 {
-};
+}
 
 /**
  * User can add this event listener to handle native application theme color changes.
@@ -491,7 +528,7 @@ CSInterface.prototype.getSystemPath = function(pathType)
  */
 CSInterface.prototype.evalScript = function(script, callback)
 {
-    if(callback == null || callback == undefined)
+    if(callback === null || callback === undefined)
     {
         callback = function(result){};
     }
@@ -645,24 +682,17 @@ CSInterface.prototype.initResourceBundle = function()
            // Get all the resources that start with the key.
            for (var key in resourceBundle)
            {
-               if (key.indexOf(resKey) == 0)
+               if (key.indexOf(resKey) === 0)
                {
                    var resValue = resourceBundle[key];
-                   if (key.indexOf('.') == -1)
+                   if (key.length == resKey.length)
                    {
-                       // No dot notation in resource key,
-                       // assign the resource value to the element's
-                       // innerHTML.
-                       resEl.innerHTML = resValue;
+                        resEl.innerHTML = resValue;
                    }
-                   else
+                   else if ('.' == key.charAt(resKey.length))
                    {
-                       // Dot notation in resource key, assign the
-                       // resource value to the element's property
-                       // whose name corresponds to the substring
-                       // after the dot.
-                       var attrKey = key.substring(key.indexOf('.') + 1);
-                       resEl[attrKey] = resValue;
+                        var attrKey = key.substring(resKey.length + 1);
+                        resEl[attrKey] = resValue;
                    }
                }
            }
@@ -686,6 +716,8 @@ CSInterface.prototype.dumpInstallationInfo = function()
  * See http://www.useragentstring.com/pages/Chrome/ for Chrome \c navigator.userAgent values.
  *
  * @return A string containing the OS version, or "unknown Operation System".
+ * If user customizes the User Agent by setting CEF command parameter "--user-agent", only
+ * "Mac OS X" or "Windows" will be returned. 
  */
 CSInterface.prototype.getOSInformation = function()
 {
@@ -693,49 +725,66 @@ CSInterface.prototype.getOSInformation = function()
 
     if ((navigator.platform == "Win32") || (navigator.platform == "Windows"))
     {
-        var winVersion = "Windows platform";
-        if (userAgent.indexOf("Windows NT 5.0") > -1)
+        var winVersion = "Windows";
+        var winBit = "";
+        if (userAgent.indexOf("Windows") > -1)
         {
-            winVersion = "Windows 2000";
-        }
-        else if (userAgent.indexOf("Windows NT 5.1") > -1)
-        {
-            winVersion = "Windows XP";
-        }
-        else if (userAgent.indexOf("Windows NT 5.2") > -1)
-        {
-            winVersion = "Windows Server 2003";
-        }
-        else if (userAgent.indexOf("Windows NT 6.0") > -1)
-        {
-            winVersion = "Windows Vista";
-        }
-        else if (userAgent.indexOf("Windows NT 6.1") > -1)
-        {
-            winVersion = "Windows 7";
-        }
-        else if (userAgent.indexOf("Windows NT 6.2") > -1)
-        {
-            winVersion = "Windows 8";
+            if (userAgent.indexOf("Windows NT 5.0") > -1)
+            {
+                winVersion = "Windows 2000";
+            }
+            else if (userAgent.indexOf("Windows NT 5.1") > -1)
+            {
+                winVersion = "Windows XP";
+            }
+            else if (userAgent.indexOf("Windows NT 5.2") > -1)
+            {
+                winVersion = "Windows Server 2003";
+            }
+            else if (userAgent.indexOf("Windows NT 6.0") > -1)
+            {
+                winVersion = "Windows Vista";
+            }
+            else if (userAgent.indexOf("Windows NT 6.1") > -1)
+            {
+                winVersion = "Windows 7";
+            }
+            else if (userAgent.indexOf("Windows NT 6.2") > -1)
+            {
+                winVersion = "Windows 8";
+            }
+            else if (userAgent.indexOf("Windows NT 6.3") > -1)
+            {
+                winVersion = "Windows 8.1";
+            }
+            else if (userAgent.indexOf("Windows NT 10") > -1)
+            {
+                winVersion = "Windows 10";
+            }
+
+            if (userAgent.indexOf("WOW64") > -1)
+            {
+                winBit = " 64-bit";
+            }
+            else
+            {
+                winBit = " 32-bit";			
+            }
         }
 
-        var winBit = "32-bit";
-        if (userAgent.indexOf("WOW64") > -1)
-        {
-            winBit = "64-bit";
-        }
-
-        return winVersion + " " + winBit;
+        return winVersion + winBit;
     }
     else if ((navigator.platform == "MacIntel") || (navigator.platform == "Macintosh"))
-    {
-        var agentStr = new String();
-        agentStr = userAgent;
-        var verLength = agentStr.indexOf(")") - agentStr.indexOf("Mac OS X");
-        var verStr = agentStr.substr(agentStr.indexOf("Mac OS X"), verLength);
-        var result = verStr.replace("_", ".");
-        result = result.replace("_", ".");
-        return result;
+    {        
+        var result = "Mac OS X";
+
+        if (userAgent.indexOf("Mac OS X") > -1)
+        {
+            result = userAgent.substring(userAgent.indexOf("Mac OS X"), userAgent.indexOf(")"));
+            result = result.replace(/_/g, ".");
+        }
+
+        return result;        
     }
 
     return "Unknown Operation System";
@@ -746,7 +795,12 @@ CSInterface.prototype.getOSInformation = function()
  *
  * Since 4.2.0
  *
- * @param url   The URL of the page to open. Must use HTTP or HTTPS protocol.
+ * @param url  The URL of the page/file to open, or the email address.
+ * Must use HTTP/HTTPS/file/mailto protocol. For example:
+ *   "http://www.adobe.com"
+ *   "https://github.com"
+ *   "file:///C:/log.txt"
+ *   "mailto:test@adobe.com"
  *
  * @return One of these error codes:\n
  *      <ul>\n
@@ -774,15 +828,17 @@ CSInterface.prototype.getExtensionID = function()
 };
 
 /**
- * Retrieves scale factor of screen. This only works on Mac.
+ * Retrieves the scale factor of screen. 
+ * On Windows platform, the value of scale factor might be different from operating system's scale factor,
+ * since host application may use its self-defined scale factor.
  *
  * Since 4.2.0
  *
- * @return One of the following integer.
+ * @return One of the following float number.
  *      <ul>\n
- *          <li>-1 means fail to get scale factor or this API has not been available on Windows yet</li>\n
- *          <li>1 means normal screen</li>\n
- *          <li>2 means HiDPI screen</li>\n
+ *          <li> -1.0 when error occurs </li>\n
+ *          <li> 1.0 means normal screen </li>\n
+ *          <li> >1.0 means HiDPI screen </li>\n
  *      </ul>\n
  */
 CSInterface.prototype.getScaleFactor = function()
@@ -815,4 +871,323 @@ CSInterface.prototype.getCurrentApiVersion = function()
 {
     var apiVersion = JSON.parse(window.__adobe_cep__.getCurrentApiVersion());
     return apiVersion;
+};
+
+/**
+ * Set panel flyout menu by an XML.
+ *
+ * Since 5.2.0
+ *
+ * Register a callback function for "com.adobe.csxs.events.flyoutMenuClicked" to get notified when a 
+ * menu item is clicked.
+ * The "data" attribute of event is an object which contains "menuId" and "menuName" attributes. 
+ *
+ * Register callback functions for "com.adobe.csxs.events.flyoutMenuOpened" and "com.adobe.csxs.events.flyoutMenuClosed"
+ * respectively to get notified when flyout menu is opened or closed.
+ *
+ * @param menu     A XML string which describes menu structure.
+ * An example menu XML:
+ * <Menu>
+ *   <MenuItem Id="menuItemId1" Label="TestExample1" Enabled="true" Checked="false"/>
+ *   <MenuItem Label="TestExample2">
+ *     <MenuItem Label="TestExample2-1" >
+ *       <MenuItem Label="TestExample2-1-1" Enabled="false" Checked="true"/>
+ *     </MenuItem>
+ *     <MenuItem Label="TestExample2-2" Enabled="true" Checked="true"/>
+ *   </MenuItem>
+ *   <MenuItem Label="---" />
+ *   <MenuItem Label="TestExample3" Enabled="false" Checked="false"/>
+ * </Menu>
+ *
+ */
+CSInterface.prototype.setPanelFlyoutMenu = function(menu)
+{
+    if ("string" != typeof menu)
+    {
+        return;	
+    }
+
+	window.__adobe_cep__.invokeSync("setPanelFlyoutMenu", menu);
+};
+
+/**
+ * Updates a menu item in the extension window's flyout menu, by setting the enabled
+ * and selection status.
+ *  
+ * Since 5.2.0
+ *
+ * @param menuItemLabel	The menu item label. 
+ * @param enabled		True to enable the item, false to disable it (gray it out).
+ * @param checked		True to select the item, false to deselect it.
+ *
+ * @return false when the host application does not support this functionality (HostCapabilities.EXTENDED_PANEL_MENU is false). 
+ *         Fails silently if menu label is invalid.
+ *
+ * @see HostCapabilities.EXTENDED_PANEL_MENU
+ */
+CSInterface.prototype.updatePanelMenuItem = function(menuItemLabel, enabled, checked)
+{
+	var ret = false;
+	if (this.getHostCapabilities().EXTENDED_PANEL_MENU) 
+	{
+		var itemStatus = new MenuItemStatus(menuItemLabel, enabled, checked);
+		ret = window.__adobe_cep__.invokeSync("updatePanelMenuItem", JSON.stringify(itemStatus));
+	}
+	return ret;
+};
+
+
+/**
+ * Set context menu by XML string.
+ *
+ * Since 5.2.0
+ *
+ * There are a number of conventions used to communicate what type of menu item to create and how it should be handled.
+ * - an item without menu ID or menu name is disabled and is not shown.
+ * - if the item name is "---" (three hyphens) then it is treated as a separator. The menu ID in this case will always be NULL.
+ * - Checkable attribute takes precedence over Checked attribute.
+ * - a PNG icon. For optimal display results please supply a 16 x 16px icon as larger dimensions will increase the size of the menu item. 
+     The Chrome extension contextMenus API was taken as a reference. 
+     https://developer.chrome.com/extensions/contextMenus
+ * - the items with icons and checkable items cannot coexist on the same menu level. The former take precedences over the latter.
+ *
+ * @param menu      A XML string which describes menu structure.
+ * @param callback  The callback function which is called when a menu item is clicked. The only parameter is the returned ID of clicked menu item.
+ *
+ * @description An example menu XML:
+ * <Menu>
+ *   <MenuItem Id="menuItemId1" Label="TestExample1" Enabled="true" Checkable="true" Checked="false" Icon="./image/small_16X16.png"/>
+ *   <MenuItem Id="menuItemId2" Label="TestExample2">
+ *     <MenuItem Id="menuItemId2-1" Label="TestExample2-1" >
+ *       <MenuItem Id="menuItemId2-1-1" Label="TestExample2-1-1" Enabled="false" Checkable="true" Checked="true"/>
+ *     </MenuItem>
+ *     <MenuItem Id="menuItemId2-2" Label="TestExample2-2" Enabled="true" Checkable="true" Checked="true"/>
+ *   </MenuItem>
+ *   <MenuItem Label="---" />
+ *   <MenuItem Id="menuItemId3" Label="TestExample3" Enabled="false" Checkable="true" Checked="false"/>
+ * </Menu>
+ */
+CSInterface.prototype.setContextMenu = function(menu, callback)
+{
+    if ("string" != typeof menu)
+    {
+        return;
+    }
+    
+	window.__adobe_cep__.invokeAsync("setContextMenu", menu, callback);
+};
+
+/**
+ * Set context menu by JSON string.
+ *
+ * Since 6.0.0
+ *
+ * There are a number of conventions used to communicate what type of menu item to create and how it should be handled.
+ * - an item without menu ID or menu name is disabled and is not shown.
+ * - if the item label is "---" (three hyphens) then it is treated as a separator. The menu ID in this case will always be NULL.
+ * - Checkable attribute takes precedence over Checked attribute.
+ * - a PNG icon. For optimal display results please supply a 16 x 16px icon as larger dimensions will increase the size of the menu item. 
+     The Chrome extension contextMenus API was taken as a reference.
+ * - the items with icons and checkable items cannot coexist on the same menu level. The former take precedences over the latter.
+     https://developer.chrome.com/extensions/contextMenus
+ *
+ * @param menu      A JSON string which describes menu structure.
+ * @param callback  The callback function which is called when a menu item is clicked. The only parameter is the returned ID of clicked menu item.
+ *
+ * @description An example menu JSON:
+ *
+ * { 
+ *      "menu": [
+ *          {
+ *              "id": "menuItemId1",
+ *              "label": "testExample1",
+ *              "enabled": true,
+ *              "checkable": true,
+ *              "checked": false,
+ *              "icon": "./image/small_16X16.png"
+ *          },
+ *          {
+ *              "id": "menuItemId2",
+ *              "label": "testExample2",
+ *              "menu": [
+ *                  {
+ *                      "id": "menuItemId2-1",
+ *                      "label": "testExample2-1",
+ *                      "menu": [
+ *                          {
+ *                              "id": "menuItemId2-1-1",
+ *                              "label": "testExample2-1-1",
+ *                              "enabled": false,
+ *                              "checkable": true,
+ *                              "checked": true
+ *                          }
+ *                      ]
+ *                  },
+ *                  {
+ *                      "id": "menuItemId2-2",
+ *                      "label": "testExample2-2",
+ *                      "enabled": true,
+ *                      "checkable": true,
+ *                      "checked": true
+ *                  }
+ *              ]
+ *          },
+ *          {
+ *              "label": "---"
+ *          },
+ *          {
+ *              "id": "menuItemId3",
+ *              "label": "testExample3",
+ *              "enabled": false,
+ *              "checkable": true,
+ *              "checked": false
+ *          }
+ *      ]
+ *  }
+ *
+ */
+CSInterface.prototype.setContextMenuByJSON = function(menu, callback)
+{
+    if ("string" != typeof menu)
+    {
+        return;	
+    }
+    
+	window.__adobe_cep__.invokeAsync("setContextMenuByJSON", menu, callback);
+};
+
+/**
+ * Updates a context menu item by setting the enabled and selection status.
+ *  
+ * Since 5.2.0
+ *
+ * @param menuItemID	The menu item ID. 
+ * @param enabled		True to enable the item, false to disable it (gray it out).
+ * @param checked		True to select the item, false to deselect it.
+ */
+CSInterface.prototype.updateContextMenuItem = function(menuItemID, enabled, checked)
+{
+	var itemStatus = new ContextMenuItemStatus(menuItemID, enabled, checked);
+	ret = window.__adobe_cep__.invokeSync("updateContextMenuItem", JSON.stringify(itemStatus));
+};
+
+/**
+ * Get the visibility status of an extension window. 
+ *  
+ * Since 6.0.0
+ *
+ * @return true if the extension window is visible; false if the extension window is hidden.
+ */
+CSInterface.prototype.isWindowVisible = function()
+{
+	return window.__adobe_cep__.invokeSync("isWindowVisible", "");
+};
+
+/**
+ * Resize extension's content to the specified dimensions.
+ * 1. Works with modal and modeless extensions in all Adobe products.
+ * 2. Extension's manifest min/max size constraints apply and take precedence. 
+ * 3. For panel extensions
+ *    3.1 This works in all Adobe products except:
+ *        * Premiere Pro
+ *        * Prelude
+ *        * After Effects
+ *    3.2 When the panel is in certain states (especially when being docked),
+ *        it will not change to the desired dimensions even when the
+ *        specified size satisfies min/max constraints.
+ *
+ * Since 6.0.0
+ *
+ * @param width  The new width
+ * @param height The new height
+ */
+CSInterface.prototype.resizeContent = function(width, height)
+{
+    window.__adobe_cep__.resizeContent(width, height);
+};
+
+/**
+ * Register the invalid certificate callback for an extension. 
+ * This callback will be triggered when the extension tries to access the web site that contains the invalid certificate on the main frame.
+ * But if the extension does not call this function and tries to access the web site containing the invalid certificate, a default error page will be shown.
+ *  
+ * Since 6.1.0
+ *
+ * @param callback the callback function
+ */
+CSInterface.prototype.registerInvalidCertificateCallback = function(callback)
+{
+    return window.__adobe_cep__.registerInvalidCertificateCallback(callback);
+};
+
+/**
+ * Register an interest in some key events to prevent them from being sent to the host application.
+ *
+ * This function works with modeless extensions and panel extensions. 
+ * Generally all the key events will be sent to the host application for these two extensions if the current focused element
+ * is not text input or dropdown,
+ * If you want to intercept some key events and want them to be handled in the extension, please call this function
+ * in advance to prevent them being sent to the host application.
+ *
+ * Since 6.1.0
+ *
+ * @param keyEventsInterest      A JSON string describing those key events you are interested in. A null object or
+                                 an empty string will lead to removing the interest
+ *
+ * This JSON string should be an array, each object has following keys:
+ *
+ * keyCode:  [Required] represents an OS system dependent virtual key code identifying
+ *           the unmodified value of the pressed key.
+ * ctrlKey:  [optional] a Boolean that indicates if the control key was pressed (true) or not (false) when the event occurred.
+ * altKey:   [optional] a Boolean that indicates if the alt key was pressed (true) or not (false) when the event occurred.
+ * shiftKey: [optional] a Boolean that indicates if the shift key was pressed (true) or not (false) when the event occurred.
+ * metaKey:  [optional] (Mac Only) a Boolean that indicates if the Meta key was pressed (true) or not (false) when the event occurred.
+ *                      On Macintosh keyboards, this is the command key. To detect Windows key on Windows, please use keyCode instead.
+ * An example JSON string:
+ *
+ * [
+ *     {
+ *         "keyCode": 48
+ *     },
+ *     {
+ *         "keyCode": 123,
+ *         "ctrlKey": true
+ *     },
+ *     {
+ *         "keyCode": 123,
+ *         "ctrlKey": true,
+ *         "metaKey": true
+ *     }
+ * ]
+ *
+ */
+CSInterface.prototype.registerKeyEventsInterest = function(keyEventsInterest)
+{
+    return window.__adobe_cep__.registerKeyEventsInterest(keyEventsInterest);
+};
+
+/**
+ * Set the title of the extension window. 
+ * This function works with modal and modeless extensions in all Adobe products, and panel extensions in Photoshop, InDesign, InCopy, Illustrator, Flash Pro and Dreamweaver.
+ *
+ * Since 6.1.0
+ *
+ * @param title The window title.
+ */
+CSInterface.prototype.setWindowTitle = function(title)
+{
+    window.__adobe_cep__.invokeSync("setWindowTitle", title);
+};
+
+/**
+ * Get the title of the extension window. 
+ * This function works with modal and modeless extensions in all Adobe products, and panel extensions in Photoshop, InDesign, InCopy, Illustrator, Flash Pro and Dreamweaver.
+ *
+ * Since 6.1.0
+ *
+ * @return The window title.
+ */
+CSInterface.prototype.getWindowTitle = function()
+{
+    return window.__adobe_cep__.invokeSync("getWindowTitle", "");
 };
