@@ -186,16 +186,21 @@ $._PPP_={
 	},
 
 	searchForBinWithName : function (nameToFind) {
-		var numItemsAtRoot	= app.project.rootItem.children.numItems;
-		var foundBin 		= 0;
-
-		for (var i = 0; (numItemsAtRoot > 0) && (i < numItemsAtRoot) && (foundBin === 0); i++) {
-			var currentItem = app.project.rootItem.children[i];
-			if ((currentItem) && currentItem.name == nameToFind) {
-				foundBin = currentItem;
-			}
-		}
-		return foundBin;
+		// deep-search a folder by name in project
+		var deepSearchBin = function(inFolder) {
+		  if (inFolder && inFolder.name === nameToFind && inFolder.type === 2) {
+		    return inFolder;
+		  } else {
+		    for (var i = 0; i < inFolder.children.numItems; i++) {
+		      if (inFolder.children[i] && inFolder.children[i].type === 2) {
+		        var foundBin = deepSearchBin(inFolder.children[i]);
+		        if (foundBin) return foundBin;
+		      }
+		    }
+		  }
+		  return undefined;
+		};
+		return deepSearchBin(app.project.rootItem);
 	},
 
 	importFiles : function() {
