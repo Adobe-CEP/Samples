@@ -1,10 +1,10 @@
 <h1> ShowFolder Sample </h1>
 
-A basic Sample Extension for Adobe Bridge CC 2018 and later. It creates a Panel in Bridge(Embedded Type Extension) in Bridge.
+A panel based Sample Extension for Adobe Bridge CC 2018 and later. It creates a Panel (Embedded Type Extension) in Bridge.
 
-The Extension provides a button for Choosing a Folder. Clicking on the Button opens a File Select dialog and allows the user to choose a folder. The contents of the folder are displayed in the Bridge Content panel.
+The extension UI displays a button. Clicking on the Button opens a Folder Select dialog, and on selecting the folder, the contents of this folder are shown in the Bridge's Content panel.
 
-It makes use of CEP APIS to display the File select Dialog and ExtendScript to show the selected folder contents in Bridge. 
+This extension makes use of CEP APIs to display the Folder select Dialog and ExtendScript to show the selected folder contents in Bridge. 
 
 
 To use this sample, 
@@ -15,6 +15,6 @@ To use this sample,
 
 3) Launch Adobe Bridge CC 8.0 and later.
 
-4) Go to Window -> Extension and Click on the ShowFolder Extension from the list of extensions.
+4) Go to Window Menu-> Extensions -> ShowFolder menu item.
  
  Refer to <a href="https://github.com/Adobe-CEP/CEP-Resources/tree/master/Documentation/Bridge"> Bridge CEP documentation </a> for detailed guidelines for using CEP Extensions in Bridge.
