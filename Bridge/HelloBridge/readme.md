@@ -12,6 +12,6 @@ To use this sample,
 
 3) Launch Adobe Bridge CC 8.0 and later.
 
-4) Go to Window -> Extension and Click on the HelloBridge Extension.
+4) Go to Window Menu-> Extensions -> HelloBridge menu item.
  
  Refer to <a href="https://github.com/Adobe-CEP/CEP-Resources/tree/master/Documentation/Bridge"> Bridge CEP documentation </a> for detailed guidelines for using CEP Extensions in Bridge.
