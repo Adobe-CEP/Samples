@@ -46,3 +46,5 @@ Remember that although these extensions are initially setup for a particular ver
 | [UI Showcase](https://github.com/Adobe-CEP/Samples/tree/master/UI_Showcase) | Demonstrates using common JavaScript UI frameworks in CEP extensions. | CEP 4, CC version of Photoshop, Illustrator, or Premiere Pro |
 | [Websockets](https://github.com/Adobe-CEP/Samples/tree/master/Websocket) | Demonstrates using web sockets in an extension. | CEP 4, CC version of Photoshop, Illustrator, or Premiere Pro |
 | [XMP Sample Panel](https://github.com/Adobe-CEP/Samples/tree/master/XmpSamplePanel) | Demonstrates manipulating XMP metadata in CC2014 hosts. | CEP 4, CC version of Premiere Pro, InDesign, Photoshop, or Illustrator |
+| [HelloBridge](https://github.com/Adobe-CEP/Samples/tree/master/Bridge/HelloBridge) | A Hello World extension for Adobe Bridge. | CEP 8, CC version of Adobe Bridge 8.0 |
+| [ShowFolder](https://github.com/Adobe-CEP/Samples/tree/master/Bridge/ShowFolder) | Demonstrates use of CEP APIs and ExtendScript in Adobe Bridge | CEP 8, CC version of Adobe Bridge 8.0 |
