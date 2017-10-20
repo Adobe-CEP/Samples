@@ -19,5 +19,35 @@ $._ext = {
 				$._ext.evalFile(jsxFile);
 			}
 		}
+	},
+	// entry-point function to call scripts more easily & reliably
+	callScript: function(dataStr) {
+		try {
+			var dataObj = JSON.parse(decodeURIComponent(dataStr));
+			if (
+				!dataObj ||
+				!dataObj.namespace ||
+				!dataObj.scriptName ||
+				!dataObj.args
+			) {
+				throw new Error('Did not provide all needed info to callScript!');
+			}
+			// call the specified jsx-function
+			var result = $[dataObj.namespace][dataObj.scriptName].apply(
+				null,
+				dataObj.args
+			);
+			// build the payload-object to return
+			var payload = {
+				err: 0,
+				result: result
+			};
+			return encodeURIComponent(JSON.stringify(payload));
+		} catch (err) {
+			var payload = {
+				err: err
+			};
+			return encodeURIComponent(JSON.stringify(payload));
+		}
 	}
 };

@@ -536,6 +536,78 @@ CSInterface.prototype.evalScript = function(script, callback)
 };
 
 /**
+* An improved version of evalScript with extra magic.
+* Will also escape special characters for more reliable execution.
+*
+* Any further arguments will be send to the script.
+*
+* Needs the "callScript" JSX function, which should be added
+* in the setup.jsx file (the one defined as 'ScriptPath' in your manifest)
+*
+* @param  {String} namespace The namespace of the script.
+* @param  {String} scriptName The name of the script.
+* @param  {Func} successCb The callback which will be invoked using the script's
+*                           return value as only argument.
+* @param  {Func} errorCb The callback which will be invoked if the script threw
+an error. Receives the error object as only argument.
+*/
+CSInterface.prototype.callScript = function(namespace, scriptName, successCb, errorCb /*, args */)
+{
+  try {
+    if (typeof namespace !== 'string') {
+      throw new Error(
+        'Incorrect namespace-type provided to callScript: ' + typeof namespace
+      );
+    }
+    if (typeof scriptName !== 'string') {
+      throw new Error(
+        'Incorrect scriptName-type provided to callScript: ' + typeof scriptName
+      );
+    }
+
+    // define our interal callback that handles the payload
+    var cb = function(payloadStr) {
+      payloadStr = decodeURIComponent(payloadStr);
+      try {
+        var payload = JSON.parse(payloadStr);
+        if (payload.err) {
+          throw payload.err;
+        }
+        if (typeof successCb === 'function') {
+          successCb(payload.result);
+        }
+      } catch (err) {
+        if (typeof errorCb === 'function') {
+          errorCb(err);
+        }
+      }
+    };
+
+    // create our payload structure
+    var args = [].slice.call(arguments).splice(4);
+    var payloadObj = {
+      namespace: namespace,
+      scriptName: scriptName,
+      args: args
+    };
+
+    // call our helper jsx-function defined in ./PProPanel.jsx
+    var pre = "$._ext.callScript(\"";
+    var post = "\")";
+    var wholeScript =
+      pre +
+      encodeURIComponent(JSON.stringify(payloadObj)) +
+      post;
+
+    window.__adobe_cep__.evalScript(wholeScript, cb);
+  } catch (err) {
+    if (typeof errorCb === 'function') {
+      errorCb(err);
+    }
+  }
+};
+
+/**
  * Retrieves the unique identifier of the application.
  * in which the extension is currently running.
  *
