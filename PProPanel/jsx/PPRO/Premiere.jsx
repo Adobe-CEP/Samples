@@ -1,5 +1,25 @@
 $._PPP_={
 
+	createDeepFolderStructure : function(foldersArray, maxDepth) {
+		if (typeof foldersArray !== 'object' || foldersArray.length <= 0) {
+			throw new Error('No valid folders array was provided!');
+		}
+
+		// if the first folder already exists, throw error
+		for (var i = 0; i < app.project.rootItem.children.numItems; i++) {
+			var curChild = app.project.rootItem.children[i];
+			if (curChild.type === ProjectItemType.BIN && curChild.name === foldersArray[0]) {
+				throw new Error('Folder with name "' + curChild.name + '" already exists!');
+			}
+		}
+
+		// create the deep folder structure
+		var currentBin = app.project.rootItem.createBin(foldersArray[0]);
+		for (var i = 1; i < foldersArray.length && i < maxDepth; i++) {
+			currentBin = currentBin.createBin(foldersArray[i]);
+		}
+	},
+
 	getVersionInfo : function() {
 		return 'PPro ' + app.version + 'x' + app.build;
 	},

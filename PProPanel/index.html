@@ -327,6 +327,7 @@
 		<button class="controlBg textStyle" id="btn_PPRO29" onClick="evalScript('$._PPP_.onPlayWithKeyframes()')">Manipulate keyframes</button>
 		<button class="controlBg textStyle" id="btn_PPRO30" onClick="evalScript('$._PPP_.insertOrAppend()')">insert or append to active sequence</button>
 		<button class="controlBg textStyle" id="btn_PPRO31" onClick="evalScript('$._PPP_.overWrite()')">overwrite at CTI</button>
+		<button class="controlBg textStyle" id="btn_PPRO32" onClick="createFolders()">Create Deep Folder-Structure (using callScript)</button>
 		<div id="dragthing" draggable="true" ondragstart="dragHandler(event)">drag me</div>
 	</body>
 	<script>
@@ -345,6 +346,24 @@
 			    csInterface.openURLInDefaultBrowser(path);		
 		    }
 	  	};
+
+		var createFolders = function() {
+		  var csInterface = new CSInterface();
+		  csInterface.callScript(
+		    '_PPP_',
+		    'createDeepFolderStructure',
+		    function(res) {
+		      console.log('Successfully created folders!');
+		    },
+		    function(err) {
+		      console.error(err);
+					alert(err.message);
+		    },
+				['This', 'is', 'a', 'very', 'deep', 'folder', 'structure'], // 1st argument
+				6 // 2nd argument
+		  );
+		};
+
 	</script>
 	</script>
 </html>
