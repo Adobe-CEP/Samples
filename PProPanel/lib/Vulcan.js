@@ -11,7 +11,7 @@
 *
 **************************************************************************************************/
 
-/** Vulcan - v6.1.0 */
+/** Vulcan - v8.0.0 */
 
 /**
  * @class Vulcan
@@ -53,7 +53,7 @@ Vulcan.prototype.getTargetSpecifiers = function()
  */
 Vulcan.prototype.launchApp = function(targetSpecifier, focus, cmdLine)
 {
-    if(!requiredParamsValid(targetSpecifier) )
+    if(!requiredParamsValid(targetSpecifier))
     {
         return false;
     }
@@ -61,7 +61,7 @@ Vulcan.prototype.launchApp = function(targetSpecifier, focus, cmdLine)
 	var params = {};
 	params.targetSpecifier = targetSpecifier;
 	params.focus = focus ? "true" : "false";
-	params.cmdLine = (cmdLine === undefined || cmdLine === null) ? "" : cmdLine;
+	params.cmdLine = requiredParamsValid(cmdLine) ? cmdLine : "";
 	
 	return JSON.parse(window.__adobe_cep__.invokeSync("vulcanLaunchApp", JSON.stringify(params))).result;
 };
@@ -82,7 +82,7 @@ Vulcan.prototype.launchApp = function(targetSpecifier, focus, cmdLine)
  */
 Vulcan.prototype.isAppRunning = function(targetSpecifier)
 {
-    if(!requiredParamsValid(targetSpecifier) )
+    if(!requiredParamsValid(targetSpecifier))
     {
         return false;
     }
@@ -109,7 +109,7 @@ Vulcan.prototype.isAppRunning = function(targetSpecifier)
  */
 Vulcan.prototype.isAppInstalled = function(targetSpecifier)
 {
-    if(!requiredParamsValid(targetSpecifier) )
+    if(!requiredParamsValid(targetSpecifier))
     {
         return false;
     }
@@ -136,7 +136,7 @@ Vulcan.prototype.isAppInstalled = function(targetSpecifier)
  */
 Vulcan.prototype.getAppPath = function(targetSpecifier)
 {
-    if(!requiredParamsValid(targetSpecifier) )
+    if(!requiredParamsValid(targetSpecifier))
     {
         return "";
     }
@@ -152,9 +152,9 @@ Vulcan.prototype.getAppPath = function(targetSpecifier)
  *
  * @param type            The message type.
  * @param callback        The callback function that handles the message.
- *            Takes one argument, the message object.
+ *                        Takes one argument, the message object.
  * @param obj             Optional, the object containing the callback method, if any.
- *            Default is null.
+ *                        Default is null.
  */
 Vulcan.prototype.addMessageListener = function(type, callback, obj)
 {
@@ -174,9 +174,9 @@ Vulcan.prototype.addMessageListener = function(type, callback, obj)
  *
  * @param type            The message type.
  * @param callback        The callback function that was registered.
- *            Takes one argument, the message object.
+ *                        Takes one argument, the message object.
  * @param obj             Optional, the object containing the callback method, if any.
- *            Default is null.
+ *                        Default is null.
  */
 Vulcan.prototype.removeMessageListener = function(type, callback, obj)
 {
@@ -229,6 +229,37 @@ Vulcan.prototype.getPayload = function(vulcanMessage)
 	return message.getPayload();
 };
 
+/**
+ * Gets all available endpoints of the running Vulcan-enabled applications.
+ *
+ * Since 7.0.0
+ *
+ * @return                The array of all available endpoints.
+ * An example endpoint string:
+ * <endPoint>
+ *   <appId>PHXS</appId>
+ *   <appVersion>16.1.0</appVersion>
+ * </endPoint>
+ */
+Vulcan.prototype.getEndPoints = function()
+{
+	var params = {};
+	return JSON.parse(window.__adobe_cep__.invokeSync("vulcanGetEndPoints", JSON.stringify(params)));
+};
+
+/**
+ * Gets the endpoint for itself.
+ *
+ * Since 7.0.0
+ *
+ * @return                The endpoint string for itself.
+ */
+Vulcan.prototype.getSelfEndPoint = function()
+{
+	var params = {};
+	return window.__adobe_cep__.invokeSync("vulcanGetSelfEndPoint", JSON.stringify(params));
+};
+
 /** Singleton instance of Vulcan **/
 var VulcanInterface = new Vulcan();
 
@@ -237,21 +268,24 @@ var VulcanInterface = new Vulcan();
 /**
  * @class VulcanMessage
  * Message type for sending messages between host applications.
- * A message of this type can be broadcast to all running
- * Vulcan-enabled apps.
+ * A message of this type can be sent to the designated destination
+ * when appId and appVersion are provided and valid. Otherwise,
+ * the message is broadcast to all running Vulcan-enabled applications.
  *
  * To send a message between extensions running within one
  * application, use the <code>CSEvent</code> type in CSInterface.js.
  *
  * @param type            The message type.
+ * @param appId           The peer appId.
+ * @param appVersion      The peer appVersion.
  *
  */
-function VulcanMessage(type)
+function VulcanMessage(type, appId, appVersion)
 {
     this.type = type;
     this.scope = VulcanMessage.SCOPE_SUITE;
-    this.appId = VulcanMessage.DEFAULT_APP_ID;
-	this.appVersion = VulcanMessage.DEFAULT_APP_VERSION;
+    this.appId = requiredParamsValid(appId) ? appId : VulcanMessage.DEFAULT_APP_ID;
+	this.appVersion = requiredParamsValid(appVersion) ? appVersion : VulcanMessage.DEFAULT_APP_VERSION;
     this.data = VulcanMessage.DEFAULT_DATA;
 }
 
@@ -278,11 +312,11 @@ VulcanMessage.prototype.initialize = function(message)
 };
 
 /**
- * Retrieve the message data.
+ * Retrieves the message data.
  *
  * @return A data string in XML format.
  */
-VulcanMessage.prototype.xmlData = function ()
+VulcanMessage.prototype.xmlData = function()
 {
     if(this.data === undefined)
     {
@@ -317,7 +351,6 @@ VulcanMessage.prototype.getPayload = function()
     {
         return cep.encoding.convertion.b64_to_utf8(str);
     }
-
     return null;
 };
 
@@ -364,8 +397,8 @@ String.format = function(src)
  * @param xmlStr    The XML string.
  * @param key       The name of the tag.
  *
- * @return          The content of the tag, or the empty string if such tag is found
- *          or the tag has no content.
+ * @return          The content of the tag, or the empty string
+ *                  if such tag is not found or the tag has no content.
  */
 function GetValueByKey(xmlStr, key)
 {
@@ -397,7 +430,7 @@ function GetValueByKey(xmlStr, key)
  */
 function requiredParamsValid()
 {
-    for(var i = 0; i< arguments.length; i++)
+    for(var i = 0; i < arguments.length; i++)
     {
         var argument = arguments[i];
         if(argument === undefined || argument === null)
@@ -405,7 +438,6 @@ function requiredParamsValid()
             return false;
         }
     }
-
     return true;
 }
 

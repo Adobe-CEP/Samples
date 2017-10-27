@@ -2,24 +2,13 @@
 function onLoaded() {
 	var csInterface = new CSInterface();
 	var appName = csInterface.hostEnvironment.appName;
+	var appVersion = csInterface.hostEnvironment.appVersion;
+	
 	document.getElementById("dragthing").style.backgroundColor = "lightblue";
 	var caps = csInterface.getHostCapabilities();
-	if(appName != "FLPR"){
-		loadJSX();
-	}
-
-	var appNames = ["PPRO"];
-
-	for (var i = 0; i < appNames.length; i++) {
-		var name = appNames[i];
-		if (appName.indexOf(name) >= 0) {
-			var btn = document.getElementById("btn_" + name);
-			if (btn){
-				btn.disabled = false;
-			}
-		}
-	}
-
+	
+	loadJSX();
+	
 	updateThemeWithAppSkinInfo(csInterface.hostEnvironment.appSkinInfo);
 
 	// Update the color of the panel when the theme color of the product changed.
@@ -32,7 +21,6 @@ function onLoaded() {
 	csInterface.addEventListener("com.adobe.csxs.events.WorkspaceChanged", function(event){
 		alert("New workspace selected: " + event.data);
 	});
-
 
 	// register for messages
 	VulcanInterface.addMessageListener(
@@ -48,6 +36,8 @@ function onLoaded() {
 	csInterface.evalScript('$._PPP_.getSequenceProxySetting()', myGetProxyFunction);
 	csInterface.evalScript('$._PPP_.keepPanelLoaded()');
 	csInterface.evalScript('$._PPP_.disableImportWorkspaceWithProjects()');
+	// register project item selected callback
+	csInterface.evalScript('$._PPP_.registerProjectPanelChangedFxn()');
 }
 
 function dragHandler(event){
@@ -55,7 +45,7 @@ function dragHandler(event){
 	var extPath 	= csInterface.getSystemPath(SystemPath.EXTENSION);
 	var OSVersion	= csInterface.getOSInformation();
 	
-	if (extPath != null){
+	if (extPath !== null){
 		extPath = extPath + '/payloads/test.jpg';
 		if (OSVersion.indexOf("Windows") >=0){
 			var sep = '\\\\';
@@ -75,8 +65,8 @@ function myCallBackFunction (data) {
 
 function myUserNameFunction (data) {
 	// Updates username with whatever ExtendScript function returns.
-	var user_name			= document.getElementById("username");
-	user_name.innerHTML		= data;
+	var user_name		= document.getElementById("username");
+	user_name.innerHTML	= data;
 }
 
 function myGetProxyFunction (data) {
@@ -195,9 +185,7 @@ function toHex(color, delta) {
 
 	var hex = "";
 	if (color) {
-		with (color) {
-			hex = computeValue(red, delta) + computeValue(green, delta) + computeValue(blue, delta);
-		};
+		hex = computeValue(color.red, delta) + computeValue(color.green, delta) + computeValue(color.blue, delta);
 	}
 	return "#" + hex;
 }
@@ -211,7 +199,7 @@ function onAppThemeColorChanged(event) {
 } 
 
 /**
-* Load JSX file into the scripting context of the product. All the jsx files in
+* Load JSX file into the scripting context of the product. All the jsx files in 
 * folder [ExtensionRoot]/jsx & [ExtensionRoot]/jsx/[AppName] will be loaded.
 */
 function loadJSX() {
