@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ExtensionManifest Version="4.0" ExtensionBundleId="com.adobe.PProPanel" ExtensionBundleVersion="11.1"
+ExtensionBundleName="Premiere Pro sample panel" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<ExtensionList>
+		<Extension Id="com.adobe.PProPanel" Version="10.3.0" />
+	</ExtensionList>
+	<ExecutionEnvironment>
+		<HostList>
+			<Host Name="PPRO" Version="9.0" />
+		</HostList>
+		<LocaleList>
+			<Locale Code="All" />
+		</LocaleList>
+		<RequiredRuntimeList>
+			<RequiredRuntime Name="CSXS" Version="6.0" />
+		</RequiredRuntimeList>
+	</ExecutionEnvironment>
+
+	<DispatchInfoList>
+		<Extension Id="com.adobe.PProPanel">
+			<DispatchInfo >
+				<Resources>
+					<MainPath>./dom_html/src/index.html</MainPath>
+					<ScriptPath>./dom_app/src/PProPanel.jsx</ScriptPath>
+				</Resources>
+				<Lifecycle>
+					<AutoVisible>true</AutoVisible>
+				</Lifecycle>
+				<CEFCommandLine>
+					<Parameter>--allow-file-access</Parameter>
+					<Parameter>--allow-file-access-from-files</Parameter>
+					<Parameter>--enable-nodejs</Parameter>
+				</CEFCommandLine>
+				<UI>
+					<Type>Panel</Type>
+					<Menu>PProPanel (SDK sample panel)</Menu>
+					<Geometry>
+						<Size>
+							<Height>300</Height>
+							<Width>180</Width>
+						</Size>
+					</Geometry>
+				</UI>
+			</DispatchInfo>
+		</Extension>
+	</DispatchInfoList>
+</ExtensionManifest>

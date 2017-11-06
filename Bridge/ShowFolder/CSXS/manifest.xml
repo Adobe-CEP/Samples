@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ExtensionManifest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ExtensionBundleId="com.adobe.ShowFolder" ExtensionBundleVersion="1.0" Version="7.0"> <!-- MAJOR-VERSION-UPDATE-MARKER -->
+    <ExtensionList>
+        <Extension Id="ShowFolder" Version="1.0"/>  
+			
+    </ExtensionList>
+    <ExecutionEnvironment>
+        <HostList>
+            <Host Name="KBRG" Version="[8.0,99.9]" />
+        </HostList>
+        <LocaleList>
+            <Locale Code="All"/>
+        </LocaleList>
+        <RequiredRuntimeList>
+            <RequiredRuntime Name="CSXS" Version="7.0"/> <!-- MAJOR-VERSION-UPDATE-MARKER -->
+        </RequiredRuntimeList>
+    </ExecutionEnvironment>
+    <DispatchInfoList>      
+        <Extension Id="ShowFolder">
+            <DispatchInfo>
+                <Resources>
+                    <MainPath>./html/index.html</MainPath>							
+                </Resources>
+                <Lifecycle>
+                    <AutoVisible>true</AutoVisible>
+                </Lifecycle>
+                <UI>
+                    <Type>Embedded</Type>
+                    <Menu>Show Folder</Menu>
+                    <Geometry>
+                        <Size>
+                            <Height>580</Height>
+                            <Width>1020</Width>
+                        </Size>
+                        <MaxSize>
+                            <Height>800</Height>
+                            <Width>1200</Width>
+                        </MaxSize>
+                        <MinSize>
+                            <Height>400</Height>
+                            <Width>600</Width>
+                        </MinSize>
+                    </Geometry>
+                </UI>
+            </DispatchInfo>
+        </Extension>
+   
+    </DispatchInfoList>
+</ExtensionManifest>

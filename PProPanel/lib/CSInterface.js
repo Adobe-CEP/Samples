@@ -11,7 +11,7 @@
 *
 **************************************************************************************************/
 
-/** CSInterface - v6.1.0 */
+/** CSInterface - v8.0.0 */
 
 /**
  * Stores constants for the window types supported by the CSXS infrastructure.
@@ -323,7 +323,7 @@ function UIColor(type, antialiasLevel, color)
  * @param panelBackgroundColor      The background color of the extension panel.
  * @param appBarBackgroundColorSRGB     The application bar background color, as sRGB.
  * @param panelBackgroundColorSRGB      The background color of the extension panel, as sRGB.
- * @param systemHighlightColor          The operating-system highlight color, as sRGB.
+ * @param systemHighlightColor          The highlight color of the extension panel, if provided by the host application. Otherwise, the operating-system highlight color. 
  *
  * @return AppSkinInfo object.
  */
@@ -477,7 +477,7 @@ function CSInterface()
 CSInterface.THEME_COLOR_CHANGED_EVENT = "com.adobe.csxs.events.ThemeColorChanged";
 
 /** The host environment data object. */
-CSInterface.prototype.hostEnvironment = JSON.parse(window.__adobe_cep__.getHostEnvironment());
+CSInterface.prototype.hostEnvironment = window.__adobe_cep__ ? JSON.parse(window.__adobe_cep__.getHostEnvironment()) : null;
 
 /** Retrieves information about the host environment in which the
  *  extension is currently running.
@@ -762,7 +762,7 @@ CSInterface.prototype.getOSInformation = function()
                 winVersion = "Windows 10";
             }
 
-            if (userAgent.indexOf("WOW64") > -1)
+            if (userAgent.indexOf("WOW64") > -1 || userAgent.indexOf("Win64") > -1)
             {
                 winBit = " 64-bit";
             }

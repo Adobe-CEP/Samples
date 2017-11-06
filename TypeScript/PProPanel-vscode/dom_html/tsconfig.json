@@ -1,0 +1,16 @@
+{
+    "compilerOptions": {
+        "allowJs": true,            // Allows JavaScript files to be compiled.
+        "lib": [                    // Default should be fine but may need fine-tuning. This works for our use case.
+            "dom",
+            "es5",
+            "es2015.promise"
+        ],
+        "strict": true,             // Shorthand for the following four options:
+        // "noImplicitAny": true,
+        // "noImplicitThis": true,
+        // "alwaysStrict": true,
+        // "strictNullChecks": true,
+        "target": "es5"             // Chrome 41 supports much of ECMAScript 5. However, this may need to be changed to ES3 to be safe.
+    }
+}
