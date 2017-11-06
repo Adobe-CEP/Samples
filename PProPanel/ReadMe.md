@@ -90,7 +90,7 @@ defaults write /Users/<username>/Library/Preferences/com.adobe.CSXS.7.plist Play
 
 On Windows, make the following registry entry (a new Key, of type String):
 
-![](payloads/csxs7.png)
+![](payloads/Registry.png)
 
 ## 3. Put panel into extensions directory
 
