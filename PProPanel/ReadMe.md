@@ -1,7 +1,7 @@
 # Create panels for Premiere Pro
 ==============================
 
-*Last updated April 24 2017, current released version = Premiere Pro 11.1.*
+*Last updated November 16 2017, current released version = Premiere Pro 12.0.*
 
 ## What's Possible?
 
@@ -9,47 +9,45 @@ For the impatient, here are links to working sample code, showing what's
 possible for Premiere Pro panels:
 
 -   [Browse and import files from the
-    OS](https://github.com/Adobe-CEP/Samples/blob/master/PProPanel/jsx/Premiere.jsx#L215)
+    OS](https://github.com/Adobe-CEP/Samples/blob/master/PProPanel/jsx/PPRO/Premiere.jsx#L260)
 
 -   [Get and set all XMP
-    metadata](https://github.com/Adobe-CEP/Samples/blob/master/PProPanel/jsx/Premiere.jsx#L508)
+    metadata](https://github.com/Adobe-CEP/Samples/blob/master/PProPanel/jsx/PPRO/Premiere.jsx#L601)
     (including Premiere Pro's [private project
-    metadata](https://github.com/Adobe-CEP/Samples/blob/master/PProPanel/jsx/Premiere.jsx#L659))
+    metadata](https://github.com/Adobe-CEP/Samples/blob/master/PProPanel/jsx/PPRO/Premiere.jsx#L765))
     for any projectItem.
 
 -   [Import files via drag and
-    drop](https://github.com/Adobe-CEP/Samples/blob/master/PProPanel/ext.js#L47),
+    drop](https://github.com/Adobe-CEP/Samples/blob/master/PProPanel/ext.js#L43),
     from a panel into Premiere Pro (Project panel, or directly onto a timeline).
 
 -   [Preview any supported media in the Source
-    monitor](https://github.com/Adobe-CEP/Samples/blob/master/PProPanel/jsx/Premiere.jsx#L190)
+    monitor](https://github.com/Adobe-CEP/Samples/blob/master/PProPanel/jsx/PPRO/Premiere.jsx#L231)
     (without requiring that it be imported into the project).
 
 -   Access and modify [clip
-    markers](https://github.com/Adobe-CEP/Samples/blob/master/PProPanel/jsx/Premiere.jsx#L629),
+    markers](https://github.com/Adobe-CEP/Samples/blob/master/PProPanel/jsx/PPRO/Premiere.jsx#L727),
     and [sequence
-    markers](https://github.com/Adobe-CEP/Samples/blob/master/PProPanel/jsx/Premiere.jsx#L121).
+    markers](https://github.com/Adobe-CEP/Samples/blob/master/PProPanel/jsx/PPRO/Premiere.jsx#L163).
 
 -   [Create new
-    sequences](https://github.com/Adobe-CEP/Samples/blob/master/PProPanel/jsx/Premiere.jsx#L349)
+    sequences](https://github.com/Adobe-CEP/Samples/blob/master/PProPanel/jsx/PPRO/Premiere.jsx#L428)
     either from a preset, or with user interaction.
 
 -   [Open different
-    projects](https://github.com/Adobe-CEP/Samples/blob/master/PProPanel/jsx/Premiere.jsx#L288)
-    (while the panel remains active; this behavior is new as of Premiere Pro
-    10.3).
+    projects](https://github.com/Adobe-CEP/Samples/blob/master/PProPanel/jsx/PPRO/Premiere.jsx#L370)
 
 -   [Render a
-    sequence](https://github.com/Adobe-CEP/Samples/blob/master/PProPanel/jsx/Premiere.jsx#L412)
+    sequence](https://github.com/Adobe-CEP/Samples/blob/master/PProPanel/jsx/PPRO/Premiere.jsx#L492)
     to any destination(s), based on any preset(s), including ftp upload, and
     controlling metadata output.
 
 -   Export either a [given
-    sequence](https://github.com/Adobe-CEP/Samples/blob/master/PProPanel/jsx/Premiere.jsx#L164)
+    sequence](https://github.com/Adobe-CEP/Samples/blob/master/PProPanel/jsx/PPRO/Premiere.jsx#L127)
     or the entire project as Final Cut Pro 7 XML.
 
 -   [Save as a new
-    project](https://github.com/Adobe-CEP/Samples/blob/master/PProPanel/jsx/Premiere.jsx#L487),
+    project](https://github.com/Adobe-CEP/Samples/blob/master/PProPanel/jsx/PPRO/Premiere.jsx#L581),
     or create a new project containing only a specified sequence and its
     constituent media.
 
