@@ -3,6 +3,8 @@ function onLoaded() {
 	var csInterface = new CSInterface();
 	var appName = csInterface.hostEnvironment.appName;
 	var appVersion = csInterface.hostEnvironment.appVersion;
+
+	var APIVersion = csInterface.getCurrentApiVersion();
 	
 	document.getElementById("dragthing").style.backgroundColor = "lightblue";
 	var caps = csInterface.getHostCapabilities();
@@ -36,8 +38,11 @@ function onLoaded() {
 	csInterface.evalScript('$._PPP_.getSequenceProxySetting()', myGetProxyFunction);
 	csInterface.evalScript('$._PPP_.keepPanelLoaded()');
 	csInterface.evalScript('$._PPP_.disableImportWorkspaceWithProjects()');
-	// register project item selected callback
+	
 	csInterface.evalScript('$._PPP_.registerProjectPanelChangedFxn()');
+	csInterface.evalScript('$._PPP_.registerItemAddedFxn()');
+	csInterface.evalScript('$._PPP_.registerProjectChangedFxn()');
+	csInterface.evalScript('$._PPP_.confirmPProHostVersion()');
 }
 
 function dragHandler(event){
@@ -86,9 +91,8 @@ function mySetProxyFunction (data) {
 }
 	 
 function myVersionInfoFunction (data) {
-	var boilerPlate		= "PPro Version: ";
 	var v_string		= document.getElementById("version_string");
-	v_string.innerHTML	= boilerPlate + data;
+	v_string.innerHTML	= data;
 }
 
 /**

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+	<macromedia-extension name="PProPanel" requires-restart="true" version="1.0">
+		<author name="Bruce Bullis"/>
+		<description/>
+			<license-agreement/>
+			<products>
+				<product maxversion="99.0" name="Premiere" primary="true" version="10.0"/>
+			</products>
+		<description>
+			<![CDATA[This is a .zxp bundle for the Premiere Pro PProPanel sample. In addition to the panel itself, this bundle installs: an XMP schema, a readme file, an Adobe Media Encoder preset, and the platform-appropriate Export Controller sample plug-in.]]>
+		</description>
+		<files>
+			<file destination="" file-type="CSXS" products="Premiere" source="/MXI/PProPanel.zxp"/>
+			<file destination="$adobecommon/XMP/Custom File Info Panels/4.0/custom" file-type="ordinary" products="Premiere" source="/MXI/PProPanel_schema.xml"/>
+			<file destination="$adobecommon/Installed_by_PProPanel" file-type="ordinary" products="Premiere" source="/MXI/PProPanel.txt"/>
+			<file destination="$userlibraryfolder/Preferences/Adobe/Common/AME/12.0/presets" file-type="ordinary" products="Premiere" source="/MXI/PProPanel.epr"/>
+			<file destination="$mediacoreplug-ins" file-type="plugin" products="Premiere" platform="mac" source="/MXI/Mac/ExportController.bundle/"/>
+			<file destination="$mediacoreplug-ins" file-type="plugin" products="Premiere" platform="win" source="/MXI/Win/ExportController.prm"/>
+		</files>
+	</macromedia-extension>
