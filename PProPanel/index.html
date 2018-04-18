@@ -134,31 +134,6 @@
 					}
 				});
 
-				$("#installationhelp").on("click", function(e){
-					e.preventDefault(); 
-					var csInterface = new CSInterface();
-					var OSVersion   = csInterface.getOSInformation();
-					var path    	= csInterface.getSystemPath(SystemPath.EXTENSION);
-
-					if (OSVersion){
-						// The path always comes back with '/' path separators. Windows needs '\\'.
-						if (OSVersion.indexOf("Windows") >=0){
-							var sep = '\\\\';
-							path = path.replace(/\//g, sep);
-						} else {
-							var sep = '/';
-						}
-
-						// Build a String to pass the path to the script.
-						// (Sounds more complicated than it is.)
-
-						path = "file://" + path;
-						path = path + sep + 'payloads' + sep + 'Installing_Extensions.html';
-						
-						csInterface.openURLInDefaultBrowser(path);
-					}
-				});
-
 				$("#renderusingdefaultpreset").on("click", function(e){
 					e.preventDefault(); 
 					var csInterface = new CSInterface();
@@ -301,7 +276,6 @@
 			<button class="controlBg textStyle" id="btn_PPRO7"  onClick="evalScript('$._PPP_.pokeAnywhere()')">Poke Anywhere</button>
 			<button id="checkforums">Check SDK Forums</button>
 			<button id="readAPIdocs">Read API documentation</button>
-			<button id="installationhelp">Explain how extensions get installed</button>
 			<button id="copypresets">Copy Presets</button>
 			<button class="controlBg textStyle" id="btn_PPRO18" onClick="evalScript('$._PPP_.getnumAEProjectItems()')">AE project item count</button>
 			<button class="controlBg textStyle" id="btn_PPRO49" onClick="evalScript('$._PPP_.turnOffStartDialog()')">Turn off Start dialog</button>

@@ -363,9 +363,9 @@ $._PPP_={
 														false); 				// allow multiple?
 				
 				if (replacementMedia) {
-					var suppressWarnings	= true;
+					var forceAttempt	= true;
 					firstProjectItem.name	= replacementMedia.name + ", formerly known as " + firstProjectItem.name;
-					firstProjectItem.changeMediaPath(replacementMedia.fsName, suppressWarnings);  // new in 12.1
+					firstProjectItem.changeMediaPath(replacementMedia.fsName, forceAttempt);  // 'forceAttempt' param new in 12.1
 					replacementMedia.close(); 
 				} 
 			} else {
