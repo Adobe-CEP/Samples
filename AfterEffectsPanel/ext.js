@@ -161,8 +161,8 @@ function myTextHandlerFunction(event){
  */
 function loadJSX() {
     var csInterface = new CSInterface();
-    var extensionRoot = csInterface.getSystemPath(SystemPath.EXTENSION) + "/jsx/";
-    csInterface.evalScript('$._ext.evalFiles("' + extensionRoot + '")');
+	var extensionRoot = csInterface.getSystemPath(SystemPath.EXTENSION) + "/jsx/";
+	csInterface.evalScript('$._ext.evalFiles("' + extensionRoot + '")');
 }
 
 function evalScript(script, callback) {
