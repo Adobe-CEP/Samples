@@ -14,7 +14,7 @@ From CEP 7.0, we post official CEP sample extensions under CEP-Resources, along 
 * [CEP 7.0 Sample Extensions](https://github.com/Adobe-CEP/CEP-Resources/tree/master/CEP_7.x/Samples)
 
 
-##Before running the samples
+## Before running the samples
 The samples provided are unsigned so this will cause the the signature check (built into CEP when first running an extension) to fail. To bypass the signature check, please refer to the documentation:
 
 * [CEP 7.0](https://github.com/Adobe-CEP/CEP-Resources/blob/master/CEP_7.x/CEP_7.0_HTML_Extension_Cookbook.pdf)
