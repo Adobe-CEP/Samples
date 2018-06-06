@@ -1,27 +1,20 @@
-/*  
- * ADOBE SYSTEMS INCORPORATED
- * Copyright 2014 Adobe Systems Incorporated
- * All Rights Reserved.
- * 
- * NOTICE:  Adobe permits you to use, modify, and distribute this file in accordance with the 
- * terms of the Adobe license agreement accompanying it.  If you have received this file from a 
- * source other than Adobe, then your use, modification, or distribution of it requires the prior 
- * written permission of Adobe.
- * 
- * ---
- * 
- * This file contains ExtendScript utilities that interact with the application DOM
- * and provide access to the current document and its associated metadata. 
- * 
- * The client-facing XMP service is available as $.XMP in the global ExtendScript 
- * scope. It exposes a convenient and uniform interface for simple XMP properties
- * and abstracts from application-specific implementation details.
- * 
- * If you need your panel to support an application other than Photoshop, Illustrator,
- * InDesign or Premiere you'd have to implement a new delegate object for it. In most
- * cases the XMPScriptAdapter may be a good starting point to customize for your needs.
- * 
- */
+/*************************************************************************
+* ADOBE CONFIDENTIAL
+* ___________________
+*
+* Copyright 2014 Adobe
+* All Rights Reserved.
+*
+* NOTICE: All information contained herein is, and remains
+* the property of Adobe and its suppliers, if any. The intellectual
+* and technical concepts contained herein are proprietary to Adobe
+* and its suppliers and are protected by all applicable intellectual
+* property laws, including trade secret and copyright laws.
+* Dissemination of this information or reproduction of this material
+* is strictly forbidden unless prior written permission is obtained
+* from Adobe.
+**************************************************************************/
+
 
 if(typeof($)=='undefined')
 	$={};
