@@ -35,11 +35,11 @@ def recursive_traversal(dir,  oldcopyright, copyright):
         if (os.path.isdir(fullfn)):
             recursive_traversal(fullfn, oldcopyright, copyright)
         else:
-            if (fullfn.endswith(".jsx")):
+            if (fullfn.endswith(".js")):
                 update_source(fullfn, oldcopyright, copyright)
 
 
 
 cright = file("license.txt","r+").read()
-recursive_traversal(".", None, cright)
+recursive_traversal("./AnywhereExamplePanel/js", None, cright)
 exit()

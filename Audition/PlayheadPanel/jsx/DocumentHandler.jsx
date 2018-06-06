@@ -48,7 +48,7 @@ function getDocumentInfo()
 //
 function setCTI(percent)
 {
-	if (app.activeDocument && app.activeDocument.reflect.name = 'WaveDocument')
+	if (app.activeDocument && app.activeDocument.reflect.name === 'WaveDocument')
 	{
 		app.activeDocument.playheadPosition = app.activeDocument.duration * percent;
 	}

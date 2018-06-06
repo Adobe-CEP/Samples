@@ -14,6 +14,7 @@
 * is strictly forbidden unless prior written permission is obtained
 * from Adobe.
 **************************************************************************/
+
 $._AA_={
 
 	getVersionInfo : function() {
@@ -88,7 +89,7 @@ $._AA_={
                          currentChild = currentItem.children[j+1];
                          if (currentChild){
                              return $._AA_.searchBinForProjItemByName(0, currentChild, nameToFind);
-                         } else 
+                         }  
                      }
 				}
 			}
