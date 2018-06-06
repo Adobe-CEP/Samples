@@ -1,1 +1,33 @@
-﻿/************************************************************************** * ADOBE SYSTEMS INCORPORATED*  Copyright 2016 Adobe Systems Incorporated*  All Rights Reserved.* * NOTICE:  Adobe permits you to use, modify, and distribute this file in * accordance with the terms of the Adobe license agreement accompanying it.  * If you have received this file from a source other than Adobe, then your * use, modification, or distribution of it requires the prior written * permission of Adobe.* **************************************************************************/var externalObjectName = "PlugPlugExternalObject";var lib = new ExternalObject( "lib:" + externalObjectName );function dispatchTransportEvent(eventObj){	//	// send event to CEP	//    var event = new CSXSEvent();    event.type = eventObj.type;    event.data = eventObj.type;    event.dispatch();        return eventObj.type;}
+﻿/*************************************************************************
+* ADOBE CONFIDENTIAL
+* ___________________
+*
+* Copyright 2014 Adobe
+* All Rights Reserved.
+*
+* NOTICE: All information contained herein is, and remains
+* the property of Adobe and its suppliers, if any. The intellectual
+* and technical concepts contained herein are proprietary to Adobe
+* and its suppliers and are protected by all applicable intellectual
+* property laws, including trade secret and copyright laws.
+* Dissemination of this information or reproduction of this material
+* is strictly forbidden unless prior written permission is obtained
+* from Adobe.
+**************************************************************************/
+
+
+var externalObjectName = "PlugPlugExternalObject";
+var lib = new ExternalObject( "lib:" + externalObjectName );
+
+function dispatchTransportEvent(eventObj)
+{
+	//
+	// send event to CEP
+	//
+    var event = new CSXSEvent();
+    event.type = eventObj.type;
+    event.data = eventObj.type;
+    event.dispatch();
+    
+    return eventObj.type;
+}

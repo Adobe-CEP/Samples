@@ -1,0 +1,16 @@
+{
+  "name": "cep_html_test_extension",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "mongodb": "^1.4.40",
+    "mysql": "^2.0.0-alpha9"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
