@@ -44,6 +44,10 @@
             <DispatchInfo>
                 <Resources>
                     <MainPath>./html/index.html</MainPath>
+                    <CEFCommandLine>
+                        <Parameter>--enable-nodejs</Parameter>
+                        <Parameter>--mixed-context</Parameter>
+                    </CEFCommandLine>
                 </Resources>
                 <Lifecycle>
                     <AutoVisible>false</AutoVisible>
