@@ -12,7 +12,7 @@
 * written permission of Adobe. 
 **************************************************************************/
 
-var FLICKR_API_KEY = 'insert_api_key_here';
+var FLICKR_API_KEY = 'YOUR_API_KEY';
 var MAX_IMAGE_RESULTS = 30;
 
 var lightSpinner = new Spinner({ lines: 30, length: 0, width: 2, radius: 8, corners: 0, color: '#fff', speed: 2, trail: 100, hwaccel: true, className: 'spinner', zIndex: 2e9 }).spin();
@@ -90,10 +90,10 @@ var setupMasonry = function() {
 }
 
 var searchFlickr = function(query) {
-  var url = 'http://api.flickr.com/services/rest/?method=flickr.photos.search';
+  var url = 'https://api.flickr.com/services/rest/?method=flickr.photos.search';
   url += '&api_key=' + FLICKR_API_KEY;
   url += '&text=' + query;
-  url += '&license=1%2C2%2C3%2C4%2C5%2C6%2C7&format=json&jsoncallback=?';
+  url += '&license=1%2C2%2C3%2C4%2C5%2C6%2C7&format=json&nojsoncallback=1';
 
   $('.loading-spinner').show();
   $('.container').hide();
