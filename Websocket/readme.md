@@ -1,6 +1,12 @@
 ## What this sample is
+This sample extension shows you how to use websocket to communicate between a standalone server and a panel. The `server` folder inside of this sample is a standalone node.js server that needs to be run separately from the panel.
 
-## How to use this sample
+## What Adobe host apps this sample supports
+- Photoshop
+- Illustrator
+- Premier Pro
+
+## How to get started
 ### Server npm install
 ```
 cd server && npm install
