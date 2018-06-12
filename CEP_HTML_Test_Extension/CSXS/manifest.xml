@@ -35,7 +35,6 @@
             <Host Name="AEFT" Version="13.0"/>
             <Host Name="DEMO" Version="1.0"/>
             <Host Name="AUDT" Version="8.0"/>
-            <Host Name="LTRM" Version="7.0"/>
             <Host Name="MUSE" Version="2015"/>
         </HostList>
         <LocaleList>
