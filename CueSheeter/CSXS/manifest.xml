@@ -22,7 +22,7 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	</ExtensionList>
 	<ExecutionEnvironment>
 		<HostList>
-			<Host Name="PPRO" Version="[8.0,9.9]" />
+			<Host Name="PPRO" Version="[8.0,99.0]" />
 		</HostList>
 		<LocaleList>
 			<Locale Code="All" />
