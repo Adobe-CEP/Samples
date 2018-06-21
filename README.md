@@ -47,7 +47,7 @@ Remember that although these extensions are initially setup for a particular ver
 | [Trello](https://github.com/Adobe-CEP/Samples/tree/master/Trello) | Demonstrates loading an external website in an iFrame. | Photoshop, Illustrator, Premiere Pro |
 | [TypeScript](https://github.com/Adobe-CEP/Samples/tree/master/Trello) | Demonstrates multiple sample codes thata demonstrate what's possible to build inside Premiere Pro. | Premiere Pro |
 | [UI Showcase](https://github.com/Adobe-CEP/Samples/tree/master/UI_Showcase) | Demonstrates using common JavaScript UI frameworks in CEP extensions. | Photoshop, Illustrator, Premiere Pro |
-| [WebGL with three.js (Contributed by Davide Deraedt)](https://github.com/Adobe-CEP/Samples/tree/master/webgl_threejs) | (description TBD) | Photoshop |
+| [WebGL with three.js (Contributed by Davide Deraedt)](https://github.com/Adobe-CEP/Samples/tree/master/webgl_threejs) | Demonstrates WebGL with `three.js` | Photoshop |
 | [Websockets](https://github.com/Adobe-CEP/Samples/tree/master/Websocket) | Demonstrates using web sockets in an extension. | Photoshop, Illustrator, Premiere Pro |
 | [XMP Sample Panel](https://github.com/Adobe-CEP/Samples/tree/master/XmpSamplePanel) | Demonstrates manipulating XMP metadata in CC2014 hosts. | Premiere Pro, InDesign, Photoshop, Illustrator |
 
