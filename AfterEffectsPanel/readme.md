@@ -1,4 +1,5 @@
 ## What this sample is
+This sample demonstrates how to invoke After Effects ExtendScript, from within a CEP panel.
 
 ## What Adobe host apps this sample supports
 - After Effects

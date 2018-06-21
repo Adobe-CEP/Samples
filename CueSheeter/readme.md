@@ -1,4 +1,5 @@
 ## What this sample is
+This sample demonstrates extracting usage data from sequences; useful for documenting usage and clearance rights.
 
 ## What Adobe host apps this sample supports
 - Premier Pro

@@ -4,7 +4,7 @@ The extension is split in 3 main components that communicate between each other 
 
 ### Components
 - SimpleDissolve.jsx
-	- Installs the menu item "Simple Dissolve Extension…" under the Filter menu (Not the Window )
+	- Installs the menu item "Simple Dissolve Extension…" under the Filter menu (Not the Window)
 	- When the the menu item "Simple Dissolve Extension…" is executed
 		- Creates a preview of the current document that will be used by the "SimpleDissolveUI" extension dialog.
 		- Send a CEP event to display the SimpleDissolveUI (extension) dialog
@@ -22,10 +22,10 @@ SimpleDissolveApplyFilter is an invisible extension that applies the filter to t
 ## How to get started
 ### Move both `.jsx` files from `SimpleDissolveUI` folder to the Photoshop's Scripts folder
 ```
-cd SimpleDissolveUI
+cd SimpleDissolveScripts
 ```
 ```
-cp -r SimpleDissolveScripts /Applications/Adobe Photoshop CC 2018/Presets/Scripts
+cp * /Applications/Adobe\ Photoshop\ CC\ 2018/Presets/Scripts
 ```
 ### Move both extensions (`SimpleDissolveUI` and `SimpleDissolveApplyFilter`) to the extension folder
 Note that the extension folder location is different depending on which OS you use. See [CEP Cookbook](https://github.com/Adobe-CEP/CEP-Resources/blob/master/CEP_8.x/Documentation/CEP%208.0%20HTML%20Extension%20Cookbook.md#extension-folders) for more details.

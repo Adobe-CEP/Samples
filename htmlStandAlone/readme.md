@@ -1,5 +1,5 @@
 ## What this sample is
-If you are trying to build an extension for Adobe Prelude, this sample will be helpful. Inside the sample, there are multiple standalone html pages that include demos for different ExtendScript functionalities you can use in Prelude.
+This sample demonstrates Prelude's message-driven Javascript APIs. Inside the sample, there are multiple standalone html pages that include demos for different ExtendScript functionalities you can use in Prelude.
 
 ## What Adobe host apps this sample supports
 - Prelude
