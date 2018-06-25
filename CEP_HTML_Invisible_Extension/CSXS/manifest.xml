@@ -30,7 +30,6 @@
             <Host Name="PPRO" Version="8.0"/>
             <Host Name="PRLD" Version="3.0"/>
             <Host Name="AEFT" Version="13.0"/>
-            <Host Name="DEMO" Version="1.0"/>
         </HostList>
         <LocaleList>
             <Locale Code="All"/>

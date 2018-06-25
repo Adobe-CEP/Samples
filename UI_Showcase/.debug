@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ExtensionList>
-    <Extension Id="com.adobe.cep.exchange.extension.panel">
+    <Extension Id="com.adobe.ui.extension">
         <HostList>
             <Host Name="PHXS" Port="8000"/>
-            <Host Name="IDSN" Port="8001"/>
-            <Host Name="ILST" Port="8002"/>
+			<Host Name="ILST" Port="8001"/>
+            <Host Name="PPRO" Port="8002"/>
         </HostList>
     </Extension>
 </ExtensionList>

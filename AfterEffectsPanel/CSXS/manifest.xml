@@ -19,10 +19,9 @@
     <ExtensionList>
 		<Extension Id="com.MyCompany.GenerateComplexComp.extension1" Version="1.0" />
 	</ExtensionList>
-    
 	<ExecutionEnvironment>
 		<HostList>
-			<Host Name="AEFT" Version="[13.0,15.9]" />
+			<Host Name="AEFT" Version="[13.0,99.9]" />
 		</HostList>
 		<LocaleList>
 			<Locale Code="All" />

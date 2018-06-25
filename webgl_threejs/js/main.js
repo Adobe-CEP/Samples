@@ -20,11 +20,6 @@
 
     var csInterface = new CSInterface();
     
-    // Opens the chrome developer tools in host app
-    function showDevTools() {
-        window.__adobe_cep__.showDevTools();
-    }
-    
     // Reloads extension panel
     function reloadPanel() {
         location.reload();
@@ -48,7 +43,6 @@
                 
         themeManager.init();
         
-        $("#btn_debug").click(showDevTools);
         $("#btn_reload").click(reloadPanel);
         
         $("#btn_test").click(function () {

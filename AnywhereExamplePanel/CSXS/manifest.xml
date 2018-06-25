@@ -22,8 +22,8 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	</ExtensionList>
 	<ExecutionEnvironment>
 		<HostList>
-			<Host Name="PPRO" Version="[8.0,20.0]" />
-            <Host Name="PRLD" Version="[3.2,20.0]" />
+			<Host Name="PPRO" Version="[8.0,99.0]" />
+            <Host Name="PRLD" Version="[3.2,99.0]" />
 		</HostList>
 		<LocaleList>
 			<Locale Code="All" />

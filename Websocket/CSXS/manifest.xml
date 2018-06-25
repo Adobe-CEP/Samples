@@ -14,13 +14,16 @@
 * written permission of Adobe. 
 **************************************************************************/
 -->
-<ExtensionManifest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ExtensionBundleId="com.adobe.twitter" ExtensionBundleName="Twitter" ExtensionBundleVersion="1.0.0" Version="4.0">
+<ExtensionManifest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ExtensionBundleId="com.adobe.websocket" ExtensionBundleName="Websockets" ExtensionBundleVersion="1.0.0" Version="4.0">
 	<ExtensionList>
-		<Extension Id="com.adobe.twitter.extension" Version="1.0"/>
+		<Extension Id="com.adobe.websocket.extension" Version="1.0"/>
 	</ExtensionList>
 	<ExecutionEnvironment>
 		<HostList>
-			<Host Name="ILST" Version="[17.0,17.9]" />
+			<Host Name="ILST" Version="17.0" />
+			<Host Name="PHSP" Version="14.0"/>
+			<Host Name="PHXS" Version="14.0"/>
+			<Host Name="PPRO" Version="7.0" />
 		</HostList>
 		<LocaleList>
 			<Locale Code="All"/>
@@ -30,22 +33,21 @@
 		</RequiredRuntimeList>
 	</ExecutionEnvironment>
 	<DispatchInfoList>
-		<Extension Id="com.adobe.twitter.extension">
+		<Extension Id="com.adobe.websocket.extension">
 			<DispatchInfo>
 				<Resources>
 					<MainPath>./index.html</MainPath>
-					<ScriptPath>./host/ai.js</ScriptPath>
 				</Resources>
 				<Lifecycle>
 					<AutoVisible>true</AutoVisible>
 				</Lifecycle>
 				<UI>
 					<Type>Panel</Type>
-					<Menu>Twitter</Menu>
+					<Menu>Websocket</Menu>
 					<Geometry>
 						<Size>
-							<Height>90</Height>
-							<Width>400</Width>
+							<Height>200</Height>
+							<Width>200</Width>
 						</Size>
 					</Geometry>
 				</UI>
