@@ -18,7 +18,6 @@ Onload of the host application, you will see 4 extensions added:
 - Prelude
 - After Effects
 - Audition
-- Muse
 
 ## How to get started
 ### Move `CEP_HTML_Test_Extension` folder to the extension folder
