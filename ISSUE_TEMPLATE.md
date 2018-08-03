@@ -1,5 +1,7 @@
 # Submit an issue
 
+Note: issues submitted on this repo should be related to the samples contained within. If you have a general question about CEP, ExtendScript, or related topics, please visit the [Extensions development forum](https://forums.adobe.com/community/creative_cloud/add-ons/extensions).
+
 ## Topic
 
 This is an issue regarding:
