@@ -14,7 +14,7 @@
 * written permission of Adobe. 
 **************************************************************************/
 -->	
-<ExtensionManifest Version="4.0" ExtensionBundleId="com.adobe.PProPanel" ExtensionBundleVersion="11.1"
+<ExtensionManifest Version="5.0" ExtensionBundleId="com.adobe.PProPanel" ExtensionBundleVersion="11.1"
 ExtensionBundleName="Premiere Pro sample panel" 
 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<ExtensionList>
@@ -38,15 +38,14 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 				<Resources>
 					<MainPath>./index.html</MainPath>
 					<ScriptPath>./PProPanel.jsx</ScriptPath>
+					<CEFCommandLine>
+						<Parameter>--allow-file-access</Parameter>
+						<Parameter>--allow-file-access-from-files</Parameter>
+					</CEFCommandLine>
 				</Resources>
 				<Lifecycle>
 					<AutoVisible>true</AutoVisible>
 				</Lifecycle>
-				<CEFCommandLine>
-					<Parameter>--allow-file-access</Parameter>
-					<Parameter>--allow-file-access-from-files</Parameter>
-					<Parameter>--enable-nodejs</Parameter>
-				</CEFCommandLine>
 				<UI>
 					<Type>Panel</Type>
 					<Menu>PProPanel (SDK sample panel)</Menu>
