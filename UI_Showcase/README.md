@@ -1,5 +1,5 @@
 ## What this sample is
-This sample demonstrates using common JavaScript UI frameworks in CEP extensions.
+This sample demonstrates how to add UI elements in the panel by using common JavaScript UI frameworks in CEP extensions.
 
 ## What Adobe host apps this sample supports
 - Photoshop

@@ -46,9 +46,13 @@
 					<Menu>UI</Menu>
 					<Geometry>
 						<Size>
-							<Height>500</Height>
-							<Width>250</Width>
-						</Size>
+                            <Height>550</Height>
+                            <Width>500</Width>
+                        </Size>
+                        <MinSize>
+                            <Height>550</Height>
+                            <Width>500</Width>
+                        </MinSize>
 					</Geometry>
 				</UI>
 			</DispatchInfo>
