@@ -4,6 +4,7 @@
         <HostList>
             <Host Name="IDSN" Port="8000"/>
 			<Host Name="ILST" Port="8010"/>
+            <Host Name="PHXS" Port="8001"/>
         </HostList>
     </Extension>
 </ExtensionList>
