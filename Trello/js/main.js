@@ -12,7 +12,6 @@
 * written permission of Adobe. 
 **************************************************************************/
 
-function onLoaded()
-{
+function onLoaded() {
 	window.location.href = "https://www.trello.com";
 }
