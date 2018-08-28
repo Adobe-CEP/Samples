@@ -20,13 +20,13 @@ $.level = 2;
 
 $._ext = (function () {
     'use strict';
-    
+
     var ext = {};
-    
+
     ext.sayHello = function () {
         alert("hello world");
     };
-    
+
     //Evaluate a file and catch the exception.
     ext.evalFile = function (path) {
         try {
@@ -35,7 +35,7 @@ $._ext = (function () {
             alert("Exception:" + e);
         }
     };
-    
+
     // Evaluate all the files in the given folder 
     ext.evalFiles = function (jsxFolderPath) {
         var folder = new Folder(jsxFolderPath);
@@ -48,7 +48,7 @@ $._ext = (function () {
             }
         }
     };
-    
+
     return ext;
-    
+
 }());
