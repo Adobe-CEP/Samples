@@ -25,7 +25,7 @@
  * 	<input type="text" data-property="author" data-namespace="http://purl.org/dc/elements/1.1/" />
  * 
  */
-$(document).ready(function() {
+$(document).ready(function () {
 
 	/**
 	 * Helper function that extracts all mandatory information needed to reference an XMP property 
@@ -33,7 +33,7 @@ $(document).ready(function() {
 	 */
 	function getFieldInfo(elem, callback) {
 		var $elem = $(elem);
-		
+
 		var field = {
 			elem: $elem,
 			property: $elem.attr('data-property'),
@@ -41,82 +41,82 @@ $(document).ready(function() {
 			value: $elem.val()
 		};
 
-		if($elem.attr('data-namespace-ref')) {
-			
+		if ($elem.attr('data-namespace-ref')) {
+
 			// if namespace-ref is present it needs to be resolved to a valid URI via XMPBridge.
-			XMPBridge.toNamespaceURI($elem.attr('data-namespace-ref'), function(namespaceURI) {
+			XMPBridge.toNamespaceURI($elem.attr('data-namespace-ref'), function (namespaceURI) {
 				field.namespace = namespaceURI;
 				callback(field);
 			});
-			
+
 		} else {
 			callback(field);
 		}
 	}
-	
+
 	/**
 	 * We're registering our data binding code for execution once the XMPBridge is ready to use.
 	 * This prevents us to access any property before the ExtendScript library is initialized 
 	 * properly.
 	 */
-	XMPBridge.onInit(function(state) {
-		
-		if(!state.isError) {
-			
+	XMPBridge.onInit(function (state) {
+
+		if (!state.isError) {
+
 			$("#main").show();
-		
-			// retrieve a descriptive name for the active target itemÊ(e.g. active document, footage, ...)
-			XMPBridge.getTargetName(function(targetName) {
-				
+
+			// retrieve a descriptive name for the active target itemï¿½(e.g. active document, footage, ...)
+			XMPBridge.getTargetName(function (targetName) {
+
 				// stored in an arbitrary HTML element with id="target-name"
 				$('#target-name').html(targetName);
-			
+
 			});
-			
+
 			// all html nodes having a "data-property" attribute will be considered for data binding.
 			var $fields = $("[data-property]");
-			
-			$fields.each(function() {
-				getFieldInfo(this, function(field) {
 
-					XMPBridge.read(field.namespace, field.property, function(value) {
-			
+			$fields.each(function () {
+				getFieldInfo(this, function (field) {
+
+					XMPBridge.read(field.namespace, field.property, function (value) {
+
 						// form fields are initialized with the property's current value ...
-						if(field.elem.is('input,textarea')) {
+						if (field.elem.is('input,textarea')) {
 							field.elem.val(value);
-							
-						// ... for other elements we just replace the node's inner HTML.
+
+							// ... for other elements we just replace the node's inner HTML.
 						} else {
 							field.elem.html(value);
 						}
-						
+
 					});
-					
+
 				});
 			});
-		
+
 			// if the form is being submitted, we update the metadata and write it back into the application DOM.
-			$("form").submit(function() {
-				
+			$("form").submit(function () {
+
 				// only process writeable property fields.
-				$fields.filter('input,textarea').each(function() {
-					getFieldInfo(this, function(field) {
+				$fields.filter('input,textarea').each(function () {
+					getFieldInfo(this, function (field) {
 						XMPBridge.write(field.namespace, field.property, field.value);
 					});
 				});
-				
+
 				// commit the changes so they're reflected by the application DOM.
 				XMPBridge.commit();
-				
+
 			});
-			
-	    } else {
-	    	
-	    	$("#message .text").html(state.statusMessage).parent().fadeIn();
-	    	
-	    }	
-	    
+
+		} else {
+
+			$("#message .text").html(state.statusMessage).parent().fadeIn();
+
+		}
+
 	});
-	
-    
+
+
 });

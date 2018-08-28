@@ -1,5 +1,5 @@
 ## What this sample is
-This sample demonstrates manipulating XMP metadata in CC2014 hosts.
+This sample demonstrates manipulating XMP metadata. Using this sample, you can change some metadata of the opened file, such as description. .
 
 ## What Adobe host apps this sample supports
 - Photoshop
