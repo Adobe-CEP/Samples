@@ -13,5 +13,5 @@
 **************************************************************************/
 
 function onLoaded() {
-	window.location.href = "https://www.trello.com";
+	window.location.href = "https://www.adobe.com";
 }
