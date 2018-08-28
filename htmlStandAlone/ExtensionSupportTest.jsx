@@ -13,13 +13,13 @@
 **************************************************************************/
 $._ext = {
     //Evaluate a file and catch the exception.
-    evalFile : function(path) {
+    evalFile: function (path) {
         try {
             $.evalFile(path);
-        } catch (e) {alert("Exception:" + e);}
+        } catch (e) { alert("Exception:" + e); }
     },
     // Evaluate all the files in the given folder 
-    evalFiles: function(jsxFolderPath) {
+    evalFiles: function (jsxFolderPath) {
         var folder = new Folder(jsxFolderPath);
         if (folder.exists) {
             var jsxFiles = folder.getFiles("*.jsx");

@@ -12,7 +12,6 @@
 * written permission of Adobe. 
 **************************************************************************/
 
-function openDialog(inSrc)
-{
+function openDialog(inSrc) {
 	$("#testDialog").attr('src', inSrc);
 }
