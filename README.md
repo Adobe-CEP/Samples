@@ -3,30 +3,18 @@ Sample extensions
 
 These samples demonstrate techniques for building an extension with an HTML5 UI and behavior implemented in JavaScript. 
 
-Many of the samples are still in development. Some of them use CEP 4 and the CC2013 version of the host app, others are for CEP 5 and CC2014 version of the host application and others are kept up to date with the latest release e.g. CC2015. You can check the manifest.xml file for each extension's compatibility requirements. To run the extensions you must have the host application installed. Requirements for each sample are listed below.
-
-
-* Supported host apps for CEP 6 include the CC2015 versions of: Dreamweaver, Flash Pro, InDesign, Illustrator, InCopy, Photoshop, Premiere Pro, Prelude, and After Effects. 
-* Supported host apps for CEP 5 include the CC2014 versions of: Dreamweaver, Flash Pro, InDesign, Illustrator, InCopy, Photoshop, Premiere Pro, Prelude, and After Effects. 
-* Support for the Flash/ActionScript extension model is deprecated in all apps, and has been removed from Photoshop CC2014, Flash CC2015 and Dreamweaver CC2015.
+The samples are kept up to date with the latest CC2018 host applications. Make sue to check the `manifest.xml` file for each sample's compatible host applications. To run the extensions you must have the compatible host application installed. Requirements for each sample are listed below.
  
-From CEP 7.0, we post official CEP sample extensions under CEP-Resources, along with documentation, API, etc.
-* [CEP 7.0 Sample Extensions](https://github.com/Adobe-CEP/CEP-Resources/tree/master/CEP_7.x/Samples)
+Each version of CEP comes with its own samples in the [CEP-Resources repository](https://github.com/Adobe-CEP/CEP-Resources). Under each version name, `CEP_N.x`, you will find the version specific samples, which cover broad use cases and topics of CEP. 
 
+Unlike the samples in the [CEP-Resources repository](https://github.com/Adobe-CEP/CEP-Resources), samples in this repository cover specific use cases covering a wide variety of topics. Check out the next section to choose a sample that suits your need.
 
-##Before running the samples
-The samples provided are unsigned so this will cause the the signature check (built into CEP when first running an extension) to fail. To bypass the signature check, please refer to the documentation:
+## Before running the samples
+1. The samples provided are unsigned. This will cause the signature check (built into CEP when first running an extension) to fail. To bypass the signature check, please refer to [the documentation](https://github.com/Adobe-CEP/CEP-Resources/blob/master/CEP_8.x/Documentation/CEP%208.0%20HTML%20Extension%20Cookbook.md#debugging-unsigned-extensions).
+1. Although these extensions are initially setup for a particular version of CEP, you can adjust the product version targeted by modifying the range inside the `HostList` element of the `CSXS/manifest.xml` file.
+1. Some folders have a nested folder strucutre. For those samples, you will need to extract sub-directories into [the extension folder](https://github.com/Adobe-CEP/CEP-Resources/blob/master/CEP_8.x/Documentation/CEP%208.0%20HTML%20Extension%20Cookbook.md#extension-folders). 
 
-* [CEP 7.0](https://github.com/Adobe-CEP/CEP-Resources/blob/master/CEP_7.x/CEP_7.0_HTML_Extension_Cookbook.pdf)
-* [CEP 6.1](https://github.com/Adobe-CEP/CEP-Resources/blob/master/CEP_6.x/CEP_6.1_HTML_Extension_Cookbook.pdf)
-* [CEP 6](https://github.com/Adobe-CEP/CEP-Resources/wiki/CEP-6-HTML-Extension-Cookbook-for-CC-2015#development_debugging)
-* [CEP 5](https://github.com/Adobe-CEP/CEP-Resources/wiki/CEP-5-HTML-Extension-Cookbook-for-CC-2014#development_debugging) 
-* [CEP 4](https://a248.e.akamai.net/f/1953/8974/2h/wwwimages.adobe.com/www.adobe.com/content/dam/Adobe/en/devnet/cs-extension-builder/pdfs/CC_Extension_SDK.pdf) (Page 25) 
-
-----
-## Requirements
-
-Remember that although these extensions are initially setup for a particular version of CEP, you can adjust the product version targeted by modifying the range inside the `HostList` element of the `CSXS/manifest.xml` file.
+## Samples list
 
 | Extension | Description | Supported Products |
 | --- | ------ | --- |
@@ -50,4 +38,5 @@ Remember that although these extensions are initially setup for a particular ver
 | [WebGL with three.js (Contributed by Davide Deraedt)](https://github.com/Adobe-CEP/Samples/tree/master/webgl_threejs) | Demonstrates WebGL with `three.js` | Photoshop |
 | [Websockets](https://github.com/Adobe-CEP/Samples/tree/master/Websocket) | Demonstrates using web sockets in an extension. | Photoshop, Illustrator, Premiere Pro |
 | [XMP Sample Panel](https://github.com/Adobe-CEP/Samples/tree/master/XmpSamplePanel) | Demonstrates manipulating XMP metadata in CC2014 hosts. | Premiere Pro, InDesign, Photoshop, Illustrator |
+
 
