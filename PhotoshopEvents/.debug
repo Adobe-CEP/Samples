@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ExtensionList>
+    <Extension Id="com.example.photoshopevents.extension">
+        <HostList>
+            <Host Name="PHXS" Port="8001"/>
+        </HostList>
+    </Extension>
+    <Extension Id="com.example.photoshopevents.extension2">
+        <HostList>
+            <Host Name="PHXS" Port="8002"/>
+        </HostList>
+    </Extension>
+</ExtensionList>
