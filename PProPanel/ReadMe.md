@@ -129,6 +129,12 @@ While the sample panel should continue to be your first option for working examp
 *Note: Premiere Pro 12.0 has integrated CEP8, so even if you had unsigned panels
 loading before (using CEP6 or CEP7), you'll need to perform this step again, but for key CSXS.8.*
 
+Open Premiere Pro press (windows) CTRL+f12 or (Mac) CMD+f12, and type the following into Premiere Console, then relaunch Premiere:
+
+```html
+ debug.set PlayerDebugMode = 1
+```
+
 On Mac, type the following into Terminal, then relaunch Finder (either via
 rebooting, or from the Force Quit dialog):
 
