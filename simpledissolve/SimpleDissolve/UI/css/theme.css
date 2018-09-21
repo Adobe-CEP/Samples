@@ -12,11 +12,13 @@
 * written permission of Adobe. 
 **************************************************************************/
 html, body {
-	float:left;
 	height: 100%;
 	margin: 0;
+	padding: 0;
 	overflow: hidden;
 	width: 100%;
+	font-size: 13px;
+	color: #000000;
 	-webkit-touch-callout: none;
 	-webkit-user-select: none;
 }
@@ -24,50 +26,36 @@ html, body {
 .divMain {
 	height: 100%;
 	width: 100%;
+	display: flex;
+	padding: 13px;
+	box-sizing: border-box;
 	overflow: hidden;
-	padding-top: 5px;
-}
-
-.divPreview {
-	float: left;
-	height: 100%;
-	width: 190px;
-	vertical-align: middle;
 }
 
 .divControls {
-	float: left;
-	margin: 0px;
-	height: 100%;
-	width: 150px;
-	margin-top: 10px;
+	flex-grow: 1;
+	margin: 0 1.5em;
 }
 
 .divBtnBar {
-	float:left;
-	height: 100%;
-	width: 105px;
-}
-
-.cnvsPreview {
-	position:relative;
-	left:0px;
-	top:0px;
-	background-color:transparent;
+	flex-grow: 0;
+	flex-shrink: 0;
+	width: 73px;
+	display: flex;
+	flex-direction: column;
 }
 
 #iDissolvePc {
-	width:50px;
-	height: 20px;
+	width: 60px;
+	height: 23px;
+	box-sizing: border-box;
 }
 
 button {
-	float: right;
 	border-radius: 2px;
 	line-height: 0px;
 	height: 22px;
-	width: 74px;
-	margin: 5px;
+	margin-bottom: 5px;
 	background: #f0f0f0;
 	border: 1px solid #7d7c7d;
 }
@@ -78,8 +66,6 @@ button:active {
 
 .okBtn {
 	height: 23px;
-	width: 75px;
-	margin: 5px;
 	border: 2px solid #7d7c7d;
 }
 
@@ -91,6 +77,7 @@ button:active {
 	margin-bottom: 0px;
 	width: 100%;
 }
+
 li {
 	padding-bottom: 10px;
 }
@@ -98,4 +85,10 @@ li {
 #fsDisposition {
 	margin: 0px;
 	margin-top: 10px;
+}
+
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
 }

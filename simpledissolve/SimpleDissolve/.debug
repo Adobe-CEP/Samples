@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ExtensionList>
+	<Extension Id="com.adobe.SimpleDissolve.ApplyFilter">
+		<HostList>
+			<!-- PHXS Photoshop -->
+			<!-- You can debug on http://localhost:12122  if extension is active and this extension is active only 
+			short time so you probably need to use breakpoint in other extension-->
+			<Host Name="PHXS" Port="12122" />
+		</HostList>
+	</Extension>
+	<Extension Id="com.adobe.SimpleDissolve.UI">
+		<HostList>
+			<!-- PHXS Photoshop -->
+			<!-- You can debug on http://localhost:12121  if extension is active-->
+			<Host Name="PHXS" Port="12121" />
+		</HostList>
+	</Extension>
+</ExtensionList>
