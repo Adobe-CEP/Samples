@@ -22,7 +22,7 @@
 	</ExtensionList>
 	<ExecutionEnvironment>
 		<HostList>
-			<Host Name="PHXS" Version="[17.0,99.0]" />
+			<Host Name="PHXS" Version="[19.0,99.0]" />
 		</HostList>
 		<LocaleList>
 			<Locale Code="All" />
