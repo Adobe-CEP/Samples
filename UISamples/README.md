@@ -4,7 +4,7 @@ This sample demonstrates how to add UI elements in the panel by using common Jav
 ## What Adobe host apps this sample supports
 - Photoshop
 - Illustrator
-- Premier Pro
+- Premiere Pro
 
 ## How to get started
 ### Move the `UI_Showcase` folder to the extension folder
