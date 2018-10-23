@@ -1,4 +1,18 @@
-﻿$._AA_={
+﻿/*************************************************************************
+* ADOBE CONFIDENTIAL
+* ___________________
+*
+* Copyright 2014 Adobe
+* All Rights Reserved.
+*
+* NOTICE: Adobe permits you to use, modify, and distribute this file in
+* accordance with the terms of the Adobe license agreement accompanying
+* it. If you have received this file from a source other than Adobe,
+* then your use, modification, or distribution of it requires the prior
+* written permission of Adobe. 
+**************************************************************************/
+
+$._AA_={
 
 	getVersionInfo : function() {
 		return 'PPro ' + app.version + 'x' + app.build;
@@ -72,7 +86,7 @@
                          currentChild = currentItem.children[j+1];
                          if (currentChild){
                              return $._AA_.searchBinForProjItemByName(0, currentChild, nameToFind);
-                         } else 
+                         }  
                      }
 				}
 			}

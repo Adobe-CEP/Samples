@@ -1,12 +1,25 @@
+/*************************************************************************
+* ADOBE CONFIDENTIAL
+* ___________________
+*
+* Copyright 2014 Adobe
+* All Rights Reserved.
+*
+* NOTICE: Adobe permits you to use, modify, and distribute this file in
+* accordance with the terms of the Adobe license agreement accompanying
+* it. If you have received this file from a source other than Adobe,
+* then your use, modification, or distribution of it requires the prior
+* written permission of Adobe. 
+**************************************************************************/
 $._ext = {
     //Evaluate a file and catch the exception.
-    evalFile : function(path) {
+    evalFile: function (path) {
         try {
             $.evalFile(path);
-        } catch (e) {alert("Exception:" + e);}
+        } catch (e) { alert("Exception:" + e); }
     },
     // Evaluate all the files in the given folder 
-    evalFiles: function(jsxFolderPath) {
+    evalFiles: function (jsxFolderPath) {
         var folder = new Folder(jsxFolderPath);
         if (folder.exists) {
             var jsxFiles = folder.getFiles("*.jsx");

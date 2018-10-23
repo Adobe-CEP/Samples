@@ -1,3 +1,16 @@
+/*************************************************************************
+* ADOBE CONFIDENTIAL
+* ___________________
+*
+* Copyright 2014 Adobe
+* All Rights Reserved.
+*
+* NOTICE: Adobe permits you to use, modify, and distribute this file in
+* accordance with the terms of the Adobe license agreement accompanying
+* it. If you have received this file from a source other than Adobe,
+* then your use, modification, or distribution of it requires the prior
+* written permission of Adobe. 
+**************************************************************************/
 
 function onLoaded() {
     var csInterface = new CSInterface();
@@ -161,8 +174,8 @@ function myTextHandlerFunction(event){
  */
 function loadJSX() {
     var csInterface = new CSInterface();
-    var extensionRoot = csInterface.getSystemPath(SystemPath.EXTENSION) + "/jsx/";
-    csInterface.evalScript('$._ext.evalFiles("' + extensionRoot + '")');
+	var extensionRoot = csInterface.getSystemPath(SystemPath.EXTENSION) + "/jsx/";
+	csInterface.evalScript('$._ext.evalFiles("' + extensionRoot + '")');
 }
 
 function evalScript(script, callback) {

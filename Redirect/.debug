@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ExtensionList>
+    <Extension Id="com.adobe.trello.extension">
+        <HostList>
+            <Host Name="PHXS" Port="8000"/>
+        </HostList>
+    </Extension>
+</ExtensionList>

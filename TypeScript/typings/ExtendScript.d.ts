@@ -4,8 +4,7 @@
 /**
  * The base class of all JavaScript objects.
  */
-interface Object
-{
+interface Object {
     /**
      * Points to the constructor function that created this object.
      * Note that this property is treated as an XML element in the XML class.
@@ -53,8 +52,7 @@ interface Object
     watch(name: string, func: Function): void;
 }
 
-interface ObjectConstructor
-{
+interface ObjectConstructor {
     /**
      * Note that this property is treated as an XML element in the XML class.
      */
@@ -72,8 +70,7 @@ interface ObjectConstructor
  */
 declare const $: Helper;
 
-interface Helper extends Object
-{
+interface Helper extends Object {
     /**
      * The ExtendScript build information.
      */
@@ -218,7 +215,7 @@ interface Helper extends Object
     /**
      * Converts this object to a string.
      */
-    toString():string;
+    toString(): string;
     /**
      * Prints text to the Console.
      * @param text The text to print. All arguments are concatenated.
@@ -234,8 +231,7 @@ interface Helper extends Object
 /**
  * Provides information about a class.
  */
-declare class Reflection extends Object
-{
+declare class Reflection extends Object {
     /**
      * The long description text.
      */
@@ -299,8 +295,7 @@ declare class Reflection extends Object
 /**
  * Provides information about a method, a property or a method parameters.
  */
-declare class ReflectionInfo extends Object
-{
+declare class ReflectionInfo extends Object {
     /**
      * The description of method or function arguments.
      */
@@ -368,8 +363,7 @@ declare class ReflectionInfo extends Object
     readonly type: string;
 }
 
-declare class ScreenObject extends Object
-{
+declare class ScreenObject extends Object {
     /**
      * Pixel position of the left side of the screen in global coordinates.
      */
@@ -396,15 +390,13 @@ declare class ScreenObject extends Object
 /**
  * Represents a file in the local file system in a platform-independent manner.
  */
-declare class File extends Object
-{
+declare class File extends Object {
     // TODO: Fill this in.
 }
 
 /**
  * Wraps XML into an object.
  */
-declare class XML extends Object
-{
+declare class XML extends Object {
     // TODO: Fill this in.
 }

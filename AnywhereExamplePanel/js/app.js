@@ -1,22 +1,17 @@
-/*  
- * ADOBE SYSTEMS INCORPORATED
- * Copyright 2015 Adobe Systems Incorporated
- * All Rights Reserved.
- * 
- * NOTICE:  Adobe permits you to use, modify, and distribute this file in accordance with the 
- * terms of the Adobe license agreement accompanying it.  If you have received this file from a 
- * source other than Adobe, then your use, modification, or distribution of it requires the prior 
- * written permission of Adobe.
- * 
- * ---
- * 
- * This file contains the application logic. It calls DOM functionality through the wrapper 
- * PremiereDOMBridge and HTTP calls through the wrapper AnywhereHTTPApi.
- * It makes use of the jQuery javascript library that is commonly used in web applications and
- * provides a powerful way to work with the HTML DOM.
- * 
- * 
- */
+/*************************************************************************
+* ADOBE CONFIDENTIAL
+* ___________________
+*
+* Copyright 2014 Adobe
+* All Rights Reserved.
+*
+* NOTICE: Adobe permits you to use, modify, and distribute this file in
+* accordance with the terms of the Adobe license agreement accompanying
+* it. If you have received this file from a source other than Adobe,
+* then your use, modification, or distribution of it requires the prior
+* written permission of Adobe. 
+**************************************************************************/
+
 /*
 * function to autoscale the browser div based on the window size
 **/

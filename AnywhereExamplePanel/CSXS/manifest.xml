@@ -1,4 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+/*************************************************************************
+* ADOBE CONFIDENTIAL
+* ___________________
+*
+* Copyright 2014 Adobe
+* All Rights Reserved.
+*
+* NOTICE: Adobe permits you to use, modify, and distribute this file in
+* accordance with the terms of the Adobe license agreement accompanying
+* it. If you have received this file from a source other than Adobe,
+* then your use, modification, or distribution of it requires the prior
+* written permission of Adobe. 
+**************************************************************************/
+-->
 <ExtensionManifest Version="5.0" ExtensionBundleId="com.example.AnywherePanel" ExtensionBundleVersion="1.0.0"
 ExtensionBundleName="AnywherePanel" 
 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
@@ -7,8 +22,8 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	</ExtensionList>
 	<ExecutionEnvironment>
 		<HostList>
-			<Host Name="PPRO" Version="[8.0,20.0]" />
-            <Host Name="PRLD" Version="[3.2,20.0]" />
+			<Host Name="PPRO" Version="[8.0,99.0]" />
+            <Host Name="PRLD" Version="[3.2,99.0]" />
 		</HostList>
 		<LocaleList>
 			<Locale Code="All" />
