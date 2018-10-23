@@ -1290,6 +1290,7 @@ CSInterface.prototype.getWindowTitle = function()
 {
     return window.__adobe_cep__.invokeSync("getWindowTitle", "");
 };
+<<<<<<< Updated upstream
 =======
 /**************************************************************************************************
 *
@@ -2404,4 +2405,6 @@ CSInterface.prototype.setWindowTitle = function (title) {
 CSInterface.prototype.getWindowTitle = function () {
     return window.__adobe_cep__.invokeSync("getWindowTitle", "");
 };
+=======
+>>>>>>> Stashed changes
 >>>>>>> master
