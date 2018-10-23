@@ -1,105 +1,42 @@
 # Create panels for Premiere Pro
 
-*Last updated April 2018, current released version = Premiere Pro 12.1, also known as "Premiere Pro CC 2018".
+*Last updated October 2018, current released version = Premiere Pro 13.0, also known as "Premiere Pro CC 2019".
+    
+# Premiere Pro 13.0 : API Improvements
 
-## What's Possible
+We've added many new capabilities for the 13.0 release. All of these are exercised in the PProPanel sample, [available on GitHub](https://github.com/Adobe-CEP/Samples/tree/master/PProPanel).
 
-For the impatient, here are links to working sample code, showing what's
-possible for Premiere Pro panels:
+### Get and set footage interpretation
 
-- [Browse and import files from the
-    OS](https://github.com/Adobe-CEP/Samples/blob/master/PProPanel/jsx/PPRO/Premiere.jsx#L260)
+All aspects of Premiere Pro's footage interpretation are now available via API. Among other workflows, this enables panels to replace a footage reference, while preserving existing interpretation information the user may have already set.
 
-- [Get and set all XMP
-    metadata](https://github.com/Adobe-CEP/Samples/blob/master/PProPanel/jsx/PPRO/Premiere.jsx#L601)
-    (including Premiere Pro's [private project
-    metadata](https://github.com/Adobe-CEP/Samples/blob/master/PProPanel/jsx/PPRO/Premiere.jsx#L765))
-    for any projectItem.
+### Get and set sequence settings
 
-- [Import files via drag and
-    drop](https://github.com/Adobe-CEP/Samples/blob/master/PProPanel/ext.js#L43),
-    from a panel into Premiere Pro (Project panel, or directly onto a timeline).
+Previously, it was possible to clone existing sequences, and create sequences from a sequence preset. It is now possible to get and set each individual sequence setting, providing much more granular control over sequences.
 
-- [Preview any supported media in the Source
-    monitor](https://github.com/Adobe-CEP/Samples/blob/master/PProPanel/jsx/PPRO/Premiere.jsx#L231)
-    (without requiring that it be imported into the project).
+### Detect trackItems which are reversed, have speed adjustments, or are adjustment layers
 
-- Access and modify [clip
-    markers](https://github.com/Adobe-CEP/Samples/blob/master/PProPanel/jsx/PPRO/Premiere.jsx#L727),
-    and [sequence
-    markers](https://github.com/Adobe-CEP/Samples/blob/master/PProPanel/jsx/PPRO/Premiere.jsx#L163).
+This important information was previously unavailable.
 
-- [Create new
-    sequences](https://github.com/Adobe-CEP/Samples/blob/master/PProPanel/jsx/PPRO/Premiere.jsx#L428)
-    either from a preset, or with user interaction.
+### Open projectItems in the Source monitor
 
-- [Open different
-    projects](https://github.com/Adobe-CEP/Samples/blob/master/PProPanel/jsx/PPRO/Premiere.jsx#L370)
-    (while the panel remains active; this behavior is new as of Premiere Pro
-    10.3).
+This allows for sequences, multi-cam sequences, still image sequences and merged clips to be opened in the Source monitor.
 
-- [Render a
-    sequence](https://github.com/Adobe-CEP/Samples/blob/master/PProPanel/jsx/PPRO/Premiere.jsx#L492)
-    to any destination(s), based on any preset(s), including ftp upload, and
-    controlling metadata output.
+### Create sub-sequences
 
-- Export either a [given
-    sequence](https://github.com/Adobe-CEP/Samples/blob/master/PProPanel/jsx/PPRO/Premiere.jsx#L206)
-    or the entire project as Final Cut Pro 7 XML.
+Lift/extract sections of existing sequences into new ones, with control over whether or not to adopt the track mapping present in the original.
 
-- [Save as a new
-    project](https://github.com/Adobe-CEP/Samples/blob/master/PProPanel/jsx/PPRO/Premiere.jsx#L581),
-    or create a new project containing only a specified sequence and its
-    constituent media.
+### Close open sequences
 
-# Premiere Pro 12.1 : API Improvements
+Close superfluous/distracting sequences.
 
-We've added many new capabilities for the 12.1 release. All of these are exercised in the PProPanel sample, [available on GitHub](https://github.com/Adobe-CEP/Samples/tree/master/PProPanel).
+### Consolidate Duplicates via API
 
-### Get and set the current Project panel selection
+Invoke the same duplicate consolidation functionality available to users.
 
-It's now possible for a panel to know which `projectItems` are selected, and to select projectItems as appropriate.
+# Create panels for Premiere Pro
 
-### Consolidate and Transcode API
-
-All functionality available from Premiere Pro's Project Manager dialog, is now available to panels.
-
-### Improved time resolution for trackItems
-
-We now provide (and accept) time values for track items in ticks, eliminating an opportunity for rounding error.
-
-### Import and change Motion Graphics templates (.mogrts)
-
-Panels can now insert .mogrt files into sequences, and change the parameters of those .mogrts as desired.
-
-### Forcibly replace footage
-
-It's now possible to force Premiere Pro to update the path to a given `projectItem`, even if Premiere Pro doesn't think such a change is advisable.
-
-### Identify sequences
-
-All `projectItems` now have an `isSequence()` method; this eliminates the need to compare a list of 'all project items' against a list of 'all sequences', to determine which `projectItems` are and are not sequences.
-
-### Set the frame rate for projectItems
-
-Use the handy new `setOverrideFramerate()`.
-
-### API Documentation
-
-While the sample panel should continue to be your first option for working example code, Premiere Pro's ExtendScript API [is documented here](http://ppro.aenhancers.com), to enable developer participation.
-
-
-## What was new in 12.0
-
-- We've extended our new, not-in-the-QE-DOM Source monitor object, to close the [front-most](https://github.com/Adobe-CEP/Samples/blob/master/PProPanel/jsx/PPRO/Premiere.jsx#L1465) or [all open clips](https://github.com/Adobe-CEP/Samples/blob/master/PProPanel/jsx/PPRO/Premiere.jsx#L1469).
-
-- [Change the Label](https://github.com/Adobe-CEP/Samples/blob/master/PProPanel/jsx/PPRO/Premiere.jsx#L1473) assigned to projectItems.
-
-- Query PPro for the [current insertion bin](https://github.com/Adobe-CEP/Samples/blob/master/PProPanel/jsx/PPRO/Premiere.jsx#L1486), the default target for items imported into the project (but not via drag). *Previously, you could set, but not get, the insertion bin.*
-
-- [Import Compositions](https://github.com/Adobe-CEP/Samples/blob/master/PProPanel/jsx/PPRO/Premiere.jsx#L1502) by name, from After Effects projects.
-
-- Open PPro's Events panel to see PProPanel's feedback; I've minimized modal alerts.
+Further [relevant information](https://medium.com/adobetech/how-to-create-your-first-adobe-panel-in-6-easy-steps-f8bd4ed5778) is available from the Extensibility team; these items are included here as an overview.
 
 ## 1. Obtain and install these
 
@@ -126,14 +63,14 @@ While the sample panel should continue to be your first option for working examp
 
 ## 2. Enable loading of unsigned panels
 
-*Note: Premiere Pro 12.0 has integrated CEP8, so even if you had unsigned panels
-loading before (using CEP6 or CEP7), you'll need to perform this step again, but for key CSXS.8.*
+*Note: Premiere Pro 13.0 integrates CEP9, so even if you had unsigned panels
+loading before (using CEP7 or CEP8), you'll need to perform this step again, but for key CSXS.9.*
 
 On Mac, type the following into Terminal, then relaunch Finder (either via
 rebooting, or from the Force Quit dialog):
 
 ```html
-defaults write /Users/<username>/Library/Preferences/com.adobe.CSXS.8.plist PlayerDebugMode 1
+defaults write /Users/<username>/Library/Preferences/com.adobe.CSXS.9.plist PlayerDebugMode 1
 ```
 
 On Windows, make the following registry entry (a new Key, of type String):
@@ -203,6 +140,8 @@ showing how to debug panels at both the JavaScript and ExtendScript levels.
 
 ## 6. Package and deploy your panel
 
+Further [relevant information](https://github.com/Adobe-CEP/Getting-Started-guides/tree/master/Package%20Distribute%20Install) is available from the Extensibility team.
+
 You can either generate a self-signed certificate (ZXPSignCmd will make them for
 you), or get one from a commercial security provider. Here's an example:
 
@@ -225,3 +164,52 @@ of Extension Manager.
 
 If you encounter any issues with the Add-Ons store or ExManCmd, please [contact
 the Add-Ons team](mailto:jferman@adobe.com).
+
+# Previous Updates
+
+## What was new in 12.1
+
+### Get and set the current Project panel selection
+
+It's now possible for a panel to know which `projectItems` are selected, and to select projectItems as appropriate.
+
+### Consolidate and Transcode API
+
+All functionality available from Premiere Pro's Project Manager dialog, is now available to panels.
+
+### Improved time resolution for trackItems
+
+We now provide (and accept) time values for track items in ticks, eliminating an opportunity for rounding error.
+
+### Import and change Motion Graphics templates (.mogrts)
+
+Panels can now insert .mogrt files into sequences, and change the parameters of those .mogrts as desired.
+
+### Forcibly replace footage
+
+It's now possible to force Premiere Pro to update the path to a given `projectItem`, even if Premiere Pro doesn't think such a change is advisable.
+
+### Identify sequences
+
+All `projectItems` now have an `isSequence()` method; this eliminates the need to compare a list of 'all project items' against a list of 'all sequences', to determine which `projectItems` are and are not sequences.
+
+### Set the frame rate for projectItems
+
+Use the handy new `setOverrideFramerate()`.
+
+### API Documentation
+
+While the sample panel should continue to be your first option for working example code, Premiere Pro's ExtendScript API [is documented here](http://ppro.aenhancers.com), to enable developer participation.
+
+
+## What was new in 12.0
+
+- We've extended our new, not-in-the-QE-DOM Source monitor object, to close the [front-most](https://github.com/Adobe-CEP/Samples/blob/master/PProPanel/jsx/PPRO/Premiere.jsx#L1465) or [all open clips](https://github.com/Adobe-CEP/Samples/blob/master/PProPanel/jsx/PPRO/Premiere.jsx#L1469).
+
+- [Change the Label](https://github.com/Adobe-CEP/Samples/blob/master/PProPanel/jsx/PPRO/Premiere.jsx#L1473) assigned to projectItems.
+
+- Query PPro for the [current insertion bin](https://github.com/Adobe-CEP/Samples/blob/master/PProPanel/jsx/PPRO/Premiere.jsx#L1486), the default target for items imported into the project (but not via drag). *Previously, you could set, but not get, the insertion bin.*
+
+- [Import Compositions](https://github.com/Adobe-CEP/Samples/blob/master/PProPanel/jsx/PPRO/Premiere.jsx#L1502) by name, from After Effects projects.
+
+- Open PPro's Events panel to see PProPanel's feedback; I've minimized modal alerts.

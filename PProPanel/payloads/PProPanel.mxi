@@ -13,7 +13,7 @@
 			<file destination="" file-type="CSXS" products="Premiere" source="/MXI/PProPanel.zxp"/>
 			<file destination="$adobecommon/XMP/Custom File Info Panels/4.0/custom" file-type="ordinary" products="Premiere" source="/MXI/PProPanel_schema.xml"/>
 			<file destination="$adobecommon/Installed_by_PProPanel" file-type="ordinary" products="Premiere" source="/MXI/PProPanel.txt"/>
-			<file destination="$userlibraryfolder/Preferences/Adobe/Common/AME/12.0/presets" file-type="ordinary" products="Premiere" source="/MXI/PProPanel.epr"/>
+			<file destination="$userlibraryfolder/Preferences/Adobe/Common/AME/13.0/presets" file-type="ordinary" products="Premiere" source="/MXI/PProPanel.epr"/>
 			<file destination="$mediacoreplug-ins" file-type="plugin" products="Premiere" platform="mac" source="/MXI/Mac/ExportController.bundle/"/>
 			<file destination="$mediacoreplug-ins" file-type="plugin" products="Premiere" platform="win" source="/MXI/Win/ExportController.prm"/>
 		</files>

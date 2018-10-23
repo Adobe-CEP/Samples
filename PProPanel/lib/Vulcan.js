@@ -11,7 +11,7 @@
 *
 **************************************************************************************************/
 
-/** Vulcan - v8.0.0 */
+/** Vulcan - v9.2.0 */
 
 /**
  * @class Vulcan
@@ -30,7 +30,7 @@ function Vulcan()
  * @return The array of all available application specifiers.
  */
 Vulcan.prototype.getTargetSpecifiers = function()
-{	
+{
 	var params = {};
 	return JSON.parse(window.__adobe_cep__.invokeSync("vulcanGetTargetSpecifiers", JSON.stringify(params)));
 };
@@ -57,12 +57,12 @@ Vulcan.prototype.launchApp = function(targetSpecifier, focus, cmdLine)
     {
         return false;
     }
-	
+
 	var params = {};
 	params.targetSpecifier = targetSpecifier;
 	params.focus = focus ? "true" : "false";
 	params.cmdLine = requiredParamsValid(cmdLine) ? cmdLine : "";
-	
+
 	return JSON.parse(window.__adobe_cep__.invokeSync("vulcanLaunchApp", JSON.stringify(params))).result;
 };
 
@@ -86,10 +86,10 @@ Vulcan.prototype.isAppRunning = function(targetSpecifier)
     {
         return false;
     }
-	
+
 	var params = {};
 	params.targetSpecifier = targetSpecifier;
-	
+
 	return JSON.parse(window.__adobe_cep__.invokeSync("vulcanIsAppRunning", JSON.stringify(params))).result;
 };
 
@@ -113,10 +113,10 @@ Vulcan.prototype.isAppInstalled = function(targetSpecifier)
     {
         return false;
     }
-	
+
 	var params = {};
 	params.targetSpecifier = targetSpecifier;
-	
+
 	return JSON.parse(window.__adobe_cep__.invokeSync("vulcanIsAppInstalled", JSON.stringify(params))).result;
 };
 
@@ -140,10 +140,10 @@ Vulcan.prototype.getAppPath = function(targetSpecifier)
     {
         return "";
     }
-	
+
 	var params = {};
 	params.targetSpecifier = targetSpecifier;
-	
+
 	return JSON.parse(window.__adobe_cep__.invokeSync("vulcanGetAppPath", JSON.stringify(params))).result;
 };
 
@@ -165,7 +165,7 @@ Vulcan.prototype.addMessageListener = function(type, callback, obj)
 
 	var params = {};
 	params.type = type;
-	
+
 	window.__adobe_cep__.invokeAsync("vulcanAddMessageListener", JSON.stringify(params), callback, obj);
 };
 
@@ -184,10 +184,10 @@ Vulcan.prototype.removeMessageListener = function(type, callback, obj)
     {
         return;
     }
-	
+
     var params = {};
     params.type = type;
-	
+
     window.__adobe_cep__.invokeAsync("vulcanRemoveMessageListener", JSON.stringify(params), callback, obj);
 };
 
@@ -207,7 +207,7 @@ Vulcan.prototype.dispatchMessage = function(vulcanMessage)
 	var message = new VulcanMessage(vulcanMessage.type);
 	message.initialize(vulcanMessage);
 	params.vulcanMessage = message;
-	
+
 	window.__adobe_cep__.invokeSync("vulcanDispatchMessage", JSON.stringify(params));
 };
 

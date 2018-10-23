@@ -24,6 +24,16 @@ function onLoaded() {
 		alert("New workspace selected: " + event.data);
 	});
 
+	csInterface.addEventListener("com.adobe.ccx.start.handleLicenseBanner", function(event){
+		alert("User chose to go \'Home\', wherever that is...");
+	});
+
+	csInterface.addEventListener("ApplicationBeforeQuit", function(event){
+		csInterface.evalScript('$._PPP_.closeLog()');
+	});
+
+	
+
 	// register for messages
 	VulcanInterface.addMessageListener(
 	    VulcanMessage.TYPE_PREFIX + "com.DVA.message.sendtext",
@@ -35,13 +45,15 @@ function onLoaded() {
 	csInterface.evalScript('$._PPP_.getVersionInfo()', myVersionInfoFunction);	
 	csInterface.evalScript('$._PPP_.getActiveSequenceName()', myCallBackFunction);		
 	csInterface.evalScript('$._PPP_.getUserName()', myUserNameFunction);  
-	csInterface.evalScript('$._PPP_.getSequenceProxySetting()', myGetProxyFunction);
+	csInterface.evalScript('$._PPP_.getProjectProxySetting()', myGetProxyFunction);
 	csInterface.evalScript('$._PPP_.keepPanelLoaded()');
 	csInterface.evalScript('$._PPP_.disableImportWorkspaceWithProjects()');
 	
-	csInterface.evalScript('$._PPP_.registerProjectPanelChangedFxn()');
-	csInterface.evalScript('$._PPP_.registerItemAddedFxn()');
-	csInterface.evalScript('$._PPP_.registerProjectChangedFxn()');
+	csInterface.evalScript('$._PPP_.registerProjectPanelSelectionChangedFxn()');  	// Project panel selection changed
+	csInterface.evalScript('$._PPP_.registerItemAddedFxn()');					  	// Item added to project
+	csInterface.evalScript('$._PPP_.registerProjectChangedFxn()');					// Project changed
+	csInterface.evalScript('$._PPP_.registerSequenceSelectionChangedFxn()');		// Selection within the active sequence changed
+
 	csInterface.evalScript('$._PPP_.confirmPProHostVersion()');
 }
 
@@ -76,7 +88,7 @@ function myUserNameFunction (data) {
 
 function myGetProxyFunction (data) {
 	// Updates proxy_display based on current sequence's value.
-	var boilerPlate		   = "Proxies enabled for sequence: ";
+	var boilerPlate		   = "Proxies enabled for project: ";
 	var proxy_display	   = document.getElementById("proxies_on");
 
 	if (proxy_display !== null) {
@@ -87,7 +99,7 @@ function myGetProxyFunction (data) {
 function mySetProxyFunction (data) {
 	var csInterface = new CSInterface();
 	csInterface.evalScript('$._PPP_.getActiveSequenceName()', myCallBackFunction);
-	csInterface.evalScript('$._PPP_.getSequenceProxySetting()', myGetProxyFunction);
+	csInterface.evalScript('$._PPP_.getProjectProxySetting()', myGetProxyFunction);
 }
 	 
 function myVersionInfoFunction (data) {

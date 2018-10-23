@@ -95,41 +95,86 @@ $._PPP_={
 	projectPanelSelectionChanged : function(projectItems, viewID) {
 		
 		var remainingArgs 	= projectItems.length;
-        var message 		= remainingArgs + " items selected: ";
-		var view 			= viewID;
-        
-		// Concatenate selected project item names, into message. 
+		var message			= "";
 
-		for (var i = 0; i < projectItems.length; i++) {
-            message += projectItems[i].name;
-			remainingArgs--;
-            if (remainingArgs > 1) {
-                message += ', ';
-            }
-            if (remainingArgs === 1){
-                message += ", and ";
-			} 
-            if (remainingArgs === 0) {
-                message += ".";
-            }
-        }
-        app.setSDKEventMessage(message, 'info');
-    },
+		if (remainingArgs){
+			var message 		= remainingArgs + " items selected: ";
+			var view 			= viewID;
+			
+			// Concatenate selected project item names, into message. 
+			for (var i = 0; i < projectItems.length; i++) {
+				message += projectItems[i].name;
+				remainingArgs--;
+				if (remainingArgs > 1) {
+					message += ', ';
+				}
+				if (remainingArgs === 1){
+					message += ", and ";
+				} 
+				if (remainingArgs === 0) {
+					message += ".";
+				}
+			}
+		} else {
+			message = '0 items selected.';
+		}
+		app.setSDKEventMessage(message, 'info');
+	},
 
-	registerProjectPanelChangedFxn : function() {
+	registerProjectPanelSelectionChangedFxn : function() {
 		var success = app.bind("onSourceClipSelectedInProjectPanel", $._PPP_.projectPanelSelectionChanged);
 	},
 
-
-	getProjectPanelMeta : function() {
-		$._PPP_.updateEventPanel(app.project.getProjectPanelMetadata());
+	saveCurrentProjectLayout : function() {
+		var currentProjPanelDisplay = app.project.getProjectPanelMetadata();
+		if (currentProjPanelDisplay){
+			var outFileName			= 'Previous_Project_Panel_Display_Settings.xml';
+			var actualProjectPath	= new File(app.project.path);
+			var projDir 			= actualProjectPath.parent;
+			if (actualProjectPath){
+				var completeOutputPath	= projDir +  $._PPP_.getSep() + outFileName;
+				var outFile				= new File(completeOutputPath);
+				if (outFile){
+					outFile.encoding = "UTF8";
+					outFile.open("w", "TEXT", "????");
+					outFile.write(currentProjPanelDisplay);
+					$._PPP_.updateEventPanel("Saved layout to next to the project.");
+					outFile.close();
+				}
+				actualProjectPath.close();
+			}
+		} else {
+			$._PPP_.updateEventPanel("Could not retrieve current project layout.");
+		}
 	},
 
 	setProjectPanelMeta : function() {
-		metadata = "<?xml version='1.0'?><md.paths version='1.0'><metadata_path><internal>true</internal><namespace>http://ns.adobe.com/exif/1.0/</namespace><description>ColorSpace</description><entry_name>ColorSpace</entry_name><parent_id>http://ns.adobe.com/exif/1.0/</parent_id></metadata_path><metadata_path><internal>false</internal><namespace>http://amwa.tv/mxf/as/11/core/</namespace><description>audioTrackLayout</description><entry_name>audioTrackLayout</entry_name><parent_id>http://amwa.tv/mxf/as/11/core/</parent_id></metadata_path><metadata_path><internal>false</internal><namespace>http://ns.useplus.org/ldf/xmp/1.0/</namespace><description>ImageCreator</description><entry_name>ImageCreator</entry_name><parent_id>http://ns.useplus.org/ldf/xmp/1.0/</parent_id></metadata_path></md.paths>";
-		app.project.setProjectPanelMetadata(metadata);
+		var filterString = "";
+		if (Folder.fs === 'Windows'){
+			filterString = "XML files:*.xml";
+		}
+		var fileToOpen = File.openDialog (	"Choose Project panel layout to open.", 
+											filterString, 
+											false);
+		if (fileToOpen) {
+			if (fileToOpen.fsName.indexOf('.xml')){ // We should really be more careful, but hey, it says it's XML!
+				fileToOpen.encoding = "UTF8";
+				fileToOpen.open("r", "TEXT", "????");
+				var fileContents = fileToOpen.read();
+				if (fileContents){
+					var setResult = app.project.setProjectPanelMetadata(fileContents);
+					if (setResult){
+						$._PPP_.updateEventPanel("Could not update layout using " + fileToOpen.filename + ".");		
+					} else {
+						$._PPP_.updateEventPanel("Updated layout from .xml file.");	
+					}
+				}
+			}
+		} else {
+			$._PPP_.updateEventPanel("No valid layout file chosen.");		
+		}
 	},
-	
+
 	exportSequenceAsPrProj : function() {
 		var activeSequence = app.project.activeSequence;
 		if (activeSequence) {
@@ -234,10 +279,18 @@ $._PPP_={
 	},
 
 	openInSource : function() {
-		var fileToOpen = File.openDialog ("Choose file to open.", 0, false);
+		var filterString = "";
+		if (Folder.fs === 'Windows'){
+			filterString = "All files:*.*";
+		}
+		var fileToOpen = File.openDialog (	"Choose file to open.", 
+											filterString, 
+											false);
 		if (fileToOpen) {
 			app.sourceMonitor.openFilePath(fileToOpen.fsName);
 			app.sourceMonitor.play(1.73); // playback speed as float, 1.0 = normal speed forward
+			var position = app.sourceMonitor.getPosition(); // new in 13.0
+			$._PPP_.updateEventPanel("Current Source monitor position: " + position.seconds + " seconds.");		
 			fileToOpen.close(); 
 		} else {
 			$._PPP_.updateEventPanel("No file chosen.");		
@@ -248,14 +301,14 @@ $._PPP_={
 		// deep-search a folder by name in project
 		var deepSearchBin = function(inFolder) {
 		  if (inFolder && inFolder.name === nameToFind && inFolder.type === 2) {
-		    return inFolder;
+			return inFolder;
 		  } else {
-		    for (var i = 0; i < inFolder.children.numItems; i++) {
-		      if (inFolder.children[i] && inFolder.children[i].type === 2) {
-		        var foundBin = deepSearchBin(inFolder.children[i]);
-		        if (foundBin) return foundBin;
-		      }
-		    }
+			for (var i = 0; i < inFolder.children.numItems; i++) {
+			  if (inFolder.children[i] && inFolder.children[i].type === 2) {
+				var foundBin = deepSearchBin(inFolder.children[i]);
+				if (foundBin) return foundBin;
+			  }
+			}
 		  }
 		  return undefined;
 		};
@@ -263,9 +316,13 @@ $._PPP_={
 	},
 
 	importFiles : function() {
+		var filterString = "";
+		if (Folder.fs === 'Windows'){
+			filterString = "All files:*.*";
+		}
 		if (app.project) {
 			var fileOrFilesToImport	= File.openDialog (	"Choose files to import", 	// title
-														0, 							// filter available files? 
+														filterString,				// filter available files? 
 														true); 						// allow multiple?
 			if (fileOrFilesToImport) {
 				// We have an array of File objects; importFiles() takes an array of paths.
@@ -294,7 +351,7 @@ $._PPP_={
 				 }
 			}
 		} else {
-			$._PPP_.updateEventPanel("No active sequence found.");
+			$._PPP_.updateEventPanel("No active sequence.");
 		}
 	},
 
@@ -325,10 +382,12 @@ $._PPP_={
 			var propertyIsReadOnly 	= app.properties.isPropertyReadOnly(prefToModify);
 			var originalValue 		 = app.properties.getProperty(prefToModify);
 		
-			appProperties.setProperty(prefToModify, true, 1, 2); // optional 3rd param : 0 = non-persistent,  1 = persistent (default)
+			appProperties.setProperty(prefToModify, false, 1, 1); // optional 4th param : 0 = non-persistent,  1 = persistent (default)
 			var safetyCheck = app.properties.getProperty(prefToModify);
 			if (safetyCheck != originalValue){
 				$._PPP_.updateEventPanel("Start dialog now OFF. Enjoy!");
+			} else {
+				$._PPP_.updateEventPanel("Start dialog was already OFF.");
 			}
 		} else {
 			$._PPP_.updateEventPanel("Properties not found.");
@@ -356,16 +415,19 @@ $._PPP_={
 				//	sequences.
 
 				firstProjectItem.setScaleToFrameSize();
-				
+				var filterString = "";
+				if (Folder.fs === 'Windows'){
+					filterString = "All files:*.*";
+				}
 				var replacementMedia = File.openDialog(	"Choose new media file, for " + 
 														firstProjectItem.name, 
-														0, 						// file filter
+														filterString,			// file filter
 														false); 				// allow multiple?
 				
 				if (replacementMedia) {
-					var forceAttempt	= true;
+					var suppressWarnings	= true;
 					firstProjectItem.name	= replacementMedia.name + ", formerly known as " + firstProjectItem.name;
-					firstProjectItem.changeMediaPath(replacementMedia.fsName, forceAttempt);  // 'forceAttempt' param new in 12.1
+					firstProjectItem.changeMediaPath(replacementMedia.fsName, suppressWarnings);  // new in 12.1
 					replacementMedia.close(); 
 				} 
 			} else {
@@ -379,9 +441,11 @@ $._PPP_={
 	openProject : function() {
 		var filterString = "";
 		if (Folder.fs === 'Windows'){
-			filterString = "All files:*.*";
+			filterString = "Premiere Pro project files:*.prproj";
 		}
-		var projToOpen	= File.openDialog ("Choose project:", filterString, false);
+		var projToOpen	= File.openDialog (	"Choose project:", 
+											filterString, 
+											false);
 		if ((projToOpen) && projToOpen.exists) {
 			app.openDocument(	projToOpen.fsName,
 								1,					// suppress 'Convert Project' dialogs?
@@ -427,56 +491,68 @@ $._PPP_={
 
 	createSequence : function(name) {
 		var someID	= "xyz123";
-		var seqName = prompt('Name of sequence?',	 'Some Descriptive Name', 'Sequence Naming Prompt');
+		var seqName = prompt('Name of sequence?',	 '<<<default>>>', 'Sequence Naming Prompt');
 		app.project.createNewSequence(seqName, someID);
 	},
 
 	createSequenceFromPreset : function(presetPath) {
 		app.enableQE();
-		var seqName = prompt('Name of sequence?',	 'Some Descriptive Name', 'Sequence Naming Prompt');
+		var seqName = prompt('Name of sequence?',	 '<<<default>>>', 'Sequence Naming Prompt');
 		if (seqName) {
 			qe.project.newSequence(seqName, presetPath);
 		}
 	},
 
 	transcode : function(outputPresetPath) {
-		app.encoder.bind('onEncoderJobComplete',	$._PPP_.onEncoderJobComplete);
+        app.encoder.bind('onEncoderJobComplete',	$._PPP_.onEncoderJobComplete);		
 		app.encoder.bind('onEncoderJobError', 		$._PPP_.onEncoderJobError);
 		app.encoder.bind('onEncoderJobProgress', 	$._PPP_.onEncoderJobProgress);
 		app.encoder.bind('onEncoderJobQueued', 		$._PPP_.onEncoderJobQueued);
 		app.encoder.bind('onEncoderJobCanceled',	$._PPP_.onEncoderJobCanceled);
 
-		var firstProjectItem = app.project.rootItem.children[0];
-		if (firstProjectItem){
+		var projRoot = app.project.rootItem.children;
 
-			app.encoder.launchEncoder();	// This can take a while; let's get the ball rolling.
-	
-			var fileOutputPath	= Folder.selectDialog("Choose the output directory");
-			if (fileOutputPath){
-				var outputName	= firstProjectItem.name.search('[.]');
-				if (outputName == -1){
-					outputName	= firstProjectItem.name.length;
+		if (projRoot.numItems){
+			var firstProjectItem = app.project.rootItem.children[0];
+			if (firstProjectItem){
+
+				app.encoder.launchEncoder();	// This can take a while; let's get the ball rolling.
+		
+				var fileOutputPath	= Folder.selectDialog("Choose the output directory");
+				if (fileOutputPath){
+					var outputName	= firstProjectItem.name.search('[.]');
+					if (outputName == -1){
+						outputName	= firstProjectItem.name.length;
+					}
+					outFileName	= firstProjectItem.name.substr(0, outputName);
+					outFileName	= outFileName.replace('/', '-');
+					var completeOutputPath	= fileOutputPath.fsName + $._PPP_.getSep() + outFileName + '.mxf';
+					var removeFromQueue		= true;
+					var rangeToEncode		= app.encoder.ENCODE_IN_TO_OUT;
+					app.encoder.encodeProjectItem(	firstProjectItem, 
+													completeOutputPath, 
+													outputPresetPath, 
+													rangeToEncode, 
+													removeFromQueue); 
+					app.encoder.startBatch();
 				}
-				outFileName	= firstProjectItem.name.substr(0, outputName);
-				outFileName	= outFileName.replace('/', '-');
-				var completeOutputPath	= fileOutputPath.fsName + $._PPP_.getSep() + outFileName + '.mxf';
-				var removeFromQueue		= false;
-				var rangeToEncode		= app.encoder.ENCODE_IN_TO_OUT;
-				app.encoder.encodeProjectItem(	firstProjectItem, 
-												completeOutputPath, 
-												outputPresetPath, 
-												rangeToEncode, 
-												removeFromQueue); 
-				app.encoder.startBatch();
+			} else {
+				$._PPP_.updateEventPanel("No project items found.");
 			}
 		} else {
-			$._PPP_.updateEventPanel("No project items found.");
+			$._PPP_.updateEventPanel("Project is empty.");
 		}
 	},
 
 	transcodeExternal : function (outputPresetPath){
 		app.encoder.launchEncoder();
-		var fileToTranscode = File.openDialog ("Choose file to open.", 0, false);
+		var filterString = "";
+		if (Folder.fs === 'Windows'){
+			filterString = "All files:*.*";
+		}
+		var fileToTranscode = File.openDialog (	"Choose file to open.", 
+												filterString, 
+												false);
 		if (fileToTranscode) {
 			var fileOutputPath = Folder.selectDialog("Choose the output directory");
 			if (fileOutputPath){
@@ -572,7 +648,7 @@ $._PPP_={
 																outPreset.fsName,
 																app.encoder.ENCODE_WORKAREA, 
 																1);	   // Remove from queue upon successful completion?					
-						$._PPP_.message('jobID = ' + jobID);
+						$._PPP_.updateEventPanel('jobID = ' + jobID);
 						outPreset.close();
 					}
 				} else {
@@ -937,8 +1013,10 @@ $._PPP_={
 	},
 
 	addSubClip : function() {
-		var startTimeSeconds	= 1.23743;
-		var endTimeSeconds		= 3.5235;
+		var startTime			= new Time;
+		startTime.seconds		= 0.0;
+		var endTime				= new Time;
+		endTime.seconds			= 3.21;
 		var hasHardBoundaries	= 0;
 		var sessionCounter		= 1;
 		var takeVideo			= 1; // optional, defaults to 1
@@ -949,8 +1027,8 @@ $._PPP_={
 				var newSubClipName	= prompt('Name of subclip?',	projectItem.name + '_' + sessionCounter, 'Name your subclip');
 				
 				var newSubClip 	= projectItem.createSubClip(newSubClipName, 
-															startTimeSeconds, 
-															endTimeSeconds, 
+															startTime, 
+															endTime, 
 															hasHardBoundaries,
 															takeVideo,
 															takeAudio);
@@ -1027,34 +1105,31 @@ $._PPP_={
 		}
 	},
 
-	getSequenceProxySetting : function() {
-		var returnVal	= 'No sequence detected.';
-		var seq			= app.project.activeSequence;
-		if (seq) {
-			if (seq.getEnableProxies() > 0) {
+	getProjectProxySetting : function() {
+		var returnVal = "";
+		if (app.project){
+			var returnVal	= "No sequence detected in " + app.project.name + ".";
+			if (app.getEnableProxies()) {
 				returnVal	= 'true';
 			} else {
 				returnVal	= 'false';
 			}
+		} else {
+			returnVal = "No project available.";
 		}
 		return returnVal;
 	},
 
 	toggleProxyState : function() {
-		var seq	= app.project.activeSequence;
-		if (seq) {
-			var update	= "Proxies for " + seq.name + " turned ";
-			if (seq.getEnableProxies() > 0) {
-				seq.setEnableProxies(false);
-				update	= update + "OFF.";
-				app.setSDKEventMessage(update, 'info');
-			} else {
-				seq.setEnableProxies(true);
-				update	= update + "ON.";
-				app.setSDKEventMessage(update, 'info');
-			}
+		var update	= "Proxies for " + app.project.name + " turned ";
+		if (app.getEnableProxies()) {
+			app.setEnableProxies(0);
+			update	= update + "OFF.";
+			app.setSDKEventMessage(update, 'info');
 		} else {
-			$._PPP_.updateEventPanel("No active sequence.");
+			app.setEnableProxies(1);
+			update	= update + "ON.";
+			app.setSDKEventMessage(update, 'info');
 		}
 	},
 
@@ -1067,7 +1142,13 @@ $._PPP_={
 					shouldAttachProxy	= confirm(firstProjectItem.name + " already has an assigned proxy. Re-assign anyway?", false, "Are you sure...?");
 				}
 				if (shouldAttachProxy) {
-					var proxyPath	= File.openDialog("Choose proxy for " + firstProjectItem.name + ":" );
+					var filterString = "";
+					if (Folder.fs === 'Windows'){
+						filterString = "All files:*.*";
+					}
+					var proxyPath	= File.openDialog(	"Choose proxy for " + firstProjectItem.name + ":", 
+														filterString, 
+														false);
 					if (proxyPath.exists){
 						firstProjectItem.attachProxy(proxyPath.fsName, 0);
 					} else {
@@ -1105,7 +1186,7 @@ $._PPP_={
 			var before;
 
 			for(var gi = 0; gi<2; gi++)	{
-				$._PPP_.message(trackGroupNames[gi]);
+				$._PPP_.updateEventPanel(trackGroupNames[gi]);
 				group	= trackGroups[gi];
 				for(var ti=0; ti<group.numTracks; ti++){
 					var track		= group[ti];
@@ -1114,7 +1195,7 @@ $._PPP_={
 					var beforeSelected;
 					var afterSelected;
 
-					$._PPP_.message("track : " + ti + "	 clip count: " + clips.numTracks + "	  transition count: " + transitions.numTracks);	 
+					$._PPP_.updateEventPanel("track : " + ti + "	 clip count: " + clips.numTracks + "	  transition count: " + transitions.numTracks);	 
 
 					for(var ci=0; ci<clips.numTracks; ci++){
 						var clip	= clips[ci];
@@ -1124,16 +1205,21 @@ $._PPP_={
 						// randomly select clips
 						clip.setSelected((Math.random() > 0.5), updateUI);
 
+                         if (clip.isAdjustmentLayer()){ // new in 13.0
+                             $._PPP_.updateEventPanel("Clip named \"" + clip.name + "\" is an adjustment layer.");
+                         }
+
 						// Note; there's no good place to exercise this code yet, but
 						// I wanted to provide example usage. 
 
 						var allClipsInThisSequenceFromSameSource = clip.getLinkedItems();
 						
-						$._PPP_.message("Found " + allClipsInThisSequenceFromSameSource.numItems + " clips from " + clip.projectItem.name + ", in this sequence.");	 
-
+                        if (allClipsInThisSequenceFromSameSource){
+						$._PPP_.updateEventPanel("Found " + allClipsInThisSequenceFromSameSource.numItems + " clips from " + clip.projectItem.name + ", in this sequence.");	 
+                        }
 						beforeSelected	= before ? "Y" : "N";			  
 						afterSelected	= clip.selected ? "Y" : "N";
-						$._PPP_.message("clip : " + ci + "	 " + name + "		" + beforeSelected + " -> " + afterSelected);		 
+						$._PPP_.updateEventPanel("clip : " + ci + "	 " + name + "		" + beforeSelected + " -> " + afterSelected);		 
 					}
 
 					for(var tni=0; tni<transitions.numTracks; ++tni){
@@ -1146,21 +1232,16 @@ $._PPP_={
 						beforeSelected	= before ? "Y" : "N";			  
 						afterSelected	= transition.selected ? "Y" : "N";
 
-						$._PPP_.message('transition: ' + tni + "		" + beforeSelected + " -> " + afterSelected);
+						$._PPP_.updateEventPanel('transition: ' + tni + "		" + beforeSelected + " -> " + afterSelected);
 					}
 				}
 			}			
 		} else {
-			$._PPP_.updateEventPanel("No active sequence found.");
+			$._PPP_.updateEventPanel("no active sequence.");
 		}
-		
 	},
 
 	// Define a couple of callback functions, for AME to use during render.
-	
-	message : function (msg) {
-		$.writeln(msg);	 // Using '$' object will invoke ExtendScript Toolkit, if installed.
-	},
 	
 	onEncoderJobComplete : function (jobID, outputFilePath) {
 		var eoName;
@@ -1207,7 +1288,7 @@ $._PPP_={
 	},
 	
 	onEncoderJobProgress : function (jobID, progress) {
-		$._PPP_.message('onEncoderJobProgress called. jobID = ' + jobID + '. progress = ' + progress + '.');
+		$._PPP_.updateEventPanel('onEncoderJobProgress called. jobID = ' + jobID + '. progress = ' + progress + '.');
 	},
 
 	onEncoderJobQueued : function (jobID) {
@@ -1215,7 +1296,7 @@ $._PPP_={
 	},
 
 	onEncoderJobCanceled : function (jobID) {
-		$._PPP_.message('OnEncoderJobCanceled called. jobID = ' + jobID +  '.');
+		$._PPP_.updateEventPanel('OnEncoderJobCanceled called. jobID = ' + jobID +  '.');
 	},
 
 	onPlayWithKeyframes  : function () {
@@ -1228,18 +1309,21 @@ $._PPP_={
 					var clipComponents	= firstClip.components;
 					if (clipComponents){
 						for (var i = 0; i < clipComponents.numItems; ++i){
-							$._PPP_.message('component ' + i + ' = ' + clipComponents[i].matchName + ' : ' + clipComponents[i].displayName);
+							$._PPP_.updateEventPanel('component ' + i + ' = ' + clipComponents[i].matchName + ' : ' + clipComponents[i].displayName);
 						}
 						if (clipComponents.numItems > 2){
 							
 							// 0 = clip
 							// 1 = Opacity
+							// N effects, then...
+							// Shape layer (new in 12.0)
+							
 							var blur	= clipComponents[2]; // Assume Gaussian Blur is the first effect applied to the clip.
 							if (blur){
 								var blurProps	= blur.properties;
 								if (blurProps){
 									for( var j = 0; j < blurProps.numItems; ++j){
-										$._PPP_.message('param ' + j + ' = ' + blurProps[j].displayName);
+										$._PPP_.updateEventPanel('param ' + j + ' = ' + blurProps[j].displayName);
 									}
 									var blurriness	= blurProps[0];
 									if (blurriness){
@@ -1263,9 +1347,9 @@ $._PPP_={
 									// look for keyframe nearest to 4s with 1/10 second tolerance
 									var keyFrameTime	= blurriness.findNearestKey(4.0, 0.1);
 									if (keyFrameTime !== undefined){
-										$._PPP_.message('Found keyframe = ' + keyFrameTime.seconds);
+										$._PPP_.updateEventPanel('Found keyframe = ' + keyFrameTime.seconds);
 									} else {
-										$._PPP_.message('Keyframe not found.');
+										$._PPP_.updateEventPanel('Keyframe not found.');
 									}
 
 									// scan keyframes, forward
@@ -1273,7 +1357,7 @@ $._PPP_={
 									keyFrameTime	= blurriness.findNearestKey(0.0, 0.1);
 									var lastKeyFrameTime	= keyFrameTime;
 									while(keyFrameTime !== undefined){
-										$._PPP_.message('keyframe @ ' + keyFrameTime.seconds);
+										$._PPP_.updateEventPanel('keyframe @ ' + keyFrameTime.seconds);
 										lastKeyFrameTime	= keyFrameTime;
 										keyFrameTime		= blurriness.findNextKey(keyFrameTime);
 									}
@@ -1281,7 +1365,7 @@ $._PPP_={
 									// scan keyframes, backward
 									keyFrameTime	= lastKeyFrameTime;
 									while(keyFrameTime	!== undefined){
-										$._PPP_.message('keyframe @ ' + keyFrameTime.seconds);
+										$._PPP_.updateEventPanel('keyframe @ ' + keyFrameTime.seconds);
 										lastKeyFrameTime	= keyFrameTime;
 										keyFrameTime		= blurriness.findPreviousKey(keyFrameTime);
 									}
@@ -1290,7 +1374,7 @@ $._PPP_={
 
 									var blurKeyframesArray	= blurriness.getKeys();
 									if (blurKeyframesArray){
-										$._PPP_.message(blurKeyframesArray.length + ' keyframes found');
+										$._PPP_.updateEventPanel(blurKeyframesArray.length + ' keyframes found');
 									}
 
 									// remove keyframe at 19s
@@ -1309,7 +1393,7 @@ $._PPP_={
 				}
 			}
 		} else {
-			$._PPP_.updateEventPanel("No active sequence found.");
+			$._PPP_.updateEventPanel("no active sequence.");
 		}
 	},
 
@@ -1355,11 +1439,15 @@ $._PPP_={
 		app.encoder.bind('onEncoderJobCanceled',	$._PPP_.onEncoderJobCanceled);
 
 		if (app.project) {
-			var fileOrFilesToImport	= File.openDialog (	"Choose full resolution files to import", 	// title
-														0, 											// filter available files? 
+			var filterString = "";
+			if (Folder.fs === 'Windows'){
+				filterString = "All files:*.*";
+			}
+			var fileOrFilesToImport	= File.openDialog(	"Choose full resolution files to import", 	// title
+														filterString, 								// filter available files? 
 														true); 										// allow multiple?
 			if (fileOrFilesToImport) {
- 				var nameToFind	= 'Proxies generated by PProPanel';
+				var nameToFind	= 'Proxies generated by PProPanel';
 				var targetBin	= $._PPP_.searchForBinWithName(nameToFind);
 				if (targetBin === 0) {
 					// If panel can't find the target bin, it creates it.
@@ -1404,20 +1492,20 @@ $._PPP_={
 		if (seq){
 			var first = app.project.rootItem.children[0];
 			if (first){
-				var vTrack1 = seq.videoTracks[0];
-				if (vTrack1){
-					
+				 var numVTracks = seq.videoTracks.numTracks;
+				 var targetVTrack = seq.videoTracks[(numVTracks - 1)];
+				if (targetVTrack){
 					// If there are already clips in this track,
 					// append this one to the end. Otherwise, 
 					// insert at start time.
 
-					if (vTrack1.clips.numItems > 0){
-						var lastClip = vTrack1.clips[(vTrack1.clips.numItems - 1)];
+					if (targetVTrack.clips.numItems > 0){
+						var lastClip = targetVTrack.clips[(targetVTrack.clips.numItems - 1)];
 						if (lastClip){
-							vTrack1.insertClip(first, lastClip.end.seconds);
+							targetVTrack.insertClip(first, lastClip.end.seconds);
 						}
 					}else {
-							vTrack1.insertClip(first, '00;00;00;00');
+							targetVTrack.insertClip(first, '00;00;00;00');
 					}
 				} else {
 					$._PPP_.updateEventPanel("Could not find first video track.");
@@ -1426,7 +1514,7 @@ $._PPP_={
 				$._PPP_.updateEventPanel("Couldn't locate first projectItem.");
 			}
 		} else {
-			$._PPP_.updateEventPanel("No active sequence found.");
+			$._PPP_.updateEventPanel("no active sequence.");
 		}
 	},
 
@@ -1446,7 +1534,7 @@ $._PPP_={
 				$._PPP_.updateEventPanel("Couldn't locate first projectItem.");
 			}
 		} else {
-			$._PPP_.updateEventPanel("No active sequence found.");
+			$._PPP_.updateEventPanel("no active sequence.");
 		}
 	},
 
@@ -1461,8 +1549,11 @@ $._PPP_={
 	changeLabel : function () {
 		var first = app.project.rootItem.children[0];
 		if (first){
-			var newLabel = 4;  // 4 = Cerulean. 0 = Violet, 15 = Yellow.
 			var currentLabel = first.getColorLabel();
+			var newLabel 	 = currentLabel + 1;  // 4 = Cerulean. 0 = Violet, 15 = Yellow.
+			if (newLabel > 15){
+				newLabel = newLabel - 16;
+			}
 			app.setSDKEventMessage("Previous Label color = " + currentLabel + ".", 'info');
 			first.setColorLabel(newLabel);
 			app.setSDKEventMessage("New Label color = " + newLabel + ".", 'info');
@@ -1476,7 +1567,7 @@ $._PPP_={
 
 		var targetBin	= $._PPP_.searchForBinWithName(nameToFind);
 
-		if (targetBin === 0) {
+		if (targetBin === undefined) {
 			// If panel can't find the target bin, it creates it.
 			app.project.rootItem.createBin(nameToFind);
 			targetBin	= $._PPP_.searchForBinWithName(nameToFind);
@@ -1494,6 +1585,8 @@ $._PPP_={
 			if (Folder.fs === 'Windows'){
 				filterString = "All files:*.*";
 			}
+            compNamesToImport = [];
+            
 			var aepToImport	= 	File.openDialog (	"Choose After Effects project", 	// title
 													filterString,						// filter available files? 
 													false);								// allow multiple?
@@ -1506,7 +1599,8 @@ $._PPP_={
 											'', 
 											'Which Comp to import');
 					if (compName){
-						var importAECompResult = app.project.importAEComps(aepToImport.fsName, [compName], targetBin);
+                        compNamesToImport[0] = compName;
+                        var importAECompResult = app.project.importAEComps(aepToImport.fsName, compNamesToImport, targetBin);
 					} else {
 						$._PPP_.updateEventPanel("Could not find Composition.");
 					}
@@ -1522,6 +1616,7 @@ $._PPP_={
 	consolidateProject : function () {
 		var pmo = app.projectManager.options;
 
+		if (app.project.sequences.length){
 		if (pmo) {
 			var filterString = "";
 			if (Folder.fs === 'Windows'){
@@ -1562,8 +1657,68 @@ $._PPP_={
 				pmo.destinationPath 			=	outFolder.fsName;
 				pmo.excludeUnused 				=	false;
 				pmo.handleFrameCount 			=	0;
-				pmo.includeConformedAudio		=	false;
-				pmo.includePreviews 			=	false;
+				pmo.includeConformedAudio		=	true;
+				pmo.includePreviews 			=	true;
+				pmo.renameMedia					=	false;
+
+				var result		= app.projectManager.process(app.project);
+				var errorList 	= app.projectManager.errors;
+				
+				if(errorList.length){
+					for (var k = 0; k < errorList.length; k++){
+						$._PPP_.updateEventPanel(errorList[k][1]);
+					}
+				} else {
+					$._PPP_.updateEventPanel(app.project.name + " successfully processed to " + outFolder.fsName + ".");
+				}
+				return result;
+			}
+		}
+
+
+		}
+		if (pmo) {
+			var filterString = "";
+			if (Folder.fs === 'Windows'){
+				filterString = "Output Presets:*.epr";
+			}
+	
+			var outFolder			= Folder.selectDialog("Choose output directory.");
+			if (outFolder) {
+
+				var presetPath 			= "";
+				var useSpecificPreset	= confirm("Would you like to select an output preset?", false, "Are you sure...?");
+				if (useSpecificPreset){
+					var useThisEPR	= File.openDialog (	"Choose output preset (.epr file)", 	// title
+														filterString, 							// filter available files? 
+														false); 								// allow multiple?
+
+					if (useThisEPR){
+						pmo.clipTranscoderOption = pmo.CLIP_TRANSCODE_MATCH_PRESET;	
+						pmo.encoderPresetFilePath 		=	useThisEPR.fsName;
+					}
+				} else {
+					pmo.clipTranscoderOption = pmo.CLIP_TRANSCODE_MATCH_SEQUENCE;	
+				}
+			
+				var processAllSequences	= confirm("Process all sequences? No = just the first sequence found.", true, "Process all?");
+				
+				if (processAllSequences){
+					pmo.includeAllSequences = true;
+				} else {
+					pmo.includeAllSequences = false;
+					pmo.affectedSequences 	= [app.project.sequences[0]];
+				}
+			
+				pmo.clipTransferOption 			= 	pmo.CLIP_TRANSFER_TRANSCODE;
+				pmo.convertAECompsToClips		=	false;
+				pmo.convertSyntheticsToClips 	=	false;
+				pmo.copyToPreventAlphaLoss 		=	false;
+				pmo.destinationPath 			=	outFolder.fsName;
+				pmo.excludeUnused 				=	false;
+				pmo.handleFrameCount 			=	0;
+				pmo.includeConformedAudio		=	true;
+				pmo.includePreviews 			=	true;
 				pmo.renameMedia					=	false;
 
 				var result		= app.projectManager.process(app.project);
@@ -1588,9 +1743,9 @@ $._PPP_={
 			if (Folder.fs === 'Windows'){
 				filterString = "Motion Graphics Templates:*.mogrt";
 			}
-			var mogrtToImport	= 	File.openDialog (	"Choose MoGRT", 	// title
-														0, 					// filter available files? 
-														false);				// allow multiple?
+			var mogrtToImport	= 	File.openDialog (  "Choose MoGRT", 	// title
+														filterString,	// filter available files? 
+														false);			// allow multiple?
 			if (mogrtToImport){
 				var targetTime		= activeSeq.getPlayerPosition();
 				var vidTrackOffset  = 0;
@@ -1603,7 +1758,10 @@ $._PPP_={
 					var moComp = newTrackItem.getMGTComponent();
 					if (moComp){
 						var params			= 	moComp.properties;
-						var srcTextParam	=	params.getParamForDisplayName("Source Text");
+						for (var z = 0; z < params.numItems; z++){
+						   var thisParam = params[0];
+						}
+						var srcTextParam	=	params.getParamForDisplayName("Main Title");
 						if (srcTextParam){
 							var val	= srcTextParam.getValue();
 							srcTextParam.setValue("New value set by PProPanel!");
@@ -1613,7 +1771,9 @@ $._PPP_={
 			} else {
 				app.setSDKEventMessage('Unable to import ' + mogrtToImport.fsName + '.', 'error');  
 			}
-		} 
+		} else {
+			app.setSDKEventMessage('No active sequence.');  
+		}
 	},
 
 	reportCurrentProjectSelection : function() {
@@ -1638,6 +1798,54 @@ $._PPP_={
 		}
 	},
 
+	setAllProjectItemsOnline : function(startingBin){
+		for (var k = 0; k < startingBin.children.numItems; k++){
+			var currentChild = startingBin.children[k];
+			if (currentChild){
+				if (currentChild.type === ProjectItemType.BIN){
+					$._PPP_.setAllProjectItemsOnline(currentChild);		// warning; recursion!
+				} else if (currentChild.isOffline()){
+					currentChild.changeMediaPath(currentChild.getMediaPath(), true);
+                    if (currentChild.isOffline()){
+                         $._PPP_.updateEventPanel("Failed to bring \'" + currentChild.name + "\' online.");
+                    } else {
+                         $._PPP_.updateEventPanel("\'" + currentChild.name + "\' is once again online.");
+                    }
+				}
+			}
+		}
+	},
+
+	setAllOnline : function(){
+		var startingBin = app.project.rootItem;
+		$._PPP_.setAllProjectItemsOnline(startingBin);
+	},
+
+	setOffline : function() {
+		var viewIDs = app.getProjectViewIDs();
+        for (var a = 0; a < app.projects.numProjects; a++){
+            var currentProject = app.getProjectFromViewID(viewIDs[a]);
+            if (currentProject){
+                if (currentProject.documentID === app.project.documentID){	// We're in the right project!
+                    var selectedItems = app.getProjectViewSelection(viewIDs[a]);
+                    for (var b = 0; b < selectedItems.length; b++){
+                        var currentItem = selectedItems[b];
+                        if (currentItem){
+                            if ((!currentItem.isSequence()) && (currentItem.type !== ProjectItemType.BIN)){ // For every selected item which isn't a bin or sequence...
+                                if (currentItem.isOffline()){
+									$._PPP_.updateEventPanel("\'" + currentItem.name + "\'was already offline.");
+								} else {
+									var result = currentItem.setOffline();
+									$._PPP_.updateEventPanel("\'" + currentItem.name + "\' is now offline.");
+								}
+                            }
+                        }
+                    }
+                }
+            }
+        }
+	},
+	
 	updateFrameRate : function() {
 		var item = app.project.rootItem.children[0]; 
 		if (item) {
@@ -1662,7 +1870,7 @@ $._PPP_={
 	},
 
 	myOnProjectChanged : function(documentID){
-        var msg = 'Project with ID ' + documentID + ' Changed.';
+		var msg = 'Project with ID ' + documentID + ' Changed.';
 		// Commented out, as this happens a LOT.
 		// $._PPP_.updateEventPanel(msg);
 	},
@@ -1677,4 +1885,477 @@ $._PPP_={
 			$._PPP_.updateEventPanel("Note: PProPanel relies on features added in 12.1, but is currently running in " + version + ".");
 		}
 	},
+
+	changeMarkerColors : function() {
+		if (app.project.rootItem.children.numItems > 0){
+			var projectItem	= app.project.rootItem.children[0]; // assumes first item is footage.
+			if (projectItem) {
+				if (projectItem.type == ProjectItemType.CLIP ||
+					projectItem.type == ProjectItemType.FILE) {
+					
+					markers	= projectItem.getMarkers();
+
+					if (markers) {
+						var markerCount		= markers.numMarkers;
+						
+						if (markerCount){
+							for(var thisMarker	=	markers.getFirstMarker(); thisMarker	!==	undefined; 	thisMarker	=	markers.getNextMarker(thisMarker)){
+								var oldColor = thisMarker.getColorByIndex();
+								var newColor = oldColor + 1;
+								if (newColor > 7){
+									newColor = 0;
+								}
+								thisMarker.setColorByIndex(newColor);
+								$._PPP_.updateEventPanel("Changed color of marker named \'" + thisMarker.name + "\' from " + oldColor + " to " + newColor + ".");
+							}
+						}
+					}
+				} else {
+					$._PPP_.updateEventPanel("Can only add markers to footage items.");
+				}
+			} else {
+				$._PPP_.updateEventPanel("Could not find first projectItem.");
+			}
+		} else {
+			$._PPP_.updateEventPanel("Project is empty.");
+		}	
+	},
+
+	changeSeqTimeCodeDisplay : function() {
+		if (app.project.activeSequence){
+			var currentSeqSettings = app.project.activeSequence.getSettings();
+			if (currentSeqSettings){
+				var oldVidSetting = currentSeqSettings.videoDisplayFormat;
+				currentSeqSettings.videoDisplayFormat = oldVidSetting + 1;
+				if (currentSeqSettings.videoDisplayFormat > TIMEDISPLAY_48Timecode){
+					currentSeqSettings.videoDisplayFormat = TIMEDISPLAY_24Timecode;
+				}
+				app.project.activeSequence.setSettings(currentSeqSettings);
+				$._PPP_.updateEventPanel("Changed timecode display format for \'" + app.project.activeSequence.name + "\'.");
+			}
+		} else {
+			$._PPP_.updateEventPanel("No active sequence.");
+		}
+	},
+
+	myActiveSequenceChangedFxn : function() {
+		$._PPP_.updateEventPanel("Active sequence is now " + app.project.activeSequence.name + ".");
+	},
+
+	myActiveSequenceSelectionChangedFxn : function() {
+		var sel = app.project.activeSequence.getSelection();
+		$._PPP_.updateEventPanel('Current active sequence = ' + app.project.activeSequence.name + '.');
+		$._PPP_.updateEventPanel( sel.length + ' track items selected.');
+		for(var i = 0; i < sel.length; i++){
+			if (sel[i].name !== 'anonymous'){
+				$._PPP_.updateEventPanel('Selected item ' + (i+1) + ' == ' + sel[i].name + '.');
+			}
+		}	
+	},
+
+	registerActiveSequenceChangedFxn : function() {
+		var success = app.bind("onActiveSequenceChanged", $._PPP_.myActiveSequenceChangedFxn);
+	},
+
+	registerSequenceSelectionChangedFxn : function() {
+		var success = app.bind('onActiveSequenceSelectionChanged', $._PPP_.myActiveSequenceSelectionChangedFxn);
+	},
+
+	enableNewWorldScripting : function(){
+		app.enableQE();
+
+		var previousNWValue = qe.getDebugDatabaseEntry("ScriptLayerPPro.EnableNewWorld");
+		var previousInternalDOMValue = qe.getDebugDatabaseEntry("dvascripting.EnabledInternalDOM");
+		if ((previousNWValue === 'true') && (previousInternalDOMValue === 'true')){
+			qe.setDebugDatabaseEntry("ScriptLayerPPro.EnableNewWorld", "false");
+			qe.setDebugDatabaseEntry("dvascripting.EnabledInternalDOM", "false");
+			$._PPP_.updateEventPanel("ScriptLayerPPro.EnableNewWorld and dvascripting.EnabledInternalDOM are now OFF.");
+		} else {
+			qe.setDebugDatabaseEntry("ScriptLayerPPro.EnableNewWorld", "true");
+			qe.setDebugDatabaseEntry("dvascripting.EnabledInternalDOM", "true");
+			$._PPP_.updateEventPanel("ScriptLayerPPro.EnableNewWorld and dvascripting.EnabledInternalDOM are now ON.");
+		}
+	},
+
+	insertOrAppendToTopTracks : function() {
+		var seq = app.project.activeSequence;
+		if (seq){
+			var first = app.project.rootItem.children[0];
+			if (first){
+                var time = seq.getPlayerPosition();
+                var newClip = seq.insertClip(first, time, (seq.videoTracks.numTracks - 1), (seq.audioTracks.numTracks - 1));
+                if (newClip){
+                    $._PPP_.updateEventPanel("Inserted " + newClip.name + ", into " + seq.name + ".");
+                }
+			} else {
+				$._PPP_.updateEventPanel("Couldn't locate first projectItem.");
+			}
+		} else {
+			$._PPP_.updateEventPanel("no active sequence.");
+		}
+	},
+
+	closeAllProjectsOtherThanActiveProject : function() {
+		var viewIDs = app.getProjectViewIDs(); 
+		var closeTheseProjects = [];
+		for (var a = 0; a < viewIDs.length; a++){
+			var thisProj = app.getProjectFromViewID(viewIDs[a]);
+			if (thisProj.documentID !== app.project.documentID){
+				closeTheseProjects[a] = thisProj;
+			}       
+		}
+		// Why do this afterward? Because if we close projects in that loop, we change the active project. :)
+		for (var b = 0; b < closeTheseProjects.length; b++){
+			$._PPP_.updateEventPanel("Closed " + closeTheseProjects[b].name);
+			closeTheseProjects[b].closeDocument();
+		}
+	},
+
+	countAdjustmentLayersInBin : function(parentItem, arrayOfAdjustmentLayerNames, foundSoFar){
+		for (var j = 0; j < parentItem.children.numItems; j++){
+			var currentChild	= parentItem.children[j];
+			if (currentChild){
+				if (currentChild.type == ProjectItemType.BIN){
+					$._PPP_.countAdjustmentLayersInBin(currentChild, arrayOfAdjustmentLayerNames, foundSoFar);		// warning; recursion!
+				} else {
+					if (currentChild.isAdjustmentLayer()){
+                        arrayOfAdjustmentLayerNames[foundSoFar] = currentChild.name;
+                        foundSoFar++;
+					}
+				}
+			}
+		}
+	},
+
+	findAllAdjustmentLayersInProject : function() {
+		var arrayOfAdjustmentLayerNames = [];
+		var foundSoFar 					= 0;
+		var startingBin 				= app.project.rootItem;
+
+		$._PPP_.countAdjustmentLayersInBin(startingBin, arrayOfAdjustmentLayerNames, foundSoFar);
+		if (arrayOfAdjustmentLayerNames.length){
+			var remainingArgs 	= arrayOfAdjustmentLayerNames.length;
+			var message 		= remainingArgs + " adjustment layers found: ";
+
+			for (var i = 0; i < arrayOfAdjustmentLayerNames.length; i++) {
+				message += arrayOfAdjustmentLayerNames[i];
+				remainingArgs--;
+				if (remainingArgs > 1) {
+					message += ', ';
+				}
+				if (remainingArgs === 1){
+					message += ", and ";
+				} 
+				if (remainingArgs === 0) {
+					message += ".";
+				}
+			}
+			$._PPP_.updateEventPanel(message);
+		} else {
+			$._PPP_.updateEventPanel("No adjustment layers found in " + app.project.name + ".");
+		}
+	},
+
+	consolidateDuplicates : function() {
+		result = app.project.consolidateDuplicates();
+		$._PPP_.updateEventPanel("Duplicates consolidated in " + app.project.name + ".");
+	},
+
+	closeAllSequences : function() {
+		var seqList = app.project.sequences;
+		for (var a = 0; a < seqList.numSequences; a++){
+			var currentSeq = seqList[a];
+			if (currentSeq){
+				currentSeq.close();
+			} else {
+				$._PPP_.updateEventPanel("No sequences from " + app.project.name + " were open.");
+			}
+		}
+	},
+
+	dumpAllPresets : function() {
+		var desktopPath			= new File("~/Desktop");
+		var outputFileName		= desktopPath.fsName + $._PPP_.getSep() + 'available_presets.txt';
+		var selectedPreset 		= undefined;
+		var selectedExporter 	= undefined;
+		var exporters 			= app.encoder.getExporters();
+	
+		var outFile = new File(outputFileName);
+
+		outFile.encoding = "UTF8";
+		outFile.open("w", "TEXT", "????");
+
+		for(var i = 0; i < exporters.length; i++){
+			var exporter = exporters[i];
+			if (exporter){
+				outFile.writeln('-----------------------------------------------');
+				outFile.writeln(i + ':' + exporter.name + ' : ' + exporter.classID + ' : ' + exporter.fileType);
+				var presets = exporter.getPresets();
+				if (presets){
+					outFile.writeln(presets.length + ' presets found');
+					for(var j = 0; j < presets.length; j++){
+						var preset = presets[j];
+						if (preset){
+							outFile.writeln('matchName: ' + preset.matchName + '(' + preset.name+')');
+							if (preset.name.indexOf('TQM') > -1){ 
+								selectedPreset 		= preset;
+								selectedExporter 	= exporter;
+								outFile.writeln('selected preset = ' + selectedExporter.name + ' : ' + selectedPreset.name);
+								selectedPreset.writeToFile(desktopPath.fsName + $._PPP_.getSep() + preset.name + ".epr");
+								$._PPP_.updateEventPanel("List of available presets saved to desktop as \'available_presets.txt\'");
+							}
+						}
+					}
+				}
+			}
+		}
+		desktopPath.close();
+		outFile.close();
+    },
+
+	reportSequenceVRSettings : function() {
+		var seq = app.project.activeSequence;
+		if (seq){
+			var settings = seq.getSettings();
+			if (settings){
+				$._PPP_.updateEventPanel("====================================================");
+				$._PPP_.updateEventPanel("VR Settings for \'" + seq.name + "\':");
+				$._PPP_.updateEventPanel("");
+				$._PPP_.updateEventPanel("          Horizontal captured view: " + settings.vrHorzCapturedView);
+				$._PPP_.updateEventPanel("          Vertical captured view: " + settings.vrVertCapturedView);
+				$._PPP_.updateEventPanel("          Layout: " + settings.Layout);
+				$._PPP_.updateEventPanel("          Projection: " + settings.vrProjection);
+				$._PPP_.updateEventPanel("");
+				$._PPP_.updateEventPanel("====================================================");
+			}
+		}
+	},
+
+	openProjectItemInSource : function() {
+		var viewIDs = app.getProjectViewIDs();
+		if (viewIDs){
+			for (var a = 0; a < app.projects.numProjects; a++){
+				var currentProject = app.getProjectFromViewID(viewIDs[a]);
+				if (currentProject){
+					if (currentProject.documentID === app.project.documentID){	// We're in the right project!
+						var selectedItems = app.getProjectViewSelection(viewIDs[a]);
+						for (var b = 0; b < selectedItems.length; b++){
+							var currentItem = selectedItems[b];
+							if (currentItem){
+								if (currentItem.type !== ProjectItemType.BIN){ // For every selected item which isn't a bin or sequence...
+									app.sourceMonitor.openProjectItem(currentItem);
+								}
+							} else {
+								$._PPP_.updateEventPanel("No item available.");
+							}
+						}
+					}
+				} else {
+					$._PPP_.updateEventPanel("No project available.");
+				}
+			}
+		} else {
+			$._PPP_.updateEventPanel("No view IDs available.");
+		}
+	},
+
+	reinterpretFootage : function() {
+		var viewIDs = app.getProjectViewIDs();
+		if (viewIDs){
+			for (var a = 0; a < app.projects.numProjects; a++){
+				var currentProject = app.getProjectFromViewID(viewIDs[a]);
+				if (currentProject){
+					if (currentProject.documentID === app.project.documentID){	// We're in the right project!
+						var selectedItems = app.getProjectViewSelection(viewIDs[a]);
+						if (selectedItems){
+							for (var b = 0; b < selectedItems.length; b++){
+								var currentItem = selectedItems[b];
+								if (currentItem){
+									if ((currentItem.type !== ProjectItemType.BIN) &&
+										(currentItem.isSequence() === false)){ 
+										var interp = currentItem.getFootageInterpretation();
+										if (interp) {
+											// Note: I made this something terrible, so the change is apparent.
+											interp.frameRate = 17.868;
+											interp.pixelAspectRatio = 1.2121;
+											currentItem.setFootageInterpretation(interp);
+										} else {
+											$._PPP_.updateEventPanel("Unable to get interpration for " + currentItem.name + ".");
+										}
+										var mapping = currentItem.getAudioChannelMapping;
+										if (mapping){
+											mapping.audioChannelsType = AUDIOCHANNELTYPE_Stereo; 
+											mapping.audioClipsNumber = 1;
+											mapping.setMappingForChannel(0, 4); // 1st param = channel index, 2nd param = source index
+											mapping.setMappingForChannel(1, 5);
+											currentItem.setAudioChannelMapping(mapping); // submit changed mapping object
+										}
+									}
+								} else {
+									$._PPP_.updateEventPanel("No project item available.");
+								}
+							}
+						} else {
+							$._PPP_.updateEventPanel("No items selected.");
+						}
+					}
+				} else {
+					$._PPP_.updateEventPanel("No project available.");
+				}
+			}
+		} else {
+			$._PPP_.updateEventPanel("No view IDs available.");
+		}
+	}, 
+
+	createSubSequence : function() {
+
+		/* 	Behavioral Note
+
+			createSubSequence() uses track targeting to select clips when there is
+			no current clip selection, in the sequence. To create a subsequence with
+			clips on tracks that are currently NOT targeted, either select some clips
+			(on any track), or temporarily target all desired tracks.
+
+		*/
+
+		var activeSequence = app.project.activeSequence;
+		if (activeSequence) {
+			var foundTarget = false;
+			for (var a = 0; (a < activeSequence.videoTracks.numTracks) && (foundTarget === false); a++){
+				var vTrack = activeSequence.videoTracks[a];
+				if (vTrack){
+					if (vTrack.isTargeted()){
+						foundTarget = true;
+					}
+				}
+			}
+			// If no targeted track was found, just target the zero-th track, for demo purposes
+			if (foundTarget === false){
+				activeSequence.videotracks[0].setTargeted(true, true);
+			}
+
+			var cloneAnyway = true;
+			if ((activeSequence.getInPoint() == NOT_SET) && (activeSequence.getOutPoint() == NOT_SET)){
+				cloneAnyway = confirm("No in or out points set; clone entire sequence?", false, "Clone the whole thing?");
+			}
+			if (cloneAnyway){
+				var ignoreMapping = confirm("Ignore track mapping?", false, "Ignore track mapping?");
+				var newSeq = activeSequence.createSubsequence(ignoreMapping);
+				// rename newSeq here, as desired.
+			}
+		} else {
+			$._PPP_.updateEventPanel("No active sequence.");
+		}
+	}, 
+
+	selectAllRetimedClips : function() {
+		var activeSeq = app.project.activeSequence;
+		var numRetimedClips = 0;
+		if (activeSeq){
+			var trackGroups			= [ activeSeq.audioTracks, activeSeq.videoTracks ];
+			var trackGroupNames		= [ "audioTracks", "videoTracks" ];
+			var updateUI			= true;
+
+			for(var gi = 0; gi<2; gi++)	{
+				group	= trackGroups[gi];
+				for(var ti=0; ti<group.numTracks; ti++){
+					var track		= group[ti];
+					var clips		= track.clips;
+					for(var ci=0; ci<clips.numTracks; ci++){
+						var clip	= clips[ci];
+						if (clip.getSpeed() !== 1){
+							clip.setSelected(true, updateUI);
+							numRetimedClips++;
+						}
+					}
+				}
+			}			
+			$._PPP_.updateEventPanel(numRetimedClips + " retimed clips found.");
+		} else {
+			$._PPP_.updateEventPanel("No active sequence.");
+		}
+	},
+
+	selectReversedClips : function() {
+		var sequence		= app.project.activeSequence;
+		var numReversedClips = 0;
+		if (sequence){
+			var trackGroups			= [ sequence.audioTracks, sequence.videoTracks ];
+			var trackGroupNames		= [ "audioTracks", "videoTracks" ];
+			var updateUI			= true;
+
+			for(var gi = 0; gi<2; gi++)	{
+				for(var ti=0; ti<group.numTracks; ti++){
+					for(var ci=0; ci < group[ti].clips.numTracks; ci++){
+						var clip = group[ti].clips[ci];
+						var isReversed = clip.isSpeedReversed();
+						if (isReversed){
+							clip.setSelected(isReversed, updateUI);
+							numReversedClips++;
+						}
+					}
+				}
+			}
+			$._PPP_.updateEventPanel(numReversedClips + " reversed clips found.");
+		} else {
+			$._PPP_.updateEventPanel("No active sequence.");
+		}
+	},
+
+	logConsoleOutput : function() {
+		app.enableQE();
+		var logFileName = "PPro_Console_output.txt"
+		var outFolder	= Folder.selectDialog("Where do you want to save the log file?");
+		if (outFolder){
+			var entireOutputPath = outFolder.fsName + $._PPP_.getSep() + logFileName;
+			var result = qe.executeConsoleCommand("con.openlog " + entireOutputPath);
+			$._PPP_.updateEventPanel("Log opened at " + entireOutputPath + ".");
+		}
+	},
+
+	closeLog : function() {
+		app.enableQE();
+		qe.executeConsoleCommand("con.closelog");
+	},
+
+	stitch : function(presetPath) {
+		var viewIDs = app.getProjectViewIDs();
+		var allPathsToStitch = "";
+
+        for (var a = 0; a < app.projects.numProjects; a++){
+            var currentProject = app.getProjectFromViewID(viewIDs[a]);
+            if (currentProject){
+                if (currentProject.documentID === app.project.documentID){	// We're in the right project!
+                    var selectedItems = app.getProjectViewSelection(viewIDs[a]);
+					if (selectedItems.length){
+						for (var b = 0; b < selectedItems.length; b++){
+							var currentItem = selectedItems[b];
+							if (currentItem){
+								if ((!currentItem.isSequence()) && (currentItem.type !== ProjectItemType.BIN)){ // For every selected item which isn't a bin or sequence...
+									allPathsToStitch += currentItem.getMediaPath();
+										allPathsToStitch += ";";
+								}
+							}
+						}
+
+						var AMEString = "var fe = app.getFrontend(); fe.stitchFiles(\"" + allPathsToStitch + "\"";
+						var addendum = ", \"H.264\", \"" + presetPath + "\", "  + "\"(This path parameter is never used)\");";
+
+						AMEString += addendum; 
+
+						// 3. Send Command to AME for Export //
+						var bt      = new BridgeTalk();
+						bt.target   = 'ame';
+						bt.body = AMEString;
+						bt.send();
+
+
+						
+					}
+                }
+            }
+        }
+	},
+
 };
