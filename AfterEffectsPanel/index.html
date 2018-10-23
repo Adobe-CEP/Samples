@@ -1,33 +1,51 @@
 <!doctype html>
+<!--
+/*************************************************************************
+* ADOBE CONFIDENTIAL
+* ___________________
+*
+* Copyright 2014 Adobe
+* All Rights Reserved.
+*
+* NOTICE: Adobe permits you to use, modify, and distribute this file in
+* accordance with the terms of the Adobe license agreement accompanying
+* it. If you have received this file from a source other than Adobe,
+* then your use, modification, or distribution of it requires the prior
+* written permission of Adobe. 
+**************************************************************************/
+-->
 <html>
-    <head>
-        <meta charset="utf-8">
-            <script src="./ext.js"></script>
-            <script src="./lib/CSInterface.js"></script>
-       		<script src="./lib/jquery-1.9.1.js"></script>
-			<script src="./lib/Vulcan.js"></script>
-			<script type="text/javascript">
 
-				$( document ).ready(function() {
+<head>
+	<meta charset="utf-8">
+	<script src="./ext.js"></script>
+	<script src="./lib/CSInterface.js"></script>
+	<script src="./lib/jquery-1.9.1.js"></script>
+	<script src="./lib/Vulcan.js"></script>
+	<script type="text/javascript">
+
+		$(document).ready(function () {
 
 
-					// For functions which require interaction at the JavaScript level, we provide these JQuery-based
-					// handlers, instead of directly invoking ExtendScript .This givs the JavaScript layer a chance
-					// to pass data into the ExtendScript layer, and process the results.
+			// For functions which require interaction at the JavaScript level, we provide these JQuery-based
+			// handlers, instead of directly invoking ExtendScript .This givs the JavaScript layer a chance
+			// to pass data into the ExtendScript layer, and process the results.
 
-					$("#sendtext").on("click", function(e){
-							e.preventDefault(); 
-							var csInterface = new CSInterface();
+			$("#sendtext").on("click", function (e) {
+				e.preventDefault();
+				var csInterface = new CSInterface();
 
-							csInterface.evalScript('$._ext.sendText()', myTextHandlerFunction);  
-					});
-				});
-			</script>            <link rel="stylesheet" type="text/css" href="./style.css">
-    </head>
-    <body onLoad="onLoaded()">
-    		<a href="javascript:history.go(0)">Refresh panel</a>
+				csInterface.evalScript('$._ext.sendText()', myTextHandlerFunction);
+			});
+		});
+	</script>
+	<link rel="stylesheet" type="text/css" href="./style.css">
+</head>
 
-		<button id="sendtext">Send all text from layers</button>
-<!--         <button id="generateComplexComp" onClick="evalScript('$._ext.generateComplexComp()')">old name Comp</button>
- -->    </body>
+<body onLoad="onLoaded()">
+	<a href="javascript:history.go(0)">Refresh panel</a>
+
+	<button id="sendtext">Send all text from layers</button>
+</body>
+
 </html>

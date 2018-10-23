@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ExtensionList>
+    <Extension Id="com.dehats.threejsexample">
+        <HostList>
+            <Host Name="PHXS" Port="8003"/>
+        </HostList>
+    </Extension>
+</ExtensionList>

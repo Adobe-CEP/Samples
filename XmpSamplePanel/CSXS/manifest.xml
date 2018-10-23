@@ -1,5 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
+<!--
+/*************************************************************************
+* ADOBE CONFIDENTIAL
+* ___________________
+*
+* Copyright 2014 Adobe
+* All Rights Reserved.
+*
+* NOTICE: Adobe permits you to use, modify, and distribute this file in
+* accordance with the terms of the Adobe license agreement accompanying
+* it. If you have received this file from a source other than Adobe,
+* then your use, modification, or distribution of it requires the prior
+* written permission of Adobe. 
+**************************************************************************/
+-->
 <ExtensionManifest Version="4.0" ExtensionBundleId="com.example.XmpSamplePanel" ExtensionBundleVersion="1.0.0"
 		ExtensionBundleName="XmpSamplePanel" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<ExtensionList>
@@ -7,12 +21,12 @@
 	</ExtensionList>
 	<ExecutionEnvironment>
 		<HostList>
-			<Host Name="ILST" Version="[17.0,17.9]" />
-			<Host Name="PHXS" Version="[14.0,14.9]" />
-			<Host Name="PHSP" Version="[14.0,14.9]" />			
-			<Host Name="IDSN" Version="[9.1,10.0]" />
-			<Host Name="PPRO" Version="[7.0,8.0]" />			
-			<Host Name="AUDT" Version="[8.0,8.9]" />
+			<Host Name="ILST" Version="17.0" />
+			<Host Name="PHXS" Version="14.0" />
+			<Host Name="PHSP" Version="14.0" />			
+			<Host Name="IDSN" Version="10.0" />
+			<Host Name="PPRO" Version="7.0" />			
+			<Host Name="AUDT" Version="8.0" />
 		</HostList>
 		<LocaleList>
 			<Locale Code="All" />

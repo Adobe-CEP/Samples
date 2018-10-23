@@ -1,4 +1,19 @@
 <!doctype html>
+<!--
+/*************************************************************************
+* ADOBE CONFIDENTIAL
+* ___________________
+*
+* Copyright 2014 Adobe
+* All Rights Reserved.
+*
+* NOTICE: Adobe permits you to use, modify, and distribute this file in
+* accordance with the terms of the Adobe license agreement accompanying
+* it. If you have received this file from a source other than Adobe,
+* then your use, modification, or distribution of it requires the prior
+* written permission of Adobe. 
+**************************************************************************/
+-->
 <html lang="en">
 <head>
   <meta charset="utf-8">
@@ -34,13 +49,13 @@
   </style>
 </head>
 <body>
-  <script src="http://cdnjs.cloudflare.com/ajax/libs/socket.io/0.9.10/socket.io.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.slim.js"></script>
   <textarea id="input" autofocus="autofocus" onkeypress="keypress(event)"></textarea>
   <script>
     var input = document.getElementById("input");
     var socket = io.connect('http://localhost:8080');
     input.onkeypress = function(event) {
-      if (event.shiftKey && event.keyCode === 13) {
+      if (event.keyCode === 13) {
         socket.emit("fromWebsite", input.value);
         return false;
       }

@@ -13,6 +13,6 @@
   },
   "devDependencies": {
     "@types/node": "^0.12.4",
-    "typescript": "^2.3.3"      // Optional. VSCode [at least] comes with TypeScript already.
+    "typescript": "^2.3.3"
   }
 }
