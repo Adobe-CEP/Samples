@@ -55,6 +55,8 @@ function onLoaded() {
 	csInterface.evalScript('$._PPP_.registerSequenceSelectionChangedFxn()');		// Selection within the active sequence changed
 
 	csInterface.evalScript('$._PPP_.confirmPProHostVersion()');
+	
+	csInterface.evalScript('$._PPP_.clearESTKConsole()');
 }
 
 function dragHandler(event){

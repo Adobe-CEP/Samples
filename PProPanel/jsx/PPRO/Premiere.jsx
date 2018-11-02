@@ -2193,7 +2193,7 @@ $._PPP_={
 											interp.pixelAspectRatio = 1.2121;
 											currentItem.setFootageInterpretation(interp);
 										} else {
-											$._PPP_.updateEventPanel("Unable to get interpration for " + currentItem.name + ".");
+											$._PPP_.updateEventPanel("Unable to get interpretation for " + currentItem.name + ".");
 										}
 										var mapping = currentItem.getAudioChannelMapping;
 										if (mapping){
@@ -2371,4 +2371,12 @@ $._PPP_={
         }
 	},
 
+	clearESTKConsole : function() {
+		var bt 		= new BridgeTalk();
+		bt.target 	= 'estoolkit-4.0';
+		bt.body 	= function(){
+    		app.clc();
+    	}.toSource()+"()";
+		bt.send();
+	}
 };
