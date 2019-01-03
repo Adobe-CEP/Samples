@@ -1,4 +1,4 @@
-/*************************************************************************
+﻿/*************************************************************************
 * ADOBE CONFIDENTIAL
 * ___________________
 *
@@ -11,26 +11,18 @@
 * then your use, modification, or distribution of it requires the prior
 * written permission of Adobe. 
 **************************************************************************/
-#content {
-    margin-right:auto;
-    margin-left:auto;
-    vertical-align:middle;
-    width:100%;
-}
+//------------------------------------------------------------------------------
+// readPreviewInfo 
+// previewInfo contains an object with the
+//		height
+//		width
+// 		url of the preview 
+//		selection (if any).
+//------------------------------------------------------------------------------
 
-.debugtools{
-    background-color:#000;
-    position:absolute;
-    top:0px;
-    right:0px;
-    margin: 0;
-    padding: 0;
-    list-style-type: none;
-    text-align: center;
-}
-
-.debugtools li {
-    display:inline;
-    margin:3px 0px 3px 0px;
+function readPreviewInfo ()
+{
+	var retVal = $.getenv('com.adobe.SimpleDissolve.preview');
+	return retVal;
 }
 

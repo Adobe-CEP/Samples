@@ -25,7 +25,6 @@
 	
 	function init() {
 		csInterface.addEventListener("com.adobe.event.applyDissolve", getPreviewInfoCallback);
-		csInterface.addEventListener("com.adobe.event.createDissolveFile", createDissolveFileCallback);
 	}
 
 //------------------------------------------------------------------------------
@@ -39,7 +38,7 @@
 			gPreviewInfo = event.data;
 			gHasSelection = (gPreviewInfo.selection.url.length > 0);
 			dispatchEvent("com.adobe.event.unloadDissolveExtension");
-			csInterface.evalScript("startProgessBar()");
+			createDissolveFile();
 		} else {
 			csInterface.closeExtension();
 		}
@@ -59,7 +58,7 @@
 // based on the "Disposition" and percentage of dissolve.
 //------------------------------------------------------------------------------
 
-	function createDissolveFileCallback (event) {
+	function createDissolveFile (event) {
 		var dissolveCanvas = document.createElement('canvas');
 		if (gHasSelection) {
 			dissolveCanvas.width = parseFloat(gPreviewInfo.selection.rect.width);
