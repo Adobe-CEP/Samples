@@ -63,6 +63,15 @@ function dragHandler(event){
 	var csInterface = new CSInterface();
 	var extPath 	= csInterface.getSystemPath(SystemPath.EXTENSION);
 	var OSVersion	= csInterface.getOSInformation();
+
+	/*
+		Note: PPro displays different behavior, depending on where the drag ends (and over which the panel has no control):
+
+		Project panel?	Import into project.
+		Sequence?		Import into project, add to sequence.
+		Source monitor? Open in source, but do NOT import into project.
+	
+	*/
 	
 	if (extPath !== null){
 		extPath = extPath + '/payloads/test.jpg';
