@@ -1,0 +1,70 @@
+<!doctype html>
+<!--
+/*************************************************************************
+* ADOBE CONFIDENTIAL
+* ___________________
+*
+* Copyright 2014 Adobe
+* All Rights Reserved.
+*
+* NOTICE: Adobe permits you to use, modify, and distribute this file in
+* accordance with the terms of the Adobe license agreement accompanying
+* it. If you have received this file from a source other than Adobe,
+* then your use, modification, or distribution of it requires the prior
+* written permission of Adobe. 
+**************************************************************************/
+-->
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<link id="hostStyle" rel="stylesheet" href="css/theme.css" />
+	<title></title>
+</head>
+
+<body>
+	<div class="divMain">
+		<div class="divPreview">
+			<canvas id="cnvsPreview" width="175" height="200" />
+		</div>
+		<div class="divControls">
+			<div id="divDissolve">
+				<label class="dlabel">Dissolve:</label>
+				<input type="number" id="iDissolvePc" min="0" max="100" value="30" />
+				<label for="iDissolvePc">%</label>
+			</div>
+			<fieldset id="fsDisposition">
+				<legend class="radioLabel">Disposition: </legend>
+				<ol class="olclass">
+					<li>
+						<input type="radio" name="radioDispo" id="radioClear" value="0" />
+						<label for="radioClear">Clear</label>
+					</li>
+					<li>
+						<input type="radio" name="radioDispo" id="radioCool" value="1" checked="checked" />
+						<label class="radioLabel" for="radioCool">Cool</label>
+					</li>
+					<li>
+						<input type="radio" name="radioDispo" id="radioHot" value="2" />
+						<label for="radioHot">Hot</label>
+					</li>
+					<li>
+						<input type="radio" name="radioDispo" id="radioSick" value="3" />
+						<label for="radioSick">Sick</label>
+					</li>
+				</ol>
+			</fieldset>
+		</div>
+		<div class="divBtnBar">
+			<button type="button" class="okBtn">OK</button>
+			<button type="button" class="cancelBtn">Cancel</button>
+		</div>
+	</div>
+
+	<script src="js/libs/CSInterface.js"></script>
+	<script src="js/libs/jquery-2.0.2.min.js"></script>
+	<script src="js/themeManager.js"></script>
+	<script src="js/main.js"></script>
+</body>
+
+</html>
