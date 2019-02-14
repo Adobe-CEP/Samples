@@ -66,12 +66,6 @@ Further [relevant information](https://medium.com/adobetech/how-to-create-your-f
 *Note: Premiere Pro 13.0 integrates CEP9, so even if you had unsigned panels
 loading before (using CEP7 or CEP8), you'll need to perform this step again, but for key CSXS.9.*
 
-Open Premiere Pro press (windows) CTRL+f12 or (Mac) CMD+f12, and type the following into Premiere Console, then relaunch Premiere:
-
-```html
- debug.set PlayerDebugMode = 1
-```
-
 On Mac, type the following into Terminal, then relaunch Finder (either via
 rebooting, or from the Force Quit dialog):
 
