@@ -79,9 +79,9 @@ $._PPP_={
 			// Create a file name based on timecode of frame.
 			var time			= activeSequence.CTI.timecode; 	// CTI = Current Time Indicator.
 			var removeThese 	= /:|;/ig;    // Why? Because Windows chokes on colons.
-			time = time.replace(removeThese, '_');
+			var safeTimeStr         = time.replace(removeThese, '_');
 			var outputPath		= new File("~/Desktop");
-			var outputFileName	= outputPath.fsName + $._PPP_.getSep() + time + '___' + activeSequence.name;
+			var outputFileName	= outputPath.fsName + $._PPP_.getSep() + safeTimeStr + '___' + activeSequence.name;
 			activeSequence.exportFramePNG(time, outputFileName);
 		} else {
 			$._PPP_.updateEventPanel("No active sequence.");
