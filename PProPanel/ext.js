@@ -161,6 +161,8 @@ function updateThemeWithAppSkinInfo(appSkinInfo) {
 		addRule(styleId, ".default", "font-size:" + appSkinInfo.baseFontSize + "px" + "; color:" + fontColor + "; background-color:" + toHex(panelBackgroundColor) + ";");
 		addRule(styleId, "button, select, input[type=text], input[type=button], input[type=submit]", borderColor);	   
 		addRule(styleId, "p", "color:" + fontColor + ";");	  
+		addRule(styleId, "h1", "color:" + fontColor + ";");	  
+		addRule(styleId, "h2", "color:" + fontColor + ";");	  
 		addRule(styleId, "button", "font-family: " + appSkinInfo.baseFontFamily + ", Arial, sans-serif;");	  
 		addRule(styleId, "button", "color:" + fontColor + ";");	   
 		addRule(styleId, "button", "font-size:" + (1.2 * appSkinInfo.baseFontSize) + "px;");	

@@ -12,14 +12,20 @@
 * written permission of Adobe. 
 **************************************************************************/
 
-p {
+* {
 	font-family: "LucidaGrande", sans-serif;
+}
+
+p {
 	text-align:center;
+}
+
+a {
+        color: #8080ff;
 }
 
 button
 {
-	font-family: "LucidaGrande", sans-serif;
 	font-size:12px;
 	border:1px solid;
 	height:20px;
