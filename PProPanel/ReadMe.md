@@ -52,6 +52,8 @@ Retrieve available workspaces, and set the current workspace.
     [ZXPSignCmd](https://github.com/Adobe-CEP/CEP-Resources/tree/master/ZXPSignCMD/4.0.7)
     signing utility creates signed .zxp bundles for Add-Ons or direct
     distribution.
+    
+- Microsoft Visual Studio Code, and the ExtendScript debugging extension. This extension running in VSCode is Adobe's recommended ExtendScript development environment. Sorry, ExtendScript Toolkit. 
 
 - Use the [ExManCmd](https://www.adobeexchange.com/resources/28) command line
     utility to test .zxp installation.
@@ -84,7 +86,7 @@ Windows:    C:\Program Files (x86)\Common Files\Adobe\CEP\extensions
 Mac:        /Library/Application Support/Adobe/CEP/extensions
 ```
 
-## 4. Write and test your panel's JavaScript using Chrome debugger
+## 4. Write and test your panel's JavaScript using a JavaScript debugger
 
 To enable debugging of panels using Chrome’s developer tools, put a file named
 `.debug` into your extension’s folder (as a peer of the `/CSXS` folder). The
@@ -102,10 +104,12 @@ match the one in the panel's manifest):
 </ExtensionList>
 ```
 
-When the panel is active, you can debug the panel in your web browser by
+When the panel is active, you can debug the panel in Chrome by
 browsing to `localhost:7777`, and selecting your panel:
 
 ![Localhost screenshot](payloads/localhost.png)
+
+Note: You can also use Microsoft Visual Studio Code to debug your panel's JavaScript. 
 
 Optional diagnostics: Turn on CEP logging. Find CEP logs (distinct from Premiere
 Pro's logs) here. Note that Mac Library path is the system's library, not the
@@ -122,12 +126,11 @@ Set logging level in Windows Registry (see above), or MacOS X .plist:
 defaults write /Users/<username>/Library/Preferences/com.adobe.CSXS.7.plist LogLevel 6
 ```
 
-## 5. Create your panel's ExtendScript using ExtendScript Toolkit (ESTK)
+## 5. Create your panel's ExtendScript using Microsoft Visual Studio Code
 
-Launch ExtendScript Toolkit, select the correct version of Premiere Pro from the
-drop-down menu, then then click the chain link to connect.
+Once you've installed the ExtendScript debugging extension, you can set breakpoints in your ExtendScript code within VSCode. Here's a view of the debug configurations associated with the PProPanel sample, in VSCode:
 
-![ESTK Screenshot](payloads/estk.png)
+![ESTK Screenshot](payloads/vscode_debug.png)
 
 Once in the session, you can hit breakpoints, and use ExtendScript Toolkit's
 Data Browser to view the ExtendScript DOM.
@@ -164,6 +167,36 @@ the Add-Ons team](mailto:jferman@adobe.com).
 
 # Previous Updates
 
+## What was new in 13.0
+
+### Get and set footage interpretation
+
+All aspects of Premiere Pro's footage interpretation are now available via API. Among other workflows, this enables panels to replace a footage reference, while preserving existing interpretation information the user may have already set.
+
+### Get and set sequence settings
+
+Previously, it was possible to clone existing sequences, and create sequences from a sequence preset. It is now possible to get and set each individual sequence setting, providing much more granular control over sequences.
+
+### Detect trackItems which are reversed, have speed adjustments, or are adjustment layers
+
+This important information was previously unavailable.
+
+### Open projectItems in the Source monitor
+
+This allows for sequences, multi-cam sequences, still image sequences and merged clips to be opened in the Source monitor.
+
+### Create sub-sequences
+
+Lift/extract sections of existing sequences into new ones, with control over whether or not to adopt the track mapping present in the original.
+
+### Close open sequences
+
+Close superfluous/distracting sequences.
+
+### Consolidate Duplicates via API
+
+Invoke the same duplicate consolidation functionality available to users.
+
 ## What was new in 12.1
 
 ### Get and set the current Project panel selection
@@ -197,36 +230,6 @@ Use the handy new `setOverrideFramerate()`.
 ### API Documentation
 
 While the sample panel should continue to be your first option for working example code, Premiere Pro's ExtendScript API [is documented here](http://ppro.aenhancers.com), to enable developer participation.
-
-## What was new in 13.0
-
-### Get and set footage interpretation
-
-All aspects of Premiere Pro's footage interpretation are now available via API. Among other workflows, this enables panels to replace a footage reference, while preserving existing interpretation information the user may have already set.
-
-### Get and set sequence settings
-
-Previously, it was possible to clone existing sequences, and create sequences from a sequence preset. It is now possible to get and set each individual sequence setting, providing much more granular control over sequences.
-
-### Detect trackItems which are reversed, have speed adjustments, or are adjustment layers
-
-This important information was previously unavailable.
-
-### Open projectItems in the Source monitor
-
-This allows for sequences, multi-cam sequences, still image sequences and merged clips to be opened in the Source monitor.
-
-### Create sub-sequences
-
-Lift/extract sections of existing sequences into new ones, with control over whether or not to adopt the track mapping present in the original.
-
-### Close open sequences
-
-Close superfluous/distracting sequences.
-
-### Consolidate Duplicates via API
-
-Invoke the same duplicate consolidation functionality available to users.
 
 ## What was new in 12.0
 
