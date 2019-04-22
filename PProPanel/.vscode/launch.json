@@ -2,6 +2,13 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "type": "extendscript-debug",
+            "request": "launch",
+            "name": "Debug in PPro",
+            "program": "${workspaceFolder}/jsx/PPRO/Premiere.jsx",
+            "stopOnEntry": true
+        },
+        {
             "type": "chrome",
             "request": "attach",
             "name": "Attach to Chrome",

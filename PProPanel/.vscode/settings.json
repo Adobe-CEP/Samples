@@ -1,0 +1,8 @@
+{
+	"javascript.validate.enable": true,
+	"typescript.validate.enable": true,
+	"files.associations": {
+		"*.jsx": "javascript",
+		"*.debug": "xml"
+	},
+}

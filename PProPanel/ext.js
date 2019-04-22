@@ -4,8 +4,9 @@ function onLoaded() {
 	var appName = csInterface.hostEnvironment.appName;
 	var appVersion = csInterface.hostEnvironment.appVersion;
 
-	var APIVersion = csInterface.getCurrentApiVersion();
-	
+	var APIVersion	= csInterface.getCurrentApiVersion();
+	var locale	 	= csInterface.hostEnvironment.appUILocale;
+
 	document.getElementById("dragthing").style.backgroundColor = "lightblue";
 	var caps = csInterface.getHostCapabilities();
 	
@@ -53,10 +54,23 @@ function onLoaded() {
 	csInterface.evalScript('$._PPP_.registerItemAddedFxn()');					  	// Item added to project
 	csInterface.evalScript('$._PPP_.registerProjectChangedFxn()');					// Project changed
 	csInterface.evalScript('$._PPP_.registerSequenceSelectionChangedFxn()');		// Selection within the active sequence changed
+	csInterface.evalScript('$._PPP_.registerSequenceActivatedFxn()');				// The active sequence changed
+	csInterface.evalScript('$._PPP_.registerActiveSequenceStructureChangedFxn()');	// Clips within the active sequence changed
+	csInterface.evalScript('$._PPP_.registerSequenceMessaging()');			
+	csInterface.evalScript('$._PPP_.registerActiveSequenceChangedFxn()');			
 
 	csInterface.evalScript('$._PPP_.confirmPProHostVersion()');
 	
+	// New in 13.1
 	csInterface.evalScript('$._PPP_.clearESTKConsole()');
+	csInterface.evalScript('$._PPP_.forceLogfilesOn()');  // turn on log files when launching
+
+	// Good idea from our friends at Evolphin; make the ExtendScript locale match the JavaScript locale!
+	
+	var prefix	= '$._PPP_.setLocale(\'';
+	var postfix	= '\');';
+	var entireCallWithParams = prefix + locale + postfix;
+	csInterface.evalScript(entireCallWithParams);
 }
 
 function dragHandler(event){

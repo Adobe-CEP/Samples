@@ -1,42 +1,37 @@
 # Create panels for Premiere Pro
 
-*Last updated October 2018, current released version = Premiere Pro 13.0, also known as "Premiere Pro CC 2019".
+*Last updated April 2019, current released version = Premiere Pro 13.1, also known as "Premiere Pro 2019".*
     
-# Premiere Pro 13.0 : API Improvements
+# Premiere Pro 13.1 : API Improvements
 
-We've added many new capabilities for the 13.0 release. All of these are exercised in the PProPanel sample, [available on GitHub](https://github.com/Adobe-CEP/Samples/tree/master/PProPanel).
+We've added many new capabilities for the 13.1 release. All of these are exercised in the PProPanel sample, [available on GitHub](https://github.com/Adobe-CEP/Samples/tree/master/PProPanel).
 
-### Get and set footage interpretation
+### Sequence change messaging
 
-All aspects of Premiere Pro's footage interpretation are now available via API. Among other workflows, this enables panels to replace a footage reference, while preserving existing interpretation information the user may have already set.
+Panels can now subscribe to be notified whenever something is added to, removed from, or changed in a sequence.
 
-### Get and set sequence settings
+### Identify Team Projects
 
-Previously, it was possible to clone existing sequences, and create sequences from a sequence preset. It is now possible to get and set each individual sequence setting, providing much more granular control over sequences.
+Persistently identify cloud-based Team Projects.
 
-### Detect trackItems which are reversed, have speed adjustments, or are adjustment layers
+### Sequence work area API
 
-This important information was previously unavailable.
+Control the start, end, and enablement of the sequence work area.
 
-### Open projectItems in the Source monitor
+### Remove track items
 
-This allows for sequences, multi-cam sequences, still image sequences and merged clips to be opened in the Source monitor.
+Track items can now be removed. 
 
-### Create sub-sequences
+### Render frames from sequences
 
-Lift/extract sections of existing sequences into new ones, with control over whether or not to adopt the track mapping present in the original.
+Render frames from sequences into buffers.
 
-### Close open sequences
+### Control Workspaces
 
-Close superfluous/distracting sequences.
+Retrieve available workspaces, and set the current workspace.
 
-### Consolidate Duplicates via API
-
-Invoke the same duplicate consolidation functionality available to users.
 
 # Create panels for Premiere Pro
-
-Further [relevant information](https://medium.com/adobetech/how-to-create-your-first-adobe-panel-in-6-easy-steps-f8bd4ed5778) is available from the Extensibility team; these items are included here as an overview.
 
 ## 1. Obtain and install these
 
@@ -62,6 +57,8 @@ Further [relevant information](https://medium.com/adobetech/how-to-create-your-f
     utility to test .zxp installation.
 
 ## 2. Enable loading of unsigned panels
+
+Further [relevant information](https://medium.com/adobetech/how-to-create-your-first-adobe-panel-in-6-easy-steps-f8bd4ed5778) is available from the Extensibility team.
 
 *Note: Premiere Pro 13.0 integrates CEP9, so even if you had unsigned panels
 loading before (using CEP7 or CEP8), you'll need to perform this step again, but for key CSXS.9.*
@@ -201,6 +198,35 @@ Use the handy new `setOverrideFramerate()`.
 
 While the sample panel should continue to be your first option for working example code, Premiere Pro's ExtendScript API [is documented here](http://ppro.aenhancers.com), to enable developer participation.
 
+## What was new in 13.0
+
+### Get and set footage interpretation
+
+All aspects of Premiere Pro's footage interpretation are now available via API. Among other workflows, this enables panels to replace a footage reference, while preserving existing interpretation information the user may have already set.
+
+### Get and set sequence settings
+
+Previously, it was possible to clone existing sequences, and create sequences from a sequence preset. It is now possible to get and set each individual sequence setting, providing much more granular control over sequences.
+
+### Detect trackItems which are reversed, have speed adjustments, or are adjustment layers
+
+This important information was previously unavailable.
+
+### Open projectItems in the Source monitor
+
+This allows for sequences, multi-cam sequences, still image sequences and merged clips to be opened in the Source monitor.
+
+### Create sub-sequences
+
+Lift/extract sections of existing sequences into new ones, with control over whether or not to adopt the track mapping present in the original.
+
+### Close open sequences
+
+Close superfluous/distracting sequences.
+
+### Consolidate Duplicates via API
+
+Invoke the same duplicate consolidation functionality available to users.
 
 ## What was new in 12.0
 
