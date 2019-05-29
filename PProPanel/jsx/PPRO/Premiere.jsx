@@ -1977,15 +1977,12 @@ $._PPP_={
 		app.enableQE();
 
 		var previousNWValue = qe.getDebugDatabaseEntry("ScriptLayerPPro.EnableNewWorld");
-		var previousInternalDOMValue = qe.getDebugDatabaseEntry("dvascripting.EnabledInternalDOM");
-		if ((previousNWValue === 'true') && (previousInternalDOMValue === 'true')) {
+		if (previousNWValue === 'true') {
 			qe.setDebugDatabaseEntry("ScriptLayerPPro.EnableNewWorld", "false");
-			qe.setDebugDatabaseEntry("dvascripting.EnabledInternalDOM", "false");
-			$._PPP_.updateEventPanel("ScriptLayerPPro.EnableNewWorld and dvascripting.EnabledInternalDOM are now OFF.");
+			$._PPP_.updateEventPanel("ScriptLayerPPro.EnableNewWorld is now OFF.");
 		} else {
 			qe.setDebugDatabaseEntry("ScriptLayerPPro.EnableNewWorld", "true");
-			qe.setDebugDatabaseEntry("dvascripting.EnabledInternalDOM", "true");
-			$._PPP_.updateEventPanel("ScriptLayerPPro.EnableNewWorld and dvascripting.EnabledInternalDOM are now ON.");
+			$._PPP_.updateEventPanel("ScriptLayerPPro.EnableNewWorld is now ON.");
 		}
 	},
 
