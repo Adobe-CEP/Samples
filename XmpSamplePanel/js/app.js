@@ -1,6 +1,6 @@
 /*  
  * ADOBE INC.
- * Copyright 2014 Adobe Inc. Inc.
+ * Copyright 2014 Adobe Inc.
  * All Rights Reserved.
  * 
  * NOTICE:  Adobe permits you to use, modify, and distribute this file in accordance with the 
