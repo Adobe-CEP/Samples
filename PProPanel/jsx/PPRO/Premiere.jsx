@@ -248,12 +248,12 @@ $._PPP_={
 			var newCommentMarker = markers.createMarker(12.345);
 			newCommentMarker.name = 'Marker created by PProPanel.';
 			newCommentMarker.comments = 'Here are some comments, inserted by PProPanel.';
-			newCommentMarker.end.seconds = 15.6789;
+			newCommentMarker.end = 15.6789;
 
 			var newWebMarker = markers.createMarker(14.345);
 			newWebMarker.name = 'Web marker created by PProPanel.';
 			newWebMarker.comments = 'Here are some comments, inserted by PProPanel.';
-			newWebMarker.end.seconds = 17.6789;
+			newWebMarker.end = 17.6789;
 			newWebMarker.setTypeAsWebLink("http://www.adobe.com", "frame target");
 		} else {
 			$._PPP_.updateEventPanel("No active sequence.");
