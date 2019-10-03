@@ -135,7 +135,7 @@ Once you've installed the ExtendScript debugging extension, you can set breakpoi
 Once in the session, you can hit breakpoints, and use ExtendScript Toolkit's
 Data Browser to view the ExtendScript DOM.
 
-Here's a [screen video](https://www.dropbox.com/s/lwo8jg0klxkq91s/walkthru.mp4)
+Here's a [screen video](https://www.dropbox.com/s/sasea78m05nqcyz/MS_Code_Debugging.mp4?dl=1)
 showing how to debug panels at both the JavaScript and ExtendScript levels.
 
 ## 6. Package and deploy your panel
