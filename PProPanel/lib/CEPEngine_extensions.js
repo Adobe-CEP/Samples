@@ -1,7 +1,7 @@
 /**************************************************************************************************
 *
-* ADOBE INC.
-* Copyright 2013 Adobe Inc.
+* ADOBE SYSTEMS INCORPORATED
+* Copyright 2013 Adobe Systems Incorporated
 * All Rights Reserved.
 *
 * NOTICE:  Adobe permits you to use, modify, and distribute this file in accordance with the

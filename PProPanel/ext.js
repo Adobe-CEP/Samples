@@ -62,7 +62,6 @@ function onLoaded() {
 	csInterface.evalScript('$._PPP_.confirmPProHostVersion()');
 	
 	// New in 13.1
-	csInterface.evalScript('$._PPP_.clearESTKConsole()');
 	csInterface.evalScript('$._PPP_.forceLogfilesOn()');  // turn on log files when launching
 
 	// Good idea from our friends at Evolphin; make the ExtendScript locale match the JavaScript locale!

@@ -89,6 +89,8 @@ declare class SequenceSettings {
 	vrLayout:					number
 	vrProjection:				number
 	vrVertCapturedView:			number
+	workingColorSpaceList:		Array
+	workingColorSpace:			String
 }
 
 /**
@@ -130,6 +132,16 @@ declare class Sequence {
 	 * The sequence's markers.
 	 */
 	readonly markers: MarkerCollection
+
+	/**
+	 * The available colorspaces
+	 */
+	readonly workingColorSpaceList: Array
+
+	/**
+	 * The color space in use by the sequence
+	 */
+	workingColorSpace: string
   
 	/**
 	 * Name (writable).
@@ -331,7 +343,7 @@ declare class Sequence {
 	setWorkAreaOutPoint(timeInSeconds:number): void
 
 	/**
-	 * Returns the work area in point, as a `Time` object.
+	 * @returns the work area in point, as a `Time` object.
 	 */
 	getWorkAreaInPointAsTime(): Time
 
@@ -341,7 +353,7 @@ declare class Sequence {
 	setWorkAreaInPointAsTime(outPoint:Time): void
 
 	/**
-	 * Returns the work area out point, as a `Time` object.
+	 * @returns the work area out point, as a `Time` object.
 	 */
 	getWorkAreaOutPointAsTime(): Time
 
@@ -360,7 +372,7 @@ declare class Sequence {
 	insertClip(projectItem:ProjectItem, time:Time, vidTrackOffset:number, audTrackOffset:number): TrackItem
 
 	/**
-	 * Returns currently-selected clips, as an `Array` of `trackItems`
+	 * @returns currently-selected clips, as an `Array` of `trackItems`
 	 */
 	getSelection(): Array
 
@@ -1383,7 +1395,13 @@ declare class ProjectManager {
 	 *
 	 */
 	startTime(): Time
-  
+
+	/**
+	 * 
+	 * @param newColorSpace value must be available via sequence.workingColorSpaceList 
+	 */
+	setOverrideColorSpace(newColorSpace: String): void
+	
 	/**
 	 *
 	 */
@@ -1482,7 +1500,7 @@ declare class ProjectManager {
 	/**
 	 *
 	 */
-	readonly numTracks: number
+	numItems: number
   
 	/**
 	 *
@@ -1770,7 +1788,7 @@ declare class ProjectManager {
 	/**
 	 *
 	 */
-	setProperty(propertyKey: string, propertyValue: number, permanenceValue: number, allowCreateNewProperty: boolean): void
+	setProperty(propertyKey: string, propertyValue: string, permanenceValue: number, allowCreateNewProperty: boolean): void
   
 	/**
 	 *
@@ -1886,6 +1904,7 @@ declare class ProjectManager {
 	/**
 	 * Checks whether file specified is a doc
 	 * @param filePath This is the path to be checked
+	 * @returns true if the document at that path is openable as a PPro project
 	 */
 	isDocument(filePath: string): boolean
   
@@ -1898,6 +1917,12 @@ declare class ProjectManager {
 	 *
 	 */
 	openDocument(filePath: string, bypassConversionDialog: boolean, bypassLocateFile: boolean, hideFromMRUList: boolean): boolean
+
+	/**
+	 * @param newValueForTranscodeOnIngest
+	 * @returns the newly-set state for whether or not PPro transcodes files upon ingest.
+	 */
+	setEnableTranscodeOnIngest(newValueForTranscodeOnIngest: boolean)
   
 	/**
 	 *
@@ -1963,6 +1988,25 @@ declare class ProjectManager {
 	 *
 	 */
 	onItemAddedToProjectSuccess : undefined
+
+
+	/**
+	 * @returns an array of the names of all available workspaces.
+	 */
+	getWorkspaces(): Array
+
+	/**
+	 * @param workspaceName Name of workspace to use
+	 * @returns true if successful
+	 */
+	setWorkspace(workspaceName: string)
+
+	/**
+	 * 
+	 * @param eventName event to which to subscribe
+	 * @param function_ function to be called 
+	 */
+	addEventListener(eventName: string, function_: any): void
 
 	/**
 	 *
@@ -2159,3 +2203,13 @@ declare class ProjectManager {
    * In order to use qe please call app.enableQE() first.
    */
   declare const qe: undefined | any
+
+  interface SystemCompatibilityReport {
+	/**
+	* @param fullOutputPath The path and filename at which to write the report.
+	*/
+	CreateReport(fullOutputPath: string): void
+	}
+	
+	declare const SystemCompatibilityReport: SystemCompatibilityReport;
+	

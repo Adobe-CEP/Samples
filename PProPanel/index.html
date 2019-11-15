@@ -332,7 +332,14 @@
 	<p id="proxies_on">Proxies enabled for sequence: </p>
 
 	<div>
-		<h2>New in 13.0!</h2>
+		<h2>New in 14.0!</h2>
+	</div>
+		<p> </p>
+		<button class="controlBg textStyle" id="btn_PPRO72" onClick="evalScript('$._PPP_.generateSysCompatReport()')">Generate system compatibility report</button>
+		<button class="controlBg textStyle" id="btn_PPRO75" onClick="evalScript('$._PPP_.changeSequenceColorSpace()')">Change colorspace of active sequence</button>
+		<p> </p>
+	<div>
+		<h2>New in 13.1!</h2>
 	</div>
 	<div id="section4" class="sectionID"
 		<p> </p>
@@ -350,6 +357,7 @@
 		<button class="controlBg textStyle" id="btn_PPRO67" onClick="evalScript('$._PPP_.selectAllRetimedClips()')">Select all re-timed clips</button>
 		<button class="controlBg textStyle" id="btn_PPRO68" onClick="evalScript('$._PPP_.selectReversedClips()')">Select all reversed clips</button>
 		<button class="controlBg textStyle" id="btn_PPRO69" onClick="evalScript('$._PPP_.logConsoleOutput()')">Write log file of console output</button>
+		<button class="controlBg textStyle" id="btn_PPRO70" onClick="evalScript('$._PPP_.setWorkspace()')">Set the current Workspace</button>
 		<button id="stitchusingdefaultpreset">Stitch selected files in AME</button>
 	</div>
 	<div>
@@ -368,7 +376,7 @@
 		<button id="openfolder">Open PProPanel folder</button>
 		<button id="openlogfilefolder">Open Premiere Pro's Log Files folder</button>
 		<button class="controlBg textStyle" id="btn_PPRO7" onClick="evalScript('$._PPP_.pokeAnywhere()')">Detect Anywhere Server</button>
-		<button class="controlBg textStyle" id="btn_PPRO7" onClick="evalScript('$._PPP_.enumerateTeamProjects()')">Identify open Team Projects</button>
+		<button class="controlBg textStyle" id="btn_PPRO71" onClick="evalScript('$._PPP_.enumerateTeamProjects()')">Identify open Team Projects</button>
 		<button id="checkforums">Check SDK Forums</button>
 		<button id="readAPIdocs">Read API documentation</button>
 		<button id="copypresets">Copy Presets</button>
