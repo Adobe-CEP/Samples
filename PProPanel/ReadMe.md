@@ -141,7 +141,7 @@ do not connect their systems to the public internet, for installation using
 of Extension Manager.
 
 If you encounter any issues with the Add-Ons store or ExManCmd, please [contact
-the Add-Ons team](mailto:kwak@adobe.com).
+the Add-Ons team](mailto:ccintrev@adobe.com).
 
 ## Previous Updates
 
