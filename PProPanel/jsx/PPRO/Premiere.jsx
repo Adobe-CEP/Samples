@@ -180,7 +180,7 @@ $._PPP_={
 	},
 
 	registerProjectPanelSelectionChangedFxn: function () {
-		app.addEventListener("onSourceClipSelectedInProjectPanel", $._PPP_.projectPanelSelectionChanged);
+		app.bind("onSourceClipSelectedInProjectPanel", $._PPP_.projectPanelSelectionChanged);
 	},
 
 	saveCurrentProjectLayout: function () {
