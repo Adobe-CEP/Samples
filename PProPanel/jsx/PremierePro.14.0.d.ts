@@ -387,7 +387,20 @@ declare class Sequence {
 	 * @param newSettings New settings
 	 */	
 	setSettings(newSettings): void
-	
+
+
+	/**
+	 * 
+	 * @param numerator Numerator of desired frame aspect ratio
+	 * @param denominator Denominator of desired frame aspect ratio
+	 * @param motionPreset Either "default", "faster" or "slower"
+	 * @param sequenceName Name for created sequence
+	 * @param nest Use nested sequences?
+	 */
+
+
+	autoReframeSequence(numerator:Number, denominator:Number, motionPreset:String, sequenceName:String, nest:Boolean): Sequence
+
 	/**
 	 *
 	 */
@@ -1187,7 +1200,12 @@ declare class ProjectManager {
 	 *
 	 */
 	getMGTComponent(): any 
-	
+
+	/**
+	 * 
+	 */
+	getColorSpace(): String
+
 	/**
 	 *
 	 */
@@ -1401,6 +1419,11 @@ declare class ProjectManager {
 	 * @param newColorSpace value must be available via sequence.workingColorSpaceList 
 	 */
 	setOverrideColorSpace(newColorSpace: String): void
+
+	/**
+	 * 
+	 */
+	getColorSpace(): String
 	
 	/**
 	 *
@@ -1497,11 +1520,12 @@ declare class ProjectManager {
    *
    */
   declare class TrackItemCollection {
-	/**
-	 *
+
+	/**Number of items
+	 * 
 	 */
-	numItems: number
-  
+	readonly numItems: number
+
 	/**
 	 *
 	 */

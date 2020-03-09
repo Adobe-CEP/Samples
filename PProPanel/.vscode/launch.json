@@ -6,7 +6,8 @@
             "request": "launch",
             "name": "Debug in PPro",
             "program": "${workspaceFolder}/jsx/PPRO/Premiere.jsx",
-            "stopOnEntry": true
+            "stopOnEntry": true,
+            "trace": true
         },
         {
             "type": "chrome",
