@@ -1,6 +1,6 @@
 # Premiere Pro panels
 
-*Last updated November 2019, current released version = Premiere Pro 14.0, also known as "Premiere Pro 2020".*
+*Last updated April 2020, current released version = Premiere Pro 14.0.4, one of several versions known as "Premiere Pro 2020".*
 
 ## Premiere Pro 14.0 : API Improvements
 
