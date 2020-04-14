@@ -1,16 +1,11 @@
 # Premiere Pro panels
 
-*Last updated April 2020, current released version = Premiere Pro 14.0.4, one of several versions known as "Premiere Pro 2020".*
+*Last updated April 2020, current released version = Premiere Pro 14.1, also known as "Premiere Pro 2020".*
 
-## Premiere Pro 14.0 : API Improvements
+## Premiere 14.1 : API Improvements
 
-### Colorspace control
+We've added APIs for Premiere Pro Productions.
 
-Panels can now get and set the colorspace in use by projectItems, and sequences.
-
-### System compatibility reports
-
-Panels can generate the same system and project reports that PPro does; useful for troubleshooting. 
 
 ## Create panels for Premiere Pro
 
@@ -208,6 +203,16 @@ Use the handy new `setOverrideFramerate()`.
 ### API Documentation
 
 While the sample panel should continue to be your first option for working example code, Premiere Pro's ExtendScript API [is documented here](http://ppro.aenhancers.com), to enable developer participation.
+
+## What was new in 14.0 
+
+### Colorspace control
+
+Panels can now get and set the colorspace in use by projectItems, and sequences.
+
+### System compatibility reports
+
+Panels can generate the same system and project reports that PPro does; useful for troubleshooting. 
 
 ## What was new in 13.x
 

@@ -1824,7 +1824,41 @@ declare class ProjectManager {
 	 */
 	unbind(eventName: string): void
   }
-  
+  /**
+   * 
+   */
+  declare class PrProduction {
+	  /**
+	   * 
+	   */
+	  name: string
+
+	  /**
+	   * 
+	   */
+	  projects: Array
+
+	  /**
+	   * 
+	   */
+	  close(): void
+
+	  /**
+	   * 
+	   */
+	  getLocked(project:Project): Boolean
+
+	  /**
+	   * 
+	   */
+	  setLocked(project:Project, newLockState: Boolean): void
+
+	  /**
+	   * 
+	   */
+	  moveToTrash(projectPath:String, suppressUI:Boolean, saveProject:Boolean): Boolean
+	  
+  }
   /**
    *
    */
@@ -2046,6 +2080,22 @@ declare class ProjectManager {
 	 *
 	 */
 	enableQE(): void
+
+	/**
+	 * 
+	 */
+	newProject(projectName: string): boolean
+
+	/**
+	 * 
+	 */
+	production: PrProduction
+
+	/**
+	 * 
+	 */
+	openPrProduction(path:string): PrProduction
+
   }
   
   /**

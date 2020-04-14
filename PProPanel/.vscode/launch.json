@@ -7,7 +7,8 @@
             "name": "Debug in PPro",
             "program": "${workspaceFolder}/jsx/PPRO/Premiere.jsx",
             "stopOnEntry": true,
-            "trace": true
+            "trace": true,
+            "selectTargetColor": "blue"
         },
         {
             "type": "chrome",

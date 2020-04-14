@@ -34,16 +34,6 @@ function onLoaded () {
 		csInterface.evalScript("$._PPP_.closeLog()");
 	});
 
-	
-
-	// register for messages
-	VulcanInterface.addMessageListener(
-		VulcanMessage.TYPE_PREFIX + "com.DVA.message.sendtext",
-		function(message) {
-			var str = VulcanInterface.getPayload(message);
-			// You just received the text of every Text layer in the current AE comp.
-		}
-	);
 	csInterface.evalScript("$._PPP_.getVersionInfo()", myVersionInfoFunction);	
 	csInterface.evalScript("$._PPP_.getActiveSequenceName()", myCallBackFunction);		
 	csInterface.evalScript("$._PPP_.getUserName()", myUserNameFunction);  
@@ -56,10 +46,12 @@ function onLoaded () {
 	csInterface.evalScript("$._PPP_.registerSequenceSelectionChangedFxn()");		// Selection within the active sequence changed
 	csInterface.evalScript("$._PPP_.registerSequenceActivatedFxn()");				// The active sequence changed
 	csInterface.evalScript("$._PPP_.registerActiveSequenceStructureChangedFxn()");	// Clips within the active sequence changed
+	csInterface.evalScript("$._PPP_.registerItemsAddedToProjectFxn()");  // register for message, whenever something is added to the active project
 	csInterface.evalScript("$._PPP_.registerSequenceMessaging()");			
-	csInterface.evalScript("$._PPP_.registerActiveSequenceChangedFxn()");			
+	csInterface.evalScript("$._PPP_.registerActiveSequenceChangedFxn()");	
 	csInterface.evalScript("$._PPP_.confirmPProHostVersion()");
 	csInterface.evalScript("$._PPP_.forceLogfilesOn()");  // turn on log files when launching
+	
 
 	// Good idea from our friends at Evolphin; make the ExtendScript locale match the JavaScript locale!
 	var prefix		= "$._PPP_.setLocale('";

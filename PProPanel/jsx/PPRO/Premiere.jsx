@@ -63,12 +63,14 @@ var MediaType_VIDEO		= "228CDA18-3625-4d2d-951E-348879E4ED93"; // Magical consta
 var MediaType_AUDIO		= "80B8E3D5-6DCA-4195-AEFB-CB5F407AB009";
 var MediaType_ANY		= "FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF";
 		
+var MediaType_Audio = 0;	// Constants for working with setting value. 
+var MediaType_Video = 1;
 
 var NOT_SET = "-400000";
 
 $._PPP_={
 
-	createDeepFolderStructure: function (foldersArray, maxDepth) {
+	createDeepFolderStructure : function (foldersArray, maxDepth) {
 		if (typeof foldersArray !== 'object' || foldersArray.length <= 0) {
 			throw new Error('No valid folders array was provided!');
 		}
@@ -88,22 +90,22 @@ $._PPP_={
 		}
 	},
 
-	getVersionInfo: function () {
+	getVersionInfo : function () {
 		return 'PPro ' + app.version + 'x' + app.build;
 	},
 
-	getUserName: function () {
-		var homeDir = new File('~/');
-		var userName = homeDir.displayName;
+	getUserName : function () {
+		var homeDir		= new File('~/');
+		var userName	= homeDir.displayName;
 		homeDir.close();
 		return userName;
 	},
 
-	keepPanelLoaded: function () {
+	keepPanelLoaded : function () {
 		app.setExtensionPersistent("com.adobe.PProPanel", 0); // 0, while testing (to enable rapid reload); 1 for "Never unload me, even when not visible."
 	},
 
-	updateAllGrowingFiles: function () {
+	updateAllGrowingFiles : function () {
 		var numItems = app.project.rootItem.children.numItems;
 		for (var i = 0; i < numItems; i++) {
 			var currentItem = app.project.rootItem.children[i];
@@ -113,7 +115,7 @@ $._PPP_={
 		}
 	},
 
-	getSep: function () {
+	getSep : function () {
 		if (Folder.fs === 'Macintosh') {
 			return '/';
 		} else {
@@ -121,11 +123,11 @@ $._PPP_={
 		}
 	},
 
-	saveProject: function () {
+	saveProject : function () {
 		app.project.save();
 	},
 
-	exportCurrentFrameAsPNG: function () {
+	exportCurrentFrameAsPNG : function () {
 		app.enableQE();
 		var activeSequence = qe.project.getActiveSequence(); // note: make sure a sequence is active in PPro UI
 		if (activeSequence) {
@@ -141,7 +143,7 @@ $._PPP_={
 		}
 	},
 
-	renameProjectItem: function () {
+	renameProjectItem : function () {
 		var item = app.project.rootItem.children[0]; // assumes the zero-th item in the project is footage.
 		if (item) {
 			item.name = item.name + ", updated by PProPanel.";
@@ -150,7 +152,7 @@ $._PPP_={
 		}
 	},
 
-	getActiveSequenceName: function () {
+	getActiveSequenceName : function () {
 		if (app.project.activeSequence) {
 			return app.project.activeSequence.name;
 		} else {
@@ -158,14 +160,14 @@ $._PPP_={
 		}
 	},
 
-	projectPanelSelectionChanged: function (eventObj) { // Note: This message is also triggered when the user opens or creates a new project. 
+	projectPanelSelectionChanged : function (eventObj) { // Note: This message is also triggered when the user opens or creates a new project. 
 		var message = "";
 		var projectItems	= eventObj;
 		if (projectItems){
 			if (projectItems.length) {
 				var remainingArgs	=  projectItems.length;	
-				message		= remainingArgs + " items selected: ";
-				var view	= eventObj.viewID;
+				message				= remainingArgs + " items selected: ";
+				var view			= eventObj.viewID;
 				
 				for (var i = 0; i < projectItems.length; i++) {		// Concatenate selected project item names, into message. 
 					message += projectItems[i].name;
@@ -187,11 +189,15 @@ $._PPP_={
 		$._PPP_.updateEventPanel(message);
 	},
 
-	registerProjectPanelSelectionChangedFxn: function () {
+	registerProjectPanelSelectionChangedFxn : function () {
 		app.bind("onSourceClipSelectedInProjectPanel", $._PPP_.projectPanelSelectionChanged);
 	},
 
-	saveCurrentProjectLayout: function () {
+	registerItemsAddedToProjectFxn : function () {
+		app.bind("onItemsAddedToProjectSuccess", $._PPP_.onItemsAddedToProject);
+	},
+
+	saveCurrentProjectLayout : function () {
 		var currentProjPanelDisplay = app.project.getProjectPanelMetadata();
 		if (currentProjPanelDisplay) {
 			var outFileName			= 'Previous_Project_Panel_Display_Settings.xml';
@@ -214,7 +220,7 @@ $._PPP_={
 		}
 	},
 
-	setProjectPanelMeta: function () {
+	setProjectPanelMeta : function () {
 		var filterString = "";
 		if (Folder.fs === 'Windows') {
 			filterString = "XML files:*.xml";
@@ -237,7 +243,7 @@ $._PPP_={
 		}
 	},
 
-	exportSequenceAsPrProj: function () {
+	exportSequenceAsPrProj : function () {
 		var activeSequence	= app.project.activeSequence;
 		if (activeSequence) {
 			var startTimeOffset	= activeSequence.zeroPoint;
@@ -271,7 +277,7 @@ $._PPP_={
 		}
 	},
 
-	createSequenceMarkers: function () {
+	createSequenceMarkers : function () {
 		var activeSequence = app.project.activeSequence;
 		if (activeSequence) {
 			var markers = activeSequence.markers;
@@ -316,7 +322,7 @@ $._PPP_={
 		}
 	},
 
-	exportFCPXML: function () {
+	exportFCPXML : function () {
 		if (app.project.activeSequence) {
 			var projPath 		= new File(app.project.path);
 			var parentDir 		= projPath.parent;
@@ -341,7 +347,7 @@ $._PPP_={
 		}
 	},
 
-	openInSource: function () {
+	openInSource : function () {
 		var filterString = "";
 		if (Folder.fs === 'Windows') {
 			filterString = "All files:*.*";
@@ -373,7 +379,7 @@ $._PPP_={
 		}
 	},
 
-	searchForBinWithName: function (nameToFind) {
+	searchForBinWithName : function (nameToFind) {
 		// deep-search a folder by name in project
 		var deepSearchBin = function (inFolder) {
 			if (inFolder && inFolder.name === nameToFind && inFolder.type === 2) {
@@ -392,7 +398,7 @@ $._PPP_={
 		return deepSearchBin(app.project.rootItem);
 	},
 
-	importFiles: function () {
+	importFiles : function () {
 		var filterString = "";
 		if (Folder.fs === 'Windows') {
 			filterString = "All files:*.*";
@@ -419,7 +425,7 @@ $._PPP_={
 		}
 	},
 
-	muteFun: function () {
+	muteFun : function () {
 		if (app.project.activeSequence) {
 			for (var i = 0; i < app.project.activeSequence.audioTracks.numTracks; i++) {
 				var currentTrack = app.project.activeSequence.audioTracks[i];
@@ -438,7 +444,7 @@ $._PPP_={
 		}
 	},
 
-	disableImportWorkspaceWithProjects: function () {
+	disableImportWorkspaceWithProjects : function () {
 		var prefToModify 		= 'FE.Prefs.ImportWorkspace';
 		var propertyExists 		= app.properties.doesPropertyExist(prefToModify);
 		var propertyIsReadOnly 	= app.properties.isPropertyReadOnly(prefToModify);
@@ -451,7 +457,7 @@ $._PPP_={
 		}
 	},
 
-	setWorkspace: function() {
+	setWorkspace : function() {
 		var desiredWSName 	= prompt('Which workspace would you like?', 'Editing', 'Which workspace?');
 		var workspaces		= app.getWorkspaces();
 		var foundIt			= false;
@@ -471,13 +477,13 @@ $._PPP_={
 		}
 	},
 
-	turnOffStartDialog: function () {
+	turnOffStartDialog : function () {
 		var prefToModify 		= 'MZ.Prefs.ShowQuickstartDialog';
 		var propertyExists 		= app.properties.doesPropertyExist(prefToModify);
 		var propertyIsReadOnly 	= app.properties.isPropertyReadOnly(prefToModify);
 		var originalValue 		= app.properties.getProperty(prefToModify);
 
-		app.properties.setProperty(prefToModify, "0", 1, true); // optional 4th param : 0 = non-persistent,  1 = persistent (default)
+		app.properties.setProperty(prefToModify, "0", 1, true); // optional 4th param:0 = non-persistent,  1 = persistent (default)
 		var safetyCheck = app.properties.getProperty(prefToModify);
 		if (safetyCheck != originalValue) {
 			$._PPP_.updateEventPanel("Start dialog now OFF. Enjoy!");
@@ -486,7 +492,7 @@ $._PPP_={
 		}
 	},
 
-	replaceMedia: function () {
+	replaceMedia : function () {
 
 		// 	Note: 	This method of changing paths for projectItems is from the time
 		//			before PPro supported full-res AND proxy paths for each projectItem. 
@@ -512,9 +518,9 @@ $._PPP_={
 					filterString = "All files:*.*";
 				}
 				var replacementMedia = File.openDialog("Choose new media file, for " +
-					firstProjectItem.name,
-					filterString, // file filter
-					false); // allow multiple?
+														firstProjectItem.name,
+														filterString, // file filter
+														false); // allow multiple?
 
 				if (replacementMedia) {
 					var suppressWarnings 	= true;
@@ -530,7 +536,7 @@ $._PPP_={
 		}
 	},
 
-	openProject: function () {
+	openProject : function () {
 		var filterString = "";
 		if (Folder.fs === 'Windows') {
 			filterString = "Premiere Pro project files:*.prproj";
@@ -547,7 +553,7 @@ $._PPP_={
 		}
 	},
 
-	exportFramesForMarkers: function () {
+	exportFramesForMarkers : function () {
 		app.enableQE();
 		var activeSequence = app.project.activeSequence;
 		if (activeSequence) {
@@ -582,13 +588,13 @@ $._PPP_={
 		}
 	},
 
-	createSequence: function (name) {
+	createSequence : function (name) {
 		var someID	= "xyz123";
 		var seqName	= prompt('Name of sequence?', '<<<default>>>', 'Sequence Naming Prompt');
 		app.project.createNewSequence(seqName, someID);
 	},
 
-	createSequenceFromPreset: function (presetPath) {
+	createSequenceFromPreset : function (presetPath) {
 		app.enableQE();
 		var seqName = prompt('Name of sequence?', '<<<default>>>', 'Sequence Naming Prompt');
 		if (seqName) {
@@ -596,7 +602,7 @@ $._PPP_={
 		}
 	},
 
-	transcode: function (outputPresetPath) {
+	transcode : function (outputPresetPath) {
 		app.encoder.bind('onEncoderJobComplete', 	$._PPP_.onEncoderJobComplete);
 		app.encoder.bind('onEncoderJobError', 		$._PPP_.onEncoderJobError);
 		app.encoder.bind('onEncoderJobProgress', 	$._PPP_.onEncoderJobProgress);
@@ -638,7 +644,7 @@ $._PPP_={
 		}
 	},
 
-	transcodeExternal: function (outputPresetPath) {
+	transcodeExternal : function (outputPresetPath) {
 		app.encoder.launchEncoder();
 		var filterString = "";
 		if (Folder.fs === 'Windows') {
@@ -667,16 +673,15 @@ $._PPP_={
 		}
 	},
 
-	render: function (outputPresetPath) {
+	render : function (outputPresetPath) {
 		app.enableQE();
 		var activeSequence = qe.project.getActiveSequence(); // we use a QE DOM function, to determine the output extension.
 		if (activeSequence) {
-			var ameInstalled = false;
 			var ameStatus = BridgeTalk.getStatus("ame");
 			if (ameStatus == "ISNOTINSTALLED"){
 				$._PPP_.updateEventPanel("AME is not installed.");
-			} else if (ameInstalled){
-				if (ameStatus == 'ISNOTRUNNING'){
+			} else {
+				if (ameStatus == "ISNOTRUNNING"){
 					app.encoder.launchEncoder(); // This can take a while; let's get the ball rolling.
 				}
 				var timeSecs	= activeSequence.CTI.secs; // Just for reference, here's how to access the CTI 
@@ -763,7 +768,7 @@ $._PPP_={
 		}
 	},
 
-	saveProjectCopy: function () {
+	saveProjectCopy : function () {
 		var sessionCounter	= 1;
 		var originalPath	= app.project.path;
 		var outputPath		= Folder.selectDialog("Choose the output directory");
@@ -792,7 +797,7 @@ $._PPP_={
 		}
 	},
 
-	mungeXMP: function () {
+	mungeXMP : function () {
 		var projectItem = app.project.rootItem.children[0]; // assumes first item is footage.
 		if (projectItem) {
 			if (ExternalObject.AdobeXMPScript === undefined) {
@@ -857,7 +862,7 @@ $._PPP_={
 		}
 	},
 
-	getProductionByName: function (nameToGet) {
+	getProductionByName : function (nameToGet) {
 		var production;
 		var allProductions = app.anywhere.listProductions();
 		for (var i = 0; i < allProductions.numProductions; i++) {
@@ -869,7 +874,7 @@ $._PPP_={
 		return production;
 	},
 
-	pokeAnywhere: function () {
+	pokeAnywhere : function () {
 		var token				= app.anywhere.getAuthenticationToken();
 		var productionList		= app.anywhere.listProductions();
 		var isProductionOpen	= app.anywhere.isProductionOpen();
@@ -887,7 +892,7 @@ $._PPP_={
 		}
 	},
 
-	dumpOMF: function () {
+	dumpOMF : function () {
 		var activeSequence = app.project.activeSequence;
 		if (activeSequence) {
 			var outputPath = Folder.selectDialog("Choose the output directory");
@@ -901,18 +906,18 @@ $._PPP_={
 										'OMFTitle', // OMF title
 										48000, // sample rate (48000 or 96000)
 										16, // bits per sample (16 or 24)
-										1, // audio encapsulated flag (1 : yes or 0 : no)
-										0, // audio file format (0 : AIFF or 1 : WAV)
-										0, // trim audio files (0 : no or 1 : yes)
+										1, // audio encapsulated flag (1:yes or 0:no)
+										0, // audio file format (0:AIFF or 1:WAV)
+										0, // trim audio files (0:no or 1:yes)
 										0, // handle frames (if trim is 1, handle frames from 0 to 1000)
-										0); // include pan flag (0 : no or 1 : yes)
+										0); // include pan flag (0:no or 1:yes)
 			}
 		} else {
 			$._PPP_.updateEventPanel("No active sequence.");
 		}
 	},
 
-	addClipMarkers: function () {
+	addClipMarkers : function () {
 		if (app.project.rootItem.children.numItems > 0) {
 			var projectItem = app.project.rootItem.children[0]; // assumes first item is footage.
 			if (projectItem) {
@@ -946,7 +951,7 @@ $._PPP_={
 		}
 	},
 
-	modifyProjectMetadata: function () {
+	modifyProjectMetadata : function () {
 		var kPProPrivateProjectMetadataURI	= "http://ns.adobe.com/premierePrivateProjectMetaData/1.0/";
 		var nameField						= "Column.Intrinsic.Name";
 		var tapeName						= "Column.Intrinsic.TapeName";
@@ -1002,9 +1007,9 @@ $._PPP_={
 
 					// test: is it in there?
 
-					var newblob = projectItem.getProjectMetadata();
-					var newXMP = new XMPMeta(newblob);
-					var foundYet = newXMP.doesPropertyExist(kPProPrivateProjectMetadataURI, newField);
+					var newblob		= projectItem.getProjectMetadata();
+					var newXMP		= new XMPMeta(newblob);
+					var foundYet 	= newXMP.doesPropertyExist(kPProPrivateProjectMetadataURI, newField);
 
 					if (foundYet) {
 						$._PPP_.updateEventPanel("PProPanel successfully added a field to the project metadata schema, and set a value for it.");
@@ -1016,7 +1021,7 @@ $._PPP_={
 		}
 	},
 
-	updatePAR: function () {
+	updatePAR : function () {
 		var item = app.project.rootItem.children[0];
 		if (item) {
 			if ((item.type == ProjectItemType.FILE) || (item.type == ProjectItemType.CLIP)) {
@@ -1030,21 +1035,20 @@ $._PPP_={
 		}
 	},
 
-	getnumAEProjectItems: function () {
+	getnumAEProjectItems : function () {
 		var bt		= new BridgeTalk();
 		bt.target	= 'aftereffects';
 		bt.body		= 'alert("Items in AE project: " + app.project.rootFolder.numItems);app.quit();';
 		bt.send();
 	},
 
-	updateEventPanel: function (message) {
+	updateEventPanel : function (message) {
 		app.setSDKEventMessage(message, 'info');
-		//app.setSDKEventMessage('Here is some information.', 'info');
 		//app.setSDKEventMessage('Here is a warning.', 'warning');
 		//app.setSDKEventMessage('Here is an error.', 'error');  // Very annoying; use sparingly.
 	},
 
-	walkAllBinsDumpingXMP: function (parentItem, outPath) {
+	walkAllBinsDumpingXMP : function (parentItem, outPath) {
 		for (var j = 0; j < parentItem.children.numItems; j++) {
 			var currentChild = parentItem.children[j];
 			if (currentChild) {
@@ -1057,7 +1061,7 @@ $._PPP_={
 		}
 	},
 
-	walkAllBinsUpdatingPaths: function (parentItem, outPath) {
+	walkAllBinsUpdatingPaths : function (parentItem, outPath) {
 		for (var j = 0; j < parentItem.children.numItems; j++) {
 			var currentChild = parentItem.children[j];
 			if (currentChild) {
@@ -1070,7 +1074,7 @@ $._PPP_={
 		}
 	},
 
-	searchBinForProjItemByName: function (i, containingBin, nameToFind) {
+	searchBinForProjItemByName : function (i, containingBin, nameToFind) {
 		for (var j = i; j < containingBin.children.numItems; j++) {
 			var currentChild = containingBin.children[j];
 			if (currentChild) {
@@ -1090,7 +1094,7 @@ $._PPP_={
 		}
 	},
 
-	dumpProjectItemXMP: function (projectItem, outPath) {
+	dumpProjectItemXMP : function (projectItem, outPath) {
 		var xmpBlob				= projectItem.getXMPMetadata();
 		var outFileName			= projectItem.name + '.xmp';
 		var completeOutputPath	= outPath + $._PPP_.getSep() + outFileName;
@@ -1105,7 +1109,7 @@ $._PPP_={
 		}
 	},
 
-	addSubClip: function () {
+	addSubClip : function () {
 		var startTime 			= new Time();
 		startTime.seconds		= 0.0;
 		var endTime				= new Time();
@@ -1141,7 +1145,7 @@ $._PPP_={
 		}
 	},
 
-	dumpXMPFromAllProjectItems: function () {
+	dumpXMPFromAllProjectItems : function () {
 		var numItemsInRoot = app.project.rootItem.children.numItems;
 		if (numItemsInRoot > 0) {
 			var outPath = Folder.selectDialog("Choose the output directory");
@@ -1162,7 +1166,7 @@ $._PPP_={
 		}
 	},
 
-	exportAAF: function () {
+	exportAAF : function () {
 		var sessionCounter = 1;
 		if (app.project.activeSequence) {
 			var outputPath = Folder.selectDialog("Choose the output directory");
@@ -1194,15 +1198,15 @@ $._PPP_={
 		}
 	},
 
-	setScratchDisk: function () {
+	setScratchDisk : function () {
 		var scratchPath = Folder.selectDialog("Choose new scratch disk directory");
 		if ((scratchPath) && scratchPath.exists) {
 			app.setScratchDiskPath(scratchPath.fsName, ScratchDiskType.FirstAutoSaveFolder); // see ScratchDiskType object, in ESTK.
 		}
 	},
 
-	getProjectProxySetting: function () {
-		var returnVal = "";
+	getProjectProxySetting : function () {
+		var returnVal = "No project available.";
 		if (app.project) {
 			var returnVal = "No sequence detected in " + app.project.name + ".";
 			if (app.getEnableProxies()) {
@@ -1210,13 +1214,11 @@ $._PPP_={
 			} else {
 				returnVal = 'false';
 			}
-		} else {
-			returnVal = "No project available.";
 		}
 		return returnVal;
 	},
 
-	toggleProxyState: function () {
+	toggleProxyState : function () {
 		var update = "Proxies for " + app.project.name + " turned ";
 		if (app.getEnableProxies()) {
 			app.setEnableProxies(0);
@@ -1228,7 +1230,7 @@ $._PPP_={
 		$._PPP_.updateEventPanel(update);
 	},
 
-	setProxiesON: function () {
+	setProxiesON : function () {
 		var firstProjectItem = app.project.rootItem.children[0];
 		if (firstProjectItem) {
 			if (firstProjectItem.canProxy()) {
@@ -1242,8 +1244,8 @@ $._PPP_={
 						filterString = "All files:*.*";
 					}
 					var proxyPath = File.openDialog("Choose proxy for " + firstProjectItem.name + ":",
-						filterString,
-						false);
+													filterString,
+													false);
 					if (proxyPath.exists) {
 						firstProjectItem.attachProxy(proxyPath.fsName, 0);
 					} else {
@@ -1258,13 +1260,13 @@ $._PPP_={
 		}
 	},
 
-	clearCache: function () {
+	clearCache : function () {
 		app.enableQE();
 		qe.project.deletePreviewFiles(MediaType_ANY);
 		$._PPP_.updateEventPanel("All video and audio preview files deleted.");
 	},
 
-	randomizeSequenceSelection: function () {
+	randomizeSequenceSelection : function () {
 		var sequence = app.project.activeSequence;
 		if (sequence) {
 			var trackGroups 	= [sequence.audioTracks, sequence.videoTracks];
@@ -1275,18 +1277,18 @@ $._PPP_={
 				$._PPP_.updateEventPanel(trackGroupNames[groupIndex]);
 				var group = trackGroups[groupIndex];
 				for (var trackIndex = 0; trackIndex < group.numTracks; trackIndex++) {
-					var track			= group[trackIndex];
-					var clips			= track.clips;
-					var transitions		= track.transitions;
 					var beforeSelected;
 					var afterSelected;
 					var initialSelectState;
+					var track			= group[trackIndex];
+					var clips			= track.clips;
+					var transitions		= track.transitions;
 
-					$._PPP_.updateEventPanel("track : " + trackIndex + "	 clip count: " + clips.numItems + "	  transition count: " + transitions.numItems);
+					$._PPP_.updateEventPanel("track:" + trackIndex + "	 clip count: " + clips.numItems + "	  transition count: " + transitions.numItems);
 
 					for (var clipIndex = 0; clipIndex < clips.numItems; clipIndex++) {
 						var clip = clips[clipIndex];
-						var name = (clip.projectItem === undefined ? "<null>" : clip.projectItem.name);
+						var name = (clip.projectItem === undefined ? "<null>":clip.projectItem.name);
 						initialSelectState = clip.isSelected();
 
 						// randomly select clips
@@ -1306,15 +1308,15 @@ $._PPP_={
 						}
 						beforeSelected	= initialSelectState ? "Y" : "N";
 						afterSelected	= clip.isSelected() ? "Y" : "N";
-						$._PPP_.updateEventPanel("clip : " + clipIndex + "	 " + name + "		" + beforeSelected + " -> " + afterSelected);
+						$._PPP_.updateEventPanel("clip:" + clipIndex + "	 " + name + "		" + beforeSelected + " -> " + afterSelected);
 					}
 
 					for (var tni = 0; tni < transitions.numItems; ++tni) {
 						var transition 		= transitions[tni];
 						var doIt 			= false;
 						initialSelectState	= transition.isSelected();
-						// randomly select transitions
-						if ((Math.random() > 0.5)) {
+						
+						if ((Math.random() > 0.5)) { // randomly select transitions
 							doIt = true;
 						}
 						transition.setSelected(doIt, updateUI);
@@ -1331,7 +1333,7 @@ $._PPP_={
 
 	// Define a couple of callback functions, for AME to use during render.
 
-	onEncoderJobComplete: function (jobID, outputFilePath) {
+	onEncoderJobComplete : function (jobID, outputFilePath) {
 		var eoName;
 
 		if (Folder.fs == 'Macintosh') {
@@ -1357,7 +1359,7 @@ $._PPP_={
 		eventObj.dispatch();
 	},
 
-	onEncoderJobError: function (jobID, errorMessage) {
+	onEncoderJobError : function (jobID, errorMessage) {
 		var eoName = "";
 		if (Folder.fs === 'Macintosh') {
 			eoName = "PlugPlugExternalObject";
@@ -1370,20 +1372,20 @@ $._PPP_={
 		eventObj.dispatch();
 	},
 
-	onEncoderJobProgress: function (jobID, progress) {
+	onEncoderJobProgress : function (jobID, progress) {
 		$._PPP_.updateEventPanel('onEncoderJobProgress called. jobID = ' + jobID + '. progress = ' + progress + '.');
 	},
 
-	onEncoderJobQueued: function (jobID) {
+	onEncoderJobQueued : function (jobID) {
 		$._PPP_.updateEventPanel('jobID ' + jobID + 'successfully queued.');
 		app.encoder.startBatch();
 	},
 
-	onEncoderJobCanceled: function (jobID) {
+	onEncoderJobCanceled : function (jobID) {
 		$._PPP_.updateEventPanel('OnEncoderJobCanceled called. jobID = ' + jobID + '.');
 	},
 
-	onPlayWithKeyframes: function () {
+	onPlayWithKeyframes : function () {
 		var seq = app.project.activeSequence;
 		if (seq) {
 			var firstVideoTrack = seq.videoTracks[0];
@@ -1436,6 +1438,15 @@ $._PPP_={
 											blurriness.addKey(k);
 											var blurVal = Math.sin(3.14159 * i / 5) * 20 + 25;
 											blurriness.setValueAtKey(k, blurVal, updateUI);
+											var adjLayer = app.project.activeSequence.getSelection()[0];
+
+											var playheadSeconds = app.project.activeSequence.getPlayerPosition().seconds;
+											var adjLayerInPointSeconds = adjLayer.inPoint.seconds;
+											var adjLayerStartSeconds = adjLayer.start.seconds;
+
+											var now = adjLayerInPointSeconds + playheadSeconds - adjLayerStartSeconds;
+
+											blurriness.setInterpolationTypeAtKey(now, 2, true);
 										}
 									}
 
@@ -1496,7 +1507,7 @@ $._PPP_={
 		}
 	},
 
-	extractFileNameFromPath: function (fullPath) {
+	extractFileNameFromPath : function (fullPath) {
 		var lastDot = fullPath.lastIndexOf(".");
 		var lastSep = fullPath.lastIndexOf("/");
 		if (lastDot > -1) {
@@ -1506,7 +1517,7 @@ $._PPP_={
 		}
 	},
 
-	onProxyTranscodeJobComplete: function (jobID, outputFilePath) {
+	onProxyTranscodeJobComplete : function (jobID, outputFilePath) {
 		var suffixAddedByPPro	= '_1'; // You should really test for any suffix.
 		var withoutExtension	= outputFilePath.slice(0, -4); // trusting 3 char extension
 		var lastIndex			= outputFilePath.lastIndexOf(".");
@@ -1520,15 +1531,15 @@ $._PPP_={
 		}
 	},
 
-	onProxyTranscodeJobError: function (jobID, errorMessage) {
+	onProxyTranscodeJobError : function (jobID, errorMessage) {
 		$._PPP_.updateEventPanel(errorMessage);
 	},
 
-	onProxyTranscodeJobQueued: function (jobID) {
+	onProxyTranscodeJobQueued : function (jobID) {
 		app.encoder.startBatch();
 	},
 
-	ingestFiles: function (outputPresetPath) {
+	ingestFiles : function (outputPresetPath) {
 		app.encoder.bind('onEncoderJobComplete', $._PPP_.onProxyTranscodeJobComplete);
 		app.encoder.bind('onEncoderJobError', $._PPP_.onProxyTranscodeJobError);
 		app.encoder.bind('onEncoderJobQueued', $._PPP_.onProxyTranscodeJobQueued);
@@ -1583,7 +1594,7 @@ $._PPP_={
 		}
 	},
 
-	insertOrAppend: function () {
+	insertOrAppend : function () {
 		var seq = app.project.activeSequence;
 		if (seq) {
 			var first = app.project.rootItem.children[0];
@@ -1629,7 +1640,7 @@ $._PPP_={
 		}
 	},
 
-	overWrite: function () {
+	overWrite : function () {
 		var seq = app.project.activeSequence;
 		if (seq) {
 			var first = app.project.rootItem.children[0];
@@ -1649,15 +1660,15 @@ $._PPP_={
 		}
 	},
 
-	closeFrontSourceClip: function () {
+	closeFrontSourceClip : function () {
 		app.sourceMonitor.closeClip();
 	},
 
-	closeAllClipsInSourceMonitor: function () {
+	closeAllClipsInSourceMonitor : function () {
 		app.sourceMonitor.closeAllClips();
 	},
 
-	changeLabel: function () {
+	changeLabel : function () {
 		var first = app.project.rootItem.children[0];
 		if (first) {
 			var currentLabel 	= first.getColorLabel();
@@ -1673,7 +1684,7 @@ $._PPP_={
 		}
 	},
 
-	getPPPInsertionBin: function () {
+	getPPPInsertionBin : function () {
 		var nameToFind	= "Here's where PProPanel puts things.";
 		var targetBin	= $._PPP_.searchForBinWithName(nameToFind);
 
@@ -1690,7 +1701,7 @@ $._PPP_={
 		}
 	},
 
-	importComps: function () {
+	importComps : function () {
 		var targetBin = $._PPP_.getPPPInsertionBin();
 		if (targetBin) {
 			var filterString = "";
@@ -1722,7 +1733,7 @@ $._PPP_={
 		}
 	},
 
-	consolidateProject: function () {
+	consolidateProject : function () {
 		var pmo = app.projectManager.options;
 
 		if (app.project.sequences.numSequences) {
@@ -1788,7 +1799,7 @@ $._PPP_={
 		}
 	},
 
-	importMoGRT: function () {
+	importMoGRT : function () {
 		var activeSeq = app.project.activeSequence;
 		if (activeSeq) {
 			var filterString = "";
@@ -1828,13 +1839,13 @@ $._PPP_={
 		}
 	},
 
-	reportCurrentProjectSelection: function () {
+	reportCurrentProjectSelection : function () {
 		var viewIDs 		= app.getProjectViewIDs(); 
 		var viewSelection 	= app.getProjectViewSelection(viewIDs[0]); // sample code optimized for a single open project
 		$._PPP_.projectPanelSelectionChanged(viewSelection, viewIDs[0]);
 	},
 
-	randomizeProjectSelection: function () {
+	randomizeProjectSelection : function () {
 		var viewIDs						= app.getProjectViewIDs();
 		var firstProject				= app.getProjectFromViewID(viewIDs[0]);
 		var arrayOfRandomProjectItems	= [];
@@ -1850,7 +1861,7 @@ $._PPP_={
 		}
 	},
 
-	setAllProjectItemsOnline: function (startingBin) {
+	setAllProjectItemsOnline : function (startingBin) {
 		for (var k = 0; k < startingBin.children.numItems; k++) {
 			var currentChild = startingBin.children[k];
 			if (currentChild) {
@@ -1868,12 +1879,12 @@ $._PPP_={
 		}
 	},
 
-	setAllOnline: function () {
+	setAllOnline : function () {
 		var startingBin = app.project.rootItem;
 		$._PPP_.setAllProjectItemsOnline(startingBin);
 	},
 
-	setOffline: function () {
+	setOffline : function () {
 		var viewIDs = app.getProjectViewIDs();
 		for (var a = 0; a < app.projects.numProjects; a++) {
 			var currentProject = app.getProjectFromViewID(viewIDs[a]);
@@ -1900,7 +1911,7 @@ $._PPP_={
 		}
 	},
 
-	updateFrameRate: function () {
+	updateFrameRate : function () {
 		var item = app.project.rootItem.children[0];
 		if (item) {
 			if ((item.type == ProjectItemType.FILE) || (item.type == ProjectItemType.CLIP)) {
@@ -1914,32 +1925,32 @@ $._PPP_={
 		}
 	},
 
-	onItemAddedToProject: function (whichProject, addedProjectItem) {
+	onItemAddedToProject : function (whichProject, addedProjectItem) {
 		var msg = addedProjectItem.name + " was added to " + whichProject + ".";
 		$._PPP_.updateEventPanel(msg);
 	},
 
-	registerItemAddedFxn: function () {
+	registerItemAddedFxn : function () {
 		app.onItemAddedToProjectSuccess = $._PPP_.onItemAddedToProject;
 	},
 
-	myOnProjectChanged: function (documentID) {
-		var msg = 'Project with ID ' + documentID + ' Changed.';
+	myOnProjectChanged : function (documentID) {
+		var msg = 'Project with ID ' + documentID + ' changed, in some way.';
 		$._PPP_.updateEventPanel(msg);
 	},
 
-	registerProjectChangedFxn: function () {
+	registerProjectChangedFxn : function () {
 		app.bind('onProjectChanged', $._PPP_.myOnProjectChanged);
 	},
 
-	confirmPProHostVersion: function () {
+	confirmPProHostVersion : function () {
 		var version = parseFloat(app.version);
 		if (version < 14.0) {
 			$._PPP_.updateEventPanel("Note: PProPanel relies on features added in 14.0, but is currently running in " + version + ".");
 		}
 	},
 
-	changeMarkerColors: function () {
+	changeMarkerColors : function () {
 		if (app.project.rootItem.children.numItems > 0) {
 			var projectItem = app.project.rootItem.children[0]; // assumes first item is footage.
 			if (projectItem) {
@@ -1970,7 +1981,7 @@ $._PPP_={
 		}
 	},
 
-	changeSeqTimeCodeDisplay: function () {
+	changeSeqTimeCodeDisplay : function () {
 		var seq = app.project.activeSequence;
 		if (seq) {
 			var currentSeqSettings	= app.project.activeSequence.getSettings();
@@ -1990,15 +2001,15 @@ $._PPP_={
 		}
 	},
 
-	myActiveSequenceChangedFxn: function () {
+	myActiveSequenceChangedFxn : function () {
 		$._PPP_.updateEventPanel(app.project.activeSequence.name + " changed, in some way.");
 	},
 
-	mySequenceActivatedFxn: function () {
-		$._PPP_.updateEventPanel("Active sequence is now " + app.project.activeSequence.name + ".");
+	mySequenceActivatedFxn : function () {
+		$._PPP_.updateEventPanel("Active sequence is now " + app.project.activeSequence.name + ", in Project " + app.project.name + ".");
 	},
 
-	myActiveSequenceSelectionChangedFxn: function () {
+	myActiveSequenceSelectionChangedFxn : function () {
 		var seq = app.project.activeSequence;
 		if (seq){
 			var sel = seq.getSelection();
@@ -2017,27 +2028,27 @@ $._PPP_={
 		}
 	},
 
-	myActiveSequenceStructureChangedFxn: function (){
+	myActiveSequenceStructureChangedFxn : function (){
 		$._PPP_.updateEventPanel('Something in  ' + app.project.activeSequence.name + 'changed.');
 	},
 	
-	registerActiveSequenceStructureChangedFxn: function () {
+	registerActiveSequenceStructureChangedFxn : function () {
 		var success	=	app.bind("onActiveSequenceStructureChanged", $._PPP_.myActiveSequenceStructureChangedFxn);
 	},
 
-	registerActiveSequenceChangedFxn: function () {
+	registerActiveSequenceChangedFxn : function () {
 		var success	=	app.bind("onActiveSequenceChanged", $._PPP_.myActiveSequenceChangedFxn);
 	},
 
-	registerSequenceSelectionChangedFxn: function () {
+	registerSequenceSelectionChangedFxn : function () {
 		var success = app.bind('onActiveSequenceSelectionChanged', $._PPP_.myActiveSequenceSelectionChangedFxn);
 	},
 
-	registerSequenceActivatedFxn: function () {
+	registerSequenceActivatedFxn : function () {
 		var success = app.bind('onSequenceActivated', $._PPP_.mySequenceActivatedFxn);
 	},
 	
-	enableNewWorldScripting: function () {
+	enableNewWorldScripting : function () {
 		app.enableQE();
 
 		var previousNWValue				= qe.getDebugDatabaseEntry("ScriptLayerPPro.EnableNewWorld");
@@ -2053,7 +2064,7 @@ $._PPP_={
 		}
 	},
 
-	forceLogfilesOn: function () {
+	forceLogfilesOn : function () {
 		app.enableQE();
 		var previousLogFilesValue = qe.getDebugDatabaseEntry("CreateLogFilesThatDoNotExist");
 
@@ -2065,7 +2076,7 @@ $._PPP_={
 		}
 	},
 
-	insertOrAppendToTopTracks: function () {
+	insertOrAppendToTopTracks : function () {
 		var seq = app.project.activeSequence;
 		if (seq) {
 			var first = app.project.rootItem.children[0];
@@ -2083,7 +2094,7 @@ $._PPP_={
 		}
 	},
 
-	closeAllProjectsOtherThanActiveProject: function () {
+	closeAllProjectsOtherThanActiveProject : function () {
 		var viewIDs				= app.getProjectViewIDs();
 		var closeTheseProjects	= [];
 		for (var a = 0; a < viewIDs.length; a++) {
@@ -2099,7 +2110,7 @@ $._PPP_={
 		}
 	},
 
-	countAdjustmentLayersInBin: function (parentItem, arrayOfAdjustmentLayerNames, foundSoFar) {
+	countAdjustmentLayersInBin : function (parentItem, arrayOfAdjustmentLayerNames, foundSoFar) {
 		for (var j = 0; j < parentItem.children.numItems; j++) {
 			var currentChild = parentItem.children[j];
 			if (currentChild) {
@@ -2116,7 +2127,7 @@ $._PPP_={
 		$._PPP_.updateEventPanel(foundSoFar + " adjustment layers found in " + app.project.name + ".");
 	},
 
-	findAllAdjustmentLayersInProject: function () {
+	findAllAdjustmentLayersInProject : function () {
 		var arrayOfAdjustmentLayerNames	= [];
 		var foundSoFar					= 0;
 		var startingBin					= app.project.rootItem;
@@ -2146,12 +2157,12 @@ $._PPP_={
 		}
 	},
 
-	consolidateDuplicates: function () {
+	consolidateDuplicates : function () {
 		var result = app.project.consolidateDuplicates();
 		$._PPP_.updateEventPanel("Duplicates consolidated in " + app.project.name + ".");
 	},
 
-	closeAllSequences: function () {
+	closeAllSequences : function () {
 		var seqList = app.project.sequences;
 		if (seqList.numSequences) {
 			for (var a = 0; a < seqList.numSequences; a++) {
@@ -2167,7 +2178,7 @@ $._PPP_={
 		}
 	},
 
-	dumpAllPresets: function () {
+	dumpAllPresets : function () {
 		var desktopPath		= new File("~/Desktop");
 		var outputFileName	= desktopPath.fsName + $._PPP_.getSep() + 'available_presets.txt';
 		var exporters		= app.encoder.getExporters();
@@ -2180,7 +2191,7 @@ $._PPP_={
 			var exporter = exporters[i];
 			if (exporter) {
 				outFile.writeln('-----------------------------------------------');
-				outFile.writeln(i + ':' + exporter.name + ' : ' + exporter.classID + ' : ' + exporter.fileType);
+				outFile.writeln(i + ': ' + exporter.name + ' : ' + exporter.classID + ' : ' + exporter.fileType);
 				var presets = exporter.getPresets();
 				if (presets) {
 					outFile.writeln(presets.length + ' presets found.');
@@ -2201,7 +2212,7 @@ $._PPP_={
 		outFile.close();
 	},
 
-	reportSequenceVRSettings: function () {
+	reportSequenceVRSettings : function () {
 		var seq = app.project.activeSequence;
 		if (seq) {
 			var settings = seq.getSettings();
@@ -2223,7 +2234,7 @@ $._PPP_={
 		}
 	},
 
-	openProjectItemInSource: function () {
+	openProjectItemInSource : function () {
 		var viewIDs = app.getProjectViewIDs();
 		if (viewIDs) {
 			for (var a = 0; a < app.projects.numProjects; a++) {
@@ -2253,7 +2264,7 @@ $._PPP_={
 		}
 	},
 
-	reinterpretFootage: function () {
+	reinterpretFootage : function () {
 		var viewIDs = app.getProjectViewIDs();
 		if (viewIDs) {
 			for (var a = 0; a < app.projects.numProjects; a++) {
@@ -2303,7 +2314,7 @@ $._PPP_={
 		}
 	},
 
-	createSubSequence: function () {
+	createSubSequence : function () {
 
 		/* 	Behavioral Note
 
@@ -2340,7 +2351,7 @@ $._PPP_={
 		}
 	},
 
-	selectAllRetimedClips: function () {
+	selectAllRetimedClips : function () {
 		var activeSeq 		= app.project.activeSequence;
 		var numRetimedClips = 0;
 		if (activeSeq) {
@@ -2367,7 +2378,7 @@ $._PPP_={
 		}
 	},
 
-	selectReversedClips: function () {
+	selectReversedClips : function () {
 		var sequence			= app.project.activeSequence;
 		var numReversedClips	= 0;
 		if (sequence) {
@@ -2394,7 +2405,7 @@ $._PPP_={
 		}
 	},
 
-	logConsoleOutput: function () {
+	logConsoleOutput : function () {
 		app.enableQE();
 		var logFileName	= "PPro_Console_output.txt";
 		var outFolder	= Folder.selectDialog("Where do you want to save the log file?");
@@ -2407,12 +2418,12 @@ $._PPP_={
 		}
 	},
 
-	closeLog: function () {
+	closeLog : function () {
 		app.enableQE();
 		qe.executeConsoleCommand("con.closelog");
 	},
 
-	stitch: function (presetPath) {
+	stitch : function (presetPath) {
 		var viewIDs = app.getProjectViewIDs();
 		var allPathsToStitch = "";
 
@@ -2447,25 +2458,25 @@ $._PPP_={
 		}
 	},
 
-	myTrackItemAdded: function (track, trackItem) {
-		$._PPP_.updateEventPanel('onActiveSequenceTrackItemAdded : ' + track.name + ' : ' + trackItem.name + ' : ' + trackItem.nodeId + ".");
+	myTrackItemAdded : function (track, trackItem) {
+		$._PPP_.updateEventPanel('onActiveSequenceTrackItemAdded: ' + track.name + ' : ' + trackItem.name + ' : ' + trackItem.nodeId + ".");
 	},
 
-	myTrackItemRemoved: function (track, trackItem) {
-		$._PPP_.updateEventPanel('onActiveSequenceTrackItemRemoved : ' + track.name + ' : ' + trackItem.name + ' : ' + trackItem.nodeId + ".");
+	myTrackItemRemoved : function (track, trackItem) {
+		$._PPP_.updateEventPanel('onActiveSequenceTrackItemRemoved: ' + track.name + ' : ' + trackItem.name + ' : ' + trackItem.nodeId + ".");
 	},
 
-	mySequenceStructureChanged: function () {
+	mySequenceStructureChanged : function () {
 		$._PPP_.updateEventPanel('onActiveSequenceStructureChanged.');
 	},
 
-	registerSequenceMessaging: function () {
+	registerSequenceMessaging : function () {
 		app.bind('onActiveSequenceTrackItemRemoved',	$._PPP_.myTrackItemRemoved);
 		app.bind('onActiveSequenceTrackItemAdded',		$._PPP_.myTrackItemAdded);
 		app.bind('onActiveSequenceStructureChanged',	$._PPP_.mySequenceStructureChanged);
 	},
 
-	enumerateTeamProjects: function () {
+	enumerateTeamProjects : function () {
 		app.enableQE();
 		var numTeamProjectsOpen = 0;
 		for (var i = 0; i < app.projects.numProjects; i++) {
@@ -2488,7 +2499,7 @@ $._PPP_={
 		}
 	},
 
-	enableWorkArea: function (enable) {
+	enableWorkArea : function (enable) {
 		var seq = app.project.activeSequence;
 		if (seq) {
 			var newStateString = "undefined";
@@ -2506,7 +2517,7 @@ $._PPP_={
 		}
 	},
 
-	modifyWorkArea: function () {
+	modifyWorkArea : function () {
 		var seq = app.project.activeSequence;
 		if (seq) {
 			var workAreaIsEnabled = seq.isWorkAreaEnabled();
@@ -2530,16 +2541,16 @@ $._PPP_={
 		}
 	},
 
-	setLocale: function (localeFromCEP) {
+	setLocale : function (localeFromCEP) {
 		$.locale = localeFromCEP;
 		$._PPP_.updateEventPanel("ExtendScript Locale set to " + localeFromCEP + ".");
 	},
 
-	disableTranscodeOnIngest: function(newValue){
+	disableTranscodeOnIngest : function(newValue){
 		return app.setEnableTranscodeOnIngest(newValue);
 	},
 
-	generateSystemCompatibilityReport: function(){
+	generateSystemCompatibilityReport : function(){
 		app.enableQE();
 		var outputPath = new File("~/Desktop");
 		var outputFileName = outputPath.fsName + $._PPP_.getSep() + "System_Compatibility_Report.txt";
@@ -2547,12 +2558,14 @@ $._PPP_={
 		$._PPP_.updateEventPanel("System Compatibility report and project analysis report saved to user's Desktop.");
 	},
 
-	changeSequenceColorSpace: function() {
+	changeSequenceColorSpace : function() {
 		var seq = app.project.activeSequence;
 		if (seq){
 			var currentSeqSettings = seq.getSettings();
 			if (currentSeqSettings){
 				if (currentSeqSettings.workingColorSpace === currentSeqSettings.workingColorSpaceList[0]){
+					currentSeqSettings.videoFrameRate.ticks = '8475667200';
+					currentSeqSettings.videoDisplayFormat = 101;
 					currentSeqSettings.workingColorSpace = currentSeqSettings.workingColorSpaceList[1];
 					seq.setSettings(currentSeqSettings);
 					$._PPP_.updateEventPanel("Changed sequence colorspace from \'" + currentSeqSettings.workingColorSpaceList[0] + "\' to \'" + currentSeqSettings.workingColorSpaceList[1] + "\'.");
@@ -2584,14 +2597,14 @@ $._PPP_={
 			$._PPP_.updateEventPanel("No active sequence.");
 		}
 	},
-	
+
 	autoReframeActiveSequence : function (){
 		var seq = app.project.activeSequence;
 		if (seq){
 			var numerator		= 1;
 			var denominator		= 1;
-			var motionPreset	= "​Sensitive"; // valid values = "​Sensitive", "​LessSensitive", and "​MoreSensitive" 
-			var newName 		= seq.name + ",auto-reframed by PProPanel.";
+			var motionPreset	= "default"; // valid values = "default", "faster", and "slower"
+			var newName 		= seq.name + ", auto-reframed by PProPanel.";
 			var useNestedSeqs	= false;
 
 			var newSequence = seq.autoReframeSequence(	numerator,
@@ -2605,6 +2618,123 @@ $._PPP_={
 			} else {
 				$._PPP_.updateEventPanel("Failed to create re-framed sequence: " + newName + ".");
 			}
+		}
+	},
+
+	createNewProject : function (){
+		var outPath		= Folder.selectDialog("Choose the output directory");
+		if (outPath){
+			var projName	= prompt('Name of project?', '', 'Project Naming Prompt');
+			if (projName){
+				var completeOutputPath = outPath.fsName + $._PPP_.getSep() + projName;
+				var result	= app.newProject(completeOutputPath);
+				if (result === true){
+					$._PPP_.updateEventPanel("Created project: " + projName + ".");
+				} else {
+					$._PPP_.updateEventPanel("Failed to create project: " + projName + ".");
+				}
+			}
+		}
+	},
+
+	openProduction : function (){
+		var openProduction = app.production;
+		
+		// Not a great user experience, but I had to exercise the calls
+
+		if (openProduction){
+			var closeFirst = confirm("Close " + openProduction.name + "?", true, "Close open Production?");
+			if (closeFirst){
+				openProduction.close();
+			}
+		}
+		var prodFolder		= Folder.selectDialog("Select the Production folder to open.");
+		if (prodFolder){
+			var someProduction = app.openPrProduction(prodFolder.fsName);
+			if (someProduction){
+				$._PPP_.updateEventPanel("Opened production: " + someProduction.name + ".");
+			} else {
+				$._PPP_.updateEventPanel("Failed to open production at path: " + prodFolder.fsName + ".");
+			}
+		}
+	},
+
+	toggleProductionLockState : function (){
+		var openProduction = app.production;
+		if (openProduction){
+			var numOpenProductionProjects = openProduction.projects.length;
+			if (numOpenProductionProjects){
+				var preSuffix	= "uninitialized.";
+				var postSuffix	= "uninitialized.";
+				for (var a = 0; a < numOpenProductionProjects; a++){
+					var currentProject = openProduction.projects[a];
+					if (currentProject){
+						var currentLockState = openProduction.getLocked(currentProject);
+						if (currentLockState){
+							preSuffix	= "locked.";
+							postSuffix	= "unlocked.";
+						} else {
+							preSuffix	= "unlocked.";
+							postSuffix	= "locked.";
+						}
+						$._PPP_.updateEventPanel(currentProject.name + " was " + preSuffix);
+						openProduction.setLocked(currentProject, !currentLockState);
+						$._PPP_.updateEventPanel(currentProject.name + " is now " + postSuffix);
+					}
+				}
+			} else {
+				$._PPP_.updateEventPanel("No Production projects open.");
+			}
+		} else {
+			$._PPP_.updateEventPanel("No production open.");
+		}
+	},
+
+	closeAllOpenProductionProjects : function () {
+		var openProduction = app.production;
+		if (openProduction){
+			var numOpenProductionProjects = openProduction.projects.length;
+			if (numOpenProductionProjects){
+				var projArray = [];
+				for (var a = 0; a < numOpenProductionProjects; a++){
+					projArray[a] = openProduction.projects[a];
+				}
+				for (var b = 0; b < numOpenProductionProjects; b++){
+					var currentProject = projArray[b];
+					if (currentProject){
+						var saveFirst		=	true;
+						var promptIfDirty	=	false;
+						$._PPP_.updateEventPanel(currentProject.name + " closed.");
+						currentProject.closeDocument(saveFirst, promptIfDirty);
+					}
+				}
+			} else {
+				$._PPP_.updateEventPanel("No Production projects open.");
+			}
+		} else {
+			$._PPP_.updateEventPanel("No production open.");
+		}
+	},
+
+	moveProductionProjectsToTrash : function () {
+		var openProduction = app.production;
+		if (openProduction){
+			var numOpenProductionProjects = openProduction.projects.length;
+			if (numOpenProductionProjects){
+				var projArray = [];
+				for (var a = 0; a < numOpenProductionProjects; a++){
+					projArray[a] = openProduction.projects[a];
+				}
+				for(var c = 0; c < projArray.length; c++){
+					var currentProject = projArray[c];
+					$._PPP_.updateEventPanel(currentProject.name + " moved to Trash.");
+					var result = openProduction.moveToTrash(currentProject.path, true, true);
+				}
+			} else {
+				$._PPP_.updateEventPanel("No Production projects open.");
+			}
+		} else {
+			$._PPP_.updateEventPanel("No production open.");
 		}
 	}
 };
