@@ -1824,7 +1824,7 @@ $._PPP_={
 						for (var z = 0; z < params.numItems; z++) {
 							var thisParam = params[0];
 						}
-						var srcTextParam = params.getParamForDisplayName("Main Title");
+						var srcTextParam = params.getParamForDisplayName("Source Text");
 						if (srcTextParam) {
 							var val = srcTextParam.getValue();
 							srcTextParam.setValue("New value set by PProPanel!");
