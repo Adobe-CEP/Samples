@@ -47,7 +47,13 @@ rebooting, or from the Force Quit dialog):
 defaults write /Users/<username>/Library/Preferences/com.adobe.CSXS.9.plist PlayerDebugMode 1
 ```
 
-On Windows, make the following registry entry (a new Key, of type String):
+On Windows, launch PowerShell and run the following command:
+
+```powershell
+Set-ItemProperty -Path HKCU:\SOFTWARE\Adobe\CSXS.9 -Name PlayerDebugMode -Value 1
+```
+
+Alternatively, you can use the `regedit.exe` GUI to make the following registry entry (a new Key, of type String):
 
 ![Registry image](payloads/Registry.png)
 
