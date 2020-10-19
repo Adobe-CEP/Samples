@@ -1,7 +1,7 @@
 /**************************************************************************************************
 *
 * ADOBE SYSTEMS INCORPORATED
-* Copyright 2013 Adobe Systems Incorporated
+* Copyright 2020 Adobe Systems Incorporated
 * All Rights Reserved.
 *
 * NOTICE:  Adobe permits you to use, modify, and distribute this file in accordance with the
@@ -16,7 +16,7 @@
 //
 // Note: So far all native file i/o functions are synchronous, and aynchronous file i/o is TBD.
 
-/** Version v8.0.0 */
+/** Version v10.0.0 */
 
 /*jslint vars: true, plusplus: true, devel: true, browser: true, nomen: true, indent: 4, forin: true, maxerr: 50, regexp: true */
 /*global define, native */

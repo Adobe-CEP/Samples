@@ -272,7 +272,7 @@ declare class Sequence {
   
 	/**
 	 * Sets the current player position.
-	 * @param pos The new position, as a timecode string.
+	 * @param pos The new position, as a string, representing ticks.
 	 */
 	setPlayerPosition(pos: string): void
   
@@ -388,6 +388,12 @@ declare class Sequence {
 	 */	
 	setSettings(newSettings): void
 
+	/**
+	 *  @returns true if effect analysis is complete
+	 */
+	
+	isDoneAnalyzingForVideoEffects(): Boolean
+
 
 	/**
 	 * 
@@ -401,6 +407,13 @@ declare class Sequence {
 
 	autoReframeSequence(numerator:Number, denominator:Number, motionPreset:String, sequenceName:String, nest:Boolean): Sequence
 
+	/**
+	 * 
+	 * @param action Either 'ApplyCuts' or 'CreateMarkers' 
+	 * @param applyCutsToLinkedAudio Operate on linked audio too?
+	 * @param sensitivity 'LowSensitivity', 'MediumSensitivity', or 'HighSensitivity'
+	 */
+	performCutDetectionOnSelection(action:String, applyCutsToLinkedAudio:Boolean, sensitivity:String)
 	/**
 	 *
 	 */
@@ -1015,7 +1028,32 @@ declare class ProjectManager {
 	 *
 	 */
 	setProjectPanelMetadata(newMetadata: string): void
-  
+
+	/**
+	 * 
+	 * @param newSequenceName 	Name for newly-created sequence
+	 * @param projectItems 		Array of project items to be added to sequence
+	 * @param targetBin 		Bin in which new sequence should be created
+	 */
+	
+	createNewSequenceFromClips(newSequenceName: string, projectItems: Array, targetBin: ProjectItem)
+
+	/**
+	 * 
+	 */
+	getSupportedGraphicsWhiteLuminances(): Array
+
+	/**
+	 * 
+	 */
+	getGraphicsWhiteLuminance(): number
+
+	/**
+	 * 
+	 * @param newGWL  
+	 */
+	setGraphicsWhiteLuminance(newGWL:number): boolean
+	
 	/**
 	 *
 	 */
@@ -1119,12 +1157,17 @@ declare class ProjectManager {
 	/**
 	 *
 	 */
-	readonly end: Time
+	end: Time
   
 	/**
 	 *
 	 */
-	readonly inPoint: Time
+	inPoint: Time
+
+	/**
+	 * 
+	 */
+	outPoint: Time
   
 	/**
 	 *
@@ -1135,11 +1178,6 @@ declare class ProjectManager {
 	 *
 	 */
 	name: string
-  
-	/**
-	 *
-	 */
-	readonly outPoint: Time
   
 	/**
 	 *
@@ -1255,6 +1293,11 @@ declare class ProjectManager {
 	 *
 	 */
 	attachProxy(mediaPath: string, isHiRes: number): boolean
+
+	/**
+	 * 
+	 */
+	detachProxy(): boolean
   
 	/**
 	 *
@@ -1424,6 +1467,16 @@ declare class ProjectManager {
 	 * 
 	 */
 	getColorSpace(): String
+
+	/**
+	 * 
+	 */
+	isMultiCamClip(): boolean
+
+	/**
+	 * 
+	 */
+	isMergedClip(): boolean
 	
 	/**
 	 *
@@ -1773,6 +1826,11 @@ declare class ProjectManager {
 	 *
 	 */
 	startBatch(): boolean
+
+	/**
+	 * 
+	 */
+	lastExportMediaFolder():String
   
 	/**
 	 *
@@ -1802,7 +1860,7 @@ declare class ProjectManager {
 	/**
 	 *
 	 */
-	getProperty(propertyKey: string): void
+	getProperty(propertyKey: string): any
   
 	/**
 	 *
@@ -1812,7 +1870,7 @@ declare class ProjectManager {
 	/**
 	 *
 	 */
-	setProperty(propertyKey: string, propertyValue: string, permanenceValue: number, allowCreateNewProperty: boolean): void
+	setProperty(propertyKey: string, propertyValue: any, permanenceValue: number, allowCreateNewProperty: boolean): void
   
 	/**
 	 *
@@ -1974,7 +2032,7 @@ declare class ProjectManager {
 	/**
 	 *
 	 */
-	openDocument(filePath: string, bypassConversionDialog: boolean, bypassLocateFile: boolean, hideFromMRUList: boolean): boolean
+	openDocument(filePath: string, bypassConversionDialog?: boolean, bypassLocateFile?: boolean, bypassWarningDialog?: boolean, hideFromMRUList?: boolean): boolean
 
 	/**
 	 * @param newValueForTranscodeOnIngest

@@ -4,7 +4,7 @@
 * ADOBE CONFIDENTIAL
 * ___________________
 *
-* Copyright 2019 Adobe
+* Copyright 2020 Adobe
 * All Rights Reserved.
 *
 * NOTICE: Adobe permits you to use, modify, and distribute this file in
@@ -15,7 +15,7 @@
 **************************************************************************/
 -->
 <html>
-
+<title>PProPanel</title>
 <head>
 	<meta charset="utf-8">
 	<script src="./ext.js"></script>
@@ -332,6 +332,12 @@
 	<p id="proxies_on">Proxies enabled for sequence: </p>
 
 	<div>
+		<h2>New in 14.3.1!</h2>
+	</div>
+
+	<button class="controlBg textStyle" id="btn_PPRO81" onClick="evalScript('$._PPP_.performCutDetection()')">Detect cuts in active sequence</button>
+
+	<div>
 		<h2>New in 14.1!</h2>
 	</div>
 
@@ -339,12 +345,13 @@
 	<button class="controlBg textStyle" id="btn_PPRO78" onClick="evalScript('$._PPP_.toggleProductionLockState()')">Toggle Production lock</button>
 	<button class="controlBg textStyle" id="btn_PPRO79" onClick="evalScript('$._PPP_.closeAllOpenProductionProjects()')">Close all Production projects</button>
 	<button class="controlBg textStyle" id="btn_PPRO80" onClick="evalScript('$._PPP_.moveProductionProjectsToTrash()')">Trash all open Production projects</button>
+	<button class="controlBg textStyle" id="btn_PPRO82" onClick="evalScript('$._PPP_.newSequenceFromProjectSelection()')">Create new sequence from selection</button>
+	<button class="controlBg textStyle" id="btn_PPRO83" onClick="evalScript('$._PPP_.adjustGraphicsWhiteLuminance()')">Adjust Graphics White Luminance</button>
 
 	<div>
 		<h2>New in 14.0!</h2>
 	</div>
 		<p> </p>
-
 		<button class="controlBg textStyle" id="btn_PPRO76" onClick="evalScript('$._PPP_.createNewProject()')">Create new project</button>
 		<button class="controlBg textStyle" id="btn_PPRO72" onClick="evalScript('$._PPP_.generateSystemCompatibilityReport()')">Generate system compatibility report</button>
 		<button class="controlBg textStyle" id="btn_PPRO75" onClick="evalScript('$._PPP_.changeSequenceColorSpace()')">Change colorspace of active sequence</button>
@@ -378,10 +385,6 @@
 		<h2>System</h2>
 	</div>
 	<div id="section1" class="sectionID">
-		<p> </p>
-		<p> </p>
-		<p> </p>
-		<p> </p>
 		<button class="controlBg textStyle" id="btn_PPRO33" onClick="evalScript('$._PPP_.closeFrontSourceClip()')">Close front-most Source monitor clip</button>
 		<button class="controlBg textStyle" id="btn_PPRO35" onClick="evalScript('$._PPP_.closeAllClipsInSourceMonitor()')">Close all clips in Source monitor</button>
 		<button id="openfolder">Open PProPanel folder</button>
@@ -396,19 +399,11 @@
 		<button class="controlBg textStyle" id="btn_PPRO55" onClick="evalScript('$._PPP_.enableNewWorldScripting()')">toggle NewWorld scripting</button>
 		<button class="controlBg textStyle" id="btn_PPRO25" onClick="evalScript('$._PPP_.clearCache()')">Clear media cache</button>
 		<button class="controlBg textStyle" id="btn_PPRO61" onClick="evalScript('$._PPP_.dumpAllPresets()')">List available export presets</button>		
-		<p> </p>
-		<p> </p>
-		<p> </p>
-		<p> </p>
 	</div>
 	<div>
 		<h2>Import and Create</h2>
 	</div>
 	<div id="section2" class="sectionID">
-		<p> </p>
-		<p> </p>
-		<p> </p>
-		<p> </p>
 		<button id="ingest">Ingest files, create proxies</button>
 		<button class="controlBg textStyle" id="btn_PPRO42" onClick="evalScript('$._PPP_.importMoGRT()')">Import MoGRT</button>
 		<button class="controlBg textStyle" id="btn_PPRO2" onClick="evalScript('$._PPP_.createSequence()')">Create Sequence</button>
@@ -421,20 +416,11 @@
 		<p> </p>
 		<p> </p>
 		<div id="dragthing" draggable="true" ondragstart="dragHandler(event)">Drag and drop import</div>
-		<p> </p>
-		<p> </p>
-		<p> </p>
-		<p> </p>
-
 	</div>
 	<div>
 		<h2>Metadata and Project manipulation</h2>
 	</div>
 	<div id="section3" class="sectionID">
-		<p> </p>
-		<p> </p>
-		<p> </p>
-		<p> </p>
 		<button id="toggleproxy">Toggle proxies in active project</button>
 		<button class="controlBg textStyle" id="btn_PPRO9" onClick="evalScript('$._PPP_.replaceMedia()')">Replace media...</button>
 		<button class="controlBg textStyle" id="btn_PPRO10" onClick="evalScript('$._PPP_.createSequenceMarkers()')">Add sequence markers</button>
@@ -443,7 +429,6 @@
 		<button class="controlBg textStyle" id="btn_PPRO11" onClick="evalScript('$._PPP_.mungeXMP()')">Manipulate XMP</button>
 		<button class="controlBg textStyle" id="btn_PPRO14" onClick="evalScript('$._PPP_.updateAllGrowingFiles()')">Update growing file</button>
 		<button class="controlBg textStyle" id="btn_PPRO15" onClick="evalScript('$._PPP_.modifyProjectMetadata()')">Modify project metadata</button>
-		<p> </p>
 		<button class="controlBg textStyle" id="btn_PPRO23" onClick="evalScript('$._PPP_.setScratchDisk()')">Set scratch disk path</button>
 		<button class="controlBg textStyle" id="btn_PPRO27" onClick="evalScript('$._PPP_.randomizeSequenceSelection()')">Randomize sequence selection</button>
 		<button class="controlBg textStyle" id="btn_PPRO28" onClick="evalScript('$._PPP_.muteFun()')">Mute fun!</button>
@@ -464,17 +449,9 @@
 		<button class="controlBg textStyle" id="btn_PPRO51" onClick="evalScript('$._PPP_.setProjectPanelMeta()')">Load Project layout</button>
 		<button class="controlBg textStyle" id="btn_PPRO12" onClick="evalScript('$._PPP_.exportSequenceAsPrProj()')">New project from sequence</button>
 		<button class="controlBg textStyle" id="btn_PPRO73" onClick="evalScript('$._PPP_.autoReframeActiveSequence()')">Auto-reframe active sequence</button>
-		<p> </p>
-		<p> </p>
-		<p> </p>
-		<p> </p>
 		<h2>Export</h2>
 	</div>
 	<div id="section4" class="sectionID">
-		<p> </p>
-		<p> </p>
-		<p> </p>
-		<p> </p>
 		<button id="transcodeusingdefaultpreset">Transcode first project item</button>
 		<button id="transcodeexternal">Transcode external file</button>
 		<button class="controlBg textStyle" id="btn_PPRO41" onClick="evalScript('$._PPP_.consolidateProject()')">Consolidate & Transfer project</button>
@@ -486,10 +463,6 @@
 		<button class="controlBg textStyle" id="btn_PPRO6" onClick="evalScript('$._PPP_.exportFCPXML()')">Export FCP XML</button>
 		<button class="controlBg textStyle" id="btn_PPRO22" onClick="evalScript('$._PPP_.exportAAF()')">Export sequence to AAF</button>
 		<button id="renderusingdefaultpreset">Render active sequence in AME</button>
-		<p> </p>
-		<p> </p>
-		<p> </p>
-		<p> </p>
 	</div>
 </body>
 <script>
@@ -527,5 +500,4 @@
 		);
 	};
 </script>
-
 </html>

@@ -1,19 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-/*************************************************************************
-* ADOBE CONFIDENTIAL
-* ___________________
-*
-* Copyright 2014 Adobe
-* All Rights Reserved.
-*
-* NOTICE: Adobe permits you to use, modify, and distribute this file in
-* accordance with the terms of the Adobe license agreement accompanying
-* it. If you have received this file from a source other than Adobe,
-* then your use, modification, or distribution of it requires the prior
-* written permission of Adobe. 
-**************************************************************************/
--->	
 <ExtensionManifest Version="5.0" ExtensionBundleId="com.adobe.PProPanel" ExtensionBundleVersion="11.1"
 ExtensionBundleName="Premiere Pro sample panel" 
 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
@@ -41,6 +26,7 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 					<CEFCommandLine>
 						<Parameter>--allow-file-access</Parameter>
 						<Parameter>--allow-file-access-from-files</Parameter>
+						<Parameter>--allow-running-insecure-content</Parameter>
 					</CEFCommandLine>
 				</Resources>
 				<Lifecycle>

@@ -6,8 +6,9 @@
             "request": "launch",
             "name": "Debug in PPro",
             "program": "${workspaceFolder}/jsx/PPRO/Premiere.jsx",
-            "stopOnEntry": true,
+            "stopOnEntry": false,
             "trace": true,
+            "logFile" : "/Users/bbb/Desktop/PProPanel_Log.txt",
             "selectTargetColor": "blue"
         },
         {

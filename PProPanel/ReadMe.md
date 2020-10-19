@@ -1,11 +1,16 @@
 # Premiere Pro panels
 
-*Last updated April 2020, current released version = Premiere Pro 14.1, also known as "Premiere Pro 2020".*
+*Last updated October 2020, current released version = Premiere Pro 14.4, also known as "Premiere Pro 2020".*
 
-## Premiere 14.1 : API Improvements
+## Premiere Pro 14.0 : API Improvements
 
-We've added APIs for Premiere Pro Productions.
+### Colorspace control
 
+Panels can now get and set the colorspace in use by projectItems, and sequences.
+
+### System compatibility reports
+
+Panels can generate the same system and project reports that PPro does; useful for troubleshooting. 
 
 ## Create panels for Premiere Pro
 
@@ -17,7 +22,7 @@ We've added APIs for Premiere Pro Productions.
     (available under 'previous versions').
 
 - The [CEP Test
-    Panel](https://github.com/Adobe-CEP/CEP-Resources/tree/master/CEP_8.x/Samples/CEP_HTML_Test_Extension-8.0)
+    Panel](https://github.com/Adobe-CEP/CEP-Resources/tree/master/CEP_10.x/Samples/CEP_HTML_Test_Extension-10.0)
     shows the full capabilities of CEP panels.
 
 - The [PProPanel](https://github.com/Adobe-CEP/Samples/tree/master/PProPanel)
@@ -37,23 +42,17 @@ We've added APIs for Premiere Pro Productions.
 
 Further [relevant information](https://medium.com/adobetech/how-to-create-your-first-adobe-panel-in-6-easy-steps-f8bd4ed5778) is available from the Extensibility team.
 
-*Note: Premiere Pro 14.x integrates CEP9, so even if you had unsigned panels
-loading before (using CEP7 or CEP8), you'll need to perform this step again, but for key CSXS.9.*
+*Note: Premiere Pro 14.4 integrates CEP10, so even if you had unsigned panels
+loading before (using CEP8 or CEP9), you'll need to perform this step again, but for key CSXS.10.*
 
 On Mac, type the following into Terminal, then relaunch Finder (either via
 rebooting, or from the Force Quit dialog):
 
 ```html
-defaults write /Users/<username>/Library/Preferences/com.adobe.CSXS.9.plist PlayerDebugMode 1
+defaults write /Users/<username>/Library/Preferences/com.adobe.CSXS.10.plist PlayerDebugMode 1
 ```
 
-On Windows, launch PowerShell and run the following command:
-
-```powershell
-Set-ItemProperty -Path HKCU:\SOFTWARE\Adobe\CSXS.9 -Name PlayerDebugMode -Value 1
-```
-
-Alternatively, you can use the `regedit.exe` GUI to make the following registry entry (a new Key, of type String):
+On Windows, make the following registry entry (a new Key, of type String):
 
 ![Registry image](payloads/Registry.png)
 
@@ -209,16 +208,6 @@ Use the handy new `setOverrideFramerate()`.
 ### API Documentation
 
 While the sample panel should continue to be your first option for working example code, Premiere Pro's ExtendScript API [is documented here](http://ppro.aenhancers.com), to enable developer participation.
-
-## What was new in 14.0 
-
-### Colorspace control
-
-Panels can now get and set the colorspace in use by projectItems, and sequences.
-
-### System compatibility reports
-
-Panels can generate the same system and project reports that PPro does; useful for troubleshooting. 
 
 ## What was new in 13.x
 

@@ -51,7 +51,6 @@ function onLoaded () {
 	csInterface.evalScript("$._PPP_.registerActiveSequenceChangedFxn()");	
 	csInterface.evalScript("$._PPP_.confirmPProHostVersion()");
 	csInterface.evalScript("$._PPP_.forceLogfilesOn()");  // turn on log files when launching
-	
 
 	// Good idea from our friends at Evolphin; make the ExtendScript locale match the JavaScript locale!
 	var prefix		= "$._PPP_.setLocale('";
@@ -130,7 +129,7 @@ function updateThemeWithAppSkinInfo(appSkinInfo) {
 	//Update the background color of the panel
 
 	var panelBackgroundColor = appSkinInfo.panelBackgroundColor.color;
-	document.body.bgColor = toHex(panelBackgroundColor);
+	document.body.bgColor 	= toHex(panelBackgroundColor);
 
 	var styleId 			= "ppstyle";
 	var gradientBg			= "background-image: -webkit-linear-gradient(top, " + toHex(panelBackgroundColor, 40) + " , " + toHex(panelBackgroundColor, 10) + ");";

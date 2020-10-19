@@ -1,7 +1,7 @@
 /**************************************************************************************************
 *
 * ADOBE SYSTEMS INCORPORATED
-* Copyright 2013 Adobe Systems Incorporated
+* Copyright 2020 Adobe Systems Incorporated
 * All Rights Reserved.
 *
 * NOTICE:  Adobe permits you to use, modify, and distribute this file in accordance with the
@@ -11,7 +11,7 @@
 *
 **************************************************************************************************/
 
-/** CSInterface - v9.2.0 */
+/** CSInterface - v10.0.0 */
 
 /**
  * Stores constants for the window types supported by the CSXS infrastructure.
