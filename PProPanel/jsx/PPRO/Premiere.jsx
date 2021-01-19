@@ -2806,7 +2806,7 @@ $._PPP_={
 				var action 							= 'ApplyCuts';	//'ApplyCuts', 'CreateMarkers'
 				var shouldApplyCutsToLinkedAudio	= true;
 				var sensitivity 					= 'LowSensitivity'; //'LowSensitivity', 'MediumSensitivity', 'HighSensitivity'
-				var result = activeSeq.performCutDetectionOnSelection(action, shouldApplyCutsToLinkedAudio, sensitivity);
+				var result = activeSeq.performSceneEditDetectionOnSelection(action, shouldApplyCutsToLinkedAudio, sensitivity);
 			} else {
 				$._PPP_.updateEventPanel("performCutDetection: Nothing selected, in sequence.");
 			}
