@@ -35,7 +35,7 @@ Unlike the samples in the [CEP-Resources repository](https://github.com/Adobe-CE
 | [Redirect](https://github.com/Adobe-CEP/Samples/tree/master/Redirect) | Demonstrates loading an external website in an iFrame. | Photoshop, Illustrator, Premiere Pro |
 | [TypeScript](https://github.com/Adobe-CEP/Samples/tree/master/TypeScript) | Demonstrates multiple sample codes thata demonstrate what's possible to build inside Premiere Pro. | Premiere Pro |
 | [UI Samples](https://github.com/Adobe-CEP/Samples/tree/master/UISamples) | Demonstrates using common JavaScript UI frameworks in CEP extensions. | Photoshop, Illustrator, Premiere Pro |
-| [WebGL with three.js (Contributed by Davide Deraedt)](https://github.com/Adobe-CEP/Samples/tree/master/webgl_threejs) | Demonstrates WebGL with `three.js` | Photoshop |
+| [WebGL with three.js (Contributed by Davide Deraedt)](https://github.com/Adobe-CEP/Samples/tree/master/threejsSample) | Demonstrates WebGL with `three.js` | Photoshop |
 | [Websockets](https://github.com/Adobe-CEP/Samples/tree/master/Websocket) | Demonstrates using web sockets in an extension. | Photoshop, Illustrator, Premiere Pro |
 | [XMP Sample Panel](https://github.com/Adobe-CEP/Samples/tree/master/XmpSamplePanel) | Demonstrates manipulating XMP metadata in CC2014 hosts. | Premiere Pro, InDesign, Photoshop, Illustrator |
 
