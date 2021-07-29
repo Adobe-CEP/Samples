@@ -30,7 +30,7 @@ Panels can generate the same system and project reports that PPro does; useful f
     API. If you're reading this, you likely already _have_ the PProPanel sample.
 
 - The
-    [ZXPSignCmd](https://github.com/Adobe-CEP/CEP-Resources/tree/master/ZXPSignCMD/4.0.7)
+    [ZXPSignCmd](https://github.com/Adobe-CEP/CEP-Resources/tree/master/ZXPSignCMD)
     signing utility creates signed .zxp bundles for Add-Ons or direct
     distribution.
 - Microsoft Visual Studio Code, and the ExtendScript debugging extension. This extension running in VSCode is Adobe's recommended ExtendScript development environment. Sorry, ExtendScript Toolkit; you had a good long run.
