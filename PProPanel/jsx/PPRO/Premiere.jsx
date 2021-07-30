@@ -2108,22 +2108,6 @@ $._PPP_={
 		var success = app.bind('onSequenceActivated', $._PPP_.mySequenceActivatedFxn);
 	},
 	
-	enableNewWorldScripting : function () {
-		app.enableQE();
-
-		var previousNWValue				= qe.getDebugDatabaseEntry("ScriptLayerPPro.EnableNewWorld");
-		var previousInternalDOMValue	= qe.getDebugDatabaseEntry("dvascripting.EnabledInternalDOM");
-		if ((previousNWValue === 'true') && (previousInternalDOMValue === 'true')) {
-			qe.setDebugDatabaseEntry("ScriptLayerPPro.EnableNewWorld", "false");
-			qe.setDebugDatabaseEntry("dvascripting.EnabledInternalDOM", "false");
-			$._PPP_.updateEventPanel("ScriptLayerPPro.EnableNewWorld and dvascripting.EnabledInternalDOM are now OFF.");
-		} else {
-			qe.setDebugDatabaseEntry("ScriptLayerPPro.EnableNewWorld", "true");
-			qe.setDebugDatabaseEntry("dvascripting.EnabledInternalDOM", "true");
-			$._PPP_.updateEventPanel("ScriptLayerPPro.EnableNewWorld and dvascripting.EnabledInternalDOM are now ON.");
-		}
-	},
-
 	forceLogfilesOn : function () {
 		app.enableQE();
 		var previousLogFilesValue = qe.getDebugDatabaseEntry("CreateLogFilesThatDoNotExist");
