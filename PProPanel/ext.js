@@ -3,9 +3,10 @@
 
 function onLoaded () {
 	var csInterface = new CSInterface();
-	var appName = csInterface.hostEnvironment.appName;
-	var appVersion = csInterface.hostEnvironment.appVersion;
 
+	var env = csInterface.hostEnvironment;
+	var appName 	= csInterface.hostEnvironment.appName;
+	var appVersion 	= csInterface.hostEnvironment.appVersion;
 	var APIVersion	= csInterface.getCurrentApiVersion();
 
 	document.getElementById("dragthing").style.backgroundColor = "lightblue";
@@ -18,19 +19,19 @@ function onLoaded () {
 	// Update the color of the panel when the theme color of the product changed.
 	csInterface.addEventListener(CSInterface.THEME_COLOR_CHANGED_EVENT, onAppThemeColorChanged);
 	// Listen for event sent in response to rendering a sequence.
-	csInterface.addEventListener("com.adobe.csxs.events.PProPanelRenderEvent", function(event){
+	csInterface.addEventListener("com.adobe.csxs.events.PProPanelRenderEvent", function(event) {
 		alert(event.data);
 	});
 
-	csInterface.addEventListener("com.adobe.csxs.events.WorkspaceChanged", function(event){
+	csInterface.addEventListener("com.adobe.csxs.events.WorkspaceChanged", function(event) {
 		alert("New workspace selected: " + event.data);
 	});
 
-	csInterface.addEventListener("com.adobe.ccx.start.handleLicenseBanner", function(event){
+	csInterface.addEventListener("com.adobe.ccx.start.handleLicenseBanner", function(event) {
 		alert("User chose to go \"Home\", wherever that is...");
 	});
 
-	csInterface.addEventListener("ApplicationBeforeQuit", function(event){
+	csInterface.addEventListener("ApplicationBeforeQuit", function(event) {
 		csInterface.evalScript("$._PPP_.closeLog()");
 	});
 
@@ -61,7 +62,7 @@ function onLoaded () {
 	csInterface.evalScript(entireCallWithParams);
 }
 
-function dragHandler(event){
+function dragHandler(event) {
 	var csInterface = new CSInterface();
 	var extPath 	= csInterface.getSystemPath(SystemPath.EXTENSION);
 	var OSVersion	= csInterface.getOSInformation();
@@ -75,9 +76,9 @@ function dragHandler(event){
 	
 	*/
 	
-	if (extPath !== null){
+	if (extPath !== null) {
 		extPath = extPath + "/payloads/test.jpg";
-		if (OSVersion.indexOf("Windows") >=0){
+		if (OSVersion.indexOf("Windows") >=0) {
 			var sep = "\\\\";
 			extPath = extPath.replace(/\//g, sep);
 		}
@@ -138,10 +139,7 @@ function updateThemeWithAppSkinInfo(appSkinInfo) {
 	var boxActiveShadow		= "-webkit-box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.6);";
 
 	var isPanelThemeLight	= panelBackgroundColor.red > 50; // choose your own sweet spot
-	var fontColor, disabledFontColor;
-	var borderColor;
-	var inputBackgroundColor;
-	var gradientHighlightBg;
+	var fontColor, disabledFontColor, borderColor, inputBackgroundColor, gradientHighlightBg;
 
 	if(isPanelThemeLight) {
 		fontColor				= "#000000;";
@@ -181,12 +179,11 @@ function updateThemeWithAppSkinInfo(appSkinInfo) {
 
 function addRule(stylesheetId, selector, rule) {
 	var stylesheet = document.getElementById(stylesheetId);
-	
 	if (stylesheet) {
 		stylesheet = stylesheet.sheet;
-		if( stylesheet.addRule ){
+		if( stylesheet.addRule ) {
 			stylesheet.addRule(selector, rule);
-		} else if( stylesheet.insertRule ){
+		} else if( stylesheet.insertRule ) {
 			stylesheet.insertRule(selector + " { " + rule + " }", stylesheet.cssRules.length);
 		}
 	}
@@ -200,18 +197,19 @@ function reverseColor(color, delta) {
  * Convert the Color object to string in hexadecimal format;
  */
 
-function toHex(color, delta) {
-	function computeValue(value, delta) {
-		var computedValue = !isNaN(delta) ? value + delta : value;
-		if (computedValue < 0) {
-			computedValue = 0;
-		} else if (computedValue > 255) {
-			computedValue = 255;
-		}
-
-		computedValue = Math.round(computedValue).toString(16);
-		return computedValue.length == 1 ? "0" + computedValue : computedValue;
+function computeValue(value, delta) {
+	var computedValue = !isNaN(delta) ? value + delta : value;
+	if (computedValue < 0) {
+		computedValue = 0;
+	} else if (computedValue > 255) {
+		computedValue = 255;
 	}
+
+	computedValue = Math.round(computedValue).toString(16);
+	return computedValue.length == 1 ? "0" + computedValue : computedValue;
+}
+
+function toHex(color, delta) {
 
 	var hex = "";
 	if (color) {

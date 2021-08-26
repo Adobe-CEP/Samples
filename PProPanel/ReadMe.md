@@ -42,8 +42,8 @@ Panels can generate the same system and project reports that PPro does; useful f
 
 Further [relevant information](https://medium.com/adobetech/how-to-create-your-first-adobe-panel-in-6-easy-steps-f8bd4ed5778) is available from the Extensibility team.
 
-*Note: Premiere Pro 14.4 integrates CEP10, so even if you had unsigned panels
-loading before (using CEP8 or CEP9), you'll need to perform this step again, but for key CSXS.10.*
+*Note: Premiere Pro 15.x integrates CEP10, so even if you had unsigned panels
+loading before (using CEP7 or CEP8), you'll need to perform this step again, but for key CSXS.10.*
 
 On Mac, type the following into Terminal, then relaunch Finder (either via
 rebooting, or from the Force Quit dialog):

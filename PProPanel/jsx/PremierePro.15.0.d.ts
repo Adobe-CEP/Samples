@@ -666,7 +666,8 @@ declare class ProjectManager {
 	isProductionOpen(): boolean
   
 	/**
-	 *
+	 * Inserts a clip (`trackItem`) into the sequence.
+	 * @returns An array of open productions (), or null if no productions are open.
 	 */
 	listProductions(): RemoteProductionCollection
   
@@ -1799,7 +1800,7 @@ declare class ProjectManager {
 	): string
 
 	/**
-	 *
+	 * @returns an array of available exporters, or null if no exporters are available.
 	 */
 	getExporters(): Array
 	/**
