@@ -374,7 +374,7 @@ declare class Sequence {
 	/**
 	 * @returns currently-selected clips, as an `Array` of `trackItems`
 	 */
-	getSelection(): Array
+	getSelection(): Array <TrackItem>
 
 	/**
 	 * Returns the current sequence settings.
@@ -1896,7 +1896,7 @@ declare class ProjectManager {
 	  /**
 	   * 
 	   */
-	  projects: Array
+	  projects: Array <Project>
 
 	  /**
 	   * 
@@ -2095,7 +2095,12 @@ declare class ProjectManager {
 	/**
 	 *
 	 */
-	getProjectViewSelection(viewID:String): Array
+	getProjectViewSelection(viewID:String): Array <ProjectItem>
+
+	/**
+	*
+	*/
+	getCurrentProjectViewSelection(viewID:String): Array <ProjectItem>
 
 	/**
 	 *
@@ -2111,7 +2116,7 @@ declare class ProjectManager {
 	/**
 	 * @returns an array of the names of all available workspaces.
 	 */
-	getWorkspaces(): Array
+	getWorkspaces(): Array <string>
 
 	/**
 	 * @param workspaceName Name of workspace to use

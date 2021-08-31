@@ -60,7 +60,7 @@
 
 						// We build a path to the preset, based on the OS user's name.
 
-						var addOutPath = '/Documents/Adobe/Premiere\ Pro/13.0/Profile-' + username.innerHTML +
+						var addOutPath = '/Documents/Adobe/Premiere\ Pro/15.0/Profile-' + username.innerHTML +
 							'/Effect\ Presets\ and\ Custom\ Items.prfpset';
 						var fullOutPath = initPath + addOutPath;
 						var writeResult = window.cep.fs.writeFile(fullOutPath, readResult.data);
@@ -129,7 +129,7 @@
 						actualDestinationPath = actualDestinationPath.replace(/\//g, sep);
 						window.cep.process.createProcess('C:\\Windows\\explorer.exe', actualDestinationPath);
 					} else {
-						actualDestinationPath =  actualDestinationPath + "Preferences/Adobe/Premiere Pro/13.0/logs";
+						actualDestinationPath =  actualDestinationPath + "Preferences/Adobe/Premiere Pro/15.0/logs";
 						window.cep.process.createProcess('/usr/bin/open', actualDestinationPath);
 					}
 				}
