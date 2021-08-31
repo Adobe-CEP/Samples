@@ -261,6 +261,36 @@
 				}
 			});
 
+			$("#saveaspng").on("click", function (e) {
+				e.preventDefault();
+				var csInterface = new CSInterface();
+				var OSVersion = csInterface.getOSInformation();
+				var path = csInterface.getSystemPath(SystemPath.EXTENSION);
+
+				if (OSVersion) {
+					// The path always comes back with '/' path separators. Windows needs '\\'.
+					if (OSVersion.indexOf("Windows") >= 0) {
+						var sep = '\\\\';
+						path = path.replace(/\//g, sep);
+					} else {
+						var sep = '/';
+					}
+
+					// Build a String to pass the path to the script.
+					// (Sounds more complicated than it is.)
+
+					path = path + sep + 'payloads' + sep + 'png.epr';
+
+					var pre = '$._PPP_.exportCurrentFrameAsPNG(\'';
+					var post = '\'';
+					var postpost = ')';
+
+					var whole_megillah = pre + path + post + postpost;
+
+					csInterface.evalScript(whole_megillah);
+				}
+			});
+
 			$("#ingest").on("click", function (e) {
 				e.preventDefault();
 				var csInterface = new CSInterface();
@@ -453,11 +483,11 @@
 	<div id="section4" class="sectionID">
 		<button id="transcodeusingdefaultpreset">Transcode first project item</button>
 		<button id="transcodeexternal">Transcode external file</button>
+		<button id="saveaspng">Save sequence frame as .png</button>
 		<button class="controlBg textStyle" id="btn_PPRO41" onClick="evalScript('$._PPP_.consolidateProject()')">Consolidate & Transfer project</button>
 		<button class="controlBg textStyle" id="btn_PPRO20" onClick="evalScript('$._PPP_.dumpXMPFromAllProjectItems()')">Dump XMP from all items</button>
 		<button class="controlBg textStyle" id="btn_PPRO34" onClick="evalScript('$._PPP_.saveProjectCopy()')">Save project copy...</button>
 		<button class="controlBg textStyle" id="btn_PPRO4" onClick="evalScript('$._PPP_.saveProject()')">Save project</button>
-		<button class="controlBg textStyle" id="btn_PPRO13" onClick="evalScript('$._PPP_.exportCurrentFrameAsPNG()')">Export sequence frame</button>
 		<button class="controlBg textStyle" id="btn_PPRO26" onClick="evalScript('$._PPP_.exportFramesForMarkers()')">Export frames for markers</button>
 		<button class="controlBg textStyle" id="btn_PPRO6" onClick="evalScript('$._PPP_.exportFCPXML()')">Export FCP XML</button>
 		<button class="controlBg textStyle" id="btn_PPRO22" onClick="evalScript('$._PPP_.exportAAF()')">Export sequence to AAF</button>
@@ -481,22 +511,6 @@
 			}
 			csInterface.openURLInDefaultBrowser(path);
 		}
-	};
-
-	var createFolders = function () {
-		var csInterface = new CSInterface();
-		csInterface.callScript(
-			'$._PPP_',
-			'createDeepFolderStructure',
-			function (res) {
-				console.log('Successfully created folders!');
-			},
-			function (err) {
-				console.error(err);
-				alert(err.message);
-			}, ['This', 'is', 'a', 'very', 'deep', 'folder', 'structure'], // 1st argument
-			6 // 2nd argument
-		);
 	};
 </script>
 </html>

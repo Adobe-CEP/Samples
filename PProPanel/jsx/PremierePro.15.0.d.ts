@@ -1797,6 +1797,7 @@ declare class ProjectManager {
 	  presetPath: string,
 	  WorkAreaType?: number,
 	  removeOnCompletion?: number,
+	  startQueueImmediately?: boolean,
 	): string
 
 	/**

@@ -81,30 +81,9 @@ var BitPrecision_10bit	= 1;
 var BitPrecision_Float	= 2;
 var BitPrecision_HDR	= 3;
 
-
 var NOT_SET = "-400000";
 
 $._PPP_={
-
-	createDeepFolderStructure : function (foldersArray, maxDepth) {
-		if (typeof foldersArray !== 'object' || foldersArray.length <= 0) {
-			throw new Error('No valid folders array was provided!');
-		}
-
-		// if the first folder already exists, throw error
-		for (var i = 0; i < app.project.rootItem.children.numItems; i++) {
-			var curChild = app.project.rootItem.children[i];
-			var binVal = ProjectItemType.BIN;
-			if ((curChild.type === binVal) && (curChild.name === foldersArray[0])) {
-				throw new Error('Folder with name "' + curChild.name + '" already exists!');
-			}
-		}
-		// create the deep folder structure
-		var currentBin = app.project.rootItem.createBin(foldersArray[0]);
-		for (var m = 1; m < foldersArray.length && m < maxDepth; i++) {
-			currentBin = currentBin.createBin(foldersArray[i]);
-		}
-	},
 
 	getVersionInfo : function () {
 		return 'PPro ' + app.version + 'x' + app.build;
@@ -146,19 +125,41 @@ $._PPP_={
 		app.project.save();
 	},
 
-	exportCurrentFrameAsPNG : function () {
-		app.enableQE();
-		var activeSequence = qe.project.getActiveSequence(); // note: make sure a sequence is active in PPro UI
-		if (activeSequence) {
-			// Create a file name, based on timecode of frame.
-			var time = activeSequence.CTI.timecode; // CTI = Current Time Indicator.
-			var removeThese = /:|;/ig; 				// Why? Because Windows chokes on colons in file names.
-			var tidyTime = time.replace(removeThese, '_');
-			var outputPath = new File("~/Desktop");
-			var outputFileName = outputPath.fsName + $._PPP_.getSep() + tidyTime + '___' + activeSequence.name;
-			activeSequence.exportFramePNG(time, outputFileName);
-		} else {
-			$._PPP_.updateEventPanel("No active sequence.");
+	exportCurrentFrameAsPNG : function (presetPath) {
+		var seq = app.project.activeSequence;
+		if (seq) {
+			var currentSeqSettings	= app.project.activeSequence.getSettings();
+			if (currentSeqSettings){
+				var currentTime	= seq.getPlayerPosition();
+				if (currentTime){
+					var oldInPoint 			= seq.getInPointAsTime();
+					var oldOutPoint 		= seq.getOutPointAsTime();
+					var offsetTime 			= currentTime.seconds + .033;  // Todo: Add fancy timecode math, to get one frame, given current sequence timebase
+					
+					seq.setInPoint(currentTime.seconds);
+					seq.setOutPoint(offsetTime);
+
+					// Create a file name, based on timecode of frame.
+					var timeAsText				= currentTime.getFormatted(currentSeqSettings.videoFrameRate, app.project.activeSequence.videoDisplayFormat);var removeThese 	= /:|;/ig; 				// Why? Because Windows chokes on colons in file names.
+					var tidyTime 				= timeAsText.replace(removeThese, '_');
+					var outputPathInToOut 		= new File("~/Desktop/output/in_to_out");
+					var outputFileNameInToOut	= outputPathInToOut.fsName + $._PPP_.getSep() + seq.name + '___' + tidyTime  + '___' + ".png";
+
+					var removeUponCompletion 	= 1;
+					var startQueueImmediately 	= false;
+					var jobID_InToOut 			= app.encoder.encodeSequence(	seq, 
+																				outputFileNameInToOut, 
+																				presetPath, 
+																				app.encoder.ENCODE_IN_TO_OUT, 
+																				removeUponCompletion,
+																				startQueueImmediately);
+					
+					// put in and out points back where we found them.
+
+					seq.setInPoint(oldInPoint.seconds);
+					seq.setOutPoint(oldOutPoint.seconds);
+				}
+			}
 		}
 	},
 
@@ -396,18 +397,6 @@ $._PPP_={
 			var position = app.sourceMonitor.getPosition();
 			$._PPP_.updateEventPanel("Current Source monitor position: " + position.seconds + " seconds.");
 
-			/* Example code for controlling scrubbing in Source monitor.
-
-			app.enableQE();
-			qe.source.player.startScrubbing();
-			qe.source.player.scrubTo('00;00;00;11');
-			qe.source.player.endScrubbing();
-			qe.source.player.step();
-
-			qe.source.player.play(playbackSpeed) // playbackSpeed must be between -4.0 and 4.0
-
-			*/
-
 			fileToOpen.close();
 		} else {
 			$._PPP_.updateEventPanel("No file chosen.");
@@ -590,7 +579,6 @@ $._PPP_={
 	},
 
 	exportFramesForMarkers : function () {
-		app.enableQE();
 		var activeSequence = app.project.activeSequence;
 		if (activeSequence) {
 			var markers = activeSequence.markers;
@@ -741,17 +729,12 @@ $._PPP_={
 					var outputFormatExtension = activeSequence.getExportFileExtension(outPreset.fsName);
 					if (outputFormatExtension) {
 						var outputFilename = activeSequence.name + '.' + outputFormatExtension;
-						if (useLast) {
-							var fullPathToFile = 	outputPath +
-													activeSequence.name +
-													"." +
-													outputFormatExtension;
-						} else {
-							var fullPathToFile = 	outputPath +
-													activeSequence.name +
-													"." +
-													outputFormatExtension;
-						}
+
+						var fullPathToFile = 	outputPath +
+												activeSequence.name +
+												"." +
+												outputFormatExtension;
+
 						var outFileTest = new File(fullPathToFile);
 						if (outFileTest.exists) {
 							var destroyExisting = confirm("A file with that name already exists; overwrite?", false, "Are you sure...?");
@@ -1251,7 +1234,7 @@ $._PPP_={
 	getProjectProxySetting : function () {
 		var returnVal = "";
 		if (app.project) {
-			var returnVal = "No sequence detected in " + app.project.name + ".";
+			returnVal = "No sequence detected in " + app.project.name + ".";
 			if (app.getEnableProxies()) {
 				returnVal = 'true';
 			} else {
@@ -1517,7 +1500,6 @@ $._PPP_={
 									var repeatEdgePixels = blurProps[2];
 									if (repeatEdgePixels) {
 										if (!repeatEdgePixels.getValue()) {
-											updateUI = true;
 											repeatEdgePixels.setValue(true, updateUI);
 										}
 									}
@@ -1556,8 +1538,7 @@ $._PPP_={
 
 									blurriness.removeKey(19); // remove keyframe at 19s
 
-									var shouldUpdateUI = true;
-									blurriness.removeKeyRange(0, 5, shouldUpdateUI); // remove keyframes in range from 0s to 5s
+									blurriness.removeKeyRange(0, 5, updateUI); // remove keyframes in range from 0s to 5s
 								}
 							} else {
 								$._PPP_.updateEventPanel("To make this sample code work, please apply the Gaussian Blur effect to the first clip in the first video track of the active sequence.");
@@ -1630,16 +1611,17 @@ $._PPP_={
 					var importThese = []; // We have an array of File objects; importFiles() takes an array of paths.
 					if (importThese) {
 						for (var i = 0; i < fileOrFilesToImport.length; i++) {
-							importThese[i] 			= fileOrFilesToImport[i].fsName;
-							var justFileName 		= $._PPP_.extractFileNameFromPath(importThese[i]);
-							var suffix 				= '_PROXY.mp4';
-							var containingPath 		= fileOrFilesToImport[i].parent.fsName;
-							var completeProxyPath 	= containingPath + $._PPP_.getSep() + justFileName + suffix;
+							var removeUponCompletion 	= 0;
+							importThese[i] 				= fileOrFilesToImport[i].fsName;
+							var justFileName 			= $._PPP_.extractFileNameFromPath(importThese[i]);
+							var suffix 					= '_PROXY.mp4';
+							var containingPath 			= fileOrFilesToImport[i].parent.fsName;
+							var completeProxyPath 		= containingPath + $._PPP_.getSep() + justFileName + suffix;
 
 							var jobID = app.encoder.encodeFile(	fileOrFilesToImport[i].fsName,
 																completeProxyPath,
 																outputPresetPath,
-																0);
+																removeUponCompletion);
 						}
 
 						app.project.importFiles(importThese,	// array of file paths to be imported
@@ -2602,7 +2584,6 @@ $._PPP_={
 	},
 
 	generateSystemCompatibilityReport : function() {
-		app.enableQE();
 		var outputPath 		= new File("~/Desktop");
 		var outputFileName 	= outputPath.fsName + $._PPP_.getSep() + "System_Compatibility_Report.txt";
 		SystemCompatibilityReport.CreateReport(outputFileName);
