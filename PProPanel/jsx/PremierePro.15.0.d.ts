@@ -94,6 +94,15 @@ declare class SequenceSettings {
 }
 
 /**
+ * Structure describing audio channel mapping for a projectItem.
+ */
+declare class AudioChannelMapping {
+	audioClipsNumber: 	number
+	audioChannelsType:	number
+	setMappingForChannel(number:channelIndex, number:sourceChannelIndex): function
+}
+
+/**
  * A sequence.
  */
 declare class Sequence {
@@ -666,7 +675,6 @@ declare class ProjectManager {
 	isProductionOpen(): boolean
   
 	/**
-	 * Inserts a clip (`trackItem`) into the sequence.
 	 * @returns An array of open productions (), or null if no productions are open.
 	 */
 	listProductions(): RemoteProductionCollection
@@ -898,9 +906,10 @@ declare class ProjectManager {
 	bind(eventName: string, function_: any): void
   
 	/**
-	 *
+	 * @param saveBeforeClosing: boolean, indicating whether to save the project before closing
+	 * @param promptUserIfDirty: boolean, indicating whether to prompt the user to save before closing
 	 */
-	closeDocument(): boolean
+	closeDocument(saveBeforeClosing?: boolean, promptUserIfDirty?: boolean): boolean
   
 	/**
 	 *
@@ -1478,7 +1487,44 @@ declare class ProjectManager {
 	 * 
 	 */
 	isMergedClip(): boolean
-	
+
+	/**
+	 * 
+	 * @returns boolean indicating whether projectItem is offline.
+	 */
+	isOffline(): boolean
+
+	/**
+	 * 
+	 * @returns a boolean indicating whether setting the projectItem offline was successful.
+	 */
+	setOffline(): boolean
+
+	/**
+	 * 
+	 * @returns a footageInterpretation object, or null if none was available.
+	 */
+	getFootageInterpretation(): FootageInterpretation
+
+	/**
+	 * 
+	 * @param FootageInterpretation object containing desired settings
+	 * @returns a boolean indicating whether setting the interpretation was successful.
+	 */
+	setFootageInterpretation(FootageInterpretation): boolean
+
+	/**
+	 * 
+	 * @returns an audio channel mapping object, or null if none was available.
+	 */
+	getAudioChannelMapping: AudioChannelMapping
+
+	/**
+	 * 
+	 * @param AudioChannelMapping object describing desired audio channel mapping. 
+	 * @returns boolean indicating whether setting the audio channel mapping was successful.
+	 */
+	setAudioChannelMapping(mapping:AudioChannelMapping): boolean
 	/**
 	 *
 	 */
@@ -1850,7 +1896,7 @@ declare class ProjectManager {
 	bind(eventName: string, function_: any): void
   
 	/**
-	 *
+	 * @param propertyKey Indicates which property to clear.
 	 */
 	clearProperty(propertyKey: string): void
   
@@ -2038,7 +2084,7 @@ declare class ProjectManager {
 
 	/**
 	 * @param newValueForTranscodeOnIngest
-	 * @returns the newly-set state for whether or not PPro transcodes files upon ingest.
+	 * @returns Boolean indicating whether transcode on ingest is enabled.
 	 */
 	setEnableTranscodeOnIngest(newValueForTranscodeOnIngest: boolean)
   
