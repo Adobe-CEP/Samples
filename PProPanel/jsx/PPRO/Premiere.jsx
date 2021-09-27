@@ -441,9 +441,9 @@ $._PPP_={
 					var suppressWarnings 	= true;
 					var importAsStills		= false;
 					app.project.importFiles(importThese,
-											true, // suppress warnings 
+											suppressWarnings,
 											app.project.getInsertionBin(),
-											false); // import as numbered stills
+											importAsStills);
 				}
 			} else {
 				$._PPP_.updateEventPanel("No files to import.");
@@ -461,8 +461,6 @@ $._PPP_={
 						muteState = 1;
 					}
 					currentTrack.setMute(muteState);
-					var appendString 	= "Muted by PProPanel!";
-					currentTrack.name 	= currentTrack.name + appendString;
 				}
 			}
 		} else {
@@ -683,10 +681,10 @@ $._PPP_={
 			var fileOutputPath = Folder.selectDialog("Choose the output directory");
 			if (fileOutputPath) {
 
-				var srcInPoint 		= new Time;
-				srcInPoint.seconds 	= 1.0; // if omitted, encode entire file)
-				var srcOutPoint 	= new Time;
-				srcOutPoint.seconds = 3.0; // if omitted, encode entire file)
+				var srcInPoint = new Time;
+				srcInPoint.seconds = 1.0; // encode start time at 1s (optional--if omitted, encode entire file)
+				var srcOutPoint = new Time;
+				srcOutPoint.seconds = 3.0; // encode stop time at 3s (optional--if omitted, encode entire file)
 				var removeFromQueue = 0;
 
 				var result = app.encoder.encodeFile(fileToTranscode.fsName,
@@ -2796,7 +2794,7 @@ $._PPP_={
         var viewSelection   = app.getProjectViewSelection(viewIDs[0]); // sample code optimized for a single open project
 		if (viewSelection) {
 			// Note: The sample code doesn't work with bins. Todo: Add code that adds all footage contained in bins to the sequence
-			var newSequence = app.project.createNewSequenceFromClips("Some new sequence", viewSelection, app.project.rootItem);
+			var newSequence = app.project.createNewSequenceFromClips("new sequence", viewSelection, app.project.rootItem);
 		} else {
 			$._PPP_.updateEventPanel("No project items selected (or a bin was selected).");
 		}
