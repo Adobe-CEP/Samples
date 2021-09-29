@@ -96,14 +96,14 @@ Pro's logs) here. Note that Mac Library path is the system's library, not the
 user's. Also, note that logging WILL impact performance.
 
 ```html
-Windows:    %\AppData\Local\Temp\csxs9-PPRO.log
-Mac:        /Library/Logs/CSXS/csxs9-PPRO.log
+Windows:    %\AppData\Local\Temp\csxs11-PPRO.log
+Mac:        /Library/Logs/CSXS/csxs11-PPRO.log
 ```
 
 Set logging level in Windows Registry (see above), or MacOS X .plist:
 
 ```html
-defaults write /Users/<username>/Library/Preferences/com.adobe.CSXS.9.plist LogLevel 6
+defaults write /Users/<username>/Library/Preferences/com.adobe.CSXS.11.plist LogLevel 6
 ```
 
 ## 5. Create your panel's ExtendScript using Microsoft Visual Studio Code
@@ -113,7 +113,7 @@ Once you've installed the ExtendScript debugging extension, you can set breakpoi
 ![ESTK Screenshot](payloads/vscode_debug.png)
 
 
-Here's a [screen video](https://www.dropbox.com/s/sasea78m05nqcyz/MS_Code_Debugging.mp4?dl=1)
+Here's a [screen video](https://shared-assets.adobe.com/link/d70499f6-a45b-40e2-4443-2624b9ec71ba)
 showing how to debug panels at both the JavaScript and ExtendScript levels.
 
 ## 6. Package and deploy your panel
@@ -141,7 +141,7 @@ do not connect their systems to the public internet, for installation using
 of Extension Manager.
 
 If you encounter any issues with the Add-Ons store or ExManCmd, please [contact
-the Add-Ons team](mailto:kwak@adobe.com).
+the Add-Ons team](mailto:avetting@adobe.com).
 
 ## Previous Updates
 
