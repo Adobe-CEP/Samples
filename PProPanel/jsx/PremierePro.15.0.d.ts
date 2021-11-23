@@ -991,7 +991,7 @@ declare class ProjectManager {
 	/**
 	 *
 	 */
-	importAllAEComps(arg1: any, compsToImport: Array,  projectBin: ProjectItem): boolean
+	importAllAEComps(aepPath: String,  projectBin: ProjectItem): boolean
   
 	/**
 	 * Imports files into the project. 
@@ -1193,7 +1193,11 @@ declare class ProjectManager {
 	 *
 	 */
 	projectItem: ProjectItem
-  
+
+	/**
+	 * 
+	 */
+	disabled: boolean
 	/**
 	 *
 	 */

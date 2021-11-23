@@ -60,7 +60,7 @@
 
 						// We build a path to the preset, based on the OS user's name.
 
-						var addOutPath = '/Documents/Adobe/Premiere\ Pro/15.0/Profile-' + username.innerHTML +
+						var addOutPath = '/Documents/Adobe/Premiere\ Pro/22.0/Profile-' + username.innerHTML +
 							'/Effect\ Presets\ and\ Custom\ Items.prfpset';
 						var fullOutPath = initPath + addOutPath;
 						var writeResult = window.cep.fs.writeFile(fullOutPath, readResult.data);
@@ -124,12 +124,12 @@
 				if (OSVersion) {
 					// The path always comes back with '/' path separators. Windows needs '\\'.
 					if (OSVersion.indexOf("Windows") >= 0) {
-						actualDestinationPath =  actualDestinationPath + "AppData/Roaming/Adobe/Premiere Pro/13.0/logs";
+						actualDestinationPath =  actualDestinationPath + "AppData/Roaming/Adobe/Premiere Pro/22.0/logs";
 						var sep = '\\';
 						actualDestinationPath = actualDestinationPath.replace(/\//g, sep);
 						window.cep.process.createProcess('C:\\Windows\\explorer.exe', actualDestinationPath);
 					} else {
-						actualDestinationPath =  actualDestinationPath + "Preferences/Adobe/Premiere Pro/15.0/logs";
+						actualDestinationPath =  actualDestinationPath + "Preferences/Adobe/Premiere Pro/22.0/logs";
 						window.cep.process.createProcess('/usr/bin/open', actualDestinationPath);
 					}
 				}
@@ -360,6 +360,12 @@
 	<p id="version_string">[uninitialized]</p>
 	<p id="active_seq">[uninitialized]</p>
 	<p id="proxies_on">Proxies enabled for sequence: </p>
+
+	<div>
+		<h2>New in 22.0.0!</h2>
+	</div>
+
+	<button class="controlBg textStyle" id="btn_PPRO84" onClick="evalScript('$._PPP_.enableAllDisabledClips()')">Enable all disabled clips in sequence</button>
 
 	<div>
 		<h2>New in 14.3.1!</h2>

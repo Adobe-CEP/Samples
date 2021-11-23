@@ -140,7 +140,8 @@ $._PPP_={
 					seq.setOutPoint(offsetTime);
 
 					// Create a file name, based on timecode of frame.
-					var timeAsText				= currentTime.getFormatted(currentSeqSettings.videoFrameRate, app.project.activeSequence.videoDisplayFormat);var removeThese 	= /:|;/ig; 				// Why? Because Windows chokes on colons in file names.
+					var timeAsText				= currentTime.getFormatted(currentSeqSettings.videoFrameRate, app.project.activeSequence.videoDisplayFormat);
+					var removeThese 			= /:|;/ig; 				// Why? Because Windows chokes on colons in file names.
 					var tidyTime 				= timeAsText.replace(removeThese, '_');
 					var outputPathInToOut 		= new File("~/Desktop/output/in_to_out");
 					var outputFileNameInToOut	= outputPathInToOut.fsName + $._PPP_.getSep() + seq.name + '___' + tidyTime  + '___' + ".png";
@@ -397,6 +398,18 @@ $._PPP_={
 			var position = app.sourceMonitor.getPosition();
 			$._PPP_.updateEventPanel("Current Source monitor position: " + position.seconds + " seconds.");
 
+			/* Example code for controlling scrubbing in Source monitor.
+
+			app.enableQE();
+			qe.source.player.startScrubbing();
+			qe.source.player.scrubTo('00;00;00;11');
+			qe.source.player.endScrubbing();
+			qe.source.player.step();
+
+			qe.source.player.play(playbackSpeed) // playbackSpeed must be between -4.0 and 4.0
+
+			*/
+
 			fileToOpen.close();
 		} else {
 			$._PPP_.updateEventPanel("No file chosen.");
@@ -541,7 +554,7 @@ $._PPP_={
 				if (Folder.fs === 'Windows') {
 					filterString = "All files:*.*";
 				}
-				var replacementMedia = File.openDialog(	"Choose new media file, for " +
+				var replacementMedia = File.openDialog( "Choose new media file, for " +
 														firstProjectItem.name,
 														filterString, // file filter
 														false); // allow multiple?
@@ -549,7 +562,7 @@ $._PPP_={
 				if (replacementMedia) {
 					var suppressWarnings 	= true;
 					firstProjectItem.name 	= replacementMedia.name + ", formerly known as " + firstProjectItem.name;
-					firstProjectItem.changeMediaPath(replacementMedia.fsName, suppressWarnings); 
+					firstProjectItem.changeMediaPath(replacementMedia.fsName, suppressWarnings);
 					replacementMedia.close();
 				}
 			} else {
@@ -642,10 +655,10 @@ $._PPP_={
 
 				var fileOutputPath = Folder.selectDialog("Choose the output directory");
 				if (fileOutputPath) {
-					var regExp = new RegExp('[.]');
-					var outputName = firstProjectItem.name.search(regExp);
-					if (outputName == -1) {
-						outputName = firstProjectItem.name.length;
+					var regExp 		= new RegExp('[.]');
+					var outputName 	= firstProjectItem.name.search(regExp);
+					if (outputName 	== -1) {
+						outputName 	= firstProjectItem.name.length;
 					}
 					var outFileName			= firstProjectItem.name.substr(0, outputName);
 					outFileName				= outFileName.replace('/', '-');
@@ -1064,9 +1077,9 @@ $._PPP_={
 
 	updateEventPanel : function (message) {
 		app.setSDKEventMessage(message, 'info');
-		//app.setSDKEventMessage('Here is some information.', 'info');
-		//app.setSDKEventMessage('Here is a warning.', 'warning');
-		//app.setSDKEventMessage('Here is an error.', 'error');  // Very annoying; use sparingly.
+		/*app.setSDKEventMessage('Here is some information.', 'info');
+		app.setSDKEventMessage('Here is a warning.', 'warning');
+		app.setSDKEventMessage('Here is an error.', 'error');  // Very annoying; use sparingly.*/
 	},
 
 	walkAllBinsDumpingXMP : function (parentItem, outPath) {
@@ -1371,16 +1384,7 @@ $._PPP_={
 	// Define a couple of callback functions, for AME to use during render.
 
 	onEncoderJobComplete : function (jobID, outputFilePath) {
-
-
-		var desktopPath		= new File("~/Desktop");
-		var outputFileName	= desktopPath.fsName + $._PPP_.getSep() + 'whee.txt';
-		var outFile			= new File(outputFileName);
-		outFile.encoding	= "UTF8";
-
-		outFile.open("w", "TEXT", "????");
-		outFile.writeln('-----------------------------------------------');
-		outFile.close();
+		$._PPP_.updateEventPanel('onEncoderJobComplete called. jobID = ' + jobID + '.');
 	},
 
 	onEncoderJobError : function (jobID, errorMessage) {
@@ -1390,10 +1394,13 @@ $._PPP_={
 		} else {
 			eoName = "PlugPlugExternalObject.dll";
 		}
-		var eventObj	= new CSXSEvent();
-		eventObj.type	= "com.adobe.csxs.events.PProPanelRenderEvent";
-		eventObj.data	= "Job " + jobID + " failed, due to " + errorMessage + ".";
-		eventObj.dispatch();
+		var plugplugLibrary = new ExternalObject( "lib:" + eoName );
+		if (plugplugLibrary){
+			var eventObj	= new CSXSEvent();
+			eventObj.type	= "com.adobe.csxs.events.PProPanelRenderEvent";
+			eventObj.data	= "Job " + jobID + " failed, due to " + errorMessage + ".";
+			eventObj.dispatch();
+		}
 	},
 
 	onEncoderJobProgress : function (jobID, progress) {
@@ -1406,13 +1413,16 @@ $._PPP_={
 			eoName = "PlugPlugExternalObject";
 		} else {
 			eoName = "PlugPlugExternalObject.dll";
-		}		var eventObj	= new CSXSEvent();
-		eventObj.type	= "com.adobe.csxs.events.PProPanelRenderEvent";
-		eventObj.data	= "Job " + jobID + " queued.";
-		eventObj.dispatch();
-
-		$._PPP_.updateEventPanel('jobID ' + jobID + 'successfully queued.');
-		app.encoder.startBatch();
+		}		
+		var plugplugLibrary = new ExternalObject( "lib:" + eoName );
+		if (plugplugLibrary){
+			var eventObj	= new CSXSEvent();
+			eventObj.type	= "com.adobe.csxs.events.PProPanelRenderEvent";
+			eventObj.data	= "Job " + jobID + " queued.";
+			eventObj.dispatch();
+			$._PPP_.updateEventPanel('jobID ' + jobID + 'successfully queued.');
+			app.encoder.startBatch();
+		}
 	},
 
 	onEncoderJobCanceled : function (jobID) {
@@ -1422,13 +1432,17 @@ $._PPP_={
 		} else {
 			eoName = "PlugPlugExternalObject.dll";
 		}
-		var eventObj	= new CSXSEvent();
-		eventObj.type	= "com.adobe.csxs.events.PProPanelRenderEvent";
-		eventObj.data	= "Job " + jobID + " canceled.";
-		eventObj.dispatch();
-
-		$._PPP_.updateEventPanel('OnEncoderJobCanceled called. jobID = ' + jobID + '.');
+		var plugplugLibrary = new ExternalObject( "lib:" + eoName );
+		if (plugplugLibrary){
+			var eventObj	= new CSXSEvent();
+			eventObj.type	= "com.adobe.csxs.events.PProPanelRenderEvent";
+			eventObj.data	= "Job " + jobID + " canceled.";
+			eventObj.dispatch();
+			$._PPP_.updateEventPanel('OnEncoderJobCanceled called. jobID = ' + jobID + '.');
+		}
 	},
+
+	
 
 	onPlayWithKeyframes : function () {
 		var seq = app.project.activeSequence;
@@ -1761,7 +1775,7 @@ $._PPP_={
 			if (aepToImport) {
 				var importAll = confirm("Import all compositions in project?", false, "Import all?");
 				if (importAll) {
-					var result = app.project.importAllAEComps(aepToImport.fsName, 0, targetBin);
+					var result = app.project.importAllAEComps(aepToImport.fsName, targetBin);
 				} else {
 					var compName = prompt('Name of composition to import?', '', 'Which Comp to import');
 					if (compName) {
@@ -2061,7 +2075,7 @@ $._PPP_={
 		var seq = app.project.activeSequence;
 		if (seq) {
 			var sel = seq.getSelection();
-			if (sel && (sel !== "Connection to object lost")) {
+			if (sel) {
 				$._PPP_.updateEventPanel(sel.length + ' track items selected in ' + app.project.activeSequence.name + '.');
 				for (var i = 0; i < sel.length; i++) {
 					if (sel[i].name !== 'anonymous') {
@@ -2095,7 +2109,7 @@ $._PPP_={
 	registerSequenceActivatedFxn : function () {
 		var success = app.bind('onSequenceActivated', $._PPP_.mySequenceActivatedFxn);
 	},
-	
+
 	forceLogfilesOn : function () {
 		app.enableQE();
 		var previousLogFilesValue = qe.getDebugDatabaseEntry("CreateLogFilesThatDoNotExist");
@@ -2509,7 +2523,6 @@ $._PPP_={
 	},
 
 	enumerateTeamProjects : function () {
-		app.enableQE();
 		var numTeamProjectsOpen = 0;
 		for (var i = 0; i < app.projects.numProjects; i++) {
 			var project = app.projects[i];
