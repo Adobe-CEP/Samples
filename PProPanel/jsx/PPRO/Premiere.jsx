@@ -2829,7 +2829,17 @@ $._PPP_={
 		} else {
 			$._PPP_.updateEventPanel("Could not obtain valid white luminance values.");
 		}
+	},
+
+	enableAllDisabledClips : function () { 			
+		var clips = app.project.sequences[0].videoTracks[0].clips;
+		var numClips = clips.numItems;
+		for (var i = 0; i < numClips; i++) {
+			var currentClip = clips[i];
+			if (currentClip) {
+				if (currentClip.disabled === true){ //using new trackItem property, disabled
+				currentClip.disabled = false;	
 	}
+		}
+	},
 };
-
-
