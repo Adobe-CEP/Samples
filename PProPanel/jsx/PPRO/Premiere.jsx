@@ -2839,7 +2839,8 @@ $._PPP_={
 			if (currentClip) {
 				if (currentClip.disabled === true){ //using new trackItem property, disabled
 				currentClip.disabled = false;	
-	}
+				}
+			}
 		}
-	},
+	}	
 };
