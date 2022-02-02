@@ -118,7 +118,7 @@ showing how to debug panels at both the JavaScript and ExtendScript levels.
 
 ## 6. Package and deploy your panel
 
-Further [relevant information](https://github.com/Adobe-CEP/Getting-Started-guides/tree/master/Package%20Distribute%20Install) is available from the Extensibility team.
+Further [relevant information](https://github.com/Adobe-CEP/Getting-Started-guides/blob/master/Package%20Distribute%20Install/readme.md) is available from the Extensibility team.
 
 You can either generate a self-signed certificate (ZXPSignCmd will make them for
 you), or get one from a commercial security provider. Here's an example:
@@ -133,15 +133,14 @@ To sign directory `/PanelDir` with `certificate.p12`, do the following:
 ./ZXPSignCmd -sign panelDir/ PanelName.zxp certificate.p12 password -tsa http://timestamp.digicert.com/
 ```
 
-Submit your panel to the [Adobe Add-Ons
-site](https://www.adobeexchange.com/producer) for approval, and distribution.
+Submit your panel to the [Creative Cloud Adobe Exchange](https://partners.adobe.com/exchangeprogram/creativecloud) for approval, and distribution.
 You can also directly supply the .zxp file enterprise customers, and those who
 do not connect their systems to the public internet, for installation using
 [ExManCmd](https://www.adobeexchange.com/resources/28), the command line version
 of Extension Manager.
 
-If you encounter any issues with the Add-Ons store or ExManCmd, please [contact
-the Add-Ons team](mailto:avetting@adobe.com).
+If you encounter any issues with the Exchange or ExManCmd, please [contact
+the Review Team](mailto:ccintrev@adobe.com).
 
 ## Previous Updates
 
