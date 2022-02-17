@@ -1089,7 +1089,7 @@ $._PPP_={
 				if (currentChild.type === ProjectItemType.BIN) {
 					$._PPP_.walkAllBinsDumpingXMP(currentChild, outPath); // warning; recursion!
 				} else {
-					var isMultiCam		= currentChild.isMultiCamClip();
+					var isMultiCam		= currentChild.isMulticamClip();
 					var isMergedClip	= currentChild.isMergedClip();
 					if ((isMergedClip === false) && (isMultiCam === false)) {
 						$._PPP_.dumpProjectItemXMP(currentChild, outPath);
