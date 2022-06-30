@@ -8,8 +8,8 @@
             "program": "${workspaceFolder}/jsx/PPRO/Premiere.jsx",
             "stopOnEntry": false,
             "trace": true,
-            "logFile" : "/Users/bbb/Desktop/PProPanel_Log.txt",
-            "selectTargetColor": "blue"
+            "logFile" : "~/Desktop/AMEPanel_Log.txt",
+            "selectTargetColor": "green"
         },
         {
             "type": "chrome",

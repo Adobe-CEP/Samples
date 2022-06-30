@@ -90,7 +90,7 @@ declare class SequenceSettings {
 	vrProjection:				number
 	vrVertCapturedView:			number
 	workingColorSpaceList:		Array
-	workingColorSpace:			String
+	workingColorSpace:			colorSpace
 }
 
 /**
@@ -101,6 +101,34 @@ declare class AudioChannelMapping {
 	audioChannelsType:	number
 	setMappingForChannel(number:channelIndex, number:sourceChannelIndex): function
 }
+
+  declare class colorSpace {
+	/**
+	 * 
+	 */
+	name: String
+
+	/**
+	 * 
+	 */
+	transferCharacteristic: String
+
+	/**
+	 * 
+	 */
+	matrixEquation: String
+
+	/**
+	 * 
+	 */
+	primaries: String
+
+	/**
+	 * 
+	 */
+
+
+  }
 
 /**
  * A sequence.
@@ -150,7 +178,7 @@ declare class Sequence {
 	/**
 	 * The color space in use by the sequence
 	 */
-	workingColorSpace: string
+	workingColorSpace: colorSpace
   
 	/**
 	 * Name (writable).
@@ -861,6 +889,7 @@ declare class ProjectManager {
 	unbind(eventName: string): void
   }
   
+
   /**
    *
    */
@@ -1472,15 +1501,22 @@ declare class ProjectManager {
 	startTime(): Time
 
 	/**
-	 * 
-	 * @param newColorSpace value must be available via sequence.workingColorSpaceList 
+	 * @returns The original color space associated with the unmodified Item
 	 */
-	setOverrideColorSpace(newColorSpace: String): void
+	
+	getOriginalColorSpace() : colorSpace
+
 
 	/**
 	 * 
+	 * @param newColorSpace value must be available via sequence.workingColorSpaceList 
 	 */
-	getColorSpace(): String
+	setOverrideColorSpace(newColorSpace: colorSpace): void
+
+	/**
+	 * @returns the color space currently in use
+	 */
+	getColorSpace(): colorSpace
 
 	/**
 	 * 
@@ -1529,6 +1565,17 @@ declare class ProjectManager {
 	 * @returns boolean indicating whether setting the audio channel mapping was successful.
 	 */
 	setAudioChannelMapping(mapping:AudioChannelMapping): boolean
+	
+	/**
+	 * @returns the LUT embedded with the original media
+	 */
+	getEmbeddedLUTID(): number
+	
+	/**
+	 * @returns the LUT currently associated with the media
+	 */
+
+	getInputLUTID(): number
 	/**
 	 *
 	 */

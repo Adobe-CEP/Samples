@@ -134,7 +134,7 @@ $._PPP_={
 				if (currentTime){
 					var oldInPoint 			= seq.getInPointAsTime();
 					var oldOutPoint 		= seq.getOutPointAsTime();
-					var offsetTime 			= currentTime.seconds + .033;  // Todo: Add fancy timecode math, to get one frame, given current sequence timebase
+					var offsetTime 			= currentTime.seconds + 0.033;  // Todo: Add fancy timecode math, to get one frame, given current sequence timebase
 					
 					seq.setInPoint(currentTime.seconds);
 					seq.setOutPoint(offsetTime);
@@ -382,10 +382,9 @@ $._PPP_={
 			var property		= 'BE.Prefs.Audio.AutoPeakGeneration';
 			var initialValue	= app.properties.getProperty(property);
 			var propValue		= false;
-
+			var persistent		= 1;
+			var allowToCreate	= true;
 			if (initialValue === 'true') {
-				var persistent		= 1;
-				var allowToCreate	= true;
 				app.properties.setProperty('BE.Prefs.Audio.AutoPeakGeneration', propValue, persistent, allowToCreate);
 			}
 
@@ -583,10 +582,10 @@ $._PPP_={
 											false);
 		if ((projToOpen) && projToOpen.exists) {
 			app.openDocument(	projToOpen.fsName,	// Path to project
-								true,				// suppress 'Convert Project' dialogs?
-								true,				// suppress 'Locate Files' dialogs?
-								true,				// suppress warning dialogs?
-								true);				// prevent document from getting added to MRU list?
+								false,				// suppress 'Convert Project' dialogs?
+								false,				// suppress 'Locate Files' dialogs?
+								false,				// suppress warning dialogs?
+								false);				// prevent document from getting added to MRU list?
 			projToOpen.close();
 		}
 	},
@@ -694,9 +693,9 @@ $._PPP_={
 			var fileOutputPath = Folder.selectDialog("Choose the output directory");
 			if (fileOutputPath) {
 
-				var srcInPoint = new Time;
+				var srcInPoint = new Time();
 				srcInPoint.seconds = 1.0; // encode start time at 1s (optional--if omitted, encode entire file)
-				var srcOutPoint = new Time;
+				var srcOutPoint = new Time();
 				srcOutPoint.seconds = 3.0; // encode stop time at 3s (optional--if omitted, encode entire file)
 				var removeFromQueue = 0;
 
@@ -1881,7 +1880,7 @@ $._PPP_={
 					if (moComp) {
 						var params = moComp.properties;
 						for (var z = 0; z < params.numItems; z++) {
-							var thisParam = params[0];
+							var thisParam = params[z];
 							if (thisParam) {
 								$._PPP_.updateEventPanel('Parameter ' + (z + 1) + ' name: ' + thisParam.name + '.');
 							}
@@ -2608,7 +2607,7 @@ $._PPP_={
 			var currentSeqSettings = seq.getSettings();
 			if (currentSeqSettings) {
 				if (currentSeqSettings.workingColorSpace === currentSeqSettings.workingColorSpaceList[0]) {
-					currentSeqSettings.videoFrameRate.seconds	= .04;
+					currentSeqSettings.videoFrameRate.seconds	= 0.04;
 					currentSeqSettings.videoDisplayFormat		= 101;
 					currentSeqSettings.workingColorSpace		= currentSeqSettings.workingColorSpaceList[1];
 					seq.setSettings(currentSeqSettings);
@@ -2841,6 +2840,43 @@ $._PPP_={
 				currentClip.disabled = false;	
 				}
 			}
+		}
+	},
+	
+	showColorspaceInEvents : function () { 
+		var colorSpace 		= app.project.rootItem.children[0].getColorSpace();
+		var origColorSpace 	= app.project.rootItem.children[0].getOriginalColorSpace();
+		var lutID 			= app.project.rootItem.children[0].getEmbeddedLUTID();
+		var inputLutID 		= app.project.rootItem.children[0].getInputLUTID();
+
+		//get the color space info and record it in the events panel
+		if (colorSpace){
+			if (origColorSpace){
+				if (lutID){
+					if (inputLutID){
+						app.setSDKEventMessage("Color Space " + " = " + colorSpace.name, 'info');
+						app.setSDKEventMessage("Transfer Characteristic " + " = " + colorSpace.transferCharacteristic, 'info');
+						app.setSDKEventMessage("Color Primaries " + " = " + colorSpace.primaries, 'info');
+						app.setSDKEventMessage("Matrix Equation " + " = " + colorSpace.matrixEquation, 'info');
+				
+						app.setSDKEventMessage("Original Color Space " + " = " + origColorSpace.name, 'info');
+						app.setSDKEventMessage("Original Transfer Characteristic " + " = " + origColorSpace.transferCharacteristic, 'info');
+						app.setSDKEventMessage("Original Color Primaries " + " = " + origColorSpace.primaries, 'info');
+						app.setSDKEventMessage("Original Matrix Equation " + " = " + origColorSpace.matrixEquation, 'info');
+				
+						app.setSDKEventMessage("LutID " + " = " + lutID, 'info');
+						app.setSDKEventMessage("input LutID " + " = " + inputLutID, 'info');
+					} else {
+						alert("Input LUT ID not found.");
+					}
+				} else {
+					alert("LUT ID not found.");
+				}
+			} else {
+				alert("Original colorspace not available.");
+			}
+		} else {
+			alert("No colorspace available.");
 		}
 	}	
 };
