@@ -31,6 +31,10 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 				</Resources>
 				<Lifecycle>
 					<AutoVisible>true</AutoVisible>
+					<!-- <StartOn> -->
+                        <!-- Premiere Pro dispatches this event whenever it gains focus from the OS -->
+                        <!-- <Event>com.adobe.csxs.events.ApplicationActivate</Event> -->
+                    <!-- </StartOn> -->
 				</Lifecycle>
 				<UI>
 					<Type>Panel</Type>

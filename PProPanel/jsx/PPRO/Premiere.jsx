@@ -103,7 +103,7 @@ $._PPP_={
 		app.setExtensionPersistent("com.adobe.PProPanel", 0); // 0, while testing (to enable rapid reload); 1 for "Never unload me, even when not visible."
 	},
 
-	updateAllGrowingFiles : function () {
+	updateAllProjectItems : function () {
 		var numItems = app.project.rootItem.children.numItems;
 		for (var i = 0; i < numItems; i++) {
 			var currentItem = app.project.rootItem.children[i];
@@ -134,7 +134,7 @@ $._PPP_={
 				if (currentTime){
 					var oldInPoint 			= seq.getInPointAsTime();
 					var oldOutPoint 		= seq.getOutPointAsTime();
-					var offsetTime 			= currentTime.seconds + .033;  // Todo: Add fancy timecode math, to get one frame, given current sequence timebase
+					var offsetTime 			= currentTime.seconds + 0.033;  // Todo: Add fancy timecode math, to get one frame, given current sequence timebase
 					
 					seq.setInPoint(currentTime.seconds);
 					seq.setOutPoint(offsetTime);
@@ -246,9 +246,20 @@ $._PPP_={
 		if (Folder.fs === 'Windows') {
 			filterString = "XML files:*.xml";
 		}
-		var fileToOpen = File.openDialog(	"Choose Project panel layout to open.",
-											filterString,
-											false);
+
+
+		var runningOnWindows = (Folder.fs === 'Windows');
+
+		if (runningOnWindows){
+			var fileToOpen = File.openDialog(	"Choose Project panel layout to open.",
+												filterString,
+												false);
+		} else {
+			var fileToOpen = File.openDialog(	"Choose Project panel layout to open.",
+												checkMacFileType,
+												false);
+		}
+
 		if (fileToOpen) {
 			if (fileToOpen.fsName.indexOf('.xml')) { // We should really be more careful, but hey, it says it's XML!
 				fileToOpen.encoding = "UTF8";
@@ -324,19 +335,15 @@ $._PPP_={
 					}
 				}
 			}
-			var tempTime					= new Time(); // Use a local time object to take care of all the tick math
-
 			var newCommentMarker			= markers.createMarker(12.345);
 			newCommentMarker.name			= 'Marker created by PProPanel.';
 			newCommentMarker.comments		= 'Here are some comments, inserted by PProPanel.';
-			tempTime.seconds				= 15.6789;
-			newCommentMarker.end.ticks		= tempTime.ticks;
+			newCommentMarker.end			= (newCommentMarker.seconds + 5.0);
 
 			var newWebMarker				= markers.createMarker(14.345);
 			newWebMarker.name				= 'Web marker created by PProPanel.';
 			newWebMarker.comments			= 'Here are some comments, inserted by PProPanel.';
-			tempTime.seconds 			 	= 17.6789;
-			newWebMarker.end.ticks			= tempTime.ticks;
+			newWebMarker.end				=  (newWebMarker.seconds + 3.0);
 			newWebMarker.setTypeAsWebLink("http://www.adobe.com", "frame target");
 		} else {
 			$._PPP_.updateEventPanel("No active sequence.");
@@ -382,10 +389,9 @@ $._PPP_={
 			var property		= 'BE.Prefs.Audio.AutoPeakGeneration';
 			var initialValue	= app.properties.getProperty(property);
 			var propValue		= false;
-
+			var persistent		= 1;
+			var allowToCreate	= true;
 			if (initialValue === 'true') {
-				var persistent		= 1;
-				var allowToCreate	= true;
 				app.properties.setProperty('BE.Prefs.Audio.AutoPeakGeneration', propValue, persistent, allowToCreate);
 			}
 
@@ -583,10 +589,10 @@ $._PPP_={
 											false);
 		if ((projToOpen) && projToOpen.exists) {
 			app.openDocument(	projToOpen.fsName,	// Path to project
-								true,				// suppress 'Convert Project' dialogs?
-								true,				// suppress 'Locate Files' dialogs?
-								true,				// suppress warning dialogs?
-								true);				// prevent document from getting added to MRU list?
+								false,				// suppress 'Convert Project' dialogs?
+								false,				// suppress 'Locate Files' dialogs?
+								false,				// suppress warning dialogs?
+								false);				// prevent document from getting added to MRU list?
 			projToOpen.close();
 		}
 	},
@@ -694,9 +700,9 @@ $._PPP_={
 			var fileOutputPath = Folder.selectDialog("Choose the output directory");
 			if (fileOutputPath) {
 
-				var srcInPoint = new Time;
+				var srcInPoint = new Time();
 				srcInPoint.seconds = 1.0; // encode start time at 1s (optional--if omitted, encode entire file)
-				var srcOutPoint = new Time;
+				var srcOutPoint = new Time();
 				srcOutPoint.seconds = 3.0; // encode stop time at 3s (optional--if omitted, encode entire file)
 				var removeFromQueue = 0;
 
@@ -963,9 +969,7 @@ $._PPP_={
 						var guid 				= newMarker.guid;
 						newMarker.name			= 'Marker created by PProPanel.';
 						newMarker.comments		= 'Here are some comments, inserted by PProPanel.';
-						var tempTime 			= new Time();
-						tempTime.seconds		= 15.6789;
-						newMarker.end			= tempTime;
+						newMarker.end			= (newMarker.start.seconds + 5.0);
 
 						//default marker type == comment. To change marker type, call one of these:
 						// newMarker.setTypeAsChapter();
@@ -1881,7 +1885,7 @@ $._PPP_={
 					if (moComp) {
 						var params = moComp.properties;
 						for (var z = 0; z < params.numItems; z++) {
-							var thisParam = params[0];
+							var thisParam = params[z];
 							if (thisParam) {
 								$._PPP_.updateEventPanel('Parameter ' + (z + 1) + ' name: ' + thisParam.name + '.');
 							}
@@ -2434,13 +2438,15 @@ $._PPP_={
 
 			for (var groupIndex = 0; groupIndex < 2; groupIndex++) {
 				var group = trackGroups[groupIndex];
-				for (var trackIndex = 0; trackIndex < group.numTracks; trackIndex++) {
-					for (var clipIndex = 0; clipIndex < group[trackIndex].clips.numItems; clipIndex++) {
-						var clip		= group[trackIndex].clips[clipIndex];
-						var isReversed	= clip.isSpeedReversed();
-						if (isReversed) {
-							clip.setSelected(isReversed, updateUI);
-							numReversedClips++;
+				if (group){
+					for (var trackIndex = 0; trackIndex < group.numTracks; trackIndex++) {
+						for (var clipIndex = 0; clipIndex < group[trackIndex].clips.numItems; clipIndex++) {
+							var clip		= group[trackIndex].clips[clipIndex];
+							var isReversed	= clip.isSpeedReversed();
+							if (isReversed) {
+								clip.setSelected(isReversed, updateUI);
+								numReversedClips++;
+							}
 						}
 					}
 				}
@@ -2608,7 +2614,7 @@ $._PPP_={
 			var currentSeqSettings = seq.getSettings();
 			if (currentSeqSettings) {
 				if (currentSeqSettings.workingColorSpace === currentSeqSettings.workingColorSpaceList[0]) {
-					currentSeqSettings.videoFrameRate.seconds	= .04;
+					currentSeqSettings.videoFrameRate.seconds	= 0.04;
 					currentSeqSettings.videoDisplayFormat		= 101;
 					currentSeqSettings.workingColorSpace		= currentSeqSettings.workingColorSpaceList[1];
 					seq.setSettings(currentSeqSettings);
@@ -2793,12 +2799,12 @@ $._PPP_={
 				var action 							= 'ApplyCuts';	//'ApplyCuts', 'CreateMarkers'
 				var shouldApplyCutsToLinkedAudio	= true;
 				var sensitivity 					= 'LowSensitivity'; //'LowSensitivity', 'MediumSensitivity', 'HighSensitivity'
-				var result = activeSeq.performCutDetectionOnSelection(action, shouldApplyCutsToLinkedAudio, sensitivity);
+				var result = activeSeq.performSceneEditDetectionOnSelection(action, shouldApplyCutsToLinkedAudio, sensitivity);
 			} else {
-				$._PPP_.updateEventPanel("performCutDetection: Nothing selected, in sequence.");
+				$._PPP_.updateEventPanel("performSceneEditDetectionOnSelection: Nothing selected, in sequence.");
 			}
 		} else {
-			$._PPP_.updateEventPanel("performCutDetection: No active sequence.");
+			$._PPP_.updateEventPanel("performSceneEditDetectionOnSelection: No active sequence.");
 		}
 	},
 
@@ -2842,5 +2848,120 @@ $._PPP_={
 				}
 			}
 		}
-	}	
-};
+	},
+	
+	showColorspaceInEvents : function () { 
+		var colorSpace 		= app.project.rootItem.children[0].getColorSpace();
+		var origColorSpace 	= app.project.rootItem.children[0].getOriginalColorSpace();
+		var lutID 			= app.project.rootItem.children[0].getEmbeddedLUTID();
+		var inputLutID 		= app.project.rootItem.children[0].getInputLUTID();
+
+		//get the color space info and record it in the events panel
+		if (colorSpace){
+			if (origColorSpace){
+				if (lutID){
+					if (inputLutID){
+						app.setSDKEventMessage("Color Space " + " = " + colorSpace.name, 'info');
+						app.setSDKEventMessage("Transfer Characteristic " + " = " + colorSpace.transferCharacteristic, 'info');
+						app.setSDKEventMessage("Color Primaries " + " = " + colorSpace.primaries, 'info');
+						app.setSDKEventMessage("Matrix Equation " + " = " + colorSpace.matrixEquation, 'info');
+				
+						app.setSDKEventMessage("Original Color Space " + " = " + origColorSpace.name, 'info');
+						app.setSDKEventMessage("Original Transfer Characteristic " + " = " + origColorSpace.transferCharacteristic, 'info');
+						app.setSDKEventMessage("Original Color Primaries " + " = " + origColorSpace.primaries, 'info');
+						app.setSDKEventMessage("Original Matrix Equation " + " = " + origColorSpace.matrixEquation, 'info');
+				
+						app.setSDKEventMessage("LutID " + " = " + lutID, 'info');
+						app.setSDKEventMessage("input LutID " + " = " + inputLutID, 'info');
+					} else {
+						alert("Input LUT ID not found.");
+					}
+				} else {
+					alert("LUT ID not found.");
+				}
+			} else {
+				alert("Original colorspace not available.");
+			}
+		} else {
+			alert("No colorspace available.");
+		}
+	},
+	moveTrackItemOnTimeline : function () {	
+		app.project.sequences[0].audioTracks[0].clips[0].move(13);
+ 		app.project.sequences[0].videoTracks[0].clips[0].move(13);
+	},
+
+	importSrtAddToCaptionTrack: function() {
+        var destBin = app.project.getInsertionBin();
+        if (destBin) {
+            var prevItemCount = destBin.children.numItems;
+
+            var filterString = "";
+            if (Folder.fs === 'Windows') {
+                filterString = "All files:*.*";
+            }
+            if (app.project) {
+                var importThese = [];
+                var fileOrFilesToImport = File.openDialog("Choose files to import", // title
+                    filterString, // filter available files?
+                    true); // allow multiple?
+                if (fileOrFilesToImport) {
+                    // We have an array of File objects; importFiles() takes an array of paths.
+                    if (importThese) {
+                        for (var i = 0; i < fileOrFilesToImport.length; i++) {
+                            importThese[i] = fileOrFilesToImport[i].fsName;
+                        }
+                        var suppressWarnings = true;
+                        var importAsStills = false;
+                        app.project.importFiles(importThese,
+                            suppressWarnings,
+                            app.project.getInsertionBin(),
+                            importAsStills);
+
+                    } else {
+                        $._PPP_.updateEventPanel("No files to import.");
+                    }
+                }
+
+                if (importThese) {
+                    var newItemCount = destBin.children.numItems;
+                    if (newItemCount > prevItemCount) {
+                        var importedSRT = destBin.children[(newItemCount - 1)];
+                        if (importedSRT) {
+                            var activeSeq = app.project.activeSequence;
+                            if (activeSeq) {
+                                var startAtTime = 0;
+                                var result = app.project.activeSequence.createCaptionTrack(importedSRT, startAtTime);
+                            } else {
+                                $._PPP_.updateEventPanel("No active sequence.");
+                            }
+                        } else {
+                            $._PPP_.updateEventPanel("Whoops, couldn't find imported .srt file.");
+                        }
+                    } else {
+                        $._PPP_.updateEventPanel("Whoa, no new item? How'd THAT happen?!");
+                    }
+                } else {
+                    $._PPP_.updateEventPanel("importFiles() failed to import, OR return an error message. I quit!");
+                }
+            } else {
+                $._PPP_.updateEventPanel("No destination bin available");
+            }
+        }
+    },
+
+	checkMacFileType : function(file)
+	{
+		if(!file instanceof Folder) return true;
+		
+		var index = file.name.lastIndexOf(".");
+		var ext = file.name.substring(index + 1);
+		
+		if(ext == "xml" || ext == "XML")
+		{
+			return true;
+		}
+		return false;
+	}
+
+}

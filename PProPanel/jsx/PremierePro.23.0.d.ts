@@ -90,7 +90,7 @@ declare class SequenceSettings {
 	vrProjection:				number
 	vrVertCapturedView:			number
 	workingColorSpaceList:		Array
-	workingColorSpace:			String
+	workingColorSpace:			colorSpace
 }
 
 /**
@@ -101,6 +101,34 @@ declare class AudioChannelMapping {
 	audioChannelsType:	number
 	setMappingForChannel(number:channelIndex, number:sourceChannelIndex): function
 }
+
+  declare class colorSpace {
+	/**
+	 * 
+	 */
+	name: String
+
+	/**
+	 * 
+	 */
+	transferCharacteristic: String
+
+	/**
+	 * 
+	 */
+	matrixEquation: String
+
+	/**
+	 * 
+	 */
+	primaries: String
+
+	/**
+	 * 
+	 */
+
+
+  }
 
 /**
  * A sequence.
@@ -150,7 +178,7 @@ declare class Sequence {
 	/**
 	 * The color space in use by the sequence
 	 */
-	workingColorSpace: string
+	workingColorSpace: colorSpace
   
 	/**
 	 * Name (writable).
@@ -861,6 +889,7 @@ declare class ProjectManager {
 	unbind(eventName: string): void
   }
   
+
   /**
    *
    */
@@ -1207,7 +1236,12 @@ declare class ProjectManager {
 	 *
 	 */
 	readonly type: number
-  
+
+	/**
+	 * 
+	 */
+	readonly nodeId: string 
+
 	/**
 	 *
 	 */
@@ -1247,6 +1281,12 @@ declare class ProjectManager {
 	 *
 	 */
 	getSpeed(): number
+
+	/**
+	 * 	Returns whether the trackItem represents a MOGRT.
+  	 *	@returns true, if trackItem is a MOGRT. 
+	*/
+	isMGT(): boolean
 
 	/**
 	 *
@@ -1302,6 +1342,16 @@ declare class ProjectManager {
 	 *
 	 */
 	readonly videoComponents: any
+
+	/**
+	 * Timebase in ticks after frame rate interpretation has been applied
+	 */
+	readonly interpretedTimebase: string
+
+	/**
+	 * Timebase in ticks of source media without frame rate interpretation
+	 */
+	readonly sourceTimebase: string
   
 	/**
 	 *
@@ -1345,7 +1395,7 @@ declare class ProjectManager {
 
 	/**
   	 * 	Returns whether the projectItem represents a sequence.
-  	 	@returns true, if projectItem is a sequence.
+  	 *	@returns true, if projectItem is a sequence.
   	*/
   	isSequence(): boolean
   
@@ -1472,20 +1522,27 @@ declare class ProjectManager {
 	startTime(): Time
 
 	/**
+	 * @returns The original color space associated with the unmodified Item
+	 */
+	
+	getOriginalColorSpace() : colorSpace
+
+
+	/**
 	 * 
 	 * @param newColorSpace value must be available via sequence.workingColorSpaceList 
 	 */
-	setOverrideColorSpace(newColorSpace: String): void
+	setOverrideColorSpace(newColorSpace: colorSpace): void
+
+	/**
+	 * @returns the color space currently in use
+	 */
+	getColorSpace(): colorSpace
 
 	/**
 	 * 
 	 */
-	getColorSpace(): String
-
-	/**
-	 * 
-	 */
-	isMultiCamClip(): boolean
+	isMulticamClip(): boolean
 
 	/**
 	 * 
@@ -1529,6 +1586,17 @@ declare class ProjectManager {
 	 * @returns boolean indicating whether setting the audio channel mapping was successful.
 	 */
 	setAudioChannelMapping(mapping:AudioChannelMapping): boolean
+	
+	/**
+	 * @returns the LUT embedded with the original media
+	 */
+	getEmbeddedLUTID(): number
+	
+	/**
+	 * @returns the LUT currently associated with the media
+	 */
+
+	getInputLUTID(): number
 	/**
 	 *
 	 */

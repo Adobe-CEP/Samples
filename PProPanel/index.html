@@ -362,16 +362,23 @@
 	<p id="proxies_on">Proxies enabled for sequence: </p>
 
 	<div>
+		<h2>New in 23.0!</h2>
+		<button class="controlBg textStyle" id="btn_PPRO87" onClick="evalScript('$._PPP_.importSrtAddToCaptionTrack()')">Import .srt file & add to new caption track</button>
+	</div>
+	
+	<div>
 		<h2>New in 22.0.0!</h2>
 	</div>
 
 	<button class="controlBg textStyle" id="btn_PPRO84" onClick="evalScript('$._PPP_.enableAllDisabledClips()')">Enable all disabled clips in sequence</button>
-
+	<button class="controlBg textStyle" id="btn_PPRO85" onClick="evalScript('$._PPP_.showColorspaceInEvents()')">Show Clip Colorspace in Events</button>
+	<button class="controlBg textStyle" id="btn_PPRO86" onClick="evalScript('$._PPP_.moveTrackItemOnTimeline()')">Move Clip 13 Seconds on Timeline</button>
+	
 	<div>
 		<h2>New in 14.3.1!</h2>
 	</div>
 
-	<button class="controlBg textStyle" id="btn_PPRO81" onClick="evalScript('$._PPP_.performCutDetection()')">Detect cuts in active sequence</button>
+	<button class="controlBg textStyle" id="btn_PPRO81" onClick="evalScript('$._PPP_.performSceneEditDetectionOnSelection()')">Detect cuts in active sequence</button>
 
 	<div>
 		<h2>New in 14.1!</h2>
@@ -462,7 +469,7 @@
 		<button class="controlBg textStyle" id="btn_PPRO16" onClick="evalScript('$._PPP_.addClipMarkers()')">Add clip markers</button>
 		<button class="controlBg textStyle" id="btn_PPRO17" onClick="evalScript('$._PPP_.updatePAR()')">Update PAR</button>
 		<button class="controlBg textStyle" id="btn_PPRO11" onClick="evalScript('$._PPP_.mungeXMP()')">Manipulate XMP</button>
-		<button class="controlBg textStyle" id="btn_PPRO14" onClick="evalScript('$._PPP_.updateAllGrowingFiles()')">Update growing file</button>
+		<button class="controlBg textStyle" id="btn_PPRO14" onClick="evalScript('$._PPP_.updateAllProjectItems()')">Update all media</button>
 		<button class="controlBg textStyle" id="btn_PPRO15" onClick="evalScript('$._PPP_.modifyProjectMetadata()')">Modify project metadata</button>
 		<button class="controlBg textStyle" id="btn_PPRO23" onClick="evalScript('$._PPP_.setScratchDisk()')">Set scratch disk path</button>
 		<button class="controlBg textStyle" id="btn_PPRO27" onClick="evalScript('$._PPP_.randomizeSequenceSelection()')">Randomize sequence selection</button>
