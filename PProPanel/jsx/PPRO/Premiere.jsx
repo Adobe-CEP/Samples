@@ -2885,6 +2885,38 @@ $._PPP_={
 		} else {
 			alert("No colorspace available.");
 		}
+	}	
+};
+
+		//get the color space info and record it in the events panel
+		if (colorSpace){
+			if (origColorSpace){
+				if (lutID){
+					if (inputLutID){
+						app.setSDKEventMessage("Color Space " + " = " + colorSpace.name, 'info');
+						app.setSDKEventMessage("Transfer Characteristic " + " = " + colorSpace.transferCharacteristic, 'info');
+						app.setSDKEventMessage("Color Primaries " + " = " + colorSpace.primaries, 'info');
+						app.setSDKEventMessage("Matrix Equation " + " = " + colorSpace.matrixEquation, 'info');
+				
+						app.setSDKEventMessage("Original Color Space " + " = " + origColorSpace.name, 'info');
+						app.setSDKEventMessage("Original Transfer Characteristic " + " = " + origColorSpace.transferCharacteristic, 'info');
+						app.setSDKEventMessage("Original Color Primaries " + " = " + origColorSpace.primaries, 'info');
+						app.setSDKEventMessage("Original Matrix Equation " + " = " + origColorSpace.matrixEquation, 'info');
+				
+						app.setSDKEventMessage("LutID " + " = " + lutID, 'info');
+						app.setSDKEventMessage("input LutID " + " = " + inputLutID, 'info');
+					} else {
+						alert("Input LUT ID not found.");
+					}
+				} else {
+					alert("LUT ID not found.");
+				}
+			} else {
+				alert("Original colorspace not available.");
+			}
+		} else {
+			alert("No colorspace available.");
+		}
 	},
 	moveTrackItemOnTimeline : function () {	
 		app.project.sequences[0].audioTracks[0].clips[0].move(13);

@@ -8,6 +8,7 @@
             "script": "${workspaceFolder}/jsx/PPRO/Premiere.jsx",
             "stopOnEntry": false,
             "trace": true,
+            "logFile" : "~/Desktop/AMEPanel_Log.txt",
             "selectTargetColor": "green"
         },
         {
