@@ -2885,9 +2885,6 @@ $._PPP_={
 		} else {
 			alert("No colorspace available.");
 		}
-	}	
-};
-
 		//get the color space info and record it in the events panel
 		if (colorSpace){
 			if (origColorSpace){
@@ -2982,18 +2979,18 @@ $._PPP_={
         }
     },
 
-	checkMacFileType : function(file)
-	{
-		if(!file instanceof Folder) return true;
+	checkMacFileType : function(file) {
+		if (!file instanceof Folder){
+			return true;
+		} 
 		
 		var index = file.name.lastIndexOf(".");
 		var ext = file.name.substring(index + 1);
 		
-		if(ext == "xml" || ext == "XML")
-		{
+		if(ext == "xml" || ext == "XML") {
 			return true;
+		} else {
+			return false;
 		}
-		return false;
 	}
-
 }
