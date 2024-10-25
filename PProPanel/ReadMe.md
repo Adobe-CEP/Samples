@@ -41,8 +41,8 @@ loading before (up to CEP10), you'll need to perform this step again, but for ke
 On MacOS, type the following into Terminal, then relaunch Finder (either via
 rebooting, or from the Force Quit dialog):
 
-```html
-defaults write /Users/<username>/Library/Preferences/com.adobe.CSXS.11.plist PlayerDebugMode 1
+```
+defaults write ~/Library/Preferences/com.adobe.CSXS.11.plist PlayerDebugMode 1
 ```
 
 On Windows, make the following registry entry (a new Key, of type String):
