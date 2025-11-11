@@ -1,6 +1,14 @@
 # Premiere Pro panels
 
-*Last updated February 2023, to coincide with the  Premiere Pro 23.2 release, also known as "Premiere Pro 2023".*
+*Last updated November 2025, to coincide with the Premiere Pro 25.6 release, also known as "Premiere Pro 2025".*
+
+NOTE: As of Premiere Pro 25.6, CEP extensions to Premiere Pro have been superseded by UXP Extensibility. If you are starting new development, start in UXP. CEP extensions continue to be supported; the plan is to support both CEP and UXP for a calendar year, after which we will remove support for CEP extensibilty.  
+
+UXP samples:    https://github.com/AdobeDocs/uxp-premiere-pro-samples/tree/main
+
+Documentation:  https://developer.adobe.com/premiere-pro/uxp/
+
+Premiere Pro UXP Developer Forum: https://forums.creativeclouddeveloper.com/c/uxp-for-premiere-pro/105
 
 ## Create panels for Premiere Pro
 
@@ -42,7 +50,7 @@ On MacOS, type the following into Terminal, then relaunch Finder (either via
 rebooting, or from the Force Quit dialog):
 
 ```html
-defaults write /Users/<username>/Library/Preferences/com.adobe.CSXS.11.plist PlayerDebugMode 1
+defaults write /Users/<username>/Library/Preferences/com.adobe.CSXS.12.plist PlayerDebugMode 1
 ```
 
 On Windows, make the following registry entry (a new Key, of type String):
