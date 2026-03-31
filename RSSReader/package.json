@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
-    "feedparser": "^0.16.6",
+    "feedparser": "^2.2.10",
     "mustache": "^0.8.2"
   },
   "devDependencies": {},
