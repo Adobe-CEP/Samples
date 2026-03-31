@@ -5,7 +5,7 @@
   "main": "index.js",
   "dependencies": {
     "feedparser": "^0.16.6",
-    "mustache": "^0.8.2"
+    "mustache": "^2.2.1"
   },
   "devDependencies": {},
   "scripts": {
